@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Práctica 2 — Tipos de Datos y Variables | ESPAM MFL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{--verde:#005846;--verde-medio:#007a5e;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fondo);font-size:16px;line-height:1.7;overflow-x:hidden;}
+.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--verde);display:flex;align-items:center;padding:0 24px;gap:14px;z-index:1000;border-bottom:3px solid var(--verde-claro);}
+.topbar-logo{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--verde-claro);}
+.topbar-sep{width:1px;height:20px;background:rgba(255,255,255,.2);}
+.topbar-titulo{font-size:12px;color:rgba(255,255,255,.65);}
+.topbar-right{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;}
+.nav-menu{background:var(--verde);border-bottom:2px solid rgba(203,219,42,.3);margin-top:50px;}
+.nav-toggle{width:100%;background:transparent;color:white;border:none;padding:11px 24px;text-align:left;cursor:pointer;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;}
+.nav-toggle:hover{background:rgba(255,255,255,.04);}
+.nav-toggle-arrow{color:var(--verde-claro);font-size:12px;}
+.nav-body{display:none;padding:18px 24px 22px;}
+.nav-body.abierto{display:flex;flex-wrap:wrap;gap:28px;}
+.nav-grupo{min-width:170px;}
+.nav-grupo-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:7px;display:block;padding-bottom:5px;border-bottom:1px solid rgba(203,219,42,.2);}
+.nav-items{list-style:none;}
+.nav-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12px;color:rgba(255,255,255,.72);text-decoration:none;transition:color .15s;}
+.nav-item:hover{color:var(--verde-claro);}
+.nav-item.activo{color:var(--turquesa);font-weight:700;}
+.nav-item.practica{color:rgba(8,184,157,.85);font-style:italic;}
+.nav-item.practica:hover{color:var(--turquesa);}
+.nav-item.prox{color:rgba(255,255,255,.28);pointer-events:none;}
+.nav-num{font-family:'Space Mono',monospace;font-size:9px;min-width:20px;flex-shrink:0;color:rgba(255,255,255,.28);}
+.nav-item.activo .nav-num{color:var(--turquesa);}
+/* PAGE HEADER */
+.page-header{background:linear-gradient(135deg,#005846 0%,#067a65 100%);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--turquesa);}
+.page-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(8,184,157,.1) 1px,transparent 1px);background-size:28px 28px;}
+.ph-num{position:absolute;right:48px;top:0;font-size:200px;font-weight:900;color:rgba(255,255,255,.04);line-height:1;font-family:'Space Mono',monospace;}
+.ph-inner{position:relative;z-index:1;}
+.ph-badge-practica{display:inline-block;background:rgba(8,184,157,.2);border:1px solid rgba(8,184,157,.4);color:var(--turquesa);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+.ph-titulo{font-size:36px;font-weight:900;line-height:1.1;color:white;margin-bottom:8px;}
+.ph-subtitulo{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:28px;}
+.ph-meta{display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;}
+.ph-meta-item{display:flex;flex-direction:column;gap:3px;}
+.ph-meta-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.ph-meta-valor{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;}
+/* FASES */
+.fases-nav{background:white;border-bottom:1px solid var(--borde);padding:12px 64px;display:flex;gap:6px;overflow-x:auto;}
+.fase-chip{font-family:'Space Mono',monospace;font-size:9px;color:var(--texto-suave);text-decoration:none;padding:5px 12px;border:1px solid var(--borde);border-radius:20px;white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:6px;}
+.fase-chip:hover{background:var(--turquesa);color:white;border-color:var(--turquesa);}
+/* BODY */
+.body-wrap{max-width:960px;margin:0 auto;padding:56px 64px 0;}
+.fase{margin-bottom:48px;scroll-margin-top:120px;}
+.fase-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--borde);}
+.fase-num{min-width:44px;height:44px;background:var(--turquesa);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;flex-shrink:0;}
+.fase-titulo{font-size:20px;font-weight:800;color:var(--verde);line-height:1.2;}
+.fase-tiempo{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+p{margin-bottom:14px;color:var(--texto-suave);font-size:15px;}
+hr{border:none;border-top:1px solid var(--borde);margin:40px 0;}
+code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70,.07);padding:1px 6px;border-radius:3px;color:var(--verde);}
+/* PROBLEMA BOX */
+.problema-box{background:var(--verde);border-radius:12px;padding:24px 28px;margin:20px 0;border-left:5px solid var(--verde-claro);}
+.pb-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:10px;display:block;}
+.pb-enunciado{font-size:16px;color:white;line-height:1.7;font-weight:500;}
+.pb-enunciado strong{color:var(--verde-claro);}
+/* ACTIVIDADES */
+.actividades{display:flex;flex-direction:column;gap:12px;margin:20px 0;}
+.actividad{background:white;border:1px solid var(--borde);border-radius:10px;padding:18px 22px;display:flex;align-items:flex-start;gap:14px;}
+.act-num{min-width:30px;height:30px;border-radius:50%;background:var(--turquesa);color:white;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.act-titulo{font-size:14px;font-weight:700;color:var(--verde);margin-bottom:4px;}
+.act-desc{font-size:13.5px;color:var(--texto-suave);line-height:1.6;}
+/* TABLA DE TIPOS */
+.tabla-tipos{width:100%;border-collapse:collapse;margin:18px 0;font-size:13px;}
+.tabla-tipos thead tr{background:var(--verde);}
+.tabla-tipos thead th{padding:10px 14px;color:white;text-align:left;font-size:11.5px;}
+.tabla-tipos tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-tipos tbody td{padding:10px 14px;border-bottom:1px solid var(--borde);color:var(--texto-suave);vertical-align:middle;}
+.tabla-tipos td:first-child{font-weight:700;color:var(--texto);}
+.tabla-tipos td:nth-child(3){font-family:'Space Mono',monospace;font-size:11px;}
+.espacio-resp{height:30px;border-bottom:1px dashed rgba(0,88,70,.2);}
+/* CÓDIGO */
+.codigo-bloque{background:var(--codigo-bg);border-radius:10px;overflow:hidden;margin:18px 0;}
+.codigo-header{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);}
+.codigo-dots{display:flex;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
+.codigo-lang{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.3);}
+.codigo-archivo{font-family:'Space Mono',monospace;font-size:10px;color:var(--turquesa);}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+.c-inc{color:#c792ea;}.c-str{color:#a8d8b0;}.c-kw{color:var(--verde-claro);}.c-ns{color:var(--turquesa);}.c-tipo{color:#82aaff;}.c-fn{color:var(--turquesa);}.c-num{color:#f78c6c;}.c-com{color:rgba(255,255,255,.3);font-style:italic;}.c-const{color:#ffcb6b;}
+/* PSEUDOCÓDIGO */
+.pseudocodigo{background:var(--codigo-bg);border-radius:10px;margin:18px 0;overflow:hidden;}
+.pseudo-label{background:rgba(255,255,255,.05);padding:8px 18px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);border-bottom:1px solid rgba(255,255,255,.08);}
+.pseudo-code{padding:20px 24px;font-family:'Space Mono',monospace;font-size:13px;line-height:1.9;color:rgba(255,255,255,.85);}
+.pseudo-kw{color:var(--verde-claro);font-weight:700;}
+.pseudo-str{color:#a8d8b0;}
+.pseudo-ind{display:block;padding-left:24px;}
+.pseudo-blank{display:block;height:8px;}
+/* CAJAS */
+.caja-ia{background:#0d1e18;border-radius:10px;padding:20px 24px;margin:20px 0;border-left:4px solid var(--turquesa);}
+.caja-ia .ci-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:9px;display:block;}
+.caja-ia p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin:0;}
+.caja-ia p strong{color:var(--verde-claro);}
+.caja-nota{background:rgba(0,88,70,.05);border-left:4px solid var(--verde);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-nota .cn-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:6px;display:block;}
+.caja-nota p{margin:0;font-size:14px;color:var(--texto);}
+/* ERROR BOX */
+.error-box{background:rgba(138,32,32,.08);border:1px solid rgba(138,32,32,.2);border-left:4px solid #c0392b;border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.error-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#c0392b;margin-bottom:8px;display:block;}
+.error-box p{margin:0;font-size:14px;color:#6a2020;}
+/* RÚBRICA */
+.rubrica{width:100%;border-collapse:collapse;margin:18px 0;font-size:12.5px;}
+.rubrica thead tr{background:var(--verde);}
+.rubrica thead th{padding:10px 14px;color:white;text-align:left;font-size:11px;}
+.rubrica tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.rubrica tbody td{padding:9px 14px;border-bottom:1px solid var(--borde);color:var(--texto-suave);vertical-align:top;}
+.rubrica tbody td:first-child{font-weight:700;color:var(--verde);font-size:12px;}
+.rubrica tfoot td{padding:10px 14px;font-weight:700;color:var(--verde);background:rgba(0,88,70,.05);}
+/* BITÁCORA */
+.bitacora{border:2px dashed rgba(0,88,70,.2);border-radius:10px;padding:22px;background:white;margin:18px 0;}
+.bitacora-campo{display:flex;gap:12px;border-bottom:1px solid var(--borde);padding:9px 0;align-items:center;}
+.bitacora-campo:last-child{border-bottom:none;}
+.bitacora-campo label{min-width:200px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);flex-shrink:0;}
+.linea-campo{flex:1;border-bottom:1px solid rgba(0,88,70,.12);min-height:22px;}
+/* NAV + PIE */
+.nav-caps{display:flex;justify-content:space-between;align-items:center;padding:20px 64px;background:var(--fondo-alt);border-top:1px solid var(--borde);margin-top:48px;flex-wrap:wrap;gap:12px;}
+.nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 18px;border:1.5px solid rgba(0,88,70,.2);border-radius:8px;background:white;max-width:280px;transition:all .2s;}
+.nav-cap-btn:hover{border-color:var(--verde);text-decoration:none;}
+.nav-cap-btn.sig{flex-direction:row-reverse;text-align:right;}
+.ncb-arrow{font-size:16px;color:var(--verde);}
+.ncb-label{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,88,70,.45);margin-bottom:2px;display:block;}
+.ncb-titulo{font-size:13px;font-weight:700;color:var(--verde);}
+.pie{background:var(--verde);color:rgba(255,255,255,.35);padding:14px 64px;font-family:'Space Mono',monospace;font-size:9px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:1px;}
+.pie span:first-child{color:rgba(255,255,255,.55);}
+@media(max-width:768px){
+  .page-header,.body-wrap,.nav-caps,.pie,.fases-nav{padding-left:24px;padding-right:24px;}
+  .ph-titulo{font-size:26px;}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-logo">ESPAM MFL</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-titulo">Introducción a la Programación</div>
+  <div class="topbar-right">CARRERA DE COMPUTACIÓN</div>
+</header>
+
+<nav class="nav-menu">
+  <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">
+    ☰ &nbsp; Contenidos del libro
+    <span class="nav-toggle-arrow">▼</span>
+  </button>
+  <div class="nav-body">
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Inicio</span>
+      <ul class="nav-items">
+        <li><a href="index.html" class="nav-item"><span class="nav-num">◉</span> Portada</a></li>
+        <li><a href="preliminares.html" class="nav-item"><span class="nav-num">—</span> Preliminares</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidad I — Fundamentos</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_01.html" class="nav-item"><span class="nav-num">01</span> Pensamiento Algorítmico</a></li>
+        <li><a href="practica_01.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 1</a></li>
+        <li><a href="capitulo_02.html" class="nav-item"><span class="nav-num">02</span> Tipos de Datos y Variables</a></li>
+        <li><a href="practica_02.html" class="nav-item practica activo"><span class="nav-num">↳</span> Sesión Práctica 2</a></li>
+        <li><a href="capitulo_03.html" class="nav-item prox"><span class="nav-num">03</span> Depuración y Buenas Prácticas</a></li>
+        <li><a href="practica_03.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 3</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidad II — Control</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_04.html" class="nav-item prox"><span class="nav-num">04</span> Estructuras Selectivas</a></li>
+        <li><a href="capitulo_05.html" class="nav-item prox"><span class="nav-num">05</span> Repetitivas I</a></li>
+        <li><a href="capitulo_06.html" class="nav-item prox"><span class="nav-num">06</span> Repetitivas II</a></li>
+        <li><a href="capitulo_07.html" class="nav-item prox"><span class="nav-num">07</span> Integración</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidades III y IV</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_08.html" class="nav-item prox"><span class="nav-num">08</span> Funciones en C++</a></li>
+        <li><a href="capitulo_12.html" class="nav-item prox"><span class="nav-num">12</span> Arreglos Unidimensionales</a></li>
+        <li><a href="capitulo_15.html" class="nav-item prox"><span class="nav-num">15</span> Proyecto Integrador</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section class="page-header">
+  <div class="ph-num">P2</div>
+  <div class="ph-inner">
+    <div class="ph-badge-practica">⚗️ Sesión Práctica · Unidad I</div>
+    <h1 class="ph-titulo">Práctica 2 — Tipos, Variables y Expresiones en Contexto Real</h1>
+    <p class="ph-subtitulo">Elegir el tipo correcto · Calcular con precisión · Formatear la salida · Detectar errores de tipo</p>
+    <div class="ph-meta">
+      <div class="ph-meta-item"><span class="ph-meta-label">Duración</span><span class="ph-meta-valor">3 horas (3 ACD)</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Modalidad</span><span class="ph-meta-valor">Individual + parejas</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Entrega</span><span class="ph-meta-valor">Papel + digital (.cpp)</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Capítulo base</span><span class="ph-meta-valor">Cap. 2</span></div>
+    </div>
+  </div>
+</section>
+
+<nav class="fases-nav">
+  <a class="fase-chip" href="#fase1"><span>F1</span> Análisis de tipos (0–20 min)</a>
+  <a class="fase-chip" href="#fase2"><span>F2</span> PSeInt (20–50 min)</a>
+  <a class="fase-chip" href="#fase3"><span>F3</span> C++ con formato (50–90 min)</a>
+  <a class="fase-chip" href="#fase4"><span>F4</span> Cazador de errores (90–130 min)</a>
+  <a class="fase-chip" href="#fase5"><span>F5</span> Análisis con IA (130–160 min)</a>
+  <a class="fase-chip" href="#fase6"><span>F6</span> Cierre (160–180 min)</a>
+</nav>
+
+<main class="body-wrap">
+
+  <div class="problema-box">
+    <span class="pb-label">🎯 Problema central de la sesión</span>
+    <div class="pb-enunciado">
+      Una farmacia necesita un <strong>sistema de facturación básico</strong>. El programa debe registrar: nombre del cliente (cadena), código del producto (entero), precio unitario, cantidad comprada, porcentaje de descuento por volumen (si compra 5 o más unidades, aplica 10%). Calcular y mostrar: subtotal, descuento aplicado, IVA (12%) y total a pagar — todo con 2 decimales y etiquetas alineadas.<br><br>
+      <strong>IVA constante:</strong> <code style="color:var(--verde-claro);font-family:'Space Mono'">const double IVA = 0.12;</code>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- FASE 1 -->
+  <div class="fase" id="fase1">
+    <div class="fase-header">
+      <div class="fase-num">F1</div>
+      <div class="fase-info">
+        <div class="fase-titulo">Análisis de tipos — Individual, sin computadora</div>
+        <div class="fase-tiempo">⏱ 0 – 20 minutos</div>
+      </div>
+    </div>
+    <p>Antes de codificar, analiza qué tipo de dato corresponde a cada variable del problema. Una elección de tipo incorrecta puede dar resultados silenciosamente erróneos.</p>
+
+    <table class="tabla-tipos">
+      <thead><tr><th>Variable</th><th>¿Qué almacena?</th><th>Tipo C++ correcto</th><th>Justificación</th></tr></thead>
+      <tbody>
+        <tr><td>nombre_cliente</td><td>Texto con nombre y apellido</td><td class="espacio-resp"></td><td class="espacio-resp"></td></tr>
+        <tr><td>codigo_producto</td><td>Número sin decimales (ej: 1042)</td><td class="espacio-resp"></td><td class="espacio-resp"></td></tr>
+        <tr><td>precio_unitario</td><td>Valor monetario (ej: 8.75)</td><td class="espacio-resp"></td><td class="espacio-resp"></td></tr>
+        <tr><td>cantidad</td><td>Unidades compradas (ej: 3)</td><td class="espacio-resp"></td><td class="espacio-resp"></td></tr>
+        <tr><td>aplica_descuento</td><td>¿Aplica o no aplica?</td><td class="espacio-resp"></td><td class="espacio-resp"></td></tr>
+        <tr><td>IVA</td><td>Porcentaje fijo que no cambia</td><td class="espacio-resp"></td><td class="espacio-resp"></td></tr>
+        <tr><td>subtotal</td><td>precio × cantidad</td><td class="espacio-resp"></td><td class="espacio-resp"></td></tr>
+        <tr><td>total</td><td>Resultado final a pagar</td><td class="espacio-resp"></td><td class="espacio-resp"></td></tr>
+      </tbody>
+    </table>
+
+    <div class="actividades">
+      <div class="actividad">
+        <div class="act-num">✎</div>
+        <div class="act-body">
+          <div class="act-titulo">Pregunta de análisis — responder en papel</div>
+          <div class="act-desc">¿Qué pasaría si declaras <code>cantidad</code> como <code>double</code> y el usuario ingresa 3? ¿Y si declaras <code>precio_unitario</code> como <code>int</code> y el usuario ingresa 8.75? Predice los resultados sin ejecutar nada.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- FASE 2 -->
+  <div class="fase" id="fase2">
+    <div class="fase-header">
+      <div class="fase-num">F2</div>
+      <div class="fase-info">
+        <div class="fase-titulo">Pseudocódigo en PSeInt — Individual</div>
+        <div class="fase-tiempo">⏱ 20 – 50 minutos</div>
+      </div>
+    </div>
+    <p>Escribe primero tu propio pseudocódigo basado en el análisis de tipos de la Fase 1. Solo consulta la referencia de abajo si te bloqueas.</p>
+
+    <div class="pseudocodigo">
+      <div class="pseudo-label">Referencia — Pseudocódigo en PSeInt</div>
+      <div class="pseudo-code">
+        <span class="pseudo-kw">Algoritmo</span> FacturacionFarmacia<br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Definir</span> nombre_cliente <span class="pseudo-kw">Como</span> Caracter</span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Definir</span> codigo_producto, cantidad <span class="pseudo-kw">Como</span> Entero</span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Definir</span> precio_unitario, subtotal, descuento, iva_monto, total <span class="pseudo-kw">Como</span> Real</span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Definir</span> IVA <span class="pseudo-kw">Como</span> Real</span><br>
+        <span class="pseudo-blank"></span>
+        <span class="pseudo-ind">IVA ← 0.12</span><br>
+        <span class="pseudo-blank"></span>
+        <span class="pseudo-ind"><span class="pseudo-kw">Escribir</span> <span class="pseudo-str">"Nombre del cliente: "</span></span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Leer</span> nombre_cliente</span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Escribir</span> <span class="pseudo-str">"Código del producto: "</span></span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Leer</span> codigo_producto</span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Escribir</span> <span class="pseudo-str">"Precio unitario: "</span></span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Leer</span> precio_unitario</span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Escribir</span> <span class="pseudo-str">"Cantidad: "</span></span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Leer</span> cantidad</span><br>
+        <span class="pseudo-blank"></span>
+        <span class="pseudo-ind">subtotal ← precio_unitario * cantidad</span><br>
+        <span class="pseudo-blank"></span>
+        <span class="pseudo-ind"><span class="pseudo-kw">Si</span> cantidad >= 5 <span class="pseudo-kw">Entonces</span></span><br>
+        <span class="pseudo-ind">    descuento ← subtotal * 0.10</span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">SiNo</span></span><br>
+        <span class="pseudo-ind">    descuento ← 0</span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">FinSi</span></span><br>
+        <span class="pseudo-blank"></span>
+        <span class="pseudo-ind">iva_monto ← (subtotal - descuento) * IVA</span><br>
+        <span class="pseudo-ind">total ← subtotal - descuento + iva_monto</span><br>
+        <span class="pseudo-blank"></span>
+        <span class="pseudo-ind"><span class="pseudo-kw">Escribir</span> <span class="pseudo-str">"Cliente: "</span>, nombre_cliente</span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Escribir</span> <span class="pseudo-str">"Subtotal:  $"</span>, subtotal</span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Escribir</span> <span class="pseudo-str">"Descuento: $"</span>, descuento</span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Escribir</span> <span class="pseudo-str">"IVA:       $"</span>, iva_monto</span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Escribir</span> <span class="pseudo-str">"TOTAL:     $"</span>, total</span><br>
+        <span class="pseudo-kw">FinAlgoritmo</span>
+      </div>
+    </div>
+
+    <div class="actividades">
+      <div class="actividad">
+        <div class="act-num">✓</div>
+        <div class="act-body">
+          <div class="act-titulo">Tabla de simulación — valores de prueba</div>
+          <div class="act-desc">Ejecuta el algoritmo en PSeInt con: cliente="María López", código=2045, precio=8.75, cantidad=6. Verifica manualmente: subtotal=52.50, descuento=5.25, IVA=5.67, total=52.92.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- FASE 3 -->
+  <div class="fase" id="fase3">
+    <div class="fase-header">
+      <div class="fase-num">F3</div>
+      <div class="fase-info">
+        <div class="fase-titulo">Implementación en C++ con salida formateada — Individual</div>
+        <div class="fase-tiempo">⏱ 50 – 90 minutos</div>
+      </div>
+    </div>
+    <p>Traduce el pseudocódigo a C++. Presta especial atención a: tipos de datos, la constante <code>IVA</code>, y el formato de salida con <code>fixed + setprecision(2)</code>.</p>
+
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:10px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · Referencia</span></div>
+        <span class="codigo-archivo">factura_farmacia.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;string&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-com">// --- Constante institucional ---</span>
+    <span class="c-kw">const</span> <span class="c-tipo">double</span> <span class="c-const">IVA</span> = <span class="c-num">0.12</span>;
+
+    <span class="c-com">// --- Variables de entrada ---</span>
+    <span class="c-tipo">string</span> nombre_cliente;
+    <span class="c-tipo">int</span>    codigo_producto, cantidad;
+    <span class="c-tipo">double</span> precio_unitario;
+
+    <span class="c-com">// --- Variables de cálculo ---</span>
+    <span class="c-tipo">double</span> subtotal, descuento, iva_monto, total;
+
+    <span class="c-com">// --- Entrada de datos ---</span>
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"=== FARMACIA ESPAM MFL ===\n"</span>;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Nombre del cliente:  "</span>;
+    getline(<span class="c-fn">cin</span>, nombre_cliente);   <span class="c-com">// getline para leer espacios</span>
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Código del producto: "</span>;
+    <span class="c-fn">cin</span>  &gt;&gt; codigo_producto;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Precio unitario:     $"</span>;
+    <span class="c-fn">cin</span>  &gt;&gt; precio_unitario;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Cantidad:            "</span>;
+    <span class="c-fn">cin</span>  &gt;&gt; cantidad;
+
+    <span class="c-com">// --- Proceso ---</span>
+    subtotal = precio_unitario * cantidad;
+
+    <span class="c-com">// Descuento por volumen (5+ unidades → 10%)</span>
+    <span class="c-kw">if</span> (cantidad >= <span class="c-num">5</span>)
+        descuento = subtotal * <span class="c-num">0.10</span>;
+    <span class="c-kw">else</span>
+        descuento = <span class="c-num">0.0</span>;
+
+    iva_monto = (subtotal - descuento) * <span class="c-const">IVA</span>;
+    total     = subtotal - descuento + iva_monto;
+
+    <span class="c-com">// --- Salida formateada ---</span>
+    <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>);
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"\n=== FACTURA ===\n"</span>;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Cliente:    "</span> &lt;&lt; nombre_cliente     &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Código:     "</span> &lt;&lt; codigo_producto     &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Subtotal:   $"</span> &lt;&lt; setw(<span class="c-num">8</span>) &lt;&lt; subtotal  &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Descuento:  $"</span> &lt;&lt; setw(<span class="c-num">8</span>) &lt;&lt; descuento &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"IVA (12%):  $"</span> &lt;&lt; setw(<span class="c-num">8</span>) &lt;&lt; iva_monto &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"TOTAL:      $"</span> &lt;&lt; setw(<span class="c-num">8</span>) &lt;&lt; total     &lt;&lt; endl;
+
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+    </div>
+
+    <div class="caja-nota">
+      <div class="cn-label">📌 getline vs cin</div>
+      <p><code>cin &gt;&gt; nombre</code> se detiene en el primer espacio. <code>getline(cin, nombre)</code> lee toda la línea. Para nombres con apellido, siempre usa <code>getline</code>. Si mezclas <code>cin &gt;&gt;</code> y <code>getline</code>, agrega <code>cin.ignore();</code> entre ellos.</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- FASE 4 -->
+  <div class="fase" id="fase4">
+    <div class="fase-header">
+      <div class="fase-num">F4</div>
+      <div class="fase-info">
+        <div class="fase-titulo">Cazador de errores de tipo — Parejas</div>
+        <div class="fase-tiempo">⏱ 90 – 130 minutos</div>
+      </div>
+    </div>
+    <p>El siguiente código tiene <strong>5 errores relacionados con tipos de datos</strong>. Identifícalos, explica por qué son errores y propón la corrección. No lo ejecutes todavía — analiza el código visualmente primero.</p>
+
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:10px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · CON ERRORES — encontrar y corregir</span></div>
+        <span class="codigo-archivo">errores.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">int</span> precio = <span class="c-num">15.99</span>;           <span class="c-com">// Error 1: ?</span>
+    <span class="c-tipo">int</span> cantidad = <span class="c-num">3</span>;
+    <span class="c-tipo">int</span> total = precio * cantidad;  <span class="c-com">// Error 2: ?</span>
+
+    <span class="c-tipo">int</span> a = <span class="c-num">7</span>, b = <span class="c-num">2</span>;
+    <span class="c-tipo">double</span> resultado = a / b;       <span class="c-com">// Error 3: ?</span>
+
+    <span class="c-tipo">char</span> nombre = <span class="c-str">"Juan"</span>;          <span class="c-com">// Error 4: ?</span>
+
+    <span class="c-tipo">double</span> pct = <span class="c-num">12</span> / <span class="c-num">100</span>;         <span class="c-com">// Error 5: ?</span>
+
+    <span class="c-fn">cout</span> &lt;&lt; total &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; resultado &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; pct &lt;&lt; endl;
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+    </div>
+
+    <div class="actividades">
+      <div class="actividad">
+        <div class="act-num">A</div>
+        <div class="act-body">
+          <div class="act-titulo">Analiza cada error</div>
+          <div class="act-desc">Para cada línea marcada con "Error N": (1) Describe qué está mal, (2) Indica qué valor incorrecto se obtendría, (3) Escribe la corrección. Documenta en papel antes de verificar en el compilador.</div>
+        </div>
+      </div>
+      <div class="actividad">
+        <div class="act-num">B</div>
+        <div class="act-body">
+          <div class="act-titulo">Verificación con el compilador</div>
+          <div class="act-desc">Compila el código original. ¿Cuáles errores detectó el compilador? ¿Cuáles pasaron sin advertencia pero producen resultados incorrectos? Esta distinción es fundamental.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="error-box">
+      <span class="error-label">⚠ Reflexión clave</span>
+      <p>Algunos errores de tipo no generan error de compilación — el programa "funciona" pero produce valores equivocados silenciosamente. Estos son los más peligrosos porque no hay mensaje que te avise. Solo la comprensión del tipo te permite detectarlos.</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- FASE 5 -->
+  <div class="fase" id="fase5">
+    <div class="fase-header">
+      <div class="fase-num">F5</div>
+      <div class="fase-info">
+        <div class="fase-titulo">Análisis crítico con IA — Documentado</div>
+        <div class="fase-tiempo">⏱ 130 – 160 minutos</div>
+      </div>
+    </div>
+    <div class="caja-ia">
+      <div class="ci-label">🤖 Actividad documentada de uso de IA</div>
+      <p>Esta es la única fase donde se permite usar IA. <strong>Documenta el prompt exacto y el análisis completo en tu bitácora.</strong></p>
+    </div>
+    <div class="actividades">
+      <div class="actividad">
+        <div class="act-num">1</div>
+        <div class="act-body">
+          <div class="act-titulo">Pide la solución a la IA sin dar contexto de tipos</div>
+          <div class="act-desc">Usa el prompt: <em>"Escribe en C++ un programa de facturación para una farmacia que calcule subtotal, descuento del 10% si la cantidad es mayor o igual a 5, IVA del 12% y total."</em></div>
+        </div>
+      </div>
+      <div class="actividad">
+        <div class="act-num">2</div>
+        <div class="act-body">
+          <div class="act-titulo">Audita los tipos de datos que eligió la IA</div>
+          <div class="act-desc">Revisa variable por variable: ¿usó <code>int</code> donde debería usar <code>double</code>? ¿Declaró la constante <code>IVA</code> como <code>const</code>? ¿Usó <code>getline</code> para el nombre? ¿Aplicó <code>fixed + setprecision</code>?</div>
+        </div>
+      </div>
+      <div class="actividad">
+        <div class="act-num">3</div>
+        <div class="act-body">
+          <div class="act-titulo">Compara con tu solución</div>
+          <div class="act-desc">¿Cuál versión tiene tipos más precisos? ¿La IA cometió alguno de los 5 errores de la Fase 4? ¿La salida de la IA está correctamente formateada con decimales? Documenta cada hallazgo.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- FASE 6 -->
+  <div class="fase" id="fase6">
+    <div class="fase-header">
+      <div class="fase-num">F6</div>
+      <div class="fase-info">
+        <div class="fase-titulo">Cierre y bitácora — Individual</div>
+        <div class="fase-tiempo">⏱ 160 – 180 minutos</div>
+      </div>
+    </div>
+
+    <div class="bitacora">
+      <div class="bitacora-campo"><label>Sesión N°:</label><div class="linea-campo"></div><label style="margin-left:20px;min-width:60px;">Fecha:</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>Tema trabajado:</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>¿Qué comprendí sobre tipos?</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>Errores que encontré (F4):</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>¿La IA eligió bien los tipos?</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>¿Qué me costó más hoy?</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>¿Qué haría diferente?</label><div class="linea-campo"></div></div>
+    </div>
+
+    <h3>Rúbrica de evaluación</h3>
+    <table class="rubrica">
+      <thead><tr><th>Criterio</th><th>Excelente (4)</th><th>Satisfactorio (3)</th><th>En desarrollo (2)</th><th>Insuficiente (1)</th></tr></thead>
+      <tbody>
+        <tr><td>Análisis de tipos (F1)</td><td>Tipos correctos con justificación completa.</td><td>Tipos correctos, justificación parcial.</td><td>1–2 tipos incorrectos.</td><td>Sin análisis previo.</td></tr>
+        <tr><td>Implementación C++ (F3)</td><td>Compila, tipos correctos, formato preciso, constante usada.</td><td>Compila, resultado correcto, formato básico.</td><td>Compila con errores menores de tipo.</td><td>No compila.</td></tr>
+        <tr><td>Cazador de errores (F4)</td><td>5/5 errores identificados y corregidos con explicación.</td><td>3–4 errores identificados.</td><td>1–2 errores identificados.</td><td>Sin análisis de errores.</td></tr>
+        <tr><td>Análisis de IA (F5)</td><td>Detectó errores de tipo en la solución de IA con evidencia.</td><td>Comparó superficialmente.</td><td>Comparación mínima.</td><td>Copió la solución de IA.</td></tr>
+        <tr><td>Bitácora (F6)</td><td>Reflexión profunda incluyendo errores de tipo encontrados.</td><td>Reflexión completa básica.</td><td>Incompleta.</td><td>Sin bitácora.</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="5">Puntaje máximo: 20 puntos · Mínimo de aprobación: 14 puntos</td></tr></tfoot>
+    </table>
+  </div>
+
+</main>
+
+<div class="nav-caps">
+  <a href="capitulo_02.html" class="nav-cap-btn"><span class="ncb-arrow">←</span><div><span class="ncb-label">Volver al capítulo</span><span class="ncb-titulo">Cap. 2 — Tipos de Datos y Variables</span></div></a>
+  <a href="capitulo_03.html" class="nav-cap-btn sig"><span class="ncb-arrow">→</span><div><span class="ncb-label">Siguiente capítulo</span><span class="ncb-titulo">Cap. 3 — Depuración y Buenas Prácticas</span></div></a>
+</div>
+
+<footer class="pie">
+  <span>Práctica 2 — Tipos, Variables y Expresiones · Unidad I · ESPAM MFL</span>
+  <span>espam.edu.ec</span>
+</footer>
+
+</body>
+</html>

@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cap. 2 — Tipos de Datos, Variables y Expresiones | ESPAM MFL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{--verde:#005846;--verde-medio:#007a5e;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fondo);font-size:16px;line-height:1.7;overflow-x:hidden;}
+/* TOPBAR */
+.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--verde);display:flex;align-items:center;padding:0 24px;gap:14px;z-index:1000;border-bottom:3px solid var(--verde-claro);}
+.topbar-logo{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--verde-claro);}
+.topbar-sep{width:1px;height:20px;background:rgba(255,255,255,.2);}
+.topbar-titulo{font-size:12px;color:rgba(255,255,255,.65);}
+.topbar-right{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;}
+/* NAV */
+.nav-menu{background:var(--verde);border-bottom:2px solid rgba(203,219,42,.3);margin-top:50px;}
+.nav-toggle{width:100%;background:transparent;color:white;border:none;padding:11px 24px;text-align:left;cursor:pointer;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;}
+.nav-toggle:hover{background:rgba(255,255,255,.04);}
+.nav-toggle-arrow{color:var(--verde-claro);font-size:12px;}
+.nav-body{display:none;padding:18px 24px 22px;}
+.nav-body.abierto{display:flex;flex-wrap:wrap;gap:28px;}
+.nav-grupo{min-width:170px;}
+.nav-grupo-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:7px;display:block;padding-bottom:5px;border-bottom:1px solid rgba(203,219,42,.2);}
+.nav-items{list-style:none;}
+.nav-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12px;color:rgba(255,255,255,.72);text-decoration:none;transition:color .15s;}
+.nav-item:hover{color:var(--verde-claro);}
+.nav-item.activo{color:var(--verde-claro);font-weight:700;}
+.nav-item.practica{color:rgba(8,184,157,.85);font-style:italic;}
+.nav-item.practica:hover{color:var(--turquesa);}
+.nav-item.prox{color:rgba(255,255,255,.28);pointer-events:none;}
+.nav-num{font-family:'Space Mono',monospace;font-size:9px;min-width:20px;flex-shrink:0;color:rgba(255,255,255,.28);}
+.nav-item.activo .nav-num{color:var(--verde-claro);}
+.nav-item.practica .nav-num{color:rgba(8,184,157,.45);}
+/* PAGE HEADER */
+.page-header{background:var(--verde);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--verde-claro);}
+.page-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(203,219,42,.07) 1px,transparent 1px);background-size:28px 28px;}
+.ph-num{position:absolute;right:48px;top:0;font-size:240px;font-weight:900;color:rgba(255,255,255,.04);line-height:1;font-family:'Space Mono',monospace;}
+.ph-inner{position:relative;z-index:1;}
+.ph-badge{display:inline-block;background:rgba(203,219,42,.15);border:1px solid rgba(203,219,42,.35);color:var(--verde-claro);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+.ph-titulo{font-size:36px;font-weight:900;line-height:1.1;color:white;margin-bottom:8px;}
+.ph-subtitulo{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:28px;}
+.ph-meta{display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;}
+.ph-meta-item{display:flex;flex-direction:column;gap:3px;}
+.ph-meta-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.ph-meta-valor{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;}
+/* ANCLAS */
+.anclas{background:white;border-bottom:1px solid var(--borde);padding:12px 64px;display:flex;gap:6px;flex-wrap:wrap;}
+.ancla{font-family:'Space Mono',monospace;font-size:9.5px;color:var(--verde-medio);text-decoration:none;padding:4px 10px;border:1px solid var(--borde);border-radius:4px;transition:all .15s;}
+.ancla:hover{background:var(--verde);color:var(--verde-claro);border-color:var(--verde);}
+/* BODY */
+.body-wrap{max-width:960px;margin:0 auto;padding:56px 64px 0;}
+.seccion{margin-bottom:52px;scroll-margin-top:120px;}
+.seccion-num{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:4px;display:block;}
+h2{font-size:24px;font-weight:800;color:var(--verde);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid rgba(0,88,70,.12);}
+h3{font-size:16px;font-weight:700;color:var(--verde);margin:28px 0 10px;}
+p{margin-bottom:14px;color:var(--texto-suave);font-size:15px;}
+hr{border:none;border-top:1px solid var(--borde);margin:48px 0;}
+strong{color:var(--texto);}
+code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70,.07);padding:1px 6px;border-radius:3px;color:var(--verde);}
+/* RA BOX */
+.ra-box{background:rgba(0,88,70,.06);border:1px solid rgba(0,88,70,.15);border-left:4px solid var(--verde);border-radius:0 10px 10px 0;padding:18px 22px;margin-bottom:40px;}
+.ra-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:8px;}
+.ra-texto{font-size:14px;color:var(--texto);line-height:1.65;}
+/* DEF FORMAL */
+.def-formal{background:var(--codigo-bg);border-radius:10px;padding:22px 26px;margin:20px 0;border-left:4px solid var(--verde-claro);}
+.def-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:10px;}
+.def-formal p{color:rgba(255,255,255,.82);font-size:14.5px;line-height:1.75;margin:0;}
+.def-formal em{color:var(--verde-claro);font-style:normal;font-weight:700;}
+/* CAJAS */
+.caja-nota{background:rgba(0,88,70,.05);border-left:4px solid var(--verde);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-nota .cn-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:6px;display:block;}
+.caja-nota p{margin:0;font-size:14px;color:var(--texto);}
+.caja-nota p strong{color:var(--verde);}
+.caja-adv{background:rgba(203,219,42,.08);border-left:4px solid var(--verde-claro);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-adv .ca-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7a8a10;margin-bottom:6px;display:block;}
+.caja-adv p{margin:0;font-size:14px;color:#4a540a;}
+.caja-ia{background:#0d1e18;border-radius:10px;padding:20px 24px;margin:20px 0;border-left:4px solid var(--turquesa);}
+.caja-ia .ci-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:9px;display:block;}
+.caja-ia p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin:0;}
+.caja-ia p strong{color:var(--verde-claro);}
+/* TABLA */
+.tabla-est{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;}
+.tabla-est thead tr{background:var(--verde);}
+.tabla-est thead th{padding:11px 15px;text-align:left;font-size:12px;font-weight:700;color:white;}
+.tabla-est tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-est tbody tr:hover{background:rgba(0,88,70,.06);}
+.tabla-est tbody td{padding:10px 15px;border-bottom:1px solid var(--borde);color:var(--texto-suave);vertical-align:top;}
+.tabla-est tbody td:first-child{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--verde);}
+/* TIPOS CARDS */
+.tipos-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:20px 0;}
+.tipo-card{background:white;border:1px solid var(--borde);border-radius:10px;padding:16px 18px;border-top:3px solid var(--verde);}
+.tipo-card.flotante{border-top-color:var(--turquesa);}
+.tipo-card.caracter{border-top-color:var(--verde-claro);}
+.tipo-card.logico{border-top-color:#2a5a8a;}
+.tipo-card.cadena{border-top-color:#8a2a8a;}
+.tipo-card h4{font-size:13px;font-weight:800;color:var(--verde);margin-bottom:8px;font-family:'Space Mono',monospace;}
+.tipo-card.flotante h4{color:var(--turquesa);}
+.tipo-card.caracter h4{color:#7a8a10;}
+.tipo-card.logico h4{color:#2a5a8a;}
+.tipo-card.cadena h4{color:#8a2a8a;}
+.tipo-card p{font-size:12.5px;color:var(--texto-suave);margin:0;line-height:1.5;}
+.tipo-keyword{display:inline-block;font-family:'Space Mono',monospace;font-size:10px;background:rgba(0,88,70,.08);color:var(--verde);padding:2px 7px;border-radius:3px;margin:3px 2px;}
+.tipo-card.flotante .tipo-keyword{background:rgba(8,184,157,.1);color:var(--turquesa);}
+.tipo-card.caracter .tipo-keyword{background:rgba(203,219,42,.15);color:#7a8a10;}
+.tipo-card.logico .tipo-keyword{background:rgba(42,90,138,.1);color:#2a5a8a;}
+.tipo-card.cadena .tipo-keyword{background:rgba(138,42,138,.1);color:#8a2a8a;}
+/* MEMORIA VISUAL */
+.memoria-visual{background:white;border:1px solid var(--borde);border-radius:10px;padding:22px;margin:20px 0;overflow-x:auto;}
+.mv-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:16px;display:block;}
+.mv-fila{display:flex;align-items:center;gap:12px;margin-bottom:10px;}
+.mv-nombre{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--verde);min-width:100px;}
+.mv-tipo{font-family:'Space Mono',monospace;font-size:10px;color:var(--texto-suave);min-width:70px;}
+.mv-celda{background:var(--fondo-alt);border:2px solid var(--borde);border-radius:6px;padding:8px 16px;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--verde);min-width:80px;text-align:center;}
+.mv-celda.vacia{color:rgba(0,88,70,.25);border-style:dashed;}
+.mv-bytes{font-family:'Space Mono',monospace;font-size:9px;color:rgba(0,88,70,.35);margin-left:4px;}
+/* CÓDIGO BLOQUE */
+.codigo-bloque{background:var(--codigo-bg);border-radius:10px;overflow:hidden;margin:18px 0;}
+.codigo-header{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);}
+.codigo-dots{display:flex;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
+.codigo-lang{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.3);}
+.codigo-archivo{font-family:'Space Mono',monospace;font-size:10px;color:var(--turquesa);}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+.c-inc{color:#c792ea;}.c-str{color:#a8d8b0;}.c-kw{color:var(--verde-claro);}.c-ns{color:var(--turquesa);}.c-tipo{color:#82aaff;}.c-fn{color:var(--turquesa);}.c-num{color:#f78c6c;}.c-com{color:rgba(255,255,255,.3);font-style:italic;}.c-const{color:#ffcb6b;}
+/* PSEUDOCÓDIGO */
+.pseudocodigo{background:var(--codigo-bg);border-radius:10px;margin:18px 0;overflow:hidden;}
+.pseudo-label{background:rgba(255,255,255,.05);padding:8px 18px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);border-bottom:1px solid rgba(255,255,255,.08);}
+.pseudo-code{padding:20px 24px;font-family:'Space Mono',monospace;font-size:13px;line-height:1.9;color:rgba(255,255,255,.85);}
+.pseudo-kw{color:var(--verde-claro);font-weight:700;}
+.pseudo-str{color:#a8d8b0;}
+.pseudo-ind{display:block;padding-left:24px;}
+.pseudo-blank{display:block;height:8px;}
+/* TABLA OPERADORES */
+.tabla-op{width:100%;border-collapse:collapse;margin:18px 0;font-size:13px;}
+.tabla-op thead tr{background:var(--verde);}
+.tabla-op thead th{padding:9px 14px;color:white;text-align:left;font-size:11.5px;}
+.tabla-op tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-op tbody td{padding:8px 14px;border-bottom:1px solid var(--borde);color:var(--texto-suave);}
+.tabla-op td:first-child{font-family:'Space Mono',monospace;font-size:14px;font-weight:700;color:var(--verde);text-align:center;width:60px;}
+.tabla-op td:nth-child(2){font-weight:600;color:var(--texto);}
+/* CONVERSIÓN VISUAL */
+.conv-visual{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;margin:20px 0;}
+.conv-tipo{background:white;border:2px solid var(--borde);border-radius:8px;padding:10px 18px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--texto-suave);}
+.conv-tipo.activo{border-color:var(--verde);color:var(--verde);background:rgba(0,88,70,.05);}
+.conv-flecha{font-size:18px;color:var(--turquesa);font-weight:700;}
+/* TABLA SIMULACIÓN */
+.tabla-sim{width:100%;border-collapse:collapse;margin:18px 0;font-family:'Space Mono',monospace;font-size:12px;}
+.tabla-sim thead tr{background:var(--verde);}
+.tabla-sim thead th{padding:9px 12px;color:white;font-size:10px;text-align:center;letter-spacing:.5px;}
+.tabla-sim tbody tr{border-bottom:1px solid var(--borde);}
+.tabla-sim tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-sim tbody td{padding:8px 12px;text-align:center;color:var(--texto-suave);}
+.tabla-sim tbody td:nth-child(2){text-align:left;font-size:11px;}
+.tabla-sim td.res{background:rgba(203,219,42,.15);color:var(--verde);font-weight:700;}
+/* ESCAPE TABLE */
+.tabla-escape{width:100%;border-collapse:collapse;margin:18px 0;font-size:13px;}
+.tabla-escape thead tr{background:var(--codigo-bg);}
+.tabla-escape thead th{padding:9px 14px;color:var(--verde-claro);font-family:'Space Mono',monospace;font-size:10px;text-align:left;}
+.tabla-escape tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-escape tbody td{padding:8px 14px;border-bottom:1px solid var(--borde);color:var(--texto-suave);}
+.tabla-escape td:first-child{font-family:'Space Mono',monospace;font-size:12px;font-weight:700;color:var(--turquesa);width:80px;}
+/* EJERCICIOS */
+.ejercicios-section{background:white;border:1px solid var(--borde);border-radius:12px;overflow:hidden;margin:20px 0;}
+.ejercicios-titulo{background:var(--verde);color:white;padding:12px 20px;font-size:13px;font-weight:700;}
+.ejercicio-item{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid var(--borde);}
+.ejercicio-item:last-child{border-bottom:none;}
+.ej-num{min-width:28px;height:28px;background:var(--fondo-alt);border:1px solid var(--borde);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);flex-shrink:0;}
+.ej-badge{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:3px;flex-shrink:0;margin-top:4px;}
+.ej-badge.comp{background:rgba(0,88,70,.08);color:var(--verde);}
+.ej-badge.aplic{background:rgba(8,184,157,.1);color:var(--turquesa);}
+.ej-badge.integ{background:rgba(203,219,42,.12);color:#7a8a10;}
+.ej-enunciado{font-size:13.5px;color:var(--texto-suave);line-height:1.6;}
+.ej-enunciado strong{color:var(--texto);}
+/* EVALUATIVA */
+.evaluativa{background:rgba(0,88,70,.04);border:2px solid rgba(0,88,70,.15);border-radius:12px;padding:24px 28px;margin-top:36px;}
+.evaluativa-titulo{font-size:15px;font-weight:800;color:var(--verde);margin-bottom:3px;}
+.evaluativa-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;}
+.evaluativa-enunciado{font-size:14px;color:var(--texto-suave);line-height:1.7;margin-bottom:14px;}
+.evaluativa-criterios{margin:0;padding-left:18px;}
+.evaluativa-criterios li{font-size:13px;color:var(--texto-suave);margin-bottom:5px;}
+/* PUENTE */
+.puente{background:var(--codigo-bg);border-radius:12px;padding:24px 28px;margin-top:28px;border-left:4px solid var(--turquesa);}
+.puente-titulo{font-size:15px;font-weight:800;color:white;margin-bottom:3px;}
+.puente-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+.puente-texto{font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;}
+.puente-texto strong{color:var(--verde-claro);}
+/* NAV + PIE */
+.nav-caps{display:flex;justify-content:space-between;align-items:center;padding:20px 64px;background:var(--fondo-alt);border-top:1px solid var(--borde);margin-top:48px;flex-wrap:wrap;gap:12px;}
+.nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 18px;border:1.5px solid rgba(0,88,70,.2);border-radius:8px;background:white;max-width:280px;transition:all .2s;}
+.nav-cap-btn:hover{border-color:var(--verde);text-decoration:none;}
+.nav-cap-btn.sig{flex-direction:row-reverse;text-align:right;}
+.ncb-arrow{font-size:16px;color:var(--verde);}
+.ncb-label{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,88,70,.45);margin-bottom:2px;display:block;}
+.ncb-titulo{font-size:13px;font-weight:700;color:var(--verde);}
+.pie{background:var(--verde);color:rgba(255,255,255,.35);padding:14px 64px;font-family:'Space Mono',monospace;font-size:9px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:1px;}
+.pie span:first-child{color:rgba(255,255,255,.55);}
+@media(max-width:768px){
+  .page-header,.body-wrap,.nav-caps,.pie,.anclas{padding-left:24px;padding-right:24px;}
+  .ph-titulo{font-size:26px;}
+  .tipos-grid{grid-template-columns:1fr 1fr;}
+  .conv-visual{flex-direction:column;}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-logo">ESPAM MFL</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-titulo">Introducción a la Programación</div>
+  <div class="topbar-right">CARRERA DE COMPUTACIÓN</div>
+</header>
+
+<nav class="nav-menu">
+  <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">
+    ☰ &nbsp; Contenidos del libro
+    <span class="nav-toggle-arrow">▼</span>
+  </button>
+  <div class="nav-body">
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Inicio</span>
+      <ul class="nav-items">
+        <li><a href="index.html" class="nav-item"><span class="nav-num">◉</span> Portada</a></li>
+        <li><a href="preliminares.html" class="nav-item"><span class="nav-num">—</span> Preliminares</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidad I — Fundamentos</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_01.html" class="nav-item"><span class="nav-num">01</span> Pensamiento Algorítmico</a></li>
+        <li><a href="practica_01.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 1</a></li>
+        <li><a href="capitulo_02.html" class="nav-item activo"><span class="nav-num">02</span> Tipos de Datos y Variables</a></li>
+        <li><a href="practica_02.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 2</a></li>
+        <li><a href="capitulo_03.html" class="nav-item prox"><span class="nav-num">03</span> Depuración y Buenas Prácticas</a></li>
+        <li><a href="practica_03.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 3</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidad II — Control</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_04.html" class="nav-item prox"><span class="nav-num">04</span> Estructuras Selectivas</a></li>
+        <li><a href="capitulo_05.html" class="nav-item prox"><span class="nav-num">05</span> Repetitivas I</a></li>
+        <li><a href="capitulo_06.html" class="nav-item prox"><span class="nav-num">06</span> Repetitivas II</a></li>
+        <li><a href="capitulo_07.html" class="nav-item prox"><span class="nav-num">07</span> Integración de Estructuras</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidad III — Funciones</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_08.html" class="nav-item prox"><span class="nav-num">08</span> Funciones en C++</a></li>
+        <li><a href="capitulo_09.html" class="nav-item prox"><span class="nav-num">09</span> Paso por Valor y Referencia</a></li>
+        <li><a href="capitulo_10.html" class="nav-item prox"><span class="nav-num">10</span> Pila y Modularidad</a></li>
+        <li><a href="capitulo_11.html" class="nav-item prox"><span class="nav-num">11</span> Aplicaciones Funcionales</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidad IV — Arreglos</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_12.html" class="nav-item prox"><span class="nav-num">12</span> Arreglos Unidimensionales</a></li>
+        <li><a href="capitulo_13.html" class="nav-item prox"><span class="nav-num">13</span> Búsqueda y Ordenamiento</a></li>
+        <li><a href="capitulo_14.html" class="nav-item prox"><span class="nav-num">14</span> Arreglos Bidimensionales</a></li>
+        <li><a href="capitulo_15.html" class="nav-item prox"><span class="nav-num">15</span> Proyecto Integrador</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Recursos</span>
+      <ul class="nav-items">
+        <li><a href="anexos.html" class="nav-item prox"><span class="nav-num">—</span> Anexos y Rúbricas</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section class="page-header">
+  <div class="ph-num">2</div>
+  <div class="ph-inner">
+    <div class="ph-badge">📗 Unidad I · Capítulo 2</div>
+    <h1 class="ph-titulo">Tipos de Datos, Variables y Expresiones</h1>
+    <p class="ph-subtitulo">Qué almacena el programa · Cómo lo nombra · Cómo lo transforma</p>
+    <div class="ph-meta">
+      <div class="ph-meta-item"><span class="ph-meta-label">Horas presenciales</span><span class="ph-meta-valor">3 ACD + 2 PECD</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Horas autónomas</span><span class="ph-meta-valor">3 AA + 1 PEND</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Resultado</span><span class="ph-meta-valor">R.A. — A</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Herramientas</span><span class="ph-meta-valor">PSeInt · C++</span></div>
+    </div>
+  </div>
+</section>
+
+<nav class="anclas">
+  <a class="ancla" href="#s21">2.1 Dato y tipo</a>
+  <a class="ancla" href="#s22">2.2 Tipos en C++</a>
+  <a class="ancla" href="#s23">2.3 Variables</a>
+  <a class="ancla" href="#s24">2.4 Constantes</a>
+  <a class="ancla" href="#s25">2.5 Operadores</a>
+  <a class="ancla" href="#s26">2.6 Salida formateada</a>
+  <a class="ancla" href="#s27">2.7 Conversión de tipos</a>
+  <a class="ancla" href="#s28">2.8 Ejercicios</a>
+</nav>
+
+<main class="body-wrap">
+
+  <div class="ra-box">
+    <div class="ra-label">Resultado de Aprendizaje — Capítulo 2</div>
+    <div class="ra-texto">El estudiante <strong>declara variables del tipo adecuado</strong>, escribe expresiones aritméticas correctas, usa constantes cuando corresponde, y produce <strong>salida formateada con precisión decimal</strong>, razonando sobre la diferencia de comportamiento entre tipos.</div>
+  </div>
+
+  <!-- 2.1 -->
+  <section class="seccion" id="s21">
+    <span class="seccion-num">2.1</span>
+    <h2>Concepto de Dato y Tipo de Dato</h2>
+    <p>Antes de escribir una variable es indispensable entender <strong>qué es un dato</strong> y por qué el tipo importa. Un dato es cualquier objeto manipulable por el programa: un número ingresado por el usuario, un carácter leído del teclado, un valor calculado en memoria.</p>
+    <div class="def-formal">
+      <div class="def-label">Definición formal</div>
+      <p>Un <em>tipo de dato</em> es una clasificación que determina: (1) el <em>conjunto de valores posibles</em> para ese dato, (2) el <em>espacio de memoria</em> que ocupa, y (3) las <em>operaciones permitidas</em> sobre él. Declarar el tipo incorrecto no es un error de estilo — es un error lógico que produce resultados incorrectos.</p>
+    </div>
+    <p>A nivel de máquina, todos los datos son secuencias de bits. El tipo le dice al compilador cómo interpretar esos bits: los mismos 32 bits pueden ser un entero, un número real o cuatro caracteres, dependiendo del tipo declarado.</p>
+    <div class="caja-ia">
+      <div class="ci-label">🤖 Reflexión sobre IA</div>
+      <p>Cuando la IA genera código, elige los tipos de forma automática — a veces correctamente, a veces no. <strong>Un tipo incorrecto produce resultados silenciosamente erróneos</strong>: por ejemplo, dividir dos <code style="color:var(--verde-claro);font-family:'Space Mono'">int</code> en C++ descarta los decimales sin avisar. Si no entiendes los tipos, no puedes detectar estos errores en el código que la IA te genera.</p>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 2.2 -->
+  <section class="seccion" id="s22">
+    <span class="seccion-num">2.2</span>
+    <h2>Tipos de Datos Fundamentales en C++</h2>
+    <p>C++ tiene tipos primitivos incorporados. Para esta unidad trabajaremos con los siguientes cinco grupos:</p>
+
+    <div class="tipos-grid">
+      <div class="tipo-card">
+        <h4>Enteros</h4>
+        <p>Números sin parte decimal. Pueden ser positivos, negativos o cero.</p>
+        <div style="margin-top:8px;">
+          <span class="tipo-keyword">int</span>
+          <span class="tipo-keyword">short</span>
+          <span class="tipo-keyword">long</span>
+          <span class="tipo-keyword">long long</span>
+        </div>
+        <p style="margin-top:8px;font-size:11.5px;"><strong>int</strong>: −2,147,483,647 a 2,147,483,647 (32 bits)</p>
+      </div>
+      <div class="tipo-card flotante">
+        <h4>Flotantes</h4>
+        <p>Números con parte decimal. <code>double</code> es el estándar del curso por su mayor precisión.</p>
+        <div style="margin-top:8px;">
+          <span class="tipo-keyword">float</span>
+          <span class="tipo-keyword">double</span>
+          <span class="tipo-keyword">long double</span>
+        </div>
+        <p style="margin-top:8px;font-size:11.5px;"><strong>double</strong>: ~15 dígitos significativos (64 bits)</p>
+      </div>
+      <div class="tipo-card caracter">
+        <h4>Caracteres</h4>
+        <p>Un solo símbolo del conjunto ASCII. Se escribe entre comillas simples.</p>
+        <div style="margin-top:8px;">
+          <span class="tipo-keyword">char</span>
+        </div>
+        <p style="margin-top:8px;font-size:11.5px;">Ejemplo: <code>'A'</code>, <code>'7'</code>, <code>'+'</code>, <code>' '</code></p>
+      </div>
+      <div class="tipo-card logico">
+        <h4>Booleanos</h4>
+        <p>Solo dos valores posibles: verdadero o falso. Base de toda condición.</p>
+        <div style="margin-top:8px;">
+          <span class="tipo-keyword">bool</span>
+        </div>
+        <p style="margin-top:8px;font-size:11.5px;">Valores: <code>true</code> (1) o <code>false</code> (0)</p>
+      </div>
+      <div class="tipo-card cadena" style="grid-column:span 2;">
+        <h4>Cadenas de texto</h4>
+        <p>Secuencia de caracteres. Requiere la librería <code>&lt;string&gt;</code>. Se escribe entre comillas dobles.</p>
+        <div style="margin-top:8px;">
+          <span class="tipo-keyword">string</span>
+        </div>
+        <p style="margin-top:8px;font-size:11.5px;">Ejemplo: <code>"Hola"</code>, <code>"ESPAM MFL"</code>, <code>"123 abc"</code> (los dígitos como cadena no son operables aritméticamente)</p>
+      </div>
+    </div>
+
+    <h3>Tabla de referencia rápida</h3>
+    <table class="tabla-est">
+      <thead><tr><th>Tipo</th><th>Descripción</th><th>Ejemplo en C++</th><th>Bytes típicos</th></tr></thead>
+      <tbody>
+        <tr><td>int</td><td>Entero con signo</td><td><code>int edad = 20;</code></td><td>4</td></tr>
+        <tr><td>double</td><td>Real de alta precisión</td><td><code>double pi = 3.1416;</code></td><td>8</td></tr>
+        <tr><td>float</td><td>Real de precisión simple</td><td><code>float altura = 1.75f;</code></td><td>4</td></tr>
+        <tr><td>char</td><td>Carácter individual</td><td><code>char inicial = 'M';</code></td><td>1</td></tr>
+        <tr><td>bool</td><td>Valor lógico</td><td><code>bool activo = true;</code></td><td>1</td></tr>
+        <tr><td>string</td><td>Cadena de caracteres</td><td><code>string nombre = "Ana";</code></td><td>Variable</td></tr>
+      </tbody>
+    </table>
+    <div class="caja-adv">
+      <div class="ca-label">⚠️ float vs double</div>
+      <p>Usa siempre <code>double</code> para cálculos con decimales en este curso. <code>float</code> tiene solo ~7 dígitos de precisión y puede acumular errores de redondeo en operaciones encadenadas. La diferencia se nota en resultados financieros o científicos.</p>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 2.3 -->
+  <section class="seccion" id="s23">
+    <span class="seccion-num">2.3</span>
+    <h2>Variables: Declaración, Inicialización y Reglas de Nombres</h2>
+
+    <p>Una <strong>variable</strong> es un espacio en memoria con un nombre que permite almacenar y modificar un dato durante la ejecución del programa. La analogía clásica es una caja etiquetada: la etiqueta es el nombre, el contenido es el valor, y el tamaño de la caja depende del tipo.</p>
+
+    <div class="memoria-visual">
+      <span class="mv-label">Representación en memoria — Visualización conceptual</span>
+      <div class="mv-fila">
+        <span class="mv-nombre">edad</span>
+        <span class="mv-tipo">int</span>
+        <div class="mv-celda">20</div>
+        <span class="mv-bytes">4 bytes</span>
+      </div>
+      <div class="mv-fila">
+        <span class="mv-nombre">promedio</span>
+        <span class="mv-tipo">double</span>
+        <div class="mv-celda">8.75</div>
+        <span class="mv-bytes">8 bytes</span>
+      </div>
+      <div class="mv-fila">
+        <span class="mv-nombre">inicial</span>
+        <span class="mv-tipo">char</span>
+        <div class="mv-celda">'M'</div>
+        <span class="mv-bytes">1 byte</span>
+      </div>
+      <div class="mv-fila">
+        <span class="mv-nombre">sinInicializar</span>
+        <span class="mv-tipo">int</span>
+        <div class="mv-celda vacia">???</div>
+        <span class="mv-bytes">⚠ basura</span>
+      </div>
+    </div>
+
+    <h3>Formas de declarar e inicializar</h3>
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:10px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++</span></div>
+        <span class="codigo-archivo">declaraciones.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-com">// 1. Declaración simple (sin valor inicial — contiene "basura")</span>
+<span class="c-tipo">int</span> contador;
+
+<span class="c-com">// 2. Declaración con inicialización directa (más común)</span>
+<span class="c-tipo">int</span> edad = <span class="c-num">25</span>;
+<span class="c-tipo">double</span> precio = <span class="c-num">19.99</span>;
+<span class="c-tipo">char</span> inicial = <span class="c-str">'M'</span>;
+<span class="c-tipo">bool</span> activo = <span class="c-kw">true</span>;
+
+<span class="c-com">// 3. Inicialización con llaves {} — recomendada (C++11+)</span>
+<span class="c-com">// No permite conversiones peligrosas: int x {3.7}; → ERROR</span>
+<span class="c-tipo">int</span> nota {<span class="c-num">10</span>};
+<span class="c-tipo">double</span> pi {<span class="c-num">3.14159</span>};
+
+<span class="c-com">// 4. Declaración múltiple del mismo tipo</span>
+<span class="c-tipo">double</span> base, altura, area;
+
+<span class="c-com">// 5. Asignación encadenada</span>
+<span class="c-tipo">int</span> a, b, c;
+a = b = c = <span class="c-num">0</span>; <span class="c-com">// Se lee de derecha a izquierda</span></pre></div>
+    </div>
+
+    <h3>Reglas para nombrar variables</h3>
+    <table class="tabla-est">
+      <thead><tr><th>Regla</th><th>✅ Correcto</th><th>🚫 Incorrecto</th></tr></thead>
+      <tbody>
+        <tr><td>Empieza con letra o _</td><td><code>edad</code>, <code>_total</code></td><td><code>1edad</code>, <code>99promedio</code></td></tr>
+        <tr><td>Solo letras, números y _</td><td><code>total_ventas</code></td><td><code>total-ventas</code>, <code>total ventas</code></td></tr>
+        <tr><td>No usar palabras reservadas</td><td><code>miInt</code>, <code>retorno</code></td><td><code>int</code>, <code>return</code>, <code>while</code></td></tr>
+        <tr><td>Nombres significativos</td><td><code>precioUnitario</code></td><td><code>x</code>, <code>a1</code>, <code>dato</code></td></tr>
+        <tr><td>Convención camelCase</td><td><code>totalVentas</code>, <code>numEstudiantes</code></td><td><code>TotalVentas</code>, <code>total_ventas</code></td></tr>
+      </tbody>
+    </table>
+    <div class="caja-nota">
+      <div class="cn-label">📌 C++ distingue mayúsculas de minúsculas</div>
+      <p><code>Edad</code>, <code>edad</code> y <code>EDAD</code> son <strong>tres variables distintas</strong>. Una convención consistente evita errores difíciles de detectar.</p>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 2.4 -->
+  <section class="seccion" id="s24">
+    <span class="seccion-num">2.4</span>
+    <h2>Constantes: <code>const</code> y <code>#define</code></h2>
+    <p>Una constante almacena un valor que <strong>no puede cambiar</strong> durante la ejecución. Usarlas en lugar de "números mágicos" hace el código más legible y fácil de mantener.</p>
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:10px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++</span></div>
+        <span class="codigo-archivo">constantes.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-com">// Opción 1: const — tiene tipo, es verificada por el compilador ✅</span>
+<span class="c-kw">const</span> <span class="c-tipo">double</span> <span class="c-const">IVA</span>       = <span class="c-num">0.12</span>;
+<span class="c-kw">const</span> <span class="c-tipo">double</span> <span class="c-const">PI</span>        = <span class="c-num">3.14159265</span>;
+<span class="c-kw">const</span> <span class="c-tipo">int</span>    <span class="c-const">MAX_NOTAS</span> = <span class="c-num">10</span>;
+
+<span class="c-com">// Opción 2: #define — sin tipo, reemplazo textual (evitar en C++ moderno)</span>
+<span class="c-com">// #define IVA 0.12  ← no recomendado: no tiene tipo ni alcance</span>
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">double</span> precio = <span class="c-num">100.0</span>;
+    <span class="c-tipo">double</span> impuesto = precio * <span class="c-const">IVA</span>;   <span class="c-com">// Claro y mantenible</span>
+    <span class="c-tipo">double</span> total    = precio + impuesto;
+
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Impuesto: $"</span> &lt;&lt; impuesto &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Total:    $"</span> &lt;&lt; total    &lt;&lt; endl;
+
+    <span class="c-com">// IVA = 0.15; ← ERROR: no se puede modificar una constante</span>
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+    </div>
+    <div class="caja-nota">
+      <div class="cn-label">📌 Convención de nombres para constantes</div>
+      <p>Por convención, las constantes se escriben en <strong>MAYÚSCULAS_CON_GUION_BAJO</strong> (<code>IVA</code>, <code>MAX_NOTAS</code>, <code>PRECIO_BASE</code>). Esto las distingue visualmente de las variables en el código.</p>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 2.5 -->
+  <section class="seccion" id="s25">
+    <span class="seccion-num">2.5</span>
+    <h2>Operadores y Expresiones Aritméticas</h2>
+    <p>Una expresión es una combinación de valores, variables y operadores que produce un resultado. Comprender la precedencia y el efecto del tipo en las operaciones es esencial para evitar errores silenciosos.</p>
+
+    <h3>Operadores aritméticos</h3>
+    <table class="tabla-op">
+      <thead><tr><th>Op.</th><th>Nombre</th><th>Ejemplo</th><th>Resultado</th><th>Notas</th></tr></thead>
+      <tbody>
+        <tr><td>+</td><td>Suma</td><td><code>5 + 3</code></td><td>8</td><td>—</td></tr>
+        <tr><td>-</td><td>Resta</td><td><code>10 - 4</code></td><td>6</td><td>—</td></tr>
+        <tr><td>*</td><td>Multiplicación</td><td><code>3 * 7</code></td><td>21</td><td>—</td></tr>
+        <tr><td>/</td><td>División</td><td><code>7 / 2</code></td><td><strong>3</strong> (int)</td><td>⚠ Entre enteros: descarta decimales</td></tr>
+        <tr><td>/</td><td>División real</td><td><code>7.0 / 2</code></td><td>3.5 (double)</td><td>Si uno es double, el resultado es double</td></tr>
+        <tr><td>%</td><td>Módulo (resto)</td><td><code>10 % 3</code></td><td>1</td><td>Solo para enteros. Útil: detectar par/impar</td></tr>
+      </tbody>
+    </table>
+
+    <div class="caja-adv">
+      <div class="ca-label">⚠️ El error más común — División entera</div>
+      <p><code>int a = 7, b = 2; double r = a / b;</code> — el resultado es <strong>3.0</strong>, no 3.5. La división ocurre entre enteros <em>antes</em> de asignarse al double. Para obtener 3.5: <code>double r = (double)a / b;</code> o <code>double r = a / 2.0;</code></p>
+    </div>
+
+    <h3>Precedencia de operadores</h3>
+    <table class="tabla-est">
+      <thead><tr><th>Prioridad</th><th>Operadores</th><th>Asociatividad</th></tr></thead>
+      <tbody>
+        <tr><td>1 (mayor)</td><td><code>( )</code> — paréntesis</td><td>Izq. a derecha</td></tr>
+        <tr><td>2</td><td><code>*</code> &nbsp; <code>/</code> &nbsp; <code>%</code></td><td>Izq. a derecha</td></tr>
+        <tr><td>3 (menor)</td><td><code>+</code> &nbsp; <code>-</code></td><td>Izq. a derecha</td></tr>
+      </tbody>
+    </table>
+
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:10px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · Precedencia</span></div>
+        <span class="codigo-archivo">expresiones.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-tipo">double</span> resultado;
+
+resultado = <span class="c-num">2</span> + <span class="c-num">3</span> * <span class="c-num">4</span>;       <span class="c-com">// = 2 + 12 = 14 (no 20)</span>
+resultado = (<span class="c-num">2</span> + <span class="c-num">3</span>) * <span class="c-num">4</span>;     <span class="c-com">// = 5 * 4 = 20 (paréntesis primero)</span>
+resultado = <span class="c-num">10</span> / <span class="c-num">4</span>;           <span class="c-com">// = 2  (división entera)</span>
+resultado = <span class="c-num">10.0</span> / <span class="c-num">4</span>;         <span class="c-com">// = 2.5 (uno es double)</span>
+resultado = <span class="c-num">10</span> % <span class="c-num">3</span>;           <span class="c-com">// = 1  (resto de 10÷3)</span>
+
+<span class="c-com">// Ejemplo con fórmula real: promedio ponderado</span>
+<span class="c-tipo">double</span> n1 = <span class="c-num">8.5</span>, n2 = <span class="c-num">7.0</span>, n3 = <span class="c-num">9.0</span>;
+<span class="c-tipo">double</span> prom = (n1 * <span class="c-num">0.40</span> + n2 * <span class="c-num">0.35</span> + n3 * <span class="c-num">0.25</span>);
+<span class="c-com">//             ↑ primero las multiplicaciones, luego las sumas</span></pre></div>
+    </div>
+
+    <h3>Operadores de asignación compuesta</h3>
+    <table class="tabla-est">
+      <thead><tr><th>Operador</th><th>Equivale a</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td><code>x += 5</code></td><td><code>x = x + 5</code></td><td>Suma y asigna</td></tr>
+        <tr><td><code>x -= 3</code></td><td><code>x = x - 3</code></td><td>Resta y asigna</td></tr>
+        <tr><td><code>x *= 2</code></td><td><code>x = x * 2</code></td><td>Multiplica y asigna</td></tr>
+        <tr><td><code>x /= 4</code></td><td><code>x = x / 4</code></td><td>Divide y asigna</td></tr>
+        <tr><td><code>x++</code></td><td><code>x = x + 1</code></td><td>Incremento unitario</td></tr>
+        <tr><td><code>x--</code></td><td><code>x = x - 1</code></td><td>Decremento unitario</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr>
+
+  <!-- 2.6 -->
+  <section class="seccion" id="s26">
+    <span class="seccion-num">2.6</span>
+    <h2>Salida Formateada y Secuencias de Escape</h2>
+    <p>Un programa no solo debe calcular bien — debe mostrar los resultados de forma clara y legible. C++ ofrece herramientas de formato en <code>&lt;iomanip&gt;</code>.</p>
+
+    <h3>Secuencias de escape en <code>cout</code></h3>
+    <table class="tabla-escape">
+      <thead><tr><th>Secuencia</th><th>Efecto</th><th>Uso típico</th></tr></thead>
+      <tbody>
+        <tr><td>\n</td><td>Nueva línea</td><td>Separar bloques de salida</td></tr>
+        <tr><td>\t</td><td>Tabulación horizontal</td><td>Alinear columnas</td></tr>
+        <tr><td>\\</td><td>Barra invertida literal</td><td>Rutas de archivo</td></tr>
+        <tr><td>\"</td><td>Comilla doble literal</td><td>Mostrar texto entre comillas</td></tr>
+        <tr><td>\0</td><td>Carácter nulo</td><td>Fin de cadenas estilo C</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Formato de decimales con <code>&lt;iomanip&gt;</code></h3>
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:10px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++</span></div>
+        <span class="codigo-archivo">formato.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>   <span class="c-com">// setprecision, fixed, setw</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">double</span> precio = <span class="c-num">1234.5678</span>;
+
+    <span class="c-com">// Sin formato</span>
+    <span class="c-fn">cout</span> &lt;&lt; precio &lt;&lt; endl;               <span class="c-com">// → 1234.57</span>
+
+    <span class="c-com">// Con fixed y 2 decimales (el más usado en el curso)</span>
+    <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>);
+    <span class="c-fn">cout</span> &lt;&lt; precio &lt;&lt; endl;               <span class="c-com">// → 1234.57</span>
+
+    <span class="c-com">// Con 4 decimales</span>
+    <span class="c-fn">cout</span> &lt;&lt; setprecision(<span class="c-num">4</span>);
+    <span class="c-fn">cout</span> &lt;&lt; precio &lt;&lt; endl;               <span class="c-com">// → 1234.5678</span>
+
+    <span class="c-com">// Alineación con setw (ancho de campo)</span>
+    <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>);
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Precio: $"</span> &lt;&lt; setw(<span class="c-num">10</span>) &lt;&lt; precio &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Total:  $"</span> &lt;&lt; setw(<span class="c-num">10</span>) &lt;&lt; precio * <span class="c-num">1.12</span> &lt;&lt; endl;
+
+    <span class="c-com">// Secuencias de escape</span>
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Nombre\tApellido\tNota\n"</span>;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Ana\tGarcía\t\t9.5\n"</span>;
+
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+    </div>
+    <div class="caja-nota">
+      <div class="cn-label">📌 fixed + setprecision</div>
+      <p><code>fixed</code> activa el modo de notación decimal fija y se mantiene activo para todas las salidas siguientes. <code>setprecision(2)</code> fija el número de decimales. Úsalos juntos siempre que muestres precios, notas o medidas.</p>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 2.7 -->
+  <section class="seccion" id="s27">
+    <span class="seccion-num">2.7</span>
+    <h2>Conversión de Tipos: Implícita y Explícita</h2>
+    <p>Cuando una operación involucra tipos distintos, C++ convierte automáticamente el tipo "menor" al "mayor" para no perder información. Este proceso se llama <strong>promoción de tipos</strong>.</p>
+
+    <h3>Jerarquía de promoción automática</h3>
+    <div class="conv-visual">
+      <div class="conv-tipo">char</div>
+      <div class="conv-flecha">→</div>
+      <div class="conv-tipo">int</div>
+      <div class="conv-flecha">→</div>
+      <div class="conv-tipo">long</div>
+      <div class="conv-flecha">→</div>
+      <div class="conv-tipo">float</div>
+      <div class="conv-flecha">→</div>
+      <div class="conv-tipo activo">double</div>
+    </div>
+    <p style="text-align:center;font-size:13px;color:var(--texto-suave);">El tipo más pequeño se convierte automáticamente al más grande en la misma operación.</p>
+
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:10px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · Conversiones</span></div>
+        <span class="codigo-archivo">conversiones.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-tipo">int</span>    a = <span class="c-num">7</span>;
+<span class="c-tipo">double</span> b = <span class="c-num">2.0</span>;
+<span class="c-tipo">double</span> resultado;
+
+<span class="c-com">// Conversión implícita: int → double automáticamente</span>
+resultado = a + b;      <span class="c-com">// a se convierte a 7.0, resultado = 9.0</span>
+resultado = a / b;      <span class="c-com">// a → 7.0, resultado = 3.5 ✅</span>
+resultado = a / <span class="c-num">2</span>;      <span class="c-com">// ¡AMBOS son int! resultado = 3.0 ⚠</span>
+
+<span class="c-com">// Conversión explícita (cast) — la forma correcta</span>
+resultado = (<span class="c-tipo">double</span>)a / <span class="c-num">2</span>;   <span class="c-com">// Fuerza a a ser double → 3.5 ✅</span>
+resultado = <span class="c-kw">static_cast</span>&lt;<span class="c-tipo">double</span>&gt;(a) / <span class="c-num">2</span>; <span class="c-com">// C++ moderno, más explícito</span>
+
+<span class="c-com">// Pérdida de información — narrowing (¡peligroso!)</span>
+<span class="c-tipo">int</span> entero = (<span class="c-tipo">int</span>)<span class="c-num">3.99</span>;  <span class="c-com">// entero = 3, NO redondea — trunca</span></pre></div>
+    </div>
+
+    <h3>Tabla de simulación: detectar el tipo del resultado</h3>
+    <table class="tabla-sim">
+      <thead><tr><th>Expresión</th><th>Tipo A</th><th>Tipo B</th><th>Tipo resultado</th><th>Valor</th></tr></thead>
+      <tbody>
+        <tr><td><code>7 / 2</code></td><td>int</td><td>int</td><td>int</td><td class="res">3</td></tr>
+        <tr><td><code>7.0 / 2</code></td><td>double</td><td>int</td><td>double</td><td class="res">3.5</td></tr>
+        <tr><td><code>7 / 2.0</code></td><td>int</td><td>double</td><td>double</td><td class="res">3.5</td></tr>
+        <tr><td><code>(double)7 / 2</code></td><td>double</td><td>int</td><td>double</td><td class="res">3.5</td></tr>
+        <tr><td><code>7 % 2</code></td><td>int</td><td>int</td><td>int</td><td class="res">1</td></tr>
+        <tr><td><code>(int)3.99</code></td><td>double→int</td><td>—</td><td>int</td><td class="res">3 (trunca)</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr>
+
+  <!-- 2.8 EJERCICIOS -->
+  <section class="seccion" id="s28">
+    <span class="seccion-num">2.8</span>
+    <h2>Ejercicios de Aplicación</h2>
+
+    <div class="pseudocodigo">
+      <div class="pseudo-label">Ejemplo resuelto — Conversor de temperatura</div>
+      <div class="pseudo-code">
+        <span class="pseudo-kw">Algoritmo</span> ConvertirTemperatura<br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Definir</span> celsius, fahrenheit <span class="pseudo-kw">Como</span> Real</span><br>
+        <span class="pseudo-blank"></span>
+        <span class="pseudo-ind"><span class="pseudo-kw">Escribir</span> <span class="pseudo-str">"Ingrese temperatura en Celsius: "</span></span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Leer</span> celsius</span><br>
+        <span class="pseudo-blank"></span>
+        <span class="pseudo-ind">fahrenheit ← celsius * 9 / 5 + 32</span><br>
+        <span class="pseudo-blank"></span>
+        <span class="pseudo-ind"><span class="pseudo-kw">Escribir</span> <span class="pseudo-str">"Fahrenheit: "</span>, fahrenheit</span><br>
+        <span class="pseudo-kw">FinAlgoritmo</span>
+      </div>
+    </div>
+
+    <div class="ejercicios-section">
+      <div class="ejercicios-titulo">✏️ Actividades de Aplicación</div>
+      <div class="ejercicio-item">
+        <div class="ej-num">1</div>
+        <div class="ej-badge comp">Comprensión</div>
+        <div class="ej-enunciado"><strong>Identificación de tipos.</strong> Para cada variable indica el tipo más adecuado y justifica: edad de una persona, precio de un producto, inicial de un nombre, si un estudiante aprobó, nombre completo, número de estudiantes en un aula.</div>
+      </div>
+      <div class="ejercicio-item">
+        <div class="ej-num">2</div>
+        <div class="ej-badge comp">Comprensión</div>
+        <div class="ej-enunciado"><strong>Predicción de resultados.</strong> Sin ejecutar el código, indica el valor de <code>resultado</code> en cada expresión: (a) <code>int resultado = 15 / 4;</code>  (b) <code>double resultado = 15 / 4;</code>  (c) <code>double resultado = 15.0 / 4;</code>  (d) <code>int resultado = (int)7.9;</code></div>
+      </div>
+      <div class="ejercicio-item">
+        <div class="ej-num">3</div>
+        <div class="ej-badge aplic">Aplicación</div>
+        <div class="ej-enunciado"><strong>Conversor de temperatura.</strong> ① Pseudocódigo en PSeInt usando la fórmula F = C × 9/5 + 32 ② Tabla de simulación con 0°C, 100°C y 36.6°C ③ Implementación C++ con <code>fixed + setprecision(1)</code>.</div>
+      </div>
+      <div class="ejercicio-item">
+        <div class="ej-num">4</div>
+        <div class="ej-badge aplic">Aplicación</div>
+        <div class="ej-enunciado"><strong>Cálculo de IMC.</strong> Programa que solicite peso (kg) y estatura (m) y calcule el Índice de Masa Corporal (IMC = peso / estatura²). Muestra el resultado con 2 decimales. Define la estatura como <code>const double ESTATURA</code>.</div>
+      </div>
+      <div class="ejercicio-item">
+        <div class="ej-num">5</div>
+        <div class="ej-badge aplic">Aplicación</div>
+        <div class="ej-enunciado"><strong>Desglose de tiempo.</strong> Dado un número de segundos totales (ej: 3661), calcula y muestra las horas, minutos y segundos equivalentes usando operadores <code>/</code> y <code>%</code>. Pista: horas = total/3600, minutos = (total%3600)/60, segundos = total%60.</div>
+      </div>
+      <div class="ejercicio-item">
+        <div class="ej-num">6</div>
+        <div class="ej-badge integ">Integrador + IA</div>
+        <div class="ej-enunciado"><strong>Comparación de tipos.</strong> Escribe dos versiones del promedio de tres notas: una usando solo <code>int</code> y otra usando <code>double</code>. Prueba con notas 7, 8 y 9. ¿Qué diferencia obtienes? Luego pide a la IA la misma tarea y documenta: ¿qué tipo eligió? ¿Por qué? ¿Es correcto?</div>
+      </div>
+    </div>
+
+    <div class="evaluativa">
+      <div class="evaluativa-titulo">Actividad Presencial Evaluativa — Capítulo 2</div>
+      <div class="evaluativa-sub">Sesión 2 · Tiempo: 45 min · Sin acceso a IA</div>
+      <div class="evaluativa-enunciado">
+        Diseña un programa que calcule el <strong>sueldo neto mensual</strong> de un trabajador. El programa solicita: sueldo bruto, porcentaje de descuento por IESS (9.45%), porcentaje de impuesto a la renta (ingresado por el usuario). Muestra: descuento IESS, impuesto, y sueldo neto con 2 decimales. Define los porcentajes estándar como <code>const</code>.<br><br>
+        <strong>Entregables:</strong> declaración de variables con tipos justificados + pseudocódigo + tabla de simulación + código C++.
+      </div>
+      <ul class="evaluativa-criterios">
+        <li>Variables declaradas con el tipo correcto (no usar <code>int</code> para valores monetarios).</li>
+        <li>Constante <code>IESS</code> declarada con <code>const double</code>.</li>
+        <li>Fórmulas correctas para descuentos y sueldo neto.</li>
+        <li>Salida formateada con <code>fixed + setprecision(2)</code>.</li>
+        <li>El estudiante puede modificar el programa en tiempo real al ser consultado.</li>
+      </ul>
+    </div>
+
+    <div class="puente">
+      <div class="puente-titulo">🌉 Conexión con Estructuras de Datos</div>
+      <div class="puente-sub">Preparación para el siguiente nivel</div>
+      <div class="puente-texto">Los tipos de datos que dominas aquí son los bloques fundamentales de estructuras más complejas. En Estructuras de Datos, los <strong>nodos de una lista enlazada</strong> combinan exactamente estos tipos primitivos. Un <code>int</code> mal elegido en un nodo puede corromper toda una estructura de datos de 10,000 elementos.</div>
+    </div>
+  </section>
+
+</main>
+
+<div class="nav-caps">
+  <a href="practica_01.html" class="nav-cap-btn"><span class="ncb-arrow">←</span><div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Práctica 1 — Modelado Algorítmico</span></div></a>
+  <a href="practica_02.html" class="nav-cap-btn sig"><span class="ncb-arrow">→</span><div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Sesión Práctica 2</span></div></a>
+</div>
+
+<footer class="pie">
+  <span>Cap. 2 — Tipos de Datos, Variables y Expresiones · Unidad I · ESPAM MFL</span>
+  <span>espam.edu.ec</span>
+</footer>
+
+</body>
+</html>
