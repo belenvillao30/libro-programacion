@@ -117,6 +117,21 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
 .pie{background:var(--verde);color:rgba(255,255,255,.35);padding:14px 64px;font-family:'Space Mono',monospace;font-size:9px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:1px;}
 .pie span:first-child{color:rgba(255,255,255,.55);}
 @media(max-width:768px){.page-header,.body-wrap,.nav-caps,.pie,.fases-nav{padding-left:24px;padding-right:24px;}.ph-titulo{font-size:26px;}}
+
+/* ── Aliases para sesiones prácticas 06+ ── */
+.page-header-prac{background:linear-gradient(135deg,#005846 0%,#067a65 100%);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--turquesa);}
+.page-header-prac::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(8,184,157,.1) 1px,transparent 1px);background-size:28px 28px;}
+.ph-badge-prac{display:inline-block;background:rgba(8,184,157,.2);border:1px solid rgba(8,184,157,.4);color:var(--turquesa);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+@media(max-width:768px){.page-header-prac{padding-left:24px;padding-right:24px;}}
+
+/* ── Componentes de capítulos usados en prácticas ── */
+.ra-box{background:rgba(0,88,70,.06);border:1px solid rgba(0,88,70,.15);border-left:4px solid var(--verde);border-radius:0 10px 10px 0;padding:18px 22px;margin-bottom:40px;}
+.ra-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:8px;}
+.ra-texto{font-size:14px;color:var(--texto);line-height:1.65;}
+.caja-adv{background:rgba(203,219,42,.08);border-left:4px solid var(--verde-claro);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-adv .ca-label,.ca-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7a8a10;margin-bottom:6px;display:block;}
+.caja-adv p{margin:0;font-size:14px;color:#4a540a;}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
 </style>
 </head>
 <body>
