@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cap. 4 — Estructuras Selectivas | ESPAM MFL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{--verde:#005846;--verde-medio:#007a5e;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fondo);font-size:16px;line-height:1.7;overflow-x:hidden;}
+/* TOPBAR */
+.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--verde);display:flex;align-items:center;padding:0 24px;gap:14px;z-index:1000;border-bottom:3px solid var(--verde-claro);}
+.topbar-logo{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--verde-claro);}
+.topbar-sep{width:1px;height:20px;background:rgba(255,255,255,.2);}
+.topbar-titulo{font-size:12px;color:rgba(255,255,255,.65);}
+.topbar-right{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;}
+/* NAV */
+.nav-menu{background:var(--verde);border-bottom:2px solid rgba(203,219,42,.3);margin-top:50px;}
+.nav-toggle{width:100%;background:transparent;color:white;border:none;padding:11px 24px;text-align:left;cursor:pointer;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;}
+.nav-toggle:hover{background:rgba(255,255,255,.04);}
+.nav-toggle-arrow{color:var(--verde-claro);font-size:12px;}
+.nav-body{display:none;padding:18px 24px 22px;}
+.nav-body.abierto{display:flex;flex-wrap:wrap;gap:28px;}
+.nav-grupo{min-width:170px;}
+.nav-grupo-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:7px;display:block;padding-bottom:5px;border-bottom:1px solid rgba(203,219,42,.2);}
+.nav-items{list-style:none;}
+.nav-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12px;color:rgba(255,255,255,.72);text-decoration:none;transition:color .15s;}
+.nav-item:hover{color:var(--verde-claro);}
+.nav-item.activo{color:var(--verde-claro);font-weight:700;}
+.nav-item.activo .nav-num{color:var(--verde-claro);}
+.nav-item.practica{color:rgba(8,184,157,.85);font-style:italic;}
+.nav-item.practica:hover{color:var(--turquesa);}
+.nav-item.practica .nav-num{color:rgba(8,184,157,.45);}
+.nav-item.prox{color:rgba(255,255,255,.28);pointer-events:none;}
+.nav-num{font-family:'Space Mono',monospace;font-size:9px;min-width:20px;flex-shrink:0;color:rgba(255,255,255,.28);}
+/* PAGE HEADER */
+.page-header{background:var(--verde);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--verde-claro);}
+.page-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(203,219,42,.07) 1px,transparent 1px);background-size:28px 28px;}
+.ph-num{position:absolute;right:48px;top:0;font-size:240px;font-weight:900;color:rgba(255,255,255,.04);line-height:1;font-family:'Space Mono',monospace;}
+.ph-inner{position:relative;z-index:1;}
+.ph-badge{display:inline-block;background:rgba(203,219,42,.15);border:1px solid rgba(203,219,42,.35);color:var(--verde-claro);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+.ph-titulo{font-size:36px;font-weight:900;line-height:1.1;color:white;margin-bottom:8px;}
+.ph-subtitulo{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:28px;}
+.ph-meta{display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;}
+.ph-meta-item{display:flex;flex-direction:column;gap:3px;}
+.ph-meta-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.ph-meta-valor{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;}
+/* ANCLAS */
+.anclas{background:white;border-bottom:1px solid var(--borde);padding:12px 64px;display:flex;gap:6px;flex-wrap:wrap;}
+.ancla{font-family:'Space Mono',monospace;font-size:9.5px;color:var(--verde-medio);text-decoration:none;padding:4px 10px;border:1px solid var(--borde);border-radius:4px;transition:all .15s;}
+.ancla:hover{background:var(--verde);color:var(--verde-claro);border-color:var(--verde);}
+/* BODY */
+.body-wrap{max-width:960px;margin:0 auto;padding:56px 64px 0;}
+.seccion{margin-bottom:52px;scroll-margin-top:120px;}
+.seccion-num{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:4px;display:block;}
+h2{font-size:24px;font-weight:800;color:var(--verde);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid rgba(0,88,70,.12);}
+h3{font-size:16px;font-weight:700;color:var(--verde);margin:28px 0 10px;}
+p{margin-bottom:14px;color:var(--texto-suave);font-size:15px;}
+hr{border:none;border-top:1px solid var(--borde);margin:48px 0;}
+code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70,.07);padding:1px 6px;border-radius:3px;color:var(--verde);}
+/* RA BOX */
+.ra-box{background:rgba(0,88,70,.06);border:1px solid rgba(0,88,70,.15);border-left:4px solid var(--verde);border-radius:0 10px 10px 0;padding:18px 22px;margin-bottom:40px;}
+.ra-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:8px;}
+.ra-texto{font-size:14px;color:var(--texto);line-height:1.65;}
+/* DEF FORMAL */
+.def-formal{background:var(--codigo-bg);border-radius:10px;padding:22px 26px;margin:20px 0;border-left:4px solid var(--verde-claro);}
+.def-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:10px;}
+.def-formal p{color:rgba(255,255,255,.82);font-size:14.5px;line-height:1.75;margin:0;}
+.def-formal em{color:var(--verde-claro);font-style:normal;font-weight:700;}
+/* DIAGRAMA FLUJO */
+.diagrama{background:white;border:1px solid var(--borde);border-radius:12px;padding:24px;margin:20px 0;display:flex;flex-direction:column;align-items:center;gap:0;}
+.df-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:20px;align-self:flex-start;}
+.df-terminal{background:var(--verde);color:white;padding:8px 28px;border-radius:20px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;}
+.df-proceso{background:var(--fondo-alt);border:2px solid var(--borde);padding:10px 24px;font-family:'Space Mono',monospace;font-size:12px;color:var(--texto);min-width:180px;text-align:center;}
+.df-decision{background:rgba(203,219,42,.12);border:2px solid var(--verde-claro);padding:10px 20px;transform:skewX(-8deg);font-family:'Space Mono',monospace;font-size:12px;color:var(--verde);font-weight:700;min-width:200px;text-align:center;}
+.df-decision span{display:inline-block;transform:skewX(8deg);}
+.df-flecha{width:2px;height:24px;background:var(--borde);position:relative;}
+.df-flecha::after{content:'▼';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--verde-medio);}
+.df-rama{display:flex;gap:32px;align-items:flex-start;margin:8px 0;}
+.df-rama-item{display:flex;flex-direction:column;align-items:center;gap:0;}
+.df-rama-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--verde-medio);margin-bottom:6px;}
+.df-accion{background:rgba(8,184,157,.08);border:1.5px solid var(--turquesa);padding:9px 18px;border-radius:6px;font-family:'Space Mono',monospace;font-size:11.5px;color:var(--verde);min-width:130px;text-align:center;}
+/* TABLA VERDAD */
+.tabla-verdad{border-collapse:collapse;margin:18px auto;font-size:13px;font-family:'Space Mono',monospace;}
+.tabla-verdad thead tr{background:var(--verde);}
+.tabla-verdad thead th{padding:9px 18px;color:white;font-size:11px;text-align:center;}
+.tabla-verdad tbody tr:nth-child(even){background:rgba(0,88,70,.04);}
+.tabla-verdad tbody td{padding:8px 18px;border:1px solid var(--borde);text-align:center;color:var(--texto-suave);}
+.tv-v{color:var(--turquesa);font-weight:700;}
+.tv-f{color:#c0392b;font-weight:700;}
+/* CÓDIGO */
+.codigo-bloque{background:var(--codigo-bg);border-radius:10px;overflow:hidden;margin:18px 0;}
+.codigo-header{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);}
+.codigo-dots{display:flex;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
+.codigo-lang{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.3);}
+.codigo-archivo{font-family:'Space Mono',monospace;font-size:10px;color:var(--turquesa);}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+.c-inc{color:#c792ea;}.c-str{color:#a8d8b0;}.c-kw{color:var(--verde-claro);}.c-ns{color:var(--turquesa);}.c-tipo{color:#82aaff;}.c-fn{color:var(--turquesa);}.c-num{color:#f78c6c;}.c-com{color:rgba(255,255,255,.3);font-style:italic;}.c-const{color:#ffcb6b;}
+/* COMPARAR */
+.comparar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0;}
+.comp-bloque{border-radius:10px;overflow:hidden;}
+.comp-label{padding:8px 16px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.comp-bloque.if-bloque .comp-label{background:rgba(0,88,70,.12);color:var(--verde);}
+.comp-bloque.sw-bloque .comp-label{background:rgba(8,184,157,.1);color:var(--turquesa);}
+.comp-bloque pre{font-family:'Space Mono',monospace;font-size:12px;line-height:1.75;padding:16px 18px;overflow-x:auto;}
+.comp-bloque.if-bloque pre{background:rgba(0,88,70,.03);color:#0a3a28;border:1px solid rgba(0,88,70,.12);}
+.comp-bloque.sw-bloque pre{background:rgba(8,184,157,.03);color:#0a3a38;border:1px solid rgba(8,184,157,.15);}
+/* TABLA OP */
+.tabla-est{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;}
+.tabla-est thead tr{background:var(--verde);}
+.tabla-est thead th{padding:10px 15px;text-align:left;font-size:12px;font-weight:700;color:white;}
+.tabla-est tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-est tbody tr:hover{background:rgba(0,88,70,.06);}
+.tabla-est tbody td{padding:9px 15px;border-bottom:1px solid var(--borde);color:var(--texto-suave);vertical-align:top;}
+.tabla-est tbody td:first-child{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--verde);text-align:center;width:80px;}
+/* PSEUDOCÓDIGO */
+.pseudocodigo{background:var(--codigo-bg);border-radius:10px;margin:18px 0;overflow:hidden;}
+.pseudo-label{background:rgba(255,255,255,.05);padding:8px 18px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);border-bottom:1px solid rgba(255,255,255,.08);}
+.pseudo-code{padding:20px 24px;font-family:'Space Mono',monospace;font-size:13px;line-height:1.9;color:rgba(255,255,255,.85);}
+.p-kw{color:var(--verde-claro);font-weight:700;}
+.p-str{color:#a8d8b0;}
+.p-ind1{display:block;padding-left:24px;}
+.p-ind2{display:block;padding-left:48px;}
+.p-blank{display:block;height:8px;}
+/* TABLA SIM */
+.tabla-sim{width:100%;border-collapse:collapse;margin:18px 0;font-family:'Space Mono',monospace;font-size:12px;}
+.tabla-sim thead tr{background:var(--verde);}
+.tabla-sim thead th{padding:9px 12px;color:white;font-size:10px;text-align:center;letter-spacing:.5px;}
+.tabla-sim tbody tr{border-bottom:1px solid var(--borde);}
+.tabla-sim tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-sim tbody td{padding:8px 12px;text-align:center;color:var(--texto-suave);}
+.tabla-sim td.res{background:rgba(203,219,42,.15);color:var(--verde);font-weight:700;}
+/* CAJAS */
+.caja-nota{background:rgba(0,88,70,.05);border-left:4px solid var(--verde);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-nota .cn-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:6px;display:block;}
+.caja-nota p{margin:0;font-size:14px;color:var(--texto);}
+.caja-adv{background:rgba(203,219,42,.08);border-left:4px solid var(--verde-claro);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-adv .ca-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7a8a10;margin-bottom:6px;display:block;}
+.caja-adv p{margin:0;font-size:14px;color:#4a540a;}
+.caja-ia{background:#0d1e18;border-radius:10px;padding:20px 24px;margin:20px 0;border-left:4px solid var(--turquesa);}
+.caja-ia .ci-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:9px;display:block;}
+.caja-ia p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin:0;}
+.caja-ia p strong{color:var(--verde-claro);}
+/* EJERCICIOS */
+.ejercicios-section{background:white;border:1px solid var(--borde);border-radius:12px;overflow:hidden;margin:20px 0;}
+.ejercicios-titulo{background:var(--verde);color:white;padding:12px 20px;font-size:13px;font-weight:700;}
+.ejercicio-item{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid var(--borde);}
+.ejercicio-item:last-child{border-bottom:none;}
+.ej-num{min-width:28px;height:28px;background:var(--fondo-alt);border:1px solid var(--borde);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);flex-shrink:0;}
+.ej-badge{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:3px;flex-shrink:0;margin-top:4px;}
+.ej-badge.comp{background:rgba(0,88,70,.08);color:var(--verde);}
+.ej-badge.aplic{background:rgba(8,184,157,.1);color:var(--turquesa);}
+.ej-badge.integ{background:rgba(203,219,42,.12);color:#7a8a10;}
+.ej-enunciado{font-size:13.5px;color:var(--texto-suave);line-height:1.6;}
+/* EVALUATIVA + PUENTE */
+.evaluativa{background:rgba(0,88,70,.04);border:2px solid rgba(0,88,70,.15);border-radius:12px;padding:24px 28px;margin-top:36px;}
+.evaluativa-titulo{font-size:15px;font-weight:800;color:var(--verde);margin-bottom:3px;}
+.evaluativa-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;}
+.evaluativa-enunciado{font-size:14px;color:var(--texto-suave);line-height:1.7;margin-bottom:14px;}
+.evaluativa-criterios{margin:0;padding-left:18px;}
+.evaluativa-criterios li{font-size:13px;color:var(--texto-suave);margin-bottom:5px;}
+.puente{background:var(--codigo-bg);border-radius:12px;padding:24px 28px;margin-top:28px;border-left:4px solid var(--turquesa);}
+.puente-titulo{font-size:15px;font-weight:800;color:white;margin-bottom:3px;}
+.puente-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+.puente-texto{font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;}
+.puente-texto strong{color:var(--verde-claro);}
+/* NAV CAPS + PIE */
+.nav-caps{display:flex;justify-content:space-between;align-items:center;padding:20px 64px;background:var(--fondo-alt);border-top:1px solid var(--borde);margin-top:48px;flex-wrap:wrap;gap:12px;}
+.nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 18px;border:1.5px solid rgba(0,88,70,.2);border-radius:8px;background:white;max-width:280px;transition:all .2s;}
+.nav-cap-btn:hover{border-color:var(--verde);}
+.nav-cap-btn.sig{flex-direction:row-reverse;text-align:right;}
+.ncb-arrow{font-size:16px;color:var(--verde);}
+.ncb-label{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,88,70,.45);margin-bottom:2px;display:block;}
+.ncb-titulo{font-size:13px;font-weight:700;color:var(--verde);}
+.pie{background:var(--verde);color:rgba(255,255,255,.35);padding:14px 64px;font-family:'Space Mono',monospace;font-size:9px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:1px;}
+.pie span:first-child{color:rgba(255,255,255,.55);}
+@media(max-width:768px){
+  .page-header,.body-wrap,.nav-caps,.pie,.anclas{padding-left:24px;padding-right:24px;}
+  .ph-titulo{font-size:26px;}
+  .comparar{grid-template-columns:1fr;}
+  .df-rama{flex-direction:column;align-items:center;}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-logo">ESPAM MFL</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-titulo">Introducción a la Programación</div>
+  <div class="topbar-right">CARRERA DE COMPUTACIÓN</div>
+</header>
+
+<nav class="nav-menu">
+  <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">
+    ☰ &nbsp; Contenidos del libro
+    <span class="nav-toggle-arrow">▼</span>
+  </button>
+  <div class="nav-body">
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Inicio</span>
+      <ul class="nav-items">
+        <li><a href="index.html" class="nav-item"><span class="nav-num">◉</span> Portada</a></li>
+        <li><a href="preliminares.html" class="nav-item"><span class="nav-num">—</span> Preliminares</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidad I — Fundamentos</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_01.html" class="nav-item"><span class="nav-num">01</span> Pensamiento Algorítmico</a></li>
+        <li><a href="practica_01.html" class="nav-item practica"><span class="nav-num">↳</span> Práctica 1</a></li>
+        <li><a href="capitulo_02.html" class="nav-item"><span class="nav-num">02</span> Tipos de Datos y Variables</a></li>
+        <li><a href="practica_02.html" class="nav-item practica"><span class="nav-num">↳</span> Práctica 2</a></li>
+        <li><a href="capitulo_03.html" class="nav-item"><span class="nav-num">03</span> Depuración y Buenas Prácticas</a></li>
+        <li><a href="practica_03.html" class="nav-item practica"><span class="nav-num">↳</span> Práctica 3</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidad II — Control</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_04.html" class="nav-item activo"><span class="nav-num">04</span> Estructuras Selectivas</a></li>
+        <li><a href="practica_04.html" class="nav-item practica"><span class="nav-num">↳</span> Práctica 4</a></li>
+        <li><a href="capitulo_05.html" class="nav-item prox"><span class="nav-num">05</span> Repetitivas I — for</a></li>
+        <li><a href="practica_05.html" class="nav-item practica prox"><span class="nav-num">↳</span> Práctica 5</a></li>
+        <li><a href="capitulo_06.html" class="nav-item prox"><span class="nav-num">06</span> Repetitivas II — while</a></li>
+        <li><a href="practica_06.html" class="nav-item practica prox"><span class="nav-num">↳</span> Práctica 6</a></li>
+        <li><a href="capitulo_07.html" class="nav-item prox"><span class="nav-num">07</span> Integración de Estructuras</a></li>
+        <li><a href="practica_07.html" class="nav-item practica prox"><span class="nav-num">↳</span> Práctica 7</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidades III y IV</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_08.html" class="nav-item prox"><span class="nav-num">08</span> Funciones en C++</a></li>
+        <li><a href="capitulo_12.html" class="nav-item prox"><span class="nav-num">12</span> Arreglos Unidimensionales</a></li>
+        <li><a href="capitulo_15.html" class="nav-item prox"><span class="nav-num">15</span> Proyecto Integrador</a></li>
+        <li><a href="anexos.html" class="nav-item prox"><span class="nav-num">—</span> Anexos</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section class="page-header">
+  <div class="ph-num">4</div>
+  <div class="ph-inner">
+    <div class="ph-badge">📘 Unidad II · Capítulo 4</div>
+    <h1 class="ph-titulo">Estructuras Selectivas</h1>
+    <p class="ph-subtitulo">if · if-else · if-else if · switch · operador ternario — El programa que toma decisiones</p>
+    <div class="ph-meta">
+      <div class="ph-meta-item"><span class="ph-meta-label">Horas presenciales</span><span class="ph-meta-valor">3 ACD + 2 PECD</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Horas autónomas</span><span class="ph-meta-valor">3 AA + 1 PEND</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Resultado</span><span class="ph-meta-valor">R.A. — B</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Inicio de</span><span class="ph-meta-valor">Unidad II</span></div>
+    </div>
+  </div>
+</section>
+
+<nav class="anclas">
+  <a class="ancla" href="#s41">4.1 Decisión en algoritmos</a>
+  <a class="ancla" href="#s42">4.2 Operadores relacionales y lógicos</a>
+  <a class="ancla" href="#s43">4.3 if simple y if-else</a>
+  <a class="ancla" href="#s44">4.4 if-else if encadenado</a>
+  <a class="ancla" href="#s45">4.5 Condicionales anidados</a>
+  <a class="ancla" href="#s46">4.6 switch-case</a>
+  <a class="ancla" href="#s47">4.7 Ejercicios</a>
+</nav>
+
+<main class="body-wrap">
+
+  <div class="ra-box">
+    <div class="ra-label">Resultado de Aprendizaje — Capítulo 4</div>
+    <div class="ra-texto">El estudiante <strong>diseña e implementa estructuras de decisión</strong> simples, encadenadas y anidadas en C++, elige correctamente entre <code>if-else if</code> y <code>switch</code> según el problema, y formula condiciones lógicas sin errores de precedencia.</div>
+  </div>
+
+  <!-- 4.1 -->
+  <section class="seccion" id="s41">
+    <span class="seccion-num">4.1</span>
+    <h2>La Decisión como Estructura Algorítmica</h2>
+    <p>Hasta ahora todos nuestros programas son <strong>secuenciales</strong>: ejecutan las instrucciones de arriba a abajo, siempre en el mismo orden. Pero los problemas reales requieren que el programa <em>elija</em> qué hacer según los datos.</p>
+
+    <div class="def-formal">
+      <div class="def-label">Definición formal</div>
+      <p>Una <em>estructura selectiva</em> evalúa una <em>condición booleana</em> (verdadero o falso) y, según el resultado, ejecuta uno de dos caminos posibles. Es el mecanismo que convierte un programa en un sistema capaz de <em>responder</em> al contexto.</p>
+    </div>
+
+    <p>El diagrama de flujo de un <code>if-else</code> muestra claramente los dos caminos:</p>
+
+    <div class="diagrama">
+      <span class="df-label">Diagrama de flujo — if-else</span>
+      <div class="df-terminal">INICIO</div>
+      <div class="df-flecha"></div>
+      <div class="df-proceso">Leer dato</div>
+      <div class="df-flecha"></div>
+      <div class="df-decision"><span>¿condición?</span></div>
+      <div class="df-rama">
+        <div class="df-rama-item">
+          <span class="df-rama-label">VERDADERO</span>
+          <div class="df-accion">Bloque A</div>
+        </div>
+        <div class="df-rama-item">
+          <span class="df-rama-label">FALSO</span>
+          <div class="df-accion">Bloque B</div>
+        </div>
+      </div>
+      <div class="df-flecha"></div>
+      <div class="df-proceso">Continúa…</div>
+      <div class="df-flecha"></div>
+      <div class="df-terminal">FIN</div>
+    </div>
+
+    <div class="caja-ia">
+      <div class="ci-label">🤖 IA y las estructuras de decisión</div>
+      <p>La IA puede generar estructuras <code>if-else</code> correctas sintácticamente, pero <strong>la lógica de las condiciones depende de entender el problema</strong>. Un <code>&gt;=</code> mal colocado, un <code>&&</code> que debería ser <code>||</code>, o condiciones en orden incorrecto producen comportamientos silenciosamente erróneos que solo tú puedes detectar.</p>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 4.2 -->
+  <section class="seccion" id="s42">
+    <span class="seccion-num">4.2</span>
+    <h2>Operadores Relacionales y Lógicos</h2>
+    <p>Las condiciones se construyen con operadores relacionales (comparan valores) y lógicos (combinan condiciones). Dominar su precedencia es esencial para escribir condiciones sin errores.</p>
+
+    <h3>Operadores relacionales</h3>
+    <table class="tabla-est">
+      <thead><tr><th>Op.</th><th>Significado</th><th>Ejemplo</th><th>Resultado</th></tr></thead>
+      <tbody>
+        <tr><td>==</td><td>Igual a</td><td><code>edad == 18</code></td><td><code>true</code> si edad es exactamente 18</td></tr>
+        <tr><td>!=</td><td>Diferente de</td><td><code>nota != 0</code></td><td><code>true</code> si nota no es cero</td></tr>
+        <tr><td>&lt;</td><td>Menor que</td><td><code>precio &lt; 10.0</code></td><td><code>true</code> si precio es menor que 10</td></tr>
+        <tr><td>&lt;=</td><td>Menor o igual</td><td><code>nota &lt;= 6.9</code></td><td><code>true</code> si nota es 6.9 o menos</td></tr>
+        <tr><td>&gt;</td><td>Mayor que</td><td><code>sueldo &gt; 500</code></td><td><code>true</code> si sueldo supera 500</td></tr>
+        <tr><td>&gt;=</td><td>Mayor o igual</td><td><code>nota &gt;= 7.0</code></td><td><code>true</code> si nota es 7.0 o más</td></tr>
+      </tbody>
+    </table>
+
+    <h3>Operadores lógicos y tablas de verdad</h3>
+    <table class="tabla-est">
+      <thead><tr><th>Op.</th><th>Nombre</th><th>Resultado verdadero cuando…</th><th>Ejemplo</th></tr></thead>
+      <tbody>
+        <tr><td>&&</td><td>AND</td><td>Ambas condiciones son verdaderas</td><td><code>edad &gt;= 18 && edad &lt;= 65</code></td></tr>
+        <tr><td>||</td><td>OR</td><td>Al menos una condición es verdadera</td><td><code>nota &lt; 7 || faltas &gt; 3</code></td></tr>
+        <tr><td>!</td><td>NOT</td><td>La condición es falsa</td><td><code>!(aprobado)</code></td></tr>
+      </tbody>
+    </table>
+
+    <h3>Tabla de verdad — AND y OR</h3>
+    <table class="tabla-verdad">
+      <thead><tr><th>A</th><th>B</th><th>A && B</th><th>A || B</th><th>!A</th></tr></thead>
+      <tbody>
+        <tr><td class="tv-v">V</td><td class="tv-v">V</td><td class="tv-v">V</td><td class="tv-v">V</td><td class="tv-f">F</td></tr>
+        <tr><td class="tv-v">V</td><td class="tv-f">F</td><td class="tv-f">F</td><td class="tv-v">V</td><td class="tv-f">F</td></tr>
+        <tr><td class="tv-f">F</td><td class="tv-v">V</td><td class="tv-f">F</td><td class="tv-v">V</td><td class="tv-v">V</td></tr>
+        <tr><td class="tv-f">F</td><td class="tv-f">F</td><td class="tv-f">F</td><td class="tv-f">F</td><td class="tv-v">V</td></tr>
+      </tbody>
+    </table>
+
+    <div class="caja-adv">
+      <div class="ca-label">⚠️ Error frecuente — comparar rangos</div>
+      <p>En C++ <strong>no se puede escribir</strong> <code>7 &lt;= nota &lt;= 10</code> como en matemáticas. El compilador lo acepta pero da resultado incorrecto. La forma correcta es: <code>nota &gt;= 7 && nota &lt;= 10</code></p>
+    </div>
+
+    <h3>Precedencia completa de operadores</h3>
+    <table class="tabla-est">
+      <thead><tr><th>Prioridad</th><th>Operadores</th></tr></thead>
+      <tbody>
+        <tr><td>1 (mayor)</td><td><code>( )</code> paréntesis</td></tr>
+        <tr><td>2</td><td><code>!</code> negación lógica</td></tr>
+        <tr><td>3</td><td><code>*</code> <code>/</code> <code>%</code> multiplicativos</td></tr>
+        <tr><td>4</td><td><code>+</code> <code>-</code> aditivos</td></tr>
+        <tr><td>5</td><td><code>&lt;</code> <code>&lt;=</code> <code>&gt;</code> <code>&gt;=</code> relacionales</td></tr>
+        <tr><td>6</td><td><code>==</code> <code>!=</code> igualdad</td></tr>
+        <tr><td>7</td><td><code>&&</code> AND lógico</td></tr>
+        <tr><td>8 (menor)</td><td><code>||</code> OR lógico</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr>
+
+  <!-- 4.3 -->
+  <section class="seccion" id="s43">
+    <span class="seccion-num">4.3</span>
+    <h2>if Simple y if-else</h2>
+
+    <h3>if simple — un solo camino</h3>
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:10px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · if simple</span></div>
+        <span class="codigo-archivo">if_simple.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-tipo">double</span> nota = <span class="c-num">8.5</span>;
+
+<span class="c-com">// Solo se ejecuta si la condición es verdadera</span>
+<span class="c-kw">if</span> (nota >= <span class="c-num">7.0</span>) {
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Aprobado"</span> &lt;&lt; endl;
+}
+<span class="c-com">// Si nota < 7.0, no imprime nada y continúa</span></pre></div>
+    </div>
+
+    <h3>if-else — dos caminos mutuamente excluyentes</h3>
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:10px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · if-else</span></div>
+        <span class="codigo-archivo">if_else.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-tipo">double</span> nota;
+<span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Ingrese la nota: "</span>;
+<span class="c-fn">cin</span>  &gt;&gt; nota;
+
+<span class="c-kw">if</span> (nota >= <span class="c-num">7.0</span>) {
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Estado: APROBADO"</span> &lt;&lt; endl;
+} <span class="c-kw">else</span> {
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Estado: REPROBADO"</span> &lt;&lt; endl;
+}
+<span class="c-com">// Exactamente uno de los dos bloques se ejecuta siempre</span></pre></div>
+    </div>
+
+    <h3>Tabla de simulación</h3>
+    <table class="tabla-sim">
+      <thead><tr><th>nota ingresada</th><th>nota >= 7.0</th><th>Salida</th></tr></thead>
+      <tbody>
+        <tr><td>9.0</td><td class="tv-v" style="color:var(--turquesa)">true</td><td class="res">APROBADO</td></tr>
+        <tr><td>7.0</td><td class="tv-v" style="color:var(--turquesa)">true</td><td class="res">APROBADO</td></tr>
+        <tr><td>6.9</td><td style="color:#c0392b">false</td><td>REPROBADO</td></tr>
+        <tr><td>0.0</td><td style="color:#c0392b">false</td><td>REPROBADO</td></tr>
+      </tbody>
+    </table>
+
+    <div class="caja-nota">
+      <div class="cn-label">📌 Llaves siempre, aunque sea una sola instrucción</div>
+      <p>C++ permite omitir las llaves si el bloque tiene una sola línea, pero <strong>siempre ponlas</strong>. Sin llaves, agregar una segunda instrucción al bloque crea un error lógico silencioso muy frecuente.</p>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 4.4 -->
+  <section class="seccion" id="s44">
+    <span class="seccion-num">4.4</span>
+    <h2>if-else if Encadenado — Múltiples condiciones</h2>
+    <p>Cuando hay más de dos casos posibles se encadenan condiciones con <code>else if</code>. Solo se ejecuta el primer bloque cuya condición sea verdadera; los demás se saltan.</p>
+
+    <div class="pseudocodigo">
+      <div class="pseudo-label">Pseudocódigo — Calificación por rango</div>
+      <div class="pseudo-code">
+        <span class="p-kw">Algoritmo</span> CalificarEstudiante<br>
+        <span class="p-ind1"><span class="p-kw">Definir</span> nota <span class="p-kw">Como</span> Real</span><br>
+        <span class="p-ind1"><span class="p-kw">Escribir</span> <span class="p-str">"Ingrese nota (0-10): "</span></span><br>
+        <span class="p-ind1"><span class="p-kw">Leer</span> nota</span><br>
+        <span class="p-blank"></span>
+        <span class="p-ind1"><span class="p-kw">Si</span> nota >= 9 <span class="p-kw">Entonces</span></span><br>
+        <span class="p-ind2"><span class="p-kw">Escribir</span> <span class="p-str">"Excelente"</span></span><br>
+        <span class="p-ind1"><span class="p-kw">SiNo Si</span> nota >= 7 <span class="p-kw">Entonces</span></span><br>
+        <span class="p-ind2"><span class="p-kw">Escribir</span> <span class="p-str">"Aprobado"</span></span><br>
+        <span class="p-ind1"><span class="p-kw">SiNo Si</span> nota >= 5 <span class="p-kw">Entonces</span></span><br>
+        <span class="p-ind2"><span class="p-kw">Escribir</span> <span class="p-str">"Recuperación"</span></span><br>
+        <span class="p-ind1"><span class="p-kw">SiNo</span></span><br>
+        <span class="p-ind2"><span class="p-kw">Escribir</span> <span class="p-str">"Reprobado"</span></span><br>
+        <span class="p-ind1"><span class="p-kw">FinSi</span></span><br>
+        <span class="p-kw">FinAlgoritmo</span>
+      </div>
+    </div>
+
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:10px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · if-else if</span></div>
+        <span class="codigo-archivo">calificacion.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">double</span> nota;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Nota (0-10): "</span>;
+    <span class="c-fn">cin</span>  &gt;&gt; nota;
+
+    <span class="c-kw">if</span>      (nota >= <span class="c-num">9.0</span>) { <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Excelente"</span>;   }
+    <span class="c-kw">else if</span> (nota >= <span class="c-num">7.0</span>) { <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Aprobado"</span>;    }
+    <span class="c-kw">else if</span> (nota >= <span class="c-num">5.0</span>) { <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Recuperación"</span>; }
+    <span class="c-kw">else</span>                    { <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Reprobado"</span>;    }
+
+    <span class="c-fn">cout</span> &lt;&lt; endl;
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+    </div>
+
+    <h3>Tabla de simulación — cómo se evalúa cada condición</h3>
+    <table class="tabla-sim">
+      <thead><tr><th>nota</th><th>>=9?</th><th>>=7?</th><th>>=5?</th><th>Resultado</th></tr></thead>
+      <tbody>
+        <tr><td>9.5</td><td style="color:var(--turquesa)">✓ entra</td><td>—</td><td>—</td><td class="res">Excelente</td></tr>
+        <tr><td>7.0</td><td style="color:#c0392b">✗</td><td style="color:var(--turquesa)">✓ entra</td><td>—</td><td class="res">Aprobado</td></tr>
+        <tr><td>5.5</td><td style="color:#c0392b">✗</td><td style="color:#c0392b">✗</td><td style="color:var(--turquesa)">✓ entra</td><td class="res">Recuperación</td></tr>
+        <tr><td>3.0</td><td style="color:#c0392b">✗</td><td style="color:#c0392b">✗</td><td style="color:#c0392b">✗</td><td class="res">Reprobado</td></tr>
+      </tbody>
+    </table>
+
+    <div class="caja-nota">
+      <div class="cn-label">📌 El orden de las condiciones importa</div>
+      <p>Si pones <code>nota &gt;= 5</code> antes que <code>nota &gt;= 7</code>, una nota de 8.5 caería en "Recuperación". Las condiciones deben ir <strong>de mayor a menor</strong> (o de más restrictiva a menos restrictiva).</p>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 4.5 -->
+  <section class="seccion" id="s45">
+    <span class="seccion-num">4.5</span>
+    <h2>Condicionales Anidados y Operadores Lógicos</h2>
+    <p>A veces la decisión depende de <strong>dos o más condiciones simultáneas</strong>. Hay dos formas equivalentes: anidar <code>if</code> dentro de otro <code>if</code>, o combinar condiciones con <code>&&</code> y <code>||</code>.</p>
+
+    <div class="comparar">
+      <div class="comp-bloque if-bloque">
+        <div class="comp-label">if anidado</div>
+        <pre>if (edad >= 18) {
+    if (tieneLicencia) {
+        cout << "Puede conducir";
+    } else {
+        cout << "Sin licencia";
+    }
+} else {
+    cout << "Menor de edad";
+}</pre>
+      </div>
+      <div class="comp-bloque sw-bloque">
+        <div class="comp-label">Con operador && (equivalente)</div>
+        <pre>if (edad >= 18 && tieneLicencia) {
+    cout << "Puede conducir";
+} else if (edad >= 18) {
+    cout << "Sin licencia";
+} else {
+    cout << "Menor de edad";
+}</pre>
+      </div>
+    </div>
+
+    <h3>Ejemplo completo: clasificación de IMC con condiciones compuestas</h3>
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:10px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++</span></div>
+        <span class="codigo-archivo">imc_clasificacion.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">double</span> peso, estatura, imc;
+
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Peso (kg):     "</span>; <span class="c-fn">cin</span> &gt;&gt; peso;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Estatura (m):  "</span>; <span class="c-fn">cin</span> &gt;&gt; estatura;
+
+    imc = peso / (estatura * estatura);
+
+    <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>);
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"IMC: "</span> &lt;&lt; imc &lt;&lt; endl;
+
+    <span class="c-kw">if</span>      (imc &lt; <span class="c-num">18.5</span>)                       { <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Bajo peso"</span>;       }
+    <span class="c-kw">else if</span> (imc >= <span class="c-num">18.5</span> && imc &lt; <span class="c-num">25.0</span>)        { <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Normal"</span>;           }
+    <span class="c-kw">else if</span> (imc >= <span class="c-num">25.0</span> && imc &lt; <span class="c-num">30.0</span>)        { <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Sobrepeso"</span>;        }
+    <span class="c-kw">else</span>                                         { <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Obesidad"</span>;         }
+
+    <span class="c-fn">cout</span> &lt;&lt; endl;
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 4.6 -->
+  <section class="seccion" id="s46">
+    <span class="seccion-num">4.6</span>
+    <h2>switch-case: Decisión sobre Valores Discretos</h2>
+    <p><code>switch</code> compara una variable con valores <strong>enteros o caracteres exactos</strong> (no rangos). Es más legible que muchos <code>else if</code> cuando los casos son fijos y conocidos.</p>
+
+    <div class="comparar">
+      <div class="comp-bloque if-bloque">
+        <div class="comp-label">Con if-else if — verboso</div>
+        <pre>if      (opcion == 1) { /* suma */   }
+else if (opcion == 2) { /* resta */  }
+else if (opcion == 3) { /* mult */   }
+else if (opcion == 4) { /* div */    }
+else { cout << "Inválido"; }</pre>
+      </div>
+      <div class="comp-bloque sw-bloque">
+        <div class="comp-label">Con switch — limpio ✅</div>
+        <pre>switch (opcion) {
+    case 1: /* suma */  break;
+    case 2: /* resta */ break;
+    case 3: /* mult */  break;
+    case 4: /* div */   break;
+    default: cout << "Inválido";
+}</pre>
+      </div>
+    </div>
+
+    <h3>Ejemplo completo: menú de calculadora</h3>
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:10px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++</span></div>
+        <span class="codigo-archivo">calculadora_switch.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">double</span> a, b;
+    <span class="c-tipo">int</span>    opcion;
+
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"=== CALCULADORA ===\n"</span>;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"1. Suma   2. Resta   3. Multiplicar   4. Dividir\n"</span>;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Opción: "</span>; <span class="c-fn">cin</span> &gt;&gt; opcion;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Num 1: "</span>;  <span class="c-fn">cin</span> &gt;&gt; a;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Num 2: "</span>;  <span class="c-fn">cin</span> &gt;&gt; b;
+
+    <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>) &lt;&lt; <span class="c-str">"Resultado: "</span>;
+
+    <span class="c-kw">switch</span> (opcion) {
+        <span class="c-kw">case</span> <span class="c-num">1</span>:
+            <span class="c-fn">cout</span> &lt;&lt; a + b;
+            <span class="c-kw">break</span>;
+        <span class="c-kw">case</span> <span class="c-num">2</span>:
+            <span class="c-fn">cout</span> &lt;&lt; a - b;
+            <span class="c-kw">break</span>;
+        <span class="c-kw">case</span> <span class="c-num">3</span>:
+            <span class="c-fn">cout</span> &lt;&lt; a * b;
+            <span class="c-kw">break</span>;
+        <span class="c-kw">case</span> <span class="c-num">4</span>:
+            <span class="c-kw">if</span> (b != <span class="c-num">0</span>)
+                <span class="c-fn">cout</span> &lt;&lt; a / b;
+            <span class="c-kw">else</span>
+                <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Error: división por cero"</span>;
+            <span class="c-kw">break</span>;
+        <span class="c-kw">default</span>:
+            <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Opción no válida"</span>;
+    }
+    <span class="c-fn">cout</span> &lt;&lt; endl;
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+    </div>
+
+    <div class="caja-adv">
+      <div class="ca-label">⚠️ El break es obligatorio</div>
+      <p>Sin <code>break</code>, la ejecución continúa al siguiente <code>case</code> automáticamente (<em>fall-through</em>). Esto es casi siempre un error. La única excepción intencional es cuando varios casos comparten el mismo bloque: <code>case 1: case 2: /* código */ break;</code></p>
+    </div>
+
+    <h3>¿Cuándo usar if-else if y cuándo switch?</h3>
+    <table class="tabla-est">
+      <thead><tr><th></th><th>if-else if</th><th>switch</th></tr></thead>
+      <tbody>
+        <tr><td>Usa con</td><td>Rangos, condiciones complejas, <code>double</code></td><td>Valores enteros o char exactos</td></tr>
+        <tr><td>Ejemplo</td><td>nota >= 7.0 && nota &lt; 9.0</td><td>opcion == 1, dia == 'L'</td></tr>
+        <tr><td>Legibilidad</td><td>Mejor para poca lógica compleja</td><td>Mejor con muchos casos fijos</td></tr>
+        <tr><td>¿double?</td><td>✅ Sí</td><td>🚫 No</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <hr>
+
+  <!-- 4.7 -->
+  <section class="seccion" id="s47">
+    <span class="seccion-num">4.7</span>
+    <h2>Ejercicios de Aplicación</h2>
+
+    <div class="ejercicios-section">
+      <div class="ejercicios-titulo">✏️ Actividades de Aplicación</div>
+      <div class="ejercicio-item">
+        <div class="ej-num">1</div>
+        <div class="ej-badge comp">Comprensión</div>
+        <div class="ej-enunciado"><strong>Predicción de salida.</strong> Sin ejecutar, determina la salida para cada valor de <code>x = 15</code>: (a) <code>if (x > 10 && x &lt; 20)</code>  (b) <code>if (x == 15 || x == 20)</code>  (c) <code>if (!(x &lt; 10))</code>  (d) <code>if (x >= 10 &amp;&amp; x &lt;= 10)</code>. Justifica cada respuesta con la tabla de verdad.</div>
+      </div>
+      <div class="ejercicio-item">
+        <div class="ej-num">2</div>
+        <div class="ej-badge aplic">Aplicación</div>
+        <div class="ej-enunciado"><strong>Sistema de calificación ESPAM.</strong> Escribe un programa que lea una nota (0–10) y muestre: Excelente (9–10), Muy Bueno (8–8.9), Bueno (7–7.9), Recuperación (5–6.9), Reprobado (&lt;5). Incluye una condición que valide que la nota esté en el rango válido. Primero: pseudocódigo + tabla de simulación. Luego: código C++.</div>
+      </div>
+      <div class="ejercicio-item">
+        <div class="ej-num">3</div>
+        <div class="ej-badge aplic">Aplicación</div>
+        <div class="ej-enunciado"><strong>Calculadora con switch.</strong> Implementa una calculadora que lea dos números y un operador (<code>+</code> <code>-</code> <code>*</code> <code>/</code>) ingresado como <code>char</code>. Usa <code>switch</code> sobre el carácter. Maneja la división por cero como caso especial dentro del <code>case '/'</code>.</div>
+      </div>
+      <div class="ejercicio-item">
+        <div class="ej-num">4</div>
+        <div class="ej-badge aplic">Aplicación</div>
+        <div class="ej-enunciado"><strong>Descuento por categoría.</strong> Un comercio aplica descuentos según el monto: &lt;$50 → 0%, $50–$99 → 5%, $100–$199 → 10%, ≥$200 → 15%. Si además es cliente VIP (ingresar como <code>bool</code>), se suma un 3% adicional. Muestra monto original, porcentaje de descuento, descuento y total a pagar.</div>
+      </div>
+      <div class="ejercicio-item">
+        <div class="ej-num">5</div>
+        <div class="ej-badge integ">Integrador + IA</div>
+        <div class="ej-enunciado"><strong>Auditar condición.</strong> Pide a la IA que genere un programa que determine si un año es bisiesto. Un año es bisiesto si: (divisible por 4 Y no divisible por 100) O (divisible por 400). Audita la condición generada: ¿usó correctamente <code>&&</code>, <code>||</code> y paréntesis? Verifica con los años 2000 (bisiesto), 1900 (no bisiesto) y 2024 (bisiesto).</div>
+      </div>
+    </div>
+
+    <div class="evaluativa">
+      <div class="evaluativa-titulo">Actividad Presencial Evaluativa — Capítulo 4</div>
+      <div class="evaluativa-sub">Sesión 4 · Tiempo: 45 min · Sin acceso a IA</div>
+      <div class="evaluativa-enunciado">
+        Un banco aplica tasas de interés según el plazo de un depósito: 1 mes → 3%, 3 meses → 5%, 6 meses → 7%, 12 meses → 9%, otro plazo → inválido. El programa solicita monto y plazo (en meses), calcula el interés y muestra monto original, tasa aplicada, interés generado y monto final. Usa <code>switch</code> para el plazo y <code>if-else</code> para validar que el monto sea positivo.
+      </div>
+      <ul class="evaluativa-criterios">
+        <li>Pseudocódigo correcto entregado en papel antes de codificar.</li>
+        <li><code>switch</code> con los 4 casos válidos y <code>default</code> para plazo inválido.</li>
+        <li>Validación de monto positivo con <code>if-else</code>.</li>
+        <li>Salida formateada con <code>fixed + setprecision(2)</code>.</li>
+        <li>Tabla de simulación con al menos 3 casos de prueba.</li>
+      </ul>
+    </div>
+
+    <div class="puente">
+      <div class="puente-titulo">🌉 Hacia las Estructuras Repetitivas</div>
+      <div class="puente-sub">Preparación para Cap. 5</div>
+      <div class="puente-texto">Las estructuras selectivas resuelven un caso a la vez. Pero ¿qué pasa si necesitas procesar 100 notas, o repetir un menú hasta que el usuario elija salir? En el Cap. 5 añadirás el <strong>ciclo <code>for</code></strong> — y lo primero que harás con él es combinar una condición <code>if-else</code> dentro del ciclo, exactamente lo que aprendiste aquí.</div>
+    </div>
+  </section>
+
+</main>
+
+<div class="nav-caps">
+  <a href="practica_03.html" class="nav-cap-btn"><span class="ncb-arrow">←</span><div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Práctica 3 — Depuración</span></div></a>
+  <a href="practica_04.html" class="nav-cap-btn sig"><span class="ncb-arrow">→</span><div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Sesión Práctica 4</span></div></a>
+</div>
+
+<footer class="pie">
+  <span>Cap. 4 — Estructuras Selectivas · Unidad II · ESPAM MFL</span>
+  <span>espam.edu.ec</span>
+</footer>
+
+</body>
+</html>
