@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Práctica 4 — Estructuras Selectivas | ESPAM MFL</title>
+<title>Práctica 7 — Integración de Estructuras | ESPAM MFL</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
 :root{--verde:#005846;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
@@ -45,7 +45,7 @@ body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fond
 .ph-meta-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
 .ph-meta-valor{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;}
 .fases-nav{background:white;border-bottom:1px solid var(--borde);padding:12px 64px;display:flex;gap:6px;overflow-x:auto;}
-.fase-chip{font-family:'Space Mono',monospace;font-size:9px;color:var(--texto-suave);text-decoration:none;padding:5px 12px;border:1px solid var(--borde);border-radius:20px;white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:6px;}
+.fase-chip{font-family:'Space Mono',monospace;font-size:9px;color:var(--texto-suave);text-decoration:none;padding:5px 12px;border:1px solid var(--borde);border-radius:20px;white-space:nowrap;transition:all .15s;}
 .fase-chip:hover{background:var(--turquesa);color:white;border-color:var(--turquesa);}
 .body-wrap{max-width:960px;margin:0 auto;padding:56px 64px 0;}
 .fase{margin-bottom:48px;scroll-margin-top:120px;}
@@ -105,7 +105,7 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
 .bitacora{border:2px dashed rgba(0,88,70,.2);border-radius:10px;padding:22px;background:white;margin:18px 0;}
 .bitacora-campo{display:flex;gap:12px;border-bottom:1px solid var(--borde);padding:9px 0;align-items:center;}
 .bitacora-campo:last-child{border-bottom:none;}
-.bitacora-campo label{min-width:200px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);flex-shrink:0;}
+.bitacora-campo label{min-width:220px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);flex-shrink:0;}
 .linea-campo{flex:1;border-bottom:1px solid rgba(0,88,70,.12);min-height:22px;}
 .nav-caps{display:flex;justify-content:space-between;align-items:center;padding:20px 64px;background:var(--fondo-alt);border-top:1px solid var(--borde);margin-top:48px;flex-wrap:wrap;gap:12px;}
 .nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 18px;border:1.5px solid rgba(0,88,70,.2);border-radius:8px;background:white;max-width:280px;transition:all .2s;}
@@ -120,19 +120,16 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
 </style>
 </head>
 <body>
-
 <header class="topbar">
-  <div class="topbar-logo">ESPAM MFL</div>
-  <div class="topbar-sep"></div>
+  <div class="topbar-logo">ESPAM MFL</div><div class="topbar-sep"></div>
   <div class="topbar-titulo">Introducción a la Programación</div>
   <div class="topbar-right">CARRERA DE COMPUTACIÓN</div>
 </header>
-
 <nav class="nav-menu">
   <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">
     ☰ &nbsp; Contenidos del libro <span class="nav-toggle-arrow">▼</span>
   </button>
-          <div class="nav-body">
+      <div class="nav-body">
 
       <div class="nav-grupo">
         <span class="nav-grupo-label">Inicio</span>
@@ -158,13 +155,13 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
         <span class="nav-grupo-label">Unidad II — Control</span>
         <ul class="nav-items">
           <li><a href="capitulo_04.html" class="nav-item"><span class="nav-num">04</span> Estructuras Selectivas</a></li>
-          <li><a href="practica_04.html" class="nav-item practica activo"><span class="nav-num">↳</span> Sesión Práctica 4</a></li>
+          <li><a href="practica_04.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 4</a></li>
           <li><a href="capitulo_05.html" class="nav-item"><span class="nav-num">05</span> Estructuras Repetitivas I</a></li>
           <li><a href="practica_05.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 5</a></li>
           <li><a href="capitulo_06.html" class="nav-item"><span class="nav-num">06</span> Estructuras Repetitivas II</a></li>
           <li><a href="practica_06.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 6</a></li>
           <li><a href="capitulo_07.html" class="nav-item"><span class="nav-num">07</span> Integración de Estructuras</a></li>
-          <li><a href="practica_07.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 7</a></li>
+          <li><a href="practica_07.html" class="nav-item practica activo"><span class="nav-num">↳</span> Sesión Práctica 7</a></li>
         </ul>
       </div>
 
@@ -206,287 +203,233 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
     </div>
 
   </nav>
-
-<section class="page-header">
-  <div class="ph-num">P4</div>
+<section class="page-header-prac">
+  <div class="ph-num">P7</div>
   <div class="ph-inner">
-    <div class="ph-badge">⚗️ Sesión Práctica · Unidad II</div>
-    <h1 class="ph-titulo">Práctica 4 — Sistema de Tarifas Eléctricas</h1>
-    <p class="ph-subtitulo">if-else if · switch · condiciones compuestas · pseudocódigo → C++ · análisis crítico con IA</p>
+    <div class="ph-badge-prac">🔬 Unidad II · Sesión Práctica 7</div>
+    <h1 class="ph-titulo">Sistema de Nómina con Menú Integrado</h1>
+    <p class="ph-subtitulo">if · switch · for · while · do-while · validación multinivel · reporte estadístico</p>
     <div class="ph-meta">
-      <div class="ph-meta-item"><span class="ph-meta-label">Duración</span><span class="ph-meta-valor">3 horas (3 ACD)</span></div>
-      <div class="ph-meta-item"><span class="ph-meta-label">Modalidad</span><span class="ph-meta-valor">Individual + parejas</span></div>
-      <div class="ph-meta-item"><span class="ph-meta-label">Entrega</span><span class="ph-meta-valor">Papel + digital (.cpp)</span></div>
-      <div class="ph-meta-item"><span class="ph-meta-label">Unidad</span><span class="ph-meta-valor">II — Cap. 4</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Duración</span><span class="ph-meta-valor">180 min (3h)</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Modalidad</span><span class="ph-meta-valor">Individual → Parejas</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Entregable</span><span class="ph-meta-valor">Código + bitácora</span></div>
+    </div>
+  </div>
+</section>
+<nav class="fases-nav">
+  <a class="fase-chip" href="#f1">F1 · Modelado</a>
+  <a class="fase-chip" href="#f2">F2 · PSeInt</a>
+  <a class="fase-chip" href="#f3">F3 · C++ Individual</a>
+  <a class="fase-chip" href="#f4">F4 · Extensión</a>
+  <a class="fase-chip" href="#f5">F5 · Análisis IA</a>
+  <a class="fase-chip" href="#f6">F6 · Bitácora</a>
+</nav>
+<main class="body-wrap">
+
+<div class="ra-box">
+  <div class="ra-label">Objetivo de la Sesión</div>
+  <div class="ra-texto">El estudiante <strong>integra todas las estructuras de control aprendidas</strong> en un sistema real de nómina con menú interactivo, validación multinivel, cálculos estadísticos y generación de reportes, aplicando la estrategia de diseño antes de codificar.</div>
+</div>
+
+<div class="problema-box">
+  <span class="pb-label">🏢 Contexto del Problema</span>
+  <div class="pb-enunciado">La empresa "AgroManta S.A." necesita un sistema de nómina básico. El sistema registra empleados con su salario base y calcula: bonificación por productividad (si salario &lt; $500 → 20%, si $500-$999 → 15%, si ≥$1000 → 10%), descuento IESS (9.45% del salario base), y salario neto. El menú permite registrar empleados, ver reporte individual, ver resumen total y salir. Todos los datos deben ser validados.</div>
+</div>
+
+<section class="fase" id="f1">
+  <div class="fase-header">
+    <div class="fase-num">F1</div>
+    <div><div class="fase-titulo">Modelado en Papel</div><div class="fase-tiempo">0 – 20 min · SIN computadora</div></div>
+  </div>
+  <div class="actividades">
+    <div class="actividad">
+      <div class="act-num">1</div>
+      <div><div class="act-titulo">Tabla de variables y fórmulas</div>
+      <div class="act-desc">Identifica todas las variables (salario base, bonificación, descuento IESS, salario neto, acumuladores globales). Escribe las fórmulas matemáticas antes de codificar. Incluye rangos válidos para cada dato de entrada.</div></div>
+    </div>
+    <div class="actividad">
+      <div class="act-num">2</div>
+      <div><div class="act-titulo">Diagrama de la estructura de control principal</div>
+      <div class="act-desc">Dibuja el esquema: <code>do-while</code> externo del menú → <code>switch</code> de opciones → para opción 1: <code>for</code> con N empleados → <code>do-while</code> para validar cada salario → <code>if-else if-else</code> para calcular bonificación.</div></div>
+    </div>
+    <div class="actividad">
+      <div class="act-num">3</div>
+      <div><div class="act-titulo">Simulación manual</div>
+      <div class="act-desc">Calcula a mano para 3 empleados con salarios: $350, $750, $1200. ¿Cuál es el salario neto de cada uno? ¿El total de la nómina? ¿El promedio? Guarda estos valores para verificar tu programa.</div></div>
     </div>
   </div>
 </section>
 
-<nav class="fases-nav">
-  <a class="fase-chip" href="#f1">F1 Modelado papel (0–20)</a>
-  <a class="fase-chip" href="#f2">F2 Pseudocódigo (20–55)</a>
-  <a class="fase-chip" href="#f3">F3 C++ (55–100)</a>
-  <a class="fase-chip" href="#f4">F4 Extensión switch (100–135)</a>
-  <a class="fase-chip" href="#f5">F5 IA crítica (135–160)</a>
-  <a class="fase-chip" href="#f6">F6 Bitácora (160–180)</a>
-</nav>
+<hr>
 
-<main class="body-wrap">
-
-  <div class="problema-box">
-    <span class="pb-label">🎯 Problema central</span>
-    <div class="pb-enunciado">
-      La empresa eléctrica regional cobra según el consumo mensual en kWh: <strong>0–100 kWh → $0.08/kWh</strong>, <strong>101–300 kWh → $0.10/kWh</strong>, <strong>301–500 kWh → $0.13/kWh</strong>, <strong>más de 500 kWh → $0.16/kWh</strong>. Si el cliente es de categoría industrial (ingreso como <code>char</code>: <code>'I'</code>), se añade un cargo fijo de $12.00. Calcular y mostrar: consumo, tarifa aplicada, cargo fijo, subtotal, IVA (12%) y total a pagar.
-    </div>
+<section class="fase" id="f2">
+  <div class="fase-header">
+    <div class="fase-num">F2</div>
+    <div><div class="fase-titulo">Pseudocódigo en PSeInt</div><div class="fase-tiempo">20 – 55 min</div></div>
   </div>
+  <div class="pseudocodigo">
+    <div class="pseudo-label">PSeInt · Sistema de Nómina AgroManta</div>
+    <div class="pseudo-body"><span class="p-kw">Definir</span> opcion, cantidad, n, i <span class="p-kw">Como</span> Entero
+<span class="p-kw">Definir</span> salarioBase, bono, iess, neto <span class="p-kw">Como</span> Real
+<span class="p-kw">Definir</span> totalNomina, promedioNeto <span class="p-kw">Como</span> Real
+totalNomina &lt;- 0; cantidad &lt;- 0
 
-  <hr>
+<span class="p-kw">Repetir</span>
+    Escribir <span class="p-str">"=== NÓMINA AGROMANTA S.A. ==="</span>
+    Escribir <span class="p-str">"1. Registrar empleados"</span>
+    Escribir <span class="p-str">"2. Ver resumen de nómina"</span>
+    Escribir <span class="p-str">"3. Salir"</span>
+    Leer opcion
 
-  <div class="fase" id="f1">
-    <div class="fase-header">
-      <div class="fase-num">F1</div>
-      <div>
-        <div class="fase-titulo">Modelado en papel — Sin computadora</div>
-        <div class="fase-tiempo">⏱ 0 – 20 minutos</div>
-      </div>
-    </div>
-    <p>Antes de escribir una sola línea de código, modela el problema completamente en papel.</p>
+    <span class="p-kw">Segun</span> opcion <span class="p-kw">Hacer</span>
+        1:
+            <span class="p-kw">Repetir</span>; Escribir <span class="p-str">"¿Cuántos empleados? "</span>; Leer n
+            <span class="p-kw">Hasta Que</span> n &gt; 0
 
-    <table class="tabla-papel">
-      <thead><tr><th>Elemento</th><th>Detalle</th></tr></thead>
-      <tbody>
-        <tr><td class="mono">Entradas</td><td class="espacio"></td></tr>
-        <tr><td class="mono">Salidas</td><td class="espacio"></td></tr>
-        <tr><td class="mono">Proceso clave</td><td class="espacio"></td></tr>
-        <tr><td class="mono">Condición 1</td><td class="espacio"></td></tr>
-        <tr><td class="mono">Condición 2</td><td class="espacio"></td></tr>
-        <tr><td class="mono">Condición 3</td><td class="espacio"></td></tr>
-        <tr><td class="mono">Condición 4</td><td class="espacio"></td></tr>
-      </tbody>
-    </table>
+            <span class="p-kw">Para</span> i &lt;- 1 <span class="p-kw">Hasta</span> n <span class="p-kw">Hacer</span>
+                <span class="p-kw">Repetir</span>; Leer salarioBase
+                <span class="p-kw">Hasta Que</span> salarioBase &gt; 0
 
-    <p>Prueba de escritorio manual con <strong>consumo = 250 kWh, tipo = 'R'</strong>:</p>
-    <table class="tabla-papel">
-      <thead><tr><th>Variable</th><th>Valor calculado a mano</th></tr></thead>
-      <tbody>
-        <tr><td class="mono">tarifa</td><td class="espacio"></td></tr>
-        <tr><td class="mono">cargoFijo</td><td class="espacio"></td></tr>
-        <tr><td class="mono">subtotal</td><td class="espacio"></td></tr>
-        <tr><td class="mono">iva</td><td class="espacio"></td></tr>
-        <tr><td class="mono">total</td><td class="espacio"></td></tr>
-      </tbody>
-    </table>
+                <span class="p-kw">Si</span> salarioBase &lt; 500 <span class="p-kw">Entonces</span>
+                    bono &lt;- salarioBase * 0.20
+                <span class="p-kw">SiNo Si</span> salarioBase &lt; 1000 <span class="p-kw">Entonces</span>
+                    bono &lt;- salarioBase * 0.15
+                <span class="p-kw">SiNo</span>
+                    bono &lt;- salarioBase * 0.10
+                <span class="p-kw">FinSi</span>
+
+                iess &lt;- salarioBase * 0.0945
+                neto &lt;- salarioBase + bono - iess
+                totalNomina &lt;- totalNomina + neto
+                cantidad &lt;- cantidad + 1
+            <span class="p-kw">FinPara</span>
+        2:
+            <span class="p-kw">Si</span> cantidad &gt; 0 <span class="p-kw">Entonces</span>
+                Escribir <span class="p-str">"Empleados: "</span>, cantidad
+                Escribir <span class="p-str">"Total nómina: $"</span>, totalNomina
+                Escribir <span class="p-str">"Promedio neto: $"</span>, totalNomina/cantidad
+            <span class="p-kw">FinSi</span>
+    <span class="p-kw">FinSegun</span>
+<span class="p-kw">Hasta Que</span> opcion = 3</div>
   </div>
+</section>
 
-  <hr>
+<hr>
 
-  <div class="fase" id="f2">
-    <div class="fase-header">
-      <div class="fase-num">F2</div>
-      <div>
-        <div class="fase-titulo">Pseudocódigo completo — PSeInt</div>
-        <div class="fase-tiempo">⏱ 20 – 55 minutos</div>
-      </div>
-    </div>
-    <p>Escribe el pseudocódigo completo en PSeInt y verifica que corra con los datos de la Fase 1 antes de pasar a C++.</p>
-
-    <div class="pseudocodigo">
-      <div class="pseudo-label">Pseudocódigo guía — completar los espacios</div>
-      <div class="pseudo-body">
-<span class="p-kw">Algoritmo</span> TarifaElectrica<br>
-&nbsp;&nbsp;<span class="p-kw">Definir</span> consumo, tarifa, cargoFijo, subtotal, iva, total <span class="p-kw">Como</span> Real<br>
-&nbsp;&nbsp;<span class="p-kw">Definir</span> tipoCliente <span class="p-kw">Como</span> Caracter<br>
-<br>
-&nbsp;&nbsp;<span class="p-kw">Escribir</span> <span class="p-str">"Consumo en kWh: "</span><br>
-&nbsp;&nbsp;<span class="p-kw">Leer</span> consumo<br>
-&nbsp;&nbsp;<span class="p-kw">Escribir</span> <span class="p-str">"Tipo cliente (R=Residencial / I=Industrial): "</span><br>
-&nbsp;&nbsp;<span class="p-kw">Leer</span> tipoCliente<br>
-<br>
-&nbsp;&nbsp;<span class="p-kw">Si</span> consumo &lt;= 100 <span class="p-kw">Entonces</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;tarifa ← ___<br>
-&nbsp;&nbsp;<span class="p-kw">SiNo Si</span> consumo &lt;= 300 <span class="p-kw">Entonces</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;tarifa ← ___<br>
-&nbsp;&nbsp;<span class="p-kw">SiNo Si</span> consumo &lt;= 500 <span class="p-kw">Entonces</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;tarifa ← ___<br>
-&nbsp;&nbsp;<span class="p-kw">SiNo</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;tarifa ← ___<br>
-&nbsp;&nbsp;<span class="p-kw">FinSi</span><br>
-<br>
-&nbsp;&nbsp;<span class="p-kw">Si</span> tipoCliente == <span class="p-str">'I'</span> <span class="p-kw">Entonces</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;cargoFijo ← ___<br>
-&nbsp;&nbsp;<span class="p-kw">SiNo</span><br>
-&nbsp;&nbsp;&nbsp;&nbsp;cargoFijo ← ___<br>
-&nbsp;&nbsp;<span class="p-kw">FinSi</span><br>
-<br>
-&nbsp;&nbsp;subtotal ← ___<br>
-&nbsp;&nbsp;iva      ← ___<br>
-&nbsp;&nbsp;total    ← ___<br>
-<br>
-&nbsp;&nbsp;<span class="p-kw">Escribir</span> <span class="p-str">"Tarifa: $"</span>, tarifa, <span class="p-str">"/kWh"</span><br>
-&nbsp;&nbsp;<span class="p-kw">Escribir</span> <span class="p-str">"Subtotal: $"</span>, subtotal<br>
-&nbsp;&nbsp;<span class="p-kw">Escribir</span> <span class="p-str">"IVA 12%:  $"</span>, iva<br>
-&nbsp;&nbsp;<span class="p-kw">Escribir</span> <span class="p-str">"TOTAL:    $"</span>, total<br>
-<span class="p-kw">FinAlgoritmo</span>
-      </div>
-    </div>
+<section class="fase" id="f3">
+  <div class="fase-header">
+    <div class="fase-num">F3</div>
+    <div><div class="fase-titulo">Implementación en C++ — Individual</div><div class="fase-tiempo">55 – 100 min</div></div>
   </div>
+  <p>Traduce el pseudocódigo a C++. Verifica que los resultados coincidan exactamente con la simulación manual del F1.</p>
+  <div class="codigo-bloque">
+    <div class="codigo-header"><div style="display:flex;align-items:center;gap:8px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · Estructura base a completar</span></div><span class="codigo-archivo">nomina_agromanta.cpp</span></div>
+    <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
 
-  <hr>
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">int</span>    opcion, cantidad = <span class="c-num">0</span>, n;
+    <span class="c-tipo">double</span> salarioBase, bono, iess, neto;
+    <span class="c-tipo">double</span> totalNomina = <span class="c-num">0</span>;
 
-  <div class="fase" id="f3">
-    <div class="fase-header">
-      <div class="fase-num">F3</div>
-      <div>
-        <div class="fase-titulo">Traducción a C++ — Individual</div>
-        <div class="fase-tiempo">⏱ 55 – 100 minutos</div>
-      </div>
-    </div>
-    <p>Traduce el pseudocódigo verificado a C++. Aplica el checklist de buenas prácticas del Cap. 3.</p>
+    <span class="c-kw">do</span> {
+        <span class="c-com">// TODO: mostrar menú</span>
+        <span class="c-fn">cin</span> &gt;&gt; opcion;
 
-    <div class="actividades">
-      <div class="actividad">
-        <div class="act-num">1</div>
-        <div>
-          <div class="act-titulo">Archivo: <code>tarifa_electrica.cpp</code></div>
-          <div class="act-desc">Usa <code>if-else if</code> para la tarifa. Usa un segundo <code>if-else</code> para el cargo fijo según tipo de cliente. Incluye encabezado de programa, nombres descriptivos y <code>fixed + setprecision(2)</code> en la salida.</div>
-        </div>
-      </div>
-      <div class="actividad">
-        <div class="act-num">2</div>
-        <div>
-          <div class="act-titulo">Tabla de pruebas — completar con resultados reales</div>
-          <div class="act-desc">Prueba con los 4 casos y anota la salida real del programa.</div>
-        </div>
-      </div>
-    </div>
-
-    <table class="tabla-papel">
-      <thead><tr><th>consumo</th><th>tipoCliente</th><th>tarifa esperada</th><th>total esperado</th><th>total real</th><th>¿OK?</th></tr></thead>
-      <tbody>
-        <tr><td class="mono">80</td><td class="mono">'R'</td><td>$0.08</td><td class="espacio"></td><td class="espacio"></td><td class="espacio"></td></tr>
-        <tr><td class="mono">250</td><td class="mono">'R'</td><td>$0.10</td><td class="espacio"></td><td class="espacio"></td><td class="espacio"></td></tr>
-        <tr><td class="mono">400</td><td class="mono">'I'</td><td>$0.13</td><td class="espacio"></td><td class="espacio"></td><td class="espacio"></td></tr>
-        <tr><td class="mono">600</td><td class="mono">'I'</td><td>$0.16</td><td class="espacio"></td><td class="espacio"></td><td class="espacio"></td></tr>
-      </tbody>
-    </table>
-
-    <div class="caja-nota">
-      <div class="cn-label">📌 Límites de rango</div>
-      <p>Prueba también con los valores exactos de frontera: <code>100</code>, <code>101</code>, <code>300</code>, <code>301</code>, <code>500</code>, <code>501</code>. ¿Tu código los clasifica correctamente?</p>
-    </div>
-  </div>
-
-  <hr>
-
-  <div class="fase" id="f4">
-    <div class="fase-header">
-      <div class="fase-num">F4</div>
-      <div>
-        <div class="fase-titulo">Extensión con switch — Parejas</div>
-        <div class="fase-tiempo">⏱ 100 – 135 minutos</div>
-      </div>
-    </div>
-    <p>Agrega al programa un menú con <code>switch</code> que permita elegir la acción antes de calcular.</p>
-
-    <div class="codigo-bloque">
-      <div class="codigo-header">
-        <div style="display:flex;align-items:center;gap:8px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · menú a agregar</span></div>
-        <span class="codigo-archivo">tarifa_menu.cpp</span>
-      </div>
-      <div class="codigo-body"><pre><span class="c-tipo">int</span> opcion;
-<span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"=== SISTEMA ELÉCTRICO ===\n"</span>;
-<span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"1. Calcular tarifa\n"</span>;
-<span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"2. Ver tabla de tarifas\n"</span>;
-<span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"3. Salir\n"</span>;
-<span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Opción: "</span>; <span class="c-fn">cin</span> &gt;&gt; opcion;
-
-<span class="c-kw">switch</span> (opcion) {
-    <span class="c-kw">case</span> <span class="c-num">1</span>:
-        <span class="c-com">// Aquí va todo el código de la Fase 3</span>
-        <span class="c-kw">break</span>;
-    <span class="c-kw">case</span> <span class="c-num">2</span>:
-        <span class="c-com">// Mostrar tabla de rangos y tarifas</span>
-        <span class="c-kw">break</span>;
-    <span class="c-kw">case</span> <span class="c-num">3</span>:
-        <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Hasta luego.\n"</span>;
-        <span class="c-kw">break</span>;
-    <span class="c-kw">default</span>:
-        <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Opción inválida.\n"</span>;
+        <span class="c-kw">switch</span>(opcion) {
+            <span class="c-kw">case</span> <span class="c-num">1</span>: {
+                <span class="c-com">// TODO: validar n con do-while</span>
+                <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">1</span>; i &lt;= n; i++) {
+                    <span class="c-com">// TODO: validar salarioBase con do-while</span>
+                    <span class="c-com">// TODO: calcular bono con if-else if-else</span>
+                    iess = salarioBase * <span class="c-num">0.0945</span>;
+                    neto = salarioBase + bono - iess;
+                    totalNomina += neto;
+                    cantidad++;
+                    <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>)
+                         &lt;&lt; <span class="c-str">"  Salario neto: $"</span> &lt;&lt; neto &lt;&lt; endl;
+                }
+                <span class="c-kw">break</span>;
+            }
+            <span class="c-kw">case</span> <span class="c-num">2</span>:
+                <span class="c-com">// TODO: mostrar resumen (verificar cantidad > 0)</span>
+                <span class="c-kw">break</span>;
+            <span class="c-kw">case</span> <span class="c-num">3</span>: <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Hasta luego.\n"</span>; <span class="c-kw">break</span>;
+            <span class="c-kw">default</span>: <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Opción inválida.\n"</span>;
+        }
+    } <span class="c-kw">while</span> (opcion != <span class="c-num">3</span>);
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
 }</pre></div>
-    </div>
+  </div>
+</section>
 
-    <div class="actividades">
-      <div class="actividad">
-        <div class="act-num">✓</div>
-        <div>
-          <div class="act-titulo">Implementa la opción 2</div>
-          <div class="act-desc">El case 2 debe mostrar una tabla formateada con los 4 rangos, sus tarifas y el cargo adicional industrial. Usa <code>setw</code> de <code>&lt;iomanip&gt;</code> para alinear columnas.</div>
-        </div>
-      </div>
+<hr>
+
+<section class="fase" id="f4">
+  <div class="fase-header">
+    <div class="fase-num">F4</div>
+    <div><div class="fase-titulo">Extensión en Parejas</div><div class="fase-tiempo">100 – 135 min</div></div>
+  </div>
+  <div class="actividades">
+    <div class="actividad">
+      <div class="act-num">A</div>
+      <div><div class="act-titulo">Reporte de distribución salarial</div>
+      <div class="act-desc">Agrega opción 3 al menú (recorrer el salir a opción 4): mostrar cuántos empleados caen en cada rango de bonificación (&lt;$500, $500-$999, ≥$1000) con su porcentaje sobre el total.</div></div>
+    </div>
+    <div class="actividad">
+      <div class="act-num">B</div>
+      <div><div class="act-titulo">Nómina máxima y mínima</div>
+      <div class="act-desc">En el resumen (opción 2), además del promedio mostrar el salario neto más alto y más bajo registrado. Requiere rastrear máximo y mínimo durante el registro en F3.</div></div>
     </div>
   </div>
+</section>
 
-  <hr>
+<hr>
 
-  <div class="fase" id="f5">
-    <div class="fase-header">
-      <div class="fase-num">F5</div>
-      <div>
-        <div class="fase-titulo">Análisis crítico con IA — Documentado</div>
-        <div class="fase-tiempo">⏱ 135 – 160 minutos</div>
-      </div>
-    </div>
-
-    <div class="caja-ia">
-      <div class="ci-label">🤖 Actividad documentada — registrar en bitácora</div>
-      <p>Prompt sugerido: <em>"El siguiente programa C++ calcula la tarifa eléctrica según el consumo. Evalúa: (1) ¿Las condiciones if-else if están en el orden correcto? (2) ¿Hay algún rango que quede sin cubrir? (3) ¿La condición para tipo industrial es correcta? (4) ¿Qué pasa si el usuario ingresa un consumo negativo? [pegar código]"</em><br><br>
-      Luego analiza: <strong>¿detectó algo que tú no habías visto? ¿Propuso algo incorrecto?</strong> Documenta todo.</p>
-    </div>
+<section class="fase" id="f5">
+  <div class="fase-header">
+    <div class="fase-num">F5</div>
+    <div><div class="fase-titulo">Análisis Crítico con IA — Documentado</div><div class="fase-tiempo">135 – 160 min</div></div>
   </div>
-
-  <hr>
-
-  <div class="fase" id="f6">
-    <div class="fase-header">
-      <div class="fase-num">F6</div>
-      <div>
-        <div class="fase-titulo">Cierre y bitácora</div>
-        <div class="fase-tiempo">⏱ 160 – 180 minutos</div>
-      </div>
-    </div>
-
-    <div class="bitacora">
-      <div class="bitacora-campo"><label>Sesión / Fecha:</label><div class="linea-campo"></div></div>
-      <div class="bitacora-campo"><label>Problema resuelto:</label><div class="linea-campo"></div></div>
-      <div class="bitacora-campo"><label>Diferencia if-else if vs switch:</label><div class="linea-campo"></div></div>
-      <div class="bitacora-campo"><label>Error que cometí y cómo lo corregí:</label><div class="linea-campo"></div></div>
-      <div class="bitacora-campo"><label>Análisis IA — ¿aportó algo útil?:</label><div class="linea-campo"></div></div>
-      <div class="bitacora-campo"><label>¿Qué necesito repasar antes del cap. 5?:</label><div class="linea-campo"></div></div>
-    </div>
-
-    <table class="rubrica">
-      <thead><tr><th>Criterio</th><th>Excelente (4)</th><th>Satisfactorio (3)</th><th>En desarrollo (2)</th><th>Insuficiente (1)</th></tr></thead>
-      <tbody>
-        <tr><td>Modelado F1</td><td>Tabla y prueba manual completas y correctas.</td><td>Tabla completa, prueba con error menor.</td><td>Modelado incompleto.</td><td>Sin modelado previo.</td></tr>
-        <tr><td>Pseudocódigo F2</td><td>Corre en PSeInt con los 4 casos correctos.</td><td>Corre con 3 de 4 casos.</td><td>Corre parcialmente.</td><td>No corre.</td></tr>
-        <tr><td>C++ F3</td><td>Compila, todos los casos correctos, buenas prácticas aplicadas.</td><td>Compila, 3/4 casos correctos.</td><td>Compila con errores menores de lógica.</td><td>No compila.</td></tr>
-        <tr><td>switch F4</td><td>Menú funcional con tabla formateada y default.</td><td>Menú funcional sin tabla.</td><td>switch parcial.</td><td>Sin extensión.</td></tr>
-        <tr><td>IA + bitácora F5/F6</td><td>Análisis crítico documentado. Bitácora completa.</td><td>Análisis básico. Bitácora completa.</td><td>Sin análisis o bitácora incompleta.</td><td>Sin análisis ni bitácora.</td></tr>
-      </tbody>
-      <tfoot><tr><td colspan="5">Puntaje máximo: 20 · Mínimo aprobación: 14</td></tr></tfoot>
-    </table>
+  <div class="caja-ia">
+    <div class="ci-label">🤖 Protocolo de Análisis IA · Sesión 7</div>
+    <p>Muestra a la IA el cálculo del bono con <code>if-else if-else</code> y pregúntale: "¿Cómo simplificarías este cálculo?" Probablemente sugiera un array, una función o un operador ternario encadenado. Responde: <strong>(1)</strong> ¿La sugerencia es más legible para un estudiante nuevo? <strong>(2)</strong> ¿El resultado es idéntico? <strong>(3)</strong> ¿Cuándo usarías la versión de la IA y cuándo la tuya? Documenta con ejemplos.</p>
   </div>
+</section>
+
+<hr>
+
+<section class="fase" id="f6">
+  <div class="fase-header">
+    <div class="fase-num">F6</div>
+    <div><div class="fase-titulo">Bitácora y Rúbrica de Autoevaluación</div><div class="fase-tiempo">160 – 180 min</div></div>
+  </div>
+  <div class="bitacora">
+    <div class="bitacora-campo"><label>Nombre / Fecha</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>¿Qué estructura fue más difícil de anidar?</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>Error de lógica que cometiste y cómo lo resolviste</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>¿Tu simulación manual (F1) coincidió con el programa?</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>¿Qué fórmula o condición le preguntaste a la IA?</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>Aprendizaje clave de la Unidad II completa</label><div class="linea-campo"></div></div>
+  </div>
+  <table class="rubrica">
+    <thead><tr><th>Criterio</th><th>Logrado ✓</th><th>Parcial △</th><th>No logrado ✗</th><th>Pts</th></tr></thead>
+    <tbody>
+      <tr><td>F1: Tabla de variables + simulación manual correcta</td><td>Coincide con programa</td><td>Errores menores</td><td>No presentado</td><td>/15</td></tr>
+      <tr><td>F2: Pseudocódigo completo y ejecutable en PSeInt</td><td>Todos los casos pasan</td><td>Un caso falla</td><td>No entregado</td><td>/15</td></tr>
+      <tr><td>F3: C++ compila, cálculos correctos, todas las validaciones</td><td>Sin errores, resultados correctos</td><td>Un cálculo incorrecto</td><td>No compila</td><td>/40</td></tr>
+      <tr><td>F4: Extensión funcional y sin romper el programa base</td><td>Ambas extensiones</td><td>Una extensión</td><td>No realizado</td><td>/15</td></tr>
+      <tr><td>F5+F6: Análisis IA documentado + bitácora completa</td><td>4 preguntas respondidas</td><td>2-3 preguntas</td><td>Solo respuestas vacías</td><td>/15</td></tr>
+    </tbody>
+    <tfoot><tr><td colspan="4">TOTAL</td><td>/100</td></tr></tfoot>
+  </table>
+</section>
 
 </main>
-
 <div class="nav-caps">
-  <a href="capitulo_04.html" class="nav-cap-btn"><span class="ncb-arrow">←</span><div><span class="ncb-label">Volver al capítulo</span><span class="ncb-titulo">Cap. 4 — Estructuras Selectivas</span></div></a>
-  <a href="capitulo_05.html" class="nav-cap-btn sig"><span class="ncb-arrow">→</span><div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Cap. 5 — Ciclo for</span></div></a>
+  <a href="capitulo_07.html" class="nav-cap-btn"><span class="ncb-arrow">←</span><div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Capítulo 7 — Integración</span></div></a>
+  <a href="capitulo_08.html" class="nav-cap-btn sig"><span class="ncb-arrow">→</span><div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Cap. 8 — Funciones en C++</span></div></a>
 </div>
-
-<footer class="pie">
-  <span>Práctica 4 — Estructuras Selectivas · Unidad II · ESPAM MFL</span>
-  <span>espam.edu.ec</span>
-</footer>
-</body>
-</html>
+<footer class="pie"><span>Práctica 7 — Integración de Estructuras · Unidad II · ESPAM MFL</span><span>espam.edu.ec</span></footer>
+</body></html>

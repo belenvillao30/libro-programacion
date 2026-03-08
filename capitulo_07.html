@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cap. 5 — Estructuras Repetitivas I: for | ESPAM MFL</title>
+<title>Cap. 7 — Integración de Estructuras de Control | ESPAM MFL</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
 :root{--verde:#005846;--verde-medio:#007a5e;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
@@ -151,19 +151,16 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
 </style>
 </head>
 <body>
-
 <header class="topbar">
-  <div class="topbar-logo">ESPAM MFL</div>
-  <div class="topbar-sep"></div>
+  <div class="topbar-logo">ESPAM MFL</div><div class="topbar-sep"></div>
   <div class="topbar-titulo">Introducción a la Programación</div>
   <div class="topbar-right">CARRERA DE COMPUTACIÓN</div>
 </header>
-
 <nav class="nav-menu">
   <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">
     ☰ &nbsp; Contenidos del libro <span class="nav-toggle-arrow">▼</span>
   </button>
-          <div class="nav-body">
+      <div class="nav-body">
 
       <div class="nav-grupo">
         <span class="nav-grupo-label">Inicio</span>
@@ -190,11 +187,11 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
         <ul class="nav-items">
           <li><a href="capitulo_04.html" class="nav-item"><span class="nav-num">04</span> Estructuras Selectivas</a></li>
           <li><a href="practica_04.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 4</a></li>
-          <li><a href="capitulo_05.html" class="nav-item activo"><span class="nav-num">05</span> Estructuras Repetitivas I</a></li>
+          <li><a href="capitulo_05.html" class="nav-item"><span class="nav-num">05</span> Estructuras Repetitivas I</a></li>
           <li><a href="practica_05.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 5</a></li>
           <li><a href="capitulo_06.html" class="nav-item"><span class="nav-num">06</span> Estructuras Repetitivas II</a></li>
           <li><a href="practica_06.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 6</a></li>
-          <li><a href="capitulo_07.html" class="nav-item"><span class="nav-num">07</span> Integración de Estructuras</a></li>
+          <li><a href="capitulo_07.html" class="nav-item activo"><span class="nav-num">07</span> Integración de Estructuras</a></li>
           <li><a href="practica_07.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 7</a></li>
         </ul>
       </div>
@@ -237,351 +234,233 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
     </div>
 
   </nav>
-
 <section class="page-header">
-  <div class="ph-num">5</div>
+  <div class="ph-num">7</div>
   <div class="ph-inner">
-    <div class="ph-badge">📘 Unidad II · Capítulo 5</div>
-    <h1 class="ph-titulo">Estructuras Repetitivas I: el Ciclo <code style="font-size:32px;color:var(--verde-claro);">for</code></h1>
-    <p class="ph-subtitulo">Anatomía del for · Acumuladores y contadores · Variantes · Ciclos anidados · for + if</p>
+    <div class="ph-badge">📘 Unidad II · Capítulo 7</div>
+    <h1 class="ph-titulo">Integración de Estructuras de Control</h1>
+    <p class="ph-subtitulo">Combinar if · switch · for · while · do-while · estrategia de diseño · problemas reales complejos</p>
     <div class="ph-meta">
       <div class="ph-meta-item"><span class="ph-meta-label">Horas presenciales</span><span class="ph-meta-valor">3 ACD + 2 PECD</span></div>
       <div class="ph-meta-item"><span class="ph-meta-label">Horas autónomas</span><span class="ph-meta-valor">3 AA + 1 PEND</span></div>
-      <div class="ph-meta-item"><span class="ph-meta-valor">R.A. — B</span><span class="ph-meta-label">Resultado</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Resultado</span><span class="ph-meta-valor">R.A. — B</span></div>
     </div>
   </div>
 </section>
-
 <nav class="anclas">
-  <a class="ancla" href="#s51">5.1 El ciclo for</a>
-  <a class="ancla" href="#s52">5.2 Anatomía y flujo</a>
-  <a class="ancla" href="#s53">5.3 Acumuladores y contadores</a>
-  <a class="ancla" href="#s54">5.4 Variantes del for</a>
-  <a class="ancla" href="#s55">5.5 for + if</a>
-  <a class="ancla" href="#s56">5.6 Ciclos anidados</a>
-  <a class="ancla" href="#s57">5.7 Ejercicios</a>
+  <a class="ancla" href="#s71">7.1 Estrategia de diseño</a>
+  <a class="ancla" href="#s72">7.2 Ciclos anidados</a>
+  <a class="ancla" href="#s73">7.3 if dentro de ciclos</a>
+  <a class="ancla" href="#s74">7.4 switch + ciclos</a>
+  <a class="ancla" href="#s75">7.5 Elección de estructura</a>
+  <a class="ancla" href="#s76">7.6 Ejercicios</a>
 </nav>
-
 <main class="body-wrap">
 
-  <div class="ra-box">
-    <div class="ra-label">Resultado de Aprendizaje — Capítulo 5</div>
-    <div class="ra-texto">El estudiante <strong>implementa el ciclo <code>for</code></strong> con sus tres componentes correctamente, aplica acumuladores y contadores, combina el ciclo con estructuras selectivas, y construye ciclos anidados para resolver problemas de tabla y serie.</div>
-  </div>
-
-  <!-- 5.1 -->
-  <section class="seccion" id="s51">
-    <span class="seccion-num">5.1</span>
-    <h2>¿Por qué necesitamos repetición?</h2>
-    <p>Imagina calcular el promedio de 30 estudiantes con <code>if-else</code> y variables individuales: necesitarías 30 variables y 30 líneas de lectura. Los ciclos resuelven este problema repitiendo un bloque de código controladamente.</p>
-    <p>El ciclo <code>for</code> es el más adecuado cuando <strong>sabes de antemano cuántas veces</strong> necesitas repetir. Es el ciclo del contador.</p>
-
-    <div class="caja-ia">
-      <div class="ci-label">🤖 IA y los ciclos</div>
-      <p>La IA genera ciclos <code>for</code> sintácticamente correctos con facilidad. El peligro está en los detalles: <strong>off-by-one errors</strong> (contar una vez de más o de menos), acumuladores que no se inicializan, o condiciones con <code>&lt;</code> cuando debería ser <code>&lt;=</code>. Aprende a verificar estos detalles tú mismo antes de confiar en cualquier código generado.</p>
-    </div>
-  </section>
-
-  <hr>
-
-  <!-- 5.2 -->
-  <section class="seccion" id="s52">
-    <span class="seccion-num">5.2</span>
-    <h2>Anatomía del <code>for</code> y su Flujo de Ejecución</h2>
-
-    <div class="for-anatomy">
-      <div class="fa-titulo">Anatomía del ciclo for</div>
-      <div class="fa-code">
-        <span class="fa-kw">for</span> (<span class="fa-init">int i = 1</span>; <span class="fa-cond">i &lt;= 5</span>; <span class="fa-incr">i++</span>) {<br>
-        &nbsp;&nbsp;&nbsp;&nbsp;<span class="fa-body">// bloque que se repite</span><br>
-        }
-      </div>
-      <div class="fa-partes">
-        <div class="fa-parte init">
-          <div class="fa-parte-label">① Inicialización</div>
-          <div class="fa-parte-desc">Se ejecuta <strong>una sola vez</strong> al inicio. Declara y asigna valor inicial al contador.</div>
-        </div>
-        <div class="fa-parte cond">
-          <div class="fa-parte-label">② Condición</div>
-          <div class="fa-parte-desc">Se evalúa <strong>antes de cada iteración</strong>. Si es falsa, el ciclo termina.</div>
-        </div>
-        <div class="fa-parte incr">
-          <div class="fa-parte-label">③ Incremento</div>
-          <div class="fa-parte-desc">Se ejecuta <strong>al final de cada iteración</strong>. Actualiza el contador.</div>
-        </div>
-      </div>
-    </div>
-
-    <h3>Tabla de simulación — <code>for (int i = 1; i &lt;= 4; i++)</code></h3>
-    <table class="tabla-sim">
-      <thead><tr><th>Iteración</th><th>i antes</th><th>i &lt;= 4 ?</th><th>Ejecuta bloque</th><th>i después (i++)</th></tr></thead>
-      <tbody>
-        <tr><td>1</td><td>1</td><td style="color:var(--turquesa)">✓</td><td class="acc">Sí</td><td>2</td></tr>
-        <tr><td>2</td><td>2</td><td style="color:var(--turquesa)">✓</td><td class="acc">Sí</td><td>3</td></tr>
-        <tr><td>3</td><td>3</td><td style="color:var(--turquesa)">✓</td><td class="acc">Sí</td><td>4</td></tr>
-        <tr><td>4</td><td>4</td><td style="color:var(--turquesa)">✓</td><td class="acc">Sí</td><td>5</td></tr>
-        <tr><td>—</td><td>5</td><td style="color:#c0392b">✗</td><td class="res">No — termina</td><td>—</td></tr>
-      </tbody>
-    </table>
-
-    <div class="caja-nota">
-      <div class="cn-label">📌 El contador existe solo dentro del for</div>
-      <p>Cuando escribes <code>for (int i = 1; ...)</code>, la variable <code>i</code> solo existe dentro del bloque del ciclo. Si intentas usarla después, el compilador te dará error. Esto es correcto y deseable — evita contaminar el resto del programa.</p>
-    </div>
-  </section>
-
-  <hr>
-
-  <!-- 5.3 -->
-  <section class="seccion" id="s53">
-    <span class="seccion-num">5.3</span>
-    <h2>Acumuladores y Contadores</h2>
-    <p>Los patrones más frecuentes dentro de un ciclo <code>for</code> son el <strong>acumulador</strong> (suma progresiva) y el <strong>contador condicional</strong> (cuenta cuántos cumplen una condición).</p>
-
-    <div class="codigo-bloque">
-      <div class="codigo-header">
-        <div style="display:flex;align-items:center;gap:8px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · acumulador + contador</span></div>
-        <span class="codigo-archivo">estadisticas_notas.cpp</span>
-      </div>
-      <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
-<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
-<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
-
-<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
-    <span class="c-tipo">int</span>    n, aprobados = <span class="c-num">0</span>;
-    <span class="c-tipo">double</span> nota, suma = <span class="c-num">0.0</span>;   <span class="c-com">// acumulador inicializado en 0</span>
-
-    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"¿Cuántos estudiantes? "</span>;
-    <span class="c-fn">cin</span>  &gt;&gt; n;
-
-    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">1</span>; i &lt;= n; i++) {
-        <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Nota estudiante "</span> &lt;&lt; i &lt;&lt; <span class="c-str">": "</span>;
-        <span class="c-fn">cin</span>  &gt;&gt; nota;
-        suma += nota;              <span class="c-com">// acumular</span>
-        <span class="c-kw">if</span> (nota >= <span class="c-num">7.0</span>) aprobados++;  <span class="c-com">// contar</span>
-    }
-
-    <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>);
-    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Promedio:   "</span> &lt;&lt; suma / n  &lt;&lt; endl;
-    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Aprobados:  "</span> &lt;&lt; aprobados &lt;&lt; endl;
-    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Reprobados: "</span> &lt;&lt; n - aprobados &lt;&lt; endl;
-    <span class="c-kw">return</span> <span class="c-num">0</span>;
-}</pre></div>
-    </div>
-
-    <div class="caja-adv">
-      <div class="ca-label">⚠️ Inicializar siempre antes del ciclo</div>
-      <p><code>suma</code> y <code>aprobados</code> se declaran e inicializan <strong>antes</strong> del <code>for</code>. Si se declararan dentro del ciclo, se reiniciarían en cada iteración y el acumulador nunca acumularía nada.</p>
-    </div>
-  </section>
-
-  <hr>
-
-  <!-- 5.4 -->
-  <section class="seccion" id="s54">
-    <span class="seccion-num">5.4</span>
-    <h2>Variantes del Ciclo <code>for</code></h2>
-    <p>El incremento no tiene que ser <code>i++</code>. El contador puede avanzar de cualquier forma.</p>
-
-    <div class="variantes">
-      <div class="variante">
-        <div class="variante-label">Cuenta regresiva</div>
-        <pre><span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">10</span>; i >= <span class="c-num">1</span>; i--) {
-    <span class="c-fn">cout</span> &lt;&lt; i &lt;&lt; <span class="c-str">" "</span>;
-}
-<span class="c-com">// Salida: 10 9 8 7 6 5 4 3 2 1</span></pre>
-      </div>
-      <div class="variante">
-        <div class="variante-label">Paso 2 — solo pares</div>
-        <pre><span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">2</span>; i &lt;= <span class="c-num">20</span>; i += <span class="c-num">2</span>) {
-    <span class="c-fn">cout</span> &lt;&lt; i &lt;&lt; <span class="c-str">" "</span>;
-}
-<span class="c-com">// Salida: 2 4 6 8 10 12 14 16 18 20</span></pre>
-      </div>
-      <div class="variante">
-        <div class="variante-label">Índice desde 0 (estilo arreglo)</div>
-        <pre><span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">0</span>; i &lt; <span class="c-num">5</span>; i++) {
-    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Elemento "</span> &lt;&lt; i;
-}
-<span class="c-com">// i: 0, 1, 2, 3, 4 (5 elementos)</span></pre>
-      </div>
-      <div class="variante">
-        <div class="variante-label">Paso variable — tabla de multiplicar</div>
-        <pre><span class="c-tipo">int</span> base = <span class="c-num">7</span>;
-<span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">1</span>; i &lt;= <span class="c-num">10</span>; i++) {
-    <span class="c-fn">cout</span> &lt;&lt; base &lt;&lt; <span class="c-str">"x"</span> &lt;&lt; i
-         &lt;&lt; <span class="c-str">"="</span> &lt;&lt; base*i &lt;&lt; endl;
-}</pre>
-      </div>
-    </div>
-
-    <div class="caja-nota">
-      <div class="cn-label">📌 Condición &lt; vs &lt;=</div>
-      <p><code>i &lt; n</code> ejecuta el ciclo <strong>n veces</strong> (i: 0…n-1). <code>i &lt;= n</code> ejecuta el ciclo <strong>n+1 veces</strong> (i: 0…n). Confundirlos es el error off-by-one más frecuente. Antes de escribir el ciclo, decide: ¿el último valor de <code>i</code> debe entrar o no?</p>
-    </div>
-  </section>
-
-  <hr>
-
-  <!-- 5.5 -->
-  <section class="seccion" id="s55">
-    <span class="seccion-num">5.5</span>
-    <h2>for + if: Ciclo con Selección Interna</h2>
-    <p>Combinar el ciclo <code>for</code> con <code>if-else</code> dentro es el patrón más poderoso de esta etapa: permite clasificar, filtrar y acumular selectivamente en una sola pasada.</p>
-
-    <div class="codigo-bloque">
-      <div class="codigo-header">
-        <div style="display:flex;align-items:center;gap:8px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · for + if · análisis de ventas</span></div>
-        <span class="codigo-archivo">analisis_ventas.cpp</span>
-      </div>
-      <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
-<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
-<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
-
-<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
-    <span class="c-kw">const</span> <span class="c-tipo">int</span>    DIAS   = <span class="c-num">7</span>;
-    <span class="c-kw">const</span> <span class="c-tipo">double</span> META   = <span class="c-num">500.0</span>;
-
-    <span class="c-tipo">double</span> venta, totalSemana = <span class="c-num">0.0</span>;
-    <span class="c-tipo">int</span>    diasSuperaron = <span class="c-num">0</span>, diasNoCumplieron = <span class="c-num">0</span>;
-
-    <span class="c-kw">for</span> (<span class="c-tipo">int</span> dia = <span class="c-num">1</span>; dia &lt;= DIAS; dia++) {
-        <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Venta día "</span> &lt;&lt; dia &lt;&lt; <span class="c-str">": $"</span>;
-        <span class="c-fn">cin</span>  &gt;&gt; venta;
-        totalSemana += venta;
-
-        <span class="c-kw">if</span> (venta >= META) {
-            diasSuperaron++;
-            <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  ✓ Meta superada\n"</span>;
-        } <span class="c-kw">else</span> {
-            diasNoCumplieron++;
-            <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  ✗ Faltan $"</span> &lt;&lt; META - venta &lt;&lt; <span class="c-str">"\n"</span>;
-        }
-    }
-
-    <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>) &lt;&lt; <span class="c-str">"\n=== RESUMEN ===\n"</span>;
-    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Total semana:     $"</span> &lt;&lt; totalSemana              &lt;&lt; endl;
-    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Promedio diario:  $"</span> &lt;&lt; totalSemana / DIAS        &lt;&lt; endl;
-    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Días sobre meta:  "</span>  &lt;&lt; diasSuperaron             &lt;&lt; endl;
-    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Días bajo meta:   "</span>  &lt;&lt; diasNoCumplieron          &lt;&lt; endl;
-    <span class="c-kw">return</span> <span class="c-num">0</span>;
-}</pre></div>
-    </div>
-  </section>
-
-  <hr>
-
-  <!-- 5.6 -->
-  <section class="seccion" id="s56">
-    <span class="seccion-num">5.6</span>
-    <h2>Ciclos Anidados</h2>
-    <p>Un ciclo <code>for</code> puede contener otro <code>for</code> en su interior. Por cada iteración del ciclo externo, el ciclo interno se ejecuta completo. Úsalo para tablas de dos dimensiones o series combinadas.</p>
-
-    <div class="codigo-bloque">
-      <div class="codigo-header">
-        <div style="display:flex;align-items:center;gap:8px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · ciclos anidados · tabla de multiplicar 1–5</span></div>
-        <span class="codigo-archivo">tabla_multiplicar.cpp</span>
-      </div>
-      <div class="codigo-body"><pre><span class="c-kw">for</span> (<span class="c-tipo">int</span> fila = <span class="c-num">1</span>; fila &lt;= <span class="c-num">5</span>; fila++) {
-    <span class="c-kw">for</span> (<span class="c-tipo">int</span> col = <span class="c-num">1</span>; col &lt;= <span class="c-num">5</span>; col++) {
-        <span class="c-fn">cout</span> &lt;&lt; setw(<span class="c-num">4</span>) &lt;&lt; fila * col;
-    }
-    <span class="c-fn">cout</span> &lt;&lt; endl;   <span class="c-com">// salto de línea al terminar cada fila</span>
-}
-<span class="c-com">/*
-Salida:
-   1   2   3   4   5
-   2   4   6   8  10
-   3   6   9  12  15
-   4   8  12  16  20
-   5  10  15  20  25
-*/</span></pre></div>
-    </div>
-
-    <h3>Tabla de ejecución — ciclos anidados (primeras 3 iteraciones externas)</h3>
-    <table class="tabla-sim">
-      <thead><tr><th>fila</th><th>col (recorre)</th><th>Valores impresos en esa fila</th></tr></thead>
-      <tbody>
-        <tr><td>1</td><td>1→2→3→4→5</td><td class="acc">1  2  3  4  5</td></tr>
-        <tr><td>2</td><td>1→2→3→4→5</td><td class="acc">2  4  6  8  10</td></tr>
-        <tr><td>3</td><td>1→2→3→4→5</td><td class="acc">3  6  9  12  15</td></tr>
-      </tbody>
-    </table>
-
-    <div class="caja-adv">
-      <div class="ca-label">⚠️ No más de 2 niveles de anidamiento en esta etapa</div>
-      <p>Tres ciclos anidados son muy difíciles de depurar para un programador principiante. Si tu solución requiere tres niveles, es señal de que probablemente el problema necesita un enfoque diferente.</p>
-    </div>
-  </section>
-
-  <hr>
-
-  <!-- 5.7 -->
-  <section class="seccion" id="s57">
-    <span class="seccion-num">5.7</span>
-    <h2>Ejercicios de Aplicación</h2>
-
-    <div class="ejercicios-section">
-      <div class="ejercicios-titulo">✏️ Actividades de Aplicación</div>
-      <div class="ejercicio-item">
-        <div class="ej-num">1</div>
-        <div class="ej-badge comp">Comprensión</div>
-        <div class="ej-enunciado"><strong>Trazar sin computadora.</strong> ¿Cuántas veces ejecuta el bloque cada ciclo y cuál es el valor final de <code>suma</code>? (a) <code>for (int i=1; i&lt;=5; i++) suma += i;</code> (b) <code>for (int i=0; i&lt;5; i++) suma += i*2;</code> (c) <code>for (int i=10; i&gt;=1; i-=3) suma++;</code></div>
-      </div>
-      <div class="ejercicio-item">
-        <div class="ej-num">2</div>
-        <div class="ej-badge aplic">Aplicación</div>
-        <div class="ej-enunciado"><strong>Serie de Fibonacci.</strong> Escribe un programa que muestre los primeros N términos de la serie de Fibonacci (0, 1, 1, 2, 3, 5, 8…). N se lee del usuario. Primero: pseudocódigo + tabla de simulación con N=6. Luego: código C++.</div>
-      </div>
-      <div class="ejercicio-item">
-        <div class="ej-num">3</div>
-        <div class="ej-badge aplic">Aplicación</div>
-        <div class="ej-enunciado"><strong>Análisis de notas con estadísticas.</strong> Lee N notas y calcula: suma, promedio, nota más alta, nota más baja, cantidad de aprobados (≥7) y reprobados. Usa un solo ciclo <code>for</code>. Muestra todos los resultados al final.</div>
-      </div>
-      <div class="ejercicio-item">
-        <div class="ej-num">4</div>
-        <div class="ej-badge aplic">Aplicación</div>
-        <div class="ej-enunciado"><strong>Tabla de conversión.</strong> Muestra una tabla de temperatura de 0°C a 100°C en pasos de 10, con su equivalente en Fahrenheit y Kelvin. Usa <code>setw</code> para alinear columnas. Encabezado: <code>°C | °F | K</code>.</div>
-      </div>
-      <div class="ejercicio-item">
-        <div class="ej-num">5</div>
-        <div class="ej-badge integ">Integrador + IA</div>
-        <div class="ej-enunciado"><strong>Auditar un ciclo generado por IA.</strong> Pide a la IA que genere un programa que calcule la suma de todos los números impares entre 1 y N. Verifica: ¿la condición usa <code>&lt;</code> o <code>&lt;=</code>? ¿Incluye correctamente el N si es impar? Prueba con N=10 (esperado: 25) y N=11 (esperado: 36). ¿El código de la IA pasa ambos?</div>
-      </div>
-    </div>
-
-    <div class="evaluativa">
-      <div class="evaluativa-titulo">Actividad Presencial Evaluativa — Capítulo 5</div>
-      <div class="evaluativa-sub">Sesión 5 · Tiempo: 45 min · Sin acceso a IA</div>
-      <div class="evaluativa-enunciado">
-        Una empresa paga comisiones semanales a sus vendedores. Leer el número de vendedores N, y para cada uno leer su nombre (string) y ventas de 5 días. Calcular: total semanal de cada vendedor, comisión (3% si ventas &gt; $2000, si no 1.5%), y al final: vendedor con más ventas, promedio general y cuántos superaron la meta de $2000 diarios en al menos 3 de 5 días.
-      </div>
-      <ul class="evaluativa-criterios">
-        <li>Pseudocódigo correcto entregado en papel antes de codificar.</li>
-        <li>Ciclo externo sobre vendedores + ciclo interno sobre los 5 días.</li>
-        <li><code>if-else</code> dentro del ciclo para la comisión.</li>
-        <li>Variables de máximo correctamente inicializadas.</li>
-        <li>Salida formateada y tabla de simulación con 2 vendedores de prueba.</li>
-      </ul>
-    </div>
-
-    <div class="puente">
-      <div class="puente-titulo">🌉 Hacia el while y do-while</div>
-      <div class="puente-sub">Preparación para Cap. 6</div>
-      <div class="puente-texto">El <code>for</code> es perfecto cuando el número de iteraciones es conocido. Pero ¿y si el programa debe repetirse hasta que el usuario diga "salir"? ¿O validar una entrada hasta que sea correcta? Para eso existe el <strong><code>while</code></strong> — el ciclo del "mientras que". En el Cap. 6 verás cuándo elegir uno u otro.</div>
-    </div>
-  </section>
-
-</main>
-
-<div class="nav-caps">
-  <a href="practica_04.html" class="nav-cap-btn"><span class="ncb-arrow">←</span><div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Práctica 4 — Selectivas</span></div></a>
-  <a href="practica_05.html" class="nav-cap-btn sig"><span class="ncb-arrow">→</span><div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Sesión Práctica 5</span></div></a>
+<div class="ra-box">
+  <div class="ra-label">Resultado de Aprendizaje — Capítulo 7</div>
+  <div class="ra-texto">El estudiante <strong>combina estructuras de control</strong> (selectivas y repetitivas) para resolver problemas algorítmicos de complejidad real, aplicando una estrategia de diseño antes de codificar y eligiendo la estructura adecuada para cada parte del problema.</div>
 </div>
 
-<footer class="pie">
-  <span>Cap. 5 — Estructuras Repetitivas I: for · Unidad II · ESPAM MFL</span>
-  <span>espam.edu.ec</span>
-</footer>
-</body>
-</html>
+<section class="seccion" id="s71">
+  <span class="seccion-num">7.1</span>
+  <h2>Estrategia de Diseño antes de Codificar</h2>
+  <p>Cuando un problema requiere múltiples estructuras anidadas, escribir código directamente produce errores difíciles de localizar. El proceso correcto tiene cuatro pasos:</p>
+  <table class="tabla-est">
+    <thead><tr><th>Paso</th><th>Acción</th><th>Herramienta</th></tr></thead>
+    <tbody>
+      <tr><td>1. Leer</td><td>Identificar entradas, salidas y restricciones del problema</td><td>Lápiz y papel</td></tr>
+      <tr><td>2. Descomponer</td><td>Dividir el problema en subproblemas más pequeños</td><td>Lista de tareas</td></tr>
+      <tr><td>3. Modelar</td><td>Escribir pseudocódigo o diagrama de flujo</td><td>PSeInt / papel</td></tr>
+      <tr><td>4. Codificar</td><td>Traducir el modelo a C++ verificado</td><td>IDE</td></tr>
+    </tbody>
+  </table>
+  <div class="caja-nota">
+    <div class="cn-label">📌 La regla del 70/30</div>
+    <p>En problemas complejos, dedica el 70% del tiempo a diseñar (pasos 1–3) y solo el 30% a codificar (paso 4). El código que surge de un buen modelo tarda menos en escribirse y tiene menos errores.</p>
+  </div>
+</section>
+
+<hr>
+
+<section class="seccion" id="s72">
+  <span class="seccion-num">7.2</span>
+  <h2>Ciclos Anidados</h2>
+  <p>Un ciclo dentro de otro multiplica las iteraciones. El ciclo externo controla las "filas" y el interno las "columnas". Por cada iteración del externo, el interno completa todas las suyas.</p>
+  <div class="codigo-bloque">
+    <div class="codigo-header"><div style="display:flex;align-items:center;gap:8px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · ciclos anidados · tabla de multiplicar</span></div><span class="codigo-archivo">tabla_mult.cpp</span></div>
+    <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">1</span>; i &lt;= <span class="c-num">5</span>; i++) {       <span class="c-com">// ciclo externo: filas 1..5</span>
+        <span class="c-kw">for</span> (<span class="c-tipo">int</span> j = <span class="c-num">1</span>; j &lt;= <span class="c-num">5</span>; j++) {   <span class="c-com">// ciclo interno: columnas 1..5</span>
+            <span class="c-fn">cout</span> &lt;&lt; setw(<span class="c-num">4</span>) &lt;&lt; i * j;
+        }
+        <span class="c-fn">cout</span> &lt;&lt; endl;                    <span class="c-com">// salto de línea al terminar fila</span>
+    }
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+  </div>
+  <h3>Traza de iteraciones</h3>
+  <table class="tabla-sim">
+    <thead><tr><th>i (externo)</th><th>j (interno)</th><th>i*j</th><th>Total iteraciones</th></tr></thead>
+    <tbody>
+      <tr><td>1</td><td>1, 2, 3, 4, 5</td><td>1, 2, 3, 4, 5</td><td>5</td></tr>
+      <tr><td>2</td><td>1, 2, 3, 4, 5</td><td>2, 4, 6, 8, 10</td><td>5</td></tr>
+      <tr><td>3</td><td>1, 2, 3, 4, 5</td><td>3, 6, 9, 12, 15</td><td>5</td></tr>
+      <tr><td>4</td><td>1, 2, 3, 4, 5</td><td>4, 8, 12, 16, 20</td><td>5</td></tr>
+      <tr><td>5</td><td>1, 2, 3, 4, 5</td><td>5, 10, 15, 20, 25</td><td class="res">Total: 25</td></tr>
+    </tbody>
+  </table>
+  <div class="caja-adv">
+    <div class="ca-label">⚠️ Ciclos anidados e IA</div>
+    <p>La IA genera ciclos anidados correctamente para casos simples, pero en problemas con condiciones de salida complejas puede mezclar variables de control o usar el mismo nombre de variable (<code>i</code>, <code>i</code>) produciendo comportamiento indefinido. Siempre usa nombres descriptivos distintos.</p>
+  </div>
+</section>
+
+<hr>
+
+<section class="seccion" id="s73">
+  <span class="seccion-num">7.3</span>
+  <h2><code>if</code> dentro de Ciclos — Procesamiento Condicional</h2>
+  <p>Combinar <code>if-else</code> con ciclos es el patrón más frecuente en programación real. Permite clasificar, filtrar y acumular selectivamente.</p>
+  <div class="codigo-bloque">
+    <div class="codigo-header"><div style="display:flex;align-items:center;gap:8px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · clasificador de calificaciones</span></div><span class="codigo-archivo">clasificar_notas.cpp</span></div>
+    <div class="codigo-body"><pre><span class="c-tipo">int</span> aprobados = <span class="c-num">0</span>, reprobados = <span class="c-num">0</span>;
+<span class="c-tipo">double</span> nota, sumaAprobados = <span class="c-num">0</span>;
+
+<span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">1</span>; i &lt;= <span class="c-num">30</span>; i++) {
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Nota estudiante "</span> &lt;&lt; i &lt;&lt; <span class="c-str">": "</span>;
+    <span class="c-fn">cin</span>  &gt;&gt; nota;
+
+    <span class="c-kw">if</span> (nota &gt;= <span class="c-num">5.0</span>) {
+        aprobados++;
+        sumaAprobados += nota;
+    } <span class="c-kw">else</span> {
+        reprobados++;
+    }
+}
+
+<span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Aprobados: "</span> &lt;&lt; aprobados &lt;&lt; endl;
+<span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Reprobados: "</span> &lt;&lt; reprobados &lt;&lt; endl;
+<span class="c-kw">if</span> (aprobados &gt; <span class="c-num">0</span>)
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Prom. aprobados: "</span> &lt;&lt; sumaAprobados/aprobados &lt;&lt; endl;</pre></div>
+  </div>
+</section>
+
+<hr>
+
+<section class="seccion" id="s74">
+  <span class="seccion-num">7.4</span>
+  <h2><code>switch</code> + <code>do-while</code> — El Menú Completo</h2>
+  <p>La combinación <code>do-while</code> + <code>switch</code> es el patrón estándar para cualquier sistema con menú. El <code>do-while</code> garantiza que el menú aparezca siempre, y el <code>switch</code> despacha la opción elegida.</p>
+  <div class="codigo-bloque">
+    <div class="codigo-header"><div style="display:flex;align-items:center;gap:8px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · sistema de empleados · menú completo</span></div><span class="codigo-archivo">sistema_empleados.cpp</span></div>
+    <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">int</span>    opcion, cantidad = <span class="c-num">0</span>;
+    <span class="c-tipo">double</span> salario, totalSalarios = <span class="c-num">0</span>;
+    <span class="c-tipo">double</span> maxSalario = <span class="c-num">0</span>;
+
+    <span class="c-kw">do</span> {
+        <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"\n=== NÓMINA ESPAM MFL ===\n"</span>
+             &lt;&lt; <span class="c-str">"1. Registrar empleados\n"</span>
+             &lt;&lt; <span class="c-str">"2. Ver resumen\n"</span>
+             &lt;&lt; <span class="c-str">"3. Salir\n  Opción: "</span>;
+        <span class="c-fn">cin</span> &gt;&gt; opcion;
+
+        <span class="c-kw">switch</span>(opcion) {
+            <span class="c-kw">case</span> <span class="c-num">1</span>: {
+                <span class="c-tipo">int</span> n;
+                <span class="c-kw">do</span> { <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"¿Cuántos empleados? "</span>; <span class="c-fn">cin</span>&gt;&gt;n; }
+                <span class="c-kw">while</span> (n &lt;= <span class="c-num">0</span>);
+
+                <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">1</span>; i &lt;= n; i++) {
+                    <span class="c-kw">do</span> { <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Salario "</span>&lt;&lt;i&lt;&lt;<span class="c-str">": "</span>; <span class="c-fn">cin</span>&gt;&gt;salario; }
+                    <span class="c-kw">while</span> (salario &lt;= <span class="c-num">0</span>);
+
+                    cantidad++;
+                    totalSalarios += salario;
+                    <span class="c-kw">if</span> (salario &gt; maxSalario) maxSalario = salario;
+                }
+                <span class="c-kw">break</span>;
+            }
+            <span class="c-kw">case</span> <span class="c-num">2</span>:
+                <span class="c-kw">if</span> (cantidad == <span class="c-num">0</span>) { <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Sin registros.\n"</span>; <span class="c-kw">break</span>; }
+                <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>)
+                     &lt;&lt; <span class="c-str">"Empleados: "</span> &lt;&lt; cantidad &lt;&lt; endl
+                     &lt;&lt; <span class="c-str">"Promedio:  $"</span> &lt;&lt; totalSalarios/cantidad &lt;&lt; endl
+                     &lt;&lt; <span class="c-str">"Máx:       $"</span> &lt;&lt; maxSalario &lt;&lt; endl;
+                <span class="c-kw">break</span>;
+            <span class="c-kw">case</span> <span class="c-num">3</span>: <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Hasta luego.\n"</span>; <span class="c-kw">break</span>;
+            <span class="c-kw">default</span>: <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Opción inválida.\n"</span>;
+        }
+    } <span class="c-kw">while</span> (opcion != <span class="c-num">3</span>);
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+  </div>
+  <div class="caja-ia">
+    <div class="ci-label">🤖 Estructuras anidadas e IA — riesgo de complejidad excesiva</div>
+    <p>Ante problemas con múltiples condiciones anidadas, la IA suele generar código funcionalmente correcto pero con <strong>anidamiento innecesariamente profundo</strong> o condiciones redundantes. Siempre pregúntate: ¿se puede simplificar con un <code>break</code> anticipado o reestructurando la condición?</p>
+  </div>
+</section>
+
+<hr>
+
+<section class="seccion" id="s75">
+  <span class="seccion-num">7.5</span>
+  <h2>Guía de Elección de Estructura</h2>
+  <p>Ante un problema nuevo, hazte estas preguntas en orden para elegir las estructuras correctas:</p>
+  <table class="tabla-est">
+    <thead><tr><th>Pregunta</th><th>Respuesta → Estructura</th></tr></thead>
+    <tbody>
+      <tr><td>¿El bloque se repite?</td><td>Sí → ciclo. No → secuencia o condicional.</td></tr>
+      <tr><td>¿Cuántas veces se repite?</td><td>Número fijo conocido → <code>for</code>. Desconocido → <code>while</code> o <code>do-while</code>.</td></tr>
+      <tr><td>¿Debe ejecutarse al menos una vez?</td><td>Sí → <code>do-while</code>. No garantizado → <code>while</code>.</td></tr>
+      <tr><td>¿El bloque depende de una condición?</td><td>Binaria → <code>if-else</code>. Múltiples valores enteros → <code>switch</code>.</td></tr>
+      <tr><td>¿Se necesita salir anticipadamente?</td><td>Usa <code>break</code> con criterio. Evita múltiples puntos de salida.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr>
+
+<section class="seccion" id="s76">
+  <span class="seccion-num">7.6</span>
+  <h2>Ejercicios de Integración</h2>
+  <div class="ejercicios-section">
+    <div class="ejercicios-titulo">✏️ Actividades de Integración</div>
+    <div class="ejercicio-item"><div class="ej-num">1</div><div class="ej-badge comp">Comprensión</div><div class="ej-enunciado"><strong>Analizar código.</strong> Dado el sistema de empleados del §7.4, traza manualmente con: 2 empleados (salarios $800 y $1200), luego elegir "Ver resumen". ¿Cuántas veces entra cada ciclo? ¿Cuál es el valor de todas las variables al final?</div></div>
+    <div class="ejercicio-item"><div class="ej-num">2</div><div class="ej-badge aplic">Aplicación</div><div class="ej-enunciado"><strong>Sistema de calificaciones por materia.</strong> Menú con <code>do-while</code>+<code>switch</code>: ingresar notas de N estudiantes (N validado con <code>do-while</code>), calcular promedio, contar aprobados/reprobados, mostrar reporte. Usar <code>for</code> para recorrer N estudiantes y <code>if-else</code> para clasificar.</div></div>
+    <div class="ejercicio-item"><div class="ej-num">3</div><div class="ej-badge aplic">Aplicación</div><div class="ej-enunciado"><strong>Pirámide de asteriscos.</strong> Con ciclos anidados, imprimir una pirámide de N filas (N validado con <code>do-while</code>). La fila i contiene <code>2i-1</code> asteriscos centrados. Añadir opción al menú para elegir carácter de relleno.</div></div>
+    <div class="ejercicio-item"><div class="ej-num">4</div><div class="ej-badge integ">Integrador + IA</div><div class="ej-enunciado"><strong>Sistema de inventario básico.</strong> Menú (do-while): (1) Registrar producto (nombre tipo string, precio validado), (2) Calcular total inventario, (3) Buscar el producto más caro, (4) Salir. Diseña primero en papel, luego codifica. Pide ayuda a la IA solo para entender cómo usar <code>string</code> con <code>cin</code>.</div></div>
+  </div>
+  <div class="evaluativa">
+    <div class="evaluativa-titulo">Actividad Presencial Evaluativa — Capítulo 7</div>
+    <div class="evaluativa-sub">Sesión 7 · Tiempo: 50 min · Sin acceso a IA</div>
+    <div class="evaluativa-enunciado">Sistema de registro de ventas diarias: el usuario ingresa el nombre del vendedor y sus ventas del día (N ventas, N validado). Al final mostrar: total vendido por vendedor, si supera la meta de $500, ranking (el sistema maneja hasta 5 vendedores en sesiones de menú repetidas). Menú principal: registrar vendedor, ver ranking, salir.</div>
+    <ul class="evaluativa-criterios">
+      <li>Diagrama o pseudocódigo en papel antes de codificar.</li>
+      <li>Menú con <code>do-while</code> + <code>switch</code>.</li>
+      <li>Validación con <code>do-while</code> para N ventas y cada monto.</li>
+      <li>Ciclo <code>for</code> correcto para las N ventas por vendedor.</li>
+      <li>Código limpio, comentado, sin errores de compilación.</li>
+    </ul>
+  </div>
+  <div class="puente">
+    <div class="puente-titulo">🌉 Hacia las Funciones</div>
+    <div class="puente-sub">Preparación para Unidad III</div>
+    <div class="puente-texto">Has dominado todas las estructuras de control. Pero a medida que los programas crecen, un único <code>main()</code> con decenas de líneas se vuelve difícil de mantener. En la Unidad III aprenderás a <strong>dividir el código en funciones</strong>: bloques reutilizables con nombre, parámetros y valor de retorno que hacen cada parte más legible y fácil de probar.</div>
+  </div>
+</section>
+
+</main>
+<div class="nav-caps">
+  <a href="practica_06.html" class="nav-cap-btn"><span class="ncb-arrow">←</span><div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Práctica 6 — while/do-while</span></div></a>
+  <a href="practica_07.html" class="nav-cap-btn sig"><span class="ncb-arrow">→</span><div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Sesión Práctica 7</span></div></a>
+</div>
+<footer class="pie"><span>Cap. 7 — Integración de Estructuras · Unidad II · ESPAM MFL</span><span>espam.edu.ec</span></footer>
+</body></html>

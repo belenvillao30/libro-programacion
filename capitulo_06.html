@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cap. 6 — while y do-while | ESPAM MFL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{--verde:#005846;--verde-medio:#007a5e;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fondo);font-size:16px;line-height:1.7;overflow-x:hidden;}
+.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--verde);display:flex;align-items:center;padding:0 24px;gap:14px;z-index:1000;border-bottom:3px solid var(--verde-claro);}
+.topbar-logo{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--verde-claro);}
+.topbar-sep{width:1px;height:20px;background:rgba(255,255,255,.2);}
+.topbar-titulo{font-size:12px;color:rgba(255,255,255,.65);}
+.topbar-right{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;}
+.nav-menu{background:var(--verde);border-bottom:2px solid rgba(203,219,42,.3);margin-top:50px;}
+.nav-toggle{width:100%;background:transparent;color:white;border:none;padding:11px 24px;text-align:left;cursor:pointer;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;}
+.nav-toggle:hover{background:rgba(255,255,255,.04);}
+.nav-toggle-arrow{color:var(--verde-claro);font-size:12px;}
+.nav-body{display:none;padding:18px 24px 22px;}
+.nav-body.abierto{display:flex;flex-wrap:wrap;gap:28px;}
+.nav-grupo{min-width:170px;}
+.nav-grupo-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:7px;display:block;padding-bottom:5px;border-bottom:1px solid rgba(203,219,42,.2);}
+.nav-items{list-style:none;}
+.nav-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12px;color:rgba(255,255,255,.72);text-decoration:none;transition:color .15s;}
+.nav-item:hover{color:var(--verde-claro);}
+.nav-item.activo{color:var(--verde-claro);font-weight:700;}
+.nav-item.activo .nav-num{color:var(--verde-claro);}
+.nav-item.practica{color:rgba(8,184,157,.85);font-style:italic;}
+.nav-item.practica:hover{color:var(--turquesa);}
+.nav-item.practica .nav-num{color:rgba(8,184,157,.45);}
+.nav-item.prox{color:rgba(255,255,255,.28);pointer-events:none;}
+.nav-num{font-family:'Space Mono',monospace;font-size:9px;min-width:20px;flex-shrink:0;color:rgba(255,255,255,.28);}
+.page-header{background:var(--verde);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--verde-claro);}
+.page-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(203,219,42,.07) 1px,transparent 1px);background-size:28px 28px;}
+.ph-num{position:absolute;right:48px;top:0;font-size:240px;font-weight:900;color:rgba(255,255,255,.04);line-height:1;font-family:'Space Mono',monospace;}
+.ph-inner{position:relative;z-index:1;}
+.ph-badge{display:inline-block;background:rgba(203,219,42,.15);border:1px solid rgba(203,219,42,.35);color:var(--verde-claro);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+.ph-titulo{font-size:36px;font-weight:900;line-height:1.1;color:white;margin-bottom:8px;}
+.ph-subtitulo{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:28px;}
+.ph-meta{display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;}
+.ph-meta-item{display:flex;flex-direction:column;gap:3px;}
+.ph-meta-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.ph-meta-valor{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;}
+.anclas{background:white;border-bottom:1px solid var(--borde);padding:12px 64px;display:flex;gap:6px;flex-wrap:wrap;}
+.ancla{font-family:'Space Mono',monospace;font-size:9.5px;color:var(--verde-medio);text-decoration:none;padding:4px 10px;border:1px solid var(--borde);border-radius:4px;transition:all .15s;}
+.ancla:hover{background:var(--verde);color:var(--verde-claro);border-color:var(--verde);}
+.body-wrap{max-width:960px;margin:0 auto;padding:56px 64px 0;}
+.seccion{margin-bottom:52px;scroll-margin-top:120px;}
+.seccion-num{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:4px;display:block;}
+h2{font-size:24px;font-weight:800;color:var(--verde);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid rgba(0,88,70,.12);}
+h3{font-size:16px;font-weight:700;color:var(--verde);margin:28px 0 10px;}
+p{margin-bottom:14px;color:var(--texto-suave);font-size:15px;}
+hr{border:none;border-top:1px solid var(--borde);margin:48px 0;}
+code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70,.07);padding:1px 6px;border-radius:3px;color:var(--verde);}
+.ra-box{background:rgba(0,88,70,.06);border:1px solid rgba(0,88,70,.15);border-left:4px solid var(--verde);border-radius:0 10px 10px 0;padding:18px 22px;margin-bottom:40px;}
+.ra-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:8px;}
+.ra-texto{font-size:14px;color:var(--texto);line-height:1.65;}
+/* FOR ANATOMY */
+.for-anatomy{background:var(--codigo-bg);border-radius:12px;padding:28px 32px;margin:20px 0;}
+.fa-titulo{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:20px;}
+.fa-code{font-family:'Space Mono',monospace;font-size:20px;color:rgba(255,255,255,.9);line-height:1.6;margin-bottom:24px;}
+.fa-kw{color:var(--verde-claro);font-weight:700;}
+.fa-init{color:#82aaff;}.fa-cond{color:var(--turquesa);}.fa-incr{color:#f78c6c;}.fa-body{color:#a8d8b0;}
+.fa-partes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:8px;}
+.fa-parte{border-radius:8px;padding:14px 16px;}
+.fa-parte.init{background:rgba(130,170,255,.1);border:1px solid rgba(130,170,255,.25);}
+.fa-parte.cond{background:rgba(8,184,157,.1);border:1px solid rgba(8,184,157,.25);}
+.fa-parte.incr{background:rgba(247,140,108,.1);border:1px solid rgba(247,140,108,.25);}
+.fa-parte-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;}
+.fa-parte.init .fa-parte-label{color:#82aaff;}
+.fa-parte.cond .fa-parte-label{color:var(--turquesa);}
+.fa-parte.incr .fa-parte-label{color:#f78c6c;}
+.fa-parte-desc{font-size:12.5px;color:rgba(255,255,255,.65);line-height:1.5;}
+/* CÓDIGO */
+.codigo-bloque{background:var(--codigo-bg);border-radius:10px;overflow:hidden;margin:18px 0;}
+.codigo-header{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);}
+.codigo-dots{display:flex;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
+.codigo-lang{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.3);}
+.codigo-archivo{font-family:'Space Mono',monospace;font-size:10px;color:var(--turquesa);}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+.c-inc{color:#c792ea;}.c-str{color:#a8d8b0;}.c-kw{color:var(--verde-claro);}.c-ns{color:var(--turquesa);}.c-tipo{color:#82aaff;}.c-fn{color:var(--turquesa);}.c-num{color:#f78c6c;}.c-com{color:rgba(255,255,255,.3);font-style:italic;}
+/* TABLA SIM */
+.tabla-sim{width:100%;border-collapse:collapse;margin:18px 0;font-family:'Space Mono',monospace;font-size:12px;}
+.tabla-sim thead tr{background:var(--verde);}
+.tabla-sim thead th{padding:9px 12px;color:white;font-size:10px;text-align:center;letter-spacing:.5px;}
+.tabla-sim tbody tr{border-bottom:1px solid var(--borde);}
+.tabla-sim tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-sim tbody td{padding:8px 12px;text-align:center;color:var(--texto-suave);}
+.tabla-sim td.res{background:rgba(203,219,42,.15);color:var(--verde);font-weight:700;}
+.tabla-sim td.acc{background:rgba(8,184,157,.08);color:var(--turquesa);}
+/* VARIANTES GRID */
+.variantes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0;}
+.variante{background:var(--codigo-bg);border-radius:10px;overflow:hidden;}
+.variante-label{padding:8px 16px;background:rgba(255,255,255,.05);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--turquesa);border-bottom:1px solid rgba(255,255,255,.08);}
+.variante pre{padding:16px 18px;font-family:'Space Mono',monospace;font-size:12px;line-height:1.8;color:rgba(255,255,255,.85);overflow-x:auto;}
+/* CAJAS */
+.caja-nota{background:rgba(0,88,70,.05);border-left:4px solid var(--verde);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-nota .cn-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:6px;display:block;}
+.caja-nota p{margin:0;font-size:14px;color:var(--texto);}
+.caja-adv{background:rgba(203,219,42,.08);border-left:4px solid var(--verde-claro);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-adv .ca-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7a8a10;margin-bottom:6px;display:block;}
+.caja-adv p{margin:0;font-size:14px;color:#4a540a;}
+.caja-ia{background:#0d1e18;border-radius:10px;padding:20px 24px;margin:20px 0;border-left:4px solid var(--turquesa);}
+.caja-ia .ci-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:9px;display:block;}
+.caja-ia p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin:0;}
+.caja-ia p strong{color:var(--verde-claro);}
+/* TABLA EST */
+.tabla-est{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;}
+.tabla-est thead tr{background:var(--verde);}
+.tabla-est thead th{padding:10px 15px;text-align:left;font-size:12px;font-weight:700;color:white;}
+.tabla-est tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-est tbody td{padding:9px 15px;border-bottom:1px solid var(--borde);color:var(--texto-suave);vertical-align:top;}
+.tabla-est tbody td:first-child{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--verde);}
+/* EJERCICIOS */
+.ejercicios-section{background:white;border:1px solid var(--borde);border-radius:12px;overflow:hidden;margin:20px 0;}
+.ejercicios-titulo{background:var(--verde);color:white;padding:12px 20px;font-size:13px;font-weight:700;}
+.ejercicio-item{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid var(--borde);}
+.ejercicio-item:last-child{border-bottom:none;}
+.ej-num{min-width:28px;height:28px;background:var(--fondo-alt);border:1px solid var(--borde);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);flex-shrink:0;}
+.ej-badge{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:3px;flex-shrink:0;margin-top:4px;}
+.ej-badge.comp{background:rgba(0,88,70,.08);color:var(--verde);}
+.ej-badge.aplic{background:rgba(8,184,157,.1);color:var(--turquesa);}
+.ej-badge.integ{background:rgba(203,219,42,.12);color:#7a8a10;}
+.ej-enunciado{font-size:13.5px;color:var(--texto-suave);line-height:1.6;}
+.evaluativa{background:rgba(0,88,70,.04);border:2px solid rgba(0,88,70,.15);border-radius:12px;padding:24px 28px;margin-top:36px;}
+.evaluativa-titulo{font-size:15px;font-weight:800;color:var(--verde);margin-bottom:3px;}
+.evaluativa-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;}
+.evaluativa-enunciado{font-size:14px;color:var(--texto-suave);line-height:1.7;margin-bottom:14px;}
+.evaluativa-criterios{margin:0;padding-left:18px;}
+.evaluativa-criterios li{font-size:13px;color:var(--texto-suave);margin-bottom:5px;}
+.puente{background:var(--codigo-bg);border-radius:12px;padding:24px 28px;margin-top:28px;border-left:4px solid var(--turquesa);}
+.puente-titulo{font-size:15px;font-weight:800;color:white;margin-bottom:3px;}
+.puente-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+.puente-texto{font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;}
+.puente-texto strong{color:var(--verde-claro);}
+.nav-caps{display:flex;justify-content:space-between;align-items:center;padding:20px 64px;background:var(--fondo-alt);border-top:1px solid var(--borde);margin-top:48px;flex-wrap:wrap;gap:12px;}
+.nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 18px;border:1.5px solid rgba(0,88,70,.2);border-radius:8px;background:white;max-width:280px;transition:all .2s;}
+.nav-cap-btn:hover{border-color:var(--verde);}
+.nav-cap-btn.sig{flex-direction:row-reverse;text-align:right;}
+.ncb-arrow{font-size:16px;color:var(--verde);}
+.ncb-label{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,88,70,.45);margin-bottom:2px;display:block;}
+.ncb-titulo{font-size:13px;font-weight:700;color:var(--verde);}
+.pie{background:var(--verde);color:rgba(255,255,255,.35);padding:14px 64px;font-family:'Space Mono',monospace;font-size:9px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:1px;}
+.pie span:first-child{color:rgba(255,255,255,.55);}
+@media(max-width:768px){.page-header,.body-wrap,.nav-caps,.pie,.anclas{padding-left:24px;padding-right:24px;}.ph-titulo{font-size:26px;}.fa-partes{grid-template-columns:1fr;}.variantes{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-logo">ESPAM MFL</div><div class="topbar-sep"></div>
+  <div class="topbar-titulo">Introducción a la Programación</div>
+  <div class="topbar-right">CARRERA DE COMPUTACIÓN</div>
+</header>
+<nav class="nav-menu">
+  <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">
+    ☰ &nbsp; Contenidos del libro <span class="nav-toggle-arrow">▼</span>
+  </button>
+      <div class="nav-body">
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Inicio</span>
+        <ul class="nav-items">
+          <li><a href="index.html" class="nav-item"><span class="nav-num">◉</span> Portada</a></li>
+          <li><a href="preliminares.html" class="nav-item"><span class="nav-num">—</span> Preliminares</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad I — Fundamentos</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_01.html" class="nav-item"><span class="nav-num">01</span> Pensamiento Algorítmico</a></li>
+          <li><a href="practica_01.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 1</a></li>
+          <li><a href="capitulo_02.html" class="nav-item"><span class="nav-num">02</span> Tipos de Datos y Variables</a></li>
+          <li><a href="practica_02.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 2</a></li>
+          <li><a href="capitulo_03.html" class="nav-item"><span class="nav-num">03</span> Depuración y Buenas Prácticas</a></li>
+          <li><a href="practica_03.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 3</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad II — Control</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_04.html" class="nav-item"><span class="nav-num">04</span> Estructuras Selectivas</a></li>
+          <li><a href="practica_04.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 4</a></li>
+          <li><a href="capitulo_05.html" class="nav-item"><span class="nav-num">05</span> Estructuras Repetitivas I</a></li>
+          <li><a href="practica_05.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 5</a></li>
+          <li><a href="capitulo_06.html" class="nav-item activo"><span class="nav-num">06</span> Estructuras Repetitivas II</a></li>
+          <li><a href="practica_06.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 6</a></li>
+          <li><a href="capitulo_07.html" class="nav-item"><span class="nav-num">07</span> Integración de Estructuras</a></li>
+          <li><a href="practica_07.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 7</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad III — Funciones</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_08.html" class="nav-item"><span class="nav-num">08</span> Funciones en C++</a></li>
+          <li><a href="practica_08.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 8</a></li>
+          <li><a href="capitulo_09.html" class="nav-item prox"><span class="nav-num">09</span> Paso por Valor y Referencia</a></li>
+          <li><a href="practica_09.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 9</a></li>
+          <li><a href="capitulo_10.html" class="nav-item prox"><span class="nav-num">10</span> Pila y Modularidad</a></li>
+          <li><a href="practica_10.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 10</a></li>
+          <li><a href="capitulo_11.html" class="nav-item prox"><span class="nav-num">11</span> Aplicaciones Funcionales</a></li>
+          <li><a href="practica_11.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 11</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad IV — Arreglos</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_12.html" class="nav-item prox"><span class="nav-num">12</span> Arreglos Unidimensionales</a></li>
+          <li><a href="practica_12.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 12</a></li>
+          <li><a href="capitulo_13.html" class="nav-item prox"><span class="nav-num">13</span> Búsqueda y Ordenamiento</a></li>
+          <li><a href="practica_13.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 13</a></li>
+          <li><a href="capitulo_14.html" class="nav-item prox"><span class="nav-num">14</span> Arreglos Bidimensionales</a></li>
+          <li><a href="practica_14.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 14</a></li>
+          <li><a href="capitulo_15.html" class="nav-item prox"><span class="nav-num">15</span> Proyecto Integrador Final</a></li>
+          <li><a href="practica_15.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 15</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Recursos</span>
+        <ul class="nav-items">
+          <li><a href="anexos.html" class="nav-item prox"><span class="nav-num">—</span> Anexos y Rúbricas</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+  </nav>
+<section class="page-header">
+  <div class="ph-num">6</div>
+  <div class="ph-inner">
+    <div class="ph-badge">📘 Unidad II · Capítulo 6</div>
+    <h1 class="ph-titulo">Estructuras Repetitivas II:<br><code style="color:var(--verde-claro);font-size:32px">while</code> y <code style="color:var(--verde-claro);font-size:32px">do-while</code></h1>
+    <p class="ph-subtitulo">Ciclos de condición desconocida · validación de entrada · menús interactivos · break y continue</p>
+    <div class="ph-meta">
+      <div class="ph-meta-item"><span class="ph-meta-label">Horas presenciales</span><span class="ph-meta-valor">3 ACD + 2 PECD</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Horas autónomas</span><span class="ph-meta-valor">3 AA + 1 PEND</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Resultado</span><span class="ph-meta-valor">R.A. — B</span></div>
+    </div>
+  </div>
+</section>
+<nav class="anclas">
+  <a class="ancla" href="#s61">6.1 while</a>
+  <a class="ancla" href="#s62">6.2 do-while</a>
+  <a class="ancla" href="#s63">6.3 Comparativa</a>
+  <a class="ancla" href="#s64">6.4 Validación</a>
+  <a class="ancla" href="#s65">6.5 break / continue</a>
+  <a class="ancla" href="#s66">6.6 Ejercicios</a>
+</nav>
+<main class="body-wrap">
+
+<div class="ra-box">
+  <div class="ra-label">Resultado de Aprendizaje — Capítulo 6</div>
+  <div class="ra-texto">El estudiante <strong>implementa ciclos <code>while</code> y <code>do-while</code></strong> distinguiendo cuándo la condición se evalúa al inicio o al final, valida entradas con <code>do-while</code>, construye menús interactivos y aplica <code>break</code> y <code>continue</code> con criterio técnico.</div>
+</div>
+
+<section class="seccion" id="s61">
+  <span class="seccion-num">6.1</span>
+  <h2>El Ciclo <code>while</code> — Condición al Inicio</h2>
+  <p>El <code>while</code> evalúa su condición <strong>antes</strong> de cada iteración. Si la condición es falsa desde el principio, el bloque <em>nunca</em> se ejecuta. Es el ciclo ideal cuando no sabemos de antemano cuántas repeticiones serán necesarias.</p>
+  <div class="codigo-bloque">
+    <div class="codigo-header"><div style="display:flex;align-items:center;gap:8px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · while con valor centinela</span></div><span class="codigo-archivo">suma_centinela.cpp</span></div>
+    <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">double</span> numero, suma = <span class="c-num">0</span>;
+    <span class="c-tipo">int</span>    cantidad = <span class="c-num">0</span>;
+
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Ingrese números (0 para terminar):\n"</span>;
+    <span class="c-fn">cin</span>  &gt;&gt; numero;              <span class="c-com">// primera lectura ANTES del while</span>
+
+    <span class="c-kw">while</span> (numero != <span class="c-num">0</span>) {
+        suma += numero;
+        cantidad++;
+        <span class="c-fn">cin</span> &gt;&gt; numero;           <span class="c-com">// leer de nuevo al final del cuerpo</span>
+    }
+
+    <span class="c-kw">if</span> (cantidad &gt; <span class="c-num">0</span>)
+        <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>)
+             &lt;&lt; <span class="c-str">"Promedio: "</span> &lt;&lt; suma/cantidad &lt;&lt; endl;
+    <span class="c-kw">else</span>
+        <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"No ingresaste números.\n"</span>;
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+  </div>
+  <div class="caja-nota">
+    <div class="cn-label">📌 Patrón leer → verificar → procesar → leer de nuevo</div>
+    <p>La primera lectura ocurre <strong>antes</strong> del ciclo para que la condición tenga un valor que evaluar. La segunda lectura está al <strong>final del cuerpo</strong>. Si olvidas esa segunda lectura tendrás un bucle infinito.</p>
+  </div>
+  <h3>Tabla de simulación — entradas: 5, 3, 8, 0</h3>
+  <table class="tabla-sim">
+    <thead><tr><th>numero leído</th><th>numero != 0</th><th>suma</th><th>cantidad</th></tr></thead>
+    <tbody>
+      <tr><td>5 (antes)</td><td style="color:var(--turquesa)">✓ entra</td><td>5</td><td>1</td></tr>
+      <tr><td>3</td><td style="color:var(--turquesa)">✓</td><td>8</td><td>2</td></tr>
+      <tr><td>8</td><td style="color:var(--turquesa)">✓</td><td>16</td><td>3</td></tr>
+      <tr><td>0</td><td style="color:#c0392b">✗ sale</td><td class="res">16</td><td class="res">3 → prom = 5.33</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr>
+
+<section class="seccion" id="s62">
+  <span class="seccion-num">6.2</span>
+  <h2>El Ciclo <code>do-while</code> — Condición al Final</h2>
+  <p>El <code>do-while</code> ejecuta el bloque <strong>primero</strong> y evalúa la condición después. Garantiza <strong>al menos una ejecución</strong> aunque la condición sea falsa desde el inicio. Es la estructura natural para menús y validación de entrada.</p>
+  <div class="codigo-bloque">
+    <div class="codigo-header"><div style="display:flex;align-items:center;gap:8px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · do-while · menú con switch</span></div><span class="codigo-archivo">menu_figuras.cpp</span></div>
+    <div class="codigo-body"><pre><span class="c-tipo">int</span> opcion;
+<span class="c-kw">do</span> {
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"\n=== FIGURAS GEOMÉTRICAS ===\n"</span>
+         &lt;&lt; <span class="c-str">"1. Área del círculo\n"</span>
+         &lt;&lt; <span class="c-str">"2. Área del rectángulo\n"</span>
+         &lt;&lt; <span class="c-str">"3. Salir\n"</span>
+         &lt;&lt; <span class="c-str">"Opción: "</span>;
+    <span class="c-fn">cin</span> &gt;&gt; opcion;
+
+    <span class="c-kw">switch</span>(opcion) {
+        <span class="c-kw">case</span> <span class="c-num">1</span>: { <span class="c-tipo">double</span> r;
+                  <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Radio: "</span>; <span class="c-fn">cin</span>&gt;&gt;r;
+                  <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Área = "</span>&lt;&lt;<span class="c-num">3.14159</span>*r*r&lt;&lt;endl; <span class="c-kw">break</span>; }
+        <span class="c-kw">case</span> <span class="c-num">2</span>: { <span class="c-tipo">double</span> b,h;
+                  <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Base y altura: "</span>; <span class="c-fn">cin</span>&gt;&gt;b&gt;&gt;h;
+                  <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Área = "</span>&lt;&lt;b*h&lt;&lt;endl; <span class="c-kw">break</span>; }
+        <span class="c-kw">case</span> <span class="c-num">3</span>: <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Hasta luego.\n"</span>; <span class="c-kw">break</span>;
+        <span class="c-kw">default</span>: <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Opción inválida.\n"</span>;
+    }
+} <span class="c-kw">while</span> (opcion != <span class="c-num">3</span>);</pre></div>
+  </div>
+  <div class="caja-nota">
+    <div class="cn-label">📌 do-while es el ciclo natural del menú</div>
+    <p>Un menú siempre debe mostrarse al menos una vez antes de preguntar si el usuario quiere continuar. El <code>do-while</code> modela exactamente eso: <em>mostrar → ejecutar → ¿repetir?</em> Nota el punto y coma obligatorio después del <code>while(condición);</code></p>
+  </div>
+</section>
+
+<hr>
+
+<section class="seccion" id="s63">
+  <span class="seccion-num">6.3</span>
+  <h2>Comparativa: <code>for</code> vs <code>while</code> vs <code>do-while</code></h2>
+  <table class="tabla-est">
+    <thead><tr><th>Ciclo</th><th>¿Cuándo usarlo?</th><th>Condición</th><th>Mín. ejecuciones</th></tr></thead>
+    <tbody>
+      <tr><td>for</td><td>Número de iteraciones conocido de antemano (recorrer N elementos)</td><td>Al inicio</td><td>0</td></tr>
+      <tr><td>while</td><td>Número desconocido, leer hasta valor centinela, condición compleja</td><td>Al inicio</td><td>0</td></tr>
+      <tr><td>do-while</td><td>Menús, validación: el bloque debe ejecutarse al menos una vez</td><td>Al final</td><td>1 siempre</td></tr>
+    </tbody>
+  </table>
+  <div class="comparar">
+    <div class="comp-bloque malo" style="--comp-title-bg:rgba(0,88,70,.12)">
+      <div class="comp-label" style="background:rgba(0,88,70,.12);color:var(--verde)">while — puede NO ejecutarse</div>
+      <pre style="background:rgba(0,88,70,.03);color:#0a3a28;border:1px solid rgba(0,88,70,.12);padding:14px 16px;font-family:'Space Mono',monospace;font-size:12px;line-height:1.75">int x = 10;
+while (x &lt; 5) {
+    cout &lt;&lt; x; // NUNCA ejecuta
+    x++;
+}
+// bloque ignorado</pre>
+    </div>
+    <div class="comp-bloque bien" style="">
+      <div class="comp-label" style="">do-while — ejecuta al menos 1 vez</div>
+      <pre style="padding:14px 16px;font-family:'Space Mono',monospace;font-size:12px;line-height:1.75">int x = 10;
+do {
+    cout &lt;&lt; x; // imprime 10
+    x++;
+} while (x &lt; 5);
+// ejecutó aunque condición era falsa</pre>
+    </div>
+  </div>
+  <div class="caja-ia">
+    <div class="ci-label">🤖 IA y los bucles infinitos</div>
+    <p>La IA suele generar <code>while(true)</code> con un <code>break</code> interno. Funciona, pero <strong>oculta la condición de salida</strong> y dificulta el razonamiento y la depuración. Prefiere siempre la condición explícita en el <code>while</code>: comunica la intención del algoritmo y hace el código más legible.</p>
+  </div>
+</section>
+
+<hr>
+
+<section class="seccion" id="s64">
+  <span class="seccion-num">6.4</span>
+  <h2>Validación de Entrada con <code>do-while</code></h2>
+  <p>El patrón más práctico del <code>do-while</code>: pedir un dato hasta que cumpla las restricciones. Garantiza que el programa nunca trabaje con datos fuera de rango.</p>
+  <div class="codigo-bloque">
+    <div class="codigo-header"><div style="display:flex;align-items:center;gap:8px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · validación de nota</span></div><span class="codigo-archivo">validar_nota.cpp</span></div>
+    <div class="codigo-body"><pre><span class="c-tipo">double</span> nota;
+<span class="c-kw">do</span> {
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Nota (0.0 – 10.0): "</span>;
+    <span class="c-fn">cin</span>  &gt;&gt; nota;
+    <span class="c-kw">if</span> (nota &lt; <span class="c-num">0.0</span> || nota &gt; <span class="c-num">10.0</span>)
+        <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  ✗ Fuera de rango. Intente de nuevo.\n"</span>;
+} <span class="c-kw">while</span> (nota &lt; <span class="c-num">0.0</span> || nota &gt; <span class="c-num">10.0</span>);
+
+<span class="c-com">// Aquí nota está garantizada en [0.0, 10.0]</span>
+<span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Nota válida: "</span> &lt;&lt; nota &lt;&lt; endl;</pre></div>
+  </div>
+  <div class="caja-adv">
+    <div class="ca-label">⚠️ Bucle infinito — el error más frecuente</div>
+    <p>Causas más comunes: olvidar actualizar la variable de control, escribir <code>=</code> en lugar de <code>==</code>, o una condición que nunca puede volverse falsa. Siempre traza el ciclo en papel antes de ejecutarlo.</p>
+  </div>
+</section>
+
+<hr>
+
+<section class="seccion" id="s65">
+  <span class="seccion-num">6.5</span>
+  <h2><code>break</code> y <code>continue</code></h2>
+  <table class="tabla-est">
+    <thead><tr><th>Sentencia</th><th>Efecto inmediato</th><th>Cuándo usarla</th></tr></thead>
+    <tbody>
+      <tr><td>break</td><td>Sale del ciclo completo</td><td>Encontrar el primer elemento, condición de error crítico</td></tr>
+      <tr><td>continue</td><td>Salta el resto de la iteración actual; va a la siguiente</td><td>Ignorar valores inválidos o especiales sin salir del ciclo</td></tr>
+    </tbody>
+  </table>
+  <div class="codigo-bloque">
+    <div class="codigo-header"><div style="display:flex;align-items:center;gap:8px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · break y continue</span></div><span class="codigo-archivo">break_continue.cpp</span></div>
+    <div class="codigo-body"><pre><span class="c-com">// break: encontrar primer número negativo entre 10 datos</span>
+<span class="c-tipo">int</span> n; <span class="c-tipo">bool</span> encontrado = <span class="c-kw">false</span>;
+<span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">0</span>; i &lt; <span class="c-num">10</span>; i++) {
+    <span class="c-fn">cin</span> &gt;&gt; n;
+    <span class="c-kw">if</span> (n &lt; <span class="c-num">0</span>) { encontrado = <span class="c-kw">true</span>; <span class="c-kw">break</span>; }
+}
+<span class="c-fn">cout</span> &lt;&lt; (encontrado ? <span class="c-str">"Negativo encontrado"</span> : <span class="c-str">"Ninguno negativo"</span>) &lt;&lt; endl;
+
+<span class="c-com">// continue: sumar solo positivos, ignorar 0 y negativos</span>
+<span class="c-tipo">double</span> suma = <span class="c-num">0</span>;
+<span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">0</span>; i &lt; <span class="c-num">10</span>; i++) {
+    <span class="c-fn">cin</span> &gt;&gt; n;
+    <span class="c-kw">if</span> (n &lt;= <span class="c-num">0</span>) <span class="c-kw">continue</span>;  <span class="c-com">// salta esta iteración</span>
+    suma += n;
+}</pre></div>
+  </div>
+</section>
+
+<hr>
+
+<section class="seccion" id="s66">
+  <span class="seccion-num">6.6</span>
+  <h2>Ejercicios de Aplicación</h2>
+  <div class="ejercicios-section">
+    <div class="ejercicios-titulo">✏️ Actividades de Aplicación</div>
+    <div class="ejercicio-item"><div class="ej-num">1</div><div class="ej-badge comp">Comprensión</div><div class="ej-enunciado"><strong>Trazar sin computadora.</strong> ¿Cuántas veces ejecuta el bloque? (a) <code>int x=1; while(x&lt;=16) x*=2;</code> (b) <code>int x=20; do{x-=3;}while(x&gt;0);</code> (c) <code>while</code> con entradas 2, 7, 5 y condición <code>x!=5</code>.</div></div>
+    <div class="ejercicio-item"><div class="ej-num">2</div><div class="ej-badge aplic">Aplicación</div><div class="ej-enunciado"><strong>Validador de edad.</strong> Usa <code>do-while</code> para pedir la edad hasta que esté en [0, 120]. Luego clasifica: menor (0-17), adulto (18-64), adulto mayor (65+). Muestra cuántos intentos tomó.</div></div>
+    <div class="ejercicio-item"><div class="ej-num">3</div><div class="ej-badge aplic">Aplicación</div><div class="ej-enunciado"><strong>Acumulador con centinela.</strong> Con <code>while</code>, leer montos de venta hasta ingresar -1. Calcular total, promedio, mayor y menor venta. Usar <code>continue</code> para ignorar valores de 0 en el cálculo del promedio.</div></div>
+    <div class="ejercicio-item"><div class="ej-num">4</div><div class="ej-badge aplic">Aplicación</div><div class="ej-enunciado"><strong>Cajero automático.</strong> Saldo inicial $500. Con <code>do-while</code>, permitir retiros hasta que el usuario elija salir o el saldo sea 0. Validar con <code>do-while</code> interno que el monto sea positivo y no supere el saldo disponible.</div></div>
+    <div class="ejercicio-item"><div class="ej-num">5</div><div class="ej-badge integ">Integrador + IA</div><div class="ej-enunciado"><strong>Auditar un while(true).</strong> Pide a la IA un menú con <code>while(true)</code> y <code>break</code>. Reescríbelo usando <code>do-while</code> con condición explícita. Compara legibilidad y comportamiento. Documenta tu análisis de 5 líneas.</div></div>
+  </div>
+  <div class="evaluativa">
+    <div class="evaluativa-titulo">Actividad Presencial Evaluativa — Capítulo 6</div>
+    <div class="evaluativa-sub">Sesión 6 · Tiempo: 45 min · Sin acceso a IA</div>
+    <div class="evaluativa-enunciado">Sistema de votación: recibe votos (1 = candidato A, 2 = candidato B, 0 = terminar). Usar <code>while</code> para recibir votos hasta 0. Usar <code>do-while</code> para validar que cada voto sea 0, 1 o 2. Al final: votos por A, votos por B, total válidos, ganador o empate.</div>
+    <ul class="evaluativa-criterios">
+      <li>Pseudocódigo en papel antes de codificar.</li>
+      <li><code>while</code> externo con condición explícita (no <code>while(true)</code>).</li>
+      <li><code>do-while</code> interno para validar cada voto.</li>
+      <li>Determinación correcta del ganador con <code>if-else if</code>.</li>
+      <li>Tabla de simulación con al menos 5 votos de prueba.</li>
+    </ul>
+  </div>
+  <div class="puente">
+    <div class="puente-titulo">🌉 Hacia la Integración de Estructuras</div>
+    <div class="puente-sub">Preparación para Cap. 7</div>
+    <div class="puente-texto">Ya tienes las tres estructuras repetitivas. En el Cap. 7 las combinarás con <strong>if-else y switch</strong> para resolver problemas reales complejos que requieren múltiples estructuras anidadas y una estrategia de diseño antes de codificar.</div>
+  </div>
+</section>
+
+</main>
+<div class="nav-caps">
+  <a href="practica_05.html" class="nav-cap-btn"><span class="ncb-arrow">←</span><div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Práctica 5 — for</span></div></a>
+  <a href="practica_06.html" class="nav-cap-btn sig"><span class="ncb-arrow">→</span><div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Sesión Práctica 6</span></div></a>
+</div>
+<footer class="pie"><span>Cap. 6 — while y do-while · Unidad II · ESPAM MFL</span><span>espam.edu.ec</span></footer>
+</body></html>
