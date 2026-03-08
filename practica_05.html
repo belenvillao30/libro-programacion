@@ -132,12 +132,23 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
   <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">
     ☰ &nbsp; Contenidos del libro <span class="nav-toggle-arrow">▼</span>
   </button>
-  <div class="nav-body">
+    <div class="nav-body">
     <div class="nav-grupo">
-      <span class="nav-grupo-label">Unidad I</span>
+      <span class="nav-grupo-label">Inicio</span>
+      <ul class="nav-items">
+        <li><a href="index.html" class="nav-item"><span class="nav-num">◉</span> Portada</a></li>
+        <li><a href="preliminares.html" class="nav-item"><span class="nav-num">—</span> Preliminares</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidad I — Fundamentos</span>
       <ul class="nav-items">
         <li><a href="capitulo_01.html" class="nav-item"><span class="nav-num">01</span> Pensamiento Algorítmico</a></li>
-        <li><a href="capitulo_03.html" class="nav-item"><span class="nav-num">03</span> Depuración</a></li>
+        <li><a href="practica_01.html" class="nav-item practica"><span class="nav-num">↳</span> Práctica 1</a></li>
+        <li><a href="capitulo_02.html" class="nav-item"><span class="nav-num">02</span> Tipos de Datos y Variables</a></li>
+        <li><a href="practica_02.html" class="nav-item practica"><span class="nav-num">↳</span> Práctica 2</a></li>
+        <li><a href="capitulo_03.html" class="nav-item"><span class="nav-num">03</span> Depuración y Buenas Prácticas</a></li>
+        <li><a href="practica_03.html" class="nav-item practica"><span class="nav-num">↳</span> Práctica 3</a></li>
       </ul>
     </div>
     <div class="nav-grupo">
@@ -147,15 +158,18 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
         <li><a href="practica_04.html" class="nav-item practica"><span class="nav-num">↳</span> Práctica 4</a></li>
         <li><a href="capitulo_05.html" class="nav-item"><span class="nav-num">05</span> Repetitivas I — for</a></li>
         <li><a href="practica_05.html" class="nav-item practica activo"><span class="nav-num">↳</span> Práctica 5</a></li>
-        <li><a href="capitulo_06.html" class="nav-item prox"><span class="nav-num">06</span> Repetitivas II</a></li>
-        <li><a href="capitulo_07.html" class="nav-item prox"><span class="nav-num">07</span> Integración</a></li>
+        <li><a href="capitulo_06.html" class="nav-item prox"><span class="nav-num">06</span> Repetitivas II — while</a></li>
+        <li><a href="practica_06.html" class="nav-item practica prox"><span class="nav-num">↳</span> Práctica 6</a></li>
+        <li><a href="capitulo_07.html" class="nav-item prox"><span class="nav-num">07</span> Integración de Estructuras</a></li>
+        <li><a href="practica_07.html" class="nav-item practica prox"><span class="nav-num">↳</span> Práctica 7</a></li>
       </ul>
     </div>
     <div class="nav-grupo">
       <span class="nav-grupo-label">Unidades III y IV</span>
       <ul class="nav-items">
-        <li><a href="capitulo_08.html" class="nav-item prox"><span class="nav-num">08</span> Funciones</a></li>
-        <li><a href="capitulo_12.html" class="nav-item prox"><span class="nav-num">12</span> Arreglos</a></li>
+        <li><a href="capitulo_08.html" class="nav-item prox"><span class="nav-num">08</span> Funciones en C++</a></li>
+        <li><a href="capitulo_12.html" class="nav-item prox"><span class="nav-num">12</span> Arreglos Unidimensionales</a></li>
+        <li><a href="capitulo_15.html" class="nav-item prox"><span class="nav-num">15</span> Proyecto Integrador</a></li>
         <li><a href="anexos.html" class="nav-item prox"><span class="nav-num">—</span> Anexos</a></li>
       </ul>
     </div>
