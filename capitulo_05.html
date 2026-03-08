@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cap. 5 — Estructuras Repetitivas I: for | ESPAM MFL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{--verde:#005846;--verde-medio:#007a5e;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fondo);font-size:16px;line-height:1.7;overflow-x:hidden;}
+.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--verde);display:flex;align-items:center;padding:0 24px;gap:14px;z-index:1000;border-bottom:3px solid var(--verde-claro);}
+.topbar-logo{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--verde-claro);}
+.topbar-sep{width:1px;height:20px;background:rgba(255,255,255,.2);}
+.topbar-titulo{font-size:12px;color:rgba(255,255,255,.65);}
+.topbar-right{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;}
+.nav-menu{background:var(--verde);border-bottom:2px solid rgba(203,219,42,.3);margin-top:50px;}
+.nav-toggle{width:100%;background:transparent;color:white;border:none;padding:11px 24px;text-align:left;cursor:pointer;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;}
+.nav-toggle:hover{background:rgba(255,255,255,.04);}
+.nav-toggle-arrow{color:var(--verde-claro);font-size:12px;}
+.nav-body{display:none;padding:18px 24px 22px;}
+.nav-body.abierto{display:flex;flex-wrap:wrap;gap:28px;}
+.nav-grupo{min-width:170px;}
+.nav-grupo-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:7px;display:block;padding-bottom:5px;border-bottom:1px solid rgba(203,219,42,.2);}
+.nav-items{list-style:none;}
+.nav-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12px;color:rgba(255,255,255,.72);text-decoration:none;transition:color .15s;}
+.nav-item:hover{color:var(--verde-claro);}
+.nav-item.activo{color:var(--verde-claro);font-weight:700;}
+.nav-item.activo .nav-num{color:var(--verde-claro);}
+.nav-item.practica{color:rgba(8,184,157,.85);font-style:italic;}
+.nav-item.practica:hover{color:var(--turquesa);}
+.nav-item.practica .nav-num{color:rgba(8,184,157,.45);}
+.nav-item.prox{color:rgba(255,255,255,.28);pointer-events:none;}
+.nav-num{font-family:'Space Mono',monospace;font-size:9px;min-width:20px;flex-shrink:0;color:rgba(255,255,255,.28);}
+.page-header{background:var(--verde);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--verde-claro);}
+.page-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(203,219,42,.07) 1px,transparent 1px);background-size:28px 28px;}
+.ph-num{position:absolute;right:48px;top:0;font-size:240px;font-weight:900;color:rgba(255,255,255,.04);line-height:1;font-family:'Space Mono',monospace;}
+.ph-inner{position:relative;z-index:1;}
+.ph-badge{display:inline-block;background:rgba(203,219,42,.15);border:1px solid rgba(203,219,42,.35);color:var(--verde-claro);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+.ph-titulo{font-size:36px;font-weight:900;line-height:1.1;color:white;margin-bottom:8px;}
+.ph-subtitulo{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:28px;}
+.ph-meta{display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;}
+.ph-meta-item{display:flex;flex-direction:column;gap:3px;}
+.ph-meta-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.ph-meta-valor{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;}
+.anclas{background:white;border-bottom:1px solid var(--borde);padding:12px 64px;display:flex;gap:6px;flex-wrap:wrap;}
+.ancla{font-family:'Space Mono',monospace;font-size:9.5px;color:var(--verde-medio);text-decoration:none;padding:4px 10px;border:1px solid var(--borde);border-radius:4px;transition:all .15s;}
+.ancla:hover{background:var(--verde);color:var(--verde-claro);border-color:var(--verde);}
+.body-wrap{max-width:960px;margin:0 auto;padding:56px 64px 0;}
+.seccion{margin-bottom:52px;scroll-margin-top:120px;}
+.seccion-num{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:4px;display:block;}
+h2{font-size:24px;font-weight:800;color:var(--verde);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid rgba(0,88,70,.12);}
+h3{font-size:16px;font-weight:700;color:var(--verde);margin:28px 0 10px;}
+p{margin-bottom:14px;color:var(--texto-suave);font-size:15px;}
+hr{border:none;border-top:1px solid var(--borde);margin:48px 0;}
+code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70,.07);padding:1px 6px;border-radius:3px;color:var(--verde);}
+.ra-box{background:rgba(0,88,70,.06);border:1px solid rgba(0,88,70,.15);border-left:4px solid var(--verde);border-radius:0 10px 10px 0;padding:18px 22px;margin-bottom:40px;}
+.ra-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:8px;}
+.ra-texto{font-size:14px;color:var(--texto);line-height:1.65;}
+/* FOR ANATOMY */
+.for-anatomy{background:var(--codigo-bg);border-radius:12px;padding:28px 32px;margin:20px 0;}
+.fa-titulo{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:20px;}
+.fa-code{font-family:'Space Mono',monospace;font-size:20px;color:rgba(255,255,255,.9);line-height:1.6;margin-bottom:24px;}
+.fa-kw{color:var(--verde-claro);font-weight:700;}
+.fa-init{color:#82aaff;}.fa-cond{color:var(--turquesa);}.fa-incr{color:#f78c6c;}.fa-body{color:#a8d8b0;}
+.fa-partes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:8px;}
+.fa-parte{border-radius:8px;padding:14px 16px;}
+.fa-parte.init{background:rgba(130,170,255,.1);border:1px solid rgba(130,170,255,.25);}
+.fa-parte.cond{background:rgba(8,184,157,.1);border:1px solid rgba(8,184,157,.25);}
+.fa-parte.incr{background:rgba(247,140,108,.1);border:1px solid rgba(247,140,108,.25);}
+.fa-parte-label{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:5px;}
+.fa-parte.init .fa-parte-label{color:#82aaff;}
+.fa-parte.cond .fa-parte-label{color:var(--turquesa);}
+.fa-parte.incr .fa-parte-label{color:#f78c6c;}
+.fa-parte-desc{font-size:12.5px;color:rgba(255,255,255,.65);line-height:1.5;}
+/* CÓDIGO */
+.codigo-bloque{background:var(--codigo-bg);border-radius:10px;overflow:hidden;margin:18px 0;}
+.codigo-header{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);}
+.codigo-dots{display:flex;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
+.codigo-lang{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.3);}
+.codigo-archivo{font-family:'Space Mono',monospace;font-size:10px;color:var(--turquesa);}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+.c-inc{color:#c792ea;}.c-str{color:#a8d8b0;}.c-kw{color:var(--verde-claro);}.c-ns{color:var(--turquesa);}.c-tipo{color:#82aaff;}.c-fn{color:var(--turquesa);}.c-num{color:#f78c6c;}.c-com{color:rgba(255,255,255,.3);font-style:italic;}
+/* TABLA SIM */
+.tabla-sim{width:100%;border-collapse:collapse;margin:18px 0;font-family:'Space Mono',monospace;font-size:12px;}
+.tabla-sim thead tr{background:var(--verde);}
+.tabla-sim thead th{padding:9px 12px;color:white;font-size:10px;text-align:center;letter-spacing:.5px;}
+.tabla-sim tbody tr{border-bottom:1px solid var(--borde);}
+.tabla-sim tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-sim tbody td{padding:8px 12px;text-align:center;color:var(--texto-suave);}
+.tabla-sim td.res{background:rgba(203,219,42,.15);color:var(--verde);font-weight:700;}
+.tabla-sim td.acc{background:rgba(8,184,157,.08);color:var(--turquesa);}
+/* VARIANTES GRID */
+.variantes{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0;}
+.variante{background:var(--codigo-bg);border-radius:10px;overflow:hidden;}
+.variante-label{padding:8px 16px;background:rgba(255,255,255,.05);font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--turquesa);border-bottom:1px solid rgba(255,255,255,.08);}
+.variante pre{padding:16px 18px;font-family:'Space Mono',monospace;font-size:12px;line-height:1.8;color:rgba(255,255,255,.85);overflow-x:auto;}
+/* CAJAS */
+.caja-nota{background:rgba(0,88,70,.05);border-left:4px solid var(--verde);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-nota .cn-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:6px;display:block;}
+.caja-nota p{margin:0;font-size:14px;color:var(--texto);}
+.caja-adv{background:rgba(203,219,42,.08);border-left:4px solid var(--verde-claro);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-adv .ca-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7a8a10;margin-bottom:6px;display:block;}
+.caja-adv p{margin:0;font-size:14px;color:#4a540a;}
+.caja-ia{background:#0d1e18;border-radius:10px;padding:20px 24px;margin:20px 0;border-left:4px solid var(--turquesa);}
+.caja-ia .ci-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:9px;display:block;}
+.caja-ia p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin:0;}
+.caja-ia p strong{color:var(--verde-claro);}
+/* TABLA EST */
+.tabla-est{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;}
+.tabla-est thead tr{background:var(--verde);}
+.tabla-est thead th{padding:10px 15px;text-align:left;font-size:12px;font-weight:700;color:white;}
+.tabla-est tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-est tbody td{padding:9px 15px;border-bottom:1px solid var(--borde);color:var(--texto-suave);vertical-align:top;}
+.tabla-est tbody td:first-child{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--verde);}
+/* EJERCICIOS */
+.ejercicios-section{background:white;border:1px solid var(--borde);border-radius:12px;overflow:hidden;margin:20px 0;}
+.ejercicios-titulo{background:var(--verde);color:white;padding:12px 20px;font-size:13px;font-weight:700;}
+.ejercicio-item{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid var(--borde);}
+.ejercicio-item:last-child{border-bottom:none;}
+.ej-num{min-width:28px;height:28px;background:var(--fondo-alt);border:1px solid var(--borde);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);flex-shrink:0;}
+.ej-badge{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:3px;flex-shrink:0;margin-top:4px;}
+.ej-badge.comp{background:rgba(0,88,70,.08);color:var(--verde);}
+.ej-badge.aplic{background:rgba(8,184,157,.1);color:var(--turquesa);}
+.ej-badge.integ{background:rgba(203,219,42,.12);color:#7a8a10;}
+.ej-enunciado{font-size:13.5px;color:var(--texto-suave);line-height:1.6;}
+.evaluativa{background:rgba(0,88,70,.04);border:2px solid rgba(0,88,70,.15);border-radius:12px;padding:24px 28px;margin-top:36px;}
+.evaluativa-titulo{font-size:15px;font-weight:800;color:var(--verde);margin-bottom:3px;}
+.evaluativa-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;}
+.evaluativa-enunciado{font-size:14px;color:var(--texto-suave);line-height:1.7;margin-bottom:14px;}
+.evaluativa-criterios{margin:0;padding-left:18px;}
+.evaluativa-criterios li{font-size:13px;color:var(--texto-suave);margin-bottom:5px;}
+.puente{background:var(--codigo-bg);border-radius:12px;padding:24px 28px;margin-top:28px;border-left:4px solid var(--turquesa);}
+.puente-titulo{font-size:15px;font-weight:800;color:white;margin-bottom:3px;}
+.puente-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+.puente-texto{font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;}
+.puente-texto strong{color:var(--verde-claro);}
+.nav-caps{display:flex;justify-content:space-between;align-items:center;padding:20px 64px;background:var(--fondo-alt);border-top:1px solid var(--borde);margin-top:48px;flex-wrap:wrap;gap:12px;}
+.nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 18px;border:1.5px solid rgba(0,88,70,.2);border-radius:8px;background:white;max-width:280px;transition:all .2s;}
+.nav-cap-btn:hover{border-color:var(--verde);}
+.nav-cap-btn.sig{flex-direction:row-reverse;text-align:right;}
+.ncb-arrow{font-size:16px;color:var(--verde);}
+.ncb-label{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,88,70,.45);margin-bottom:2px;display:block;}
+.ncb-titulo{font-size:13px;font-weight:700;color:var(--verde);}
+.pie{background:var(--verde);color:rgba(255,255,255,.35);padding:14px 64px;font-family:'Space Mono',monospace;font-size:9px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:1px;}
+.pie span:first-child{color:rgba(255,255,255,.55);}
+@media(max-width:768px){.page-header,.body-wrap,.nav-caps,.pie,.anclas{padding-left:24px;padding-right:24px;}.ph-titulo{font-size:26px;}.fa-partes{grid-template-columns:1fr;}.variantes{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-logo">ESPAM MFL</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-titulo">Introducción a la Programación</div>
+  <div class="topbar-right">CARRERA DE COMPUTACIÓN</div>
+</header>
+
+<nav class="nav-menu">
+  <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">
+    ☰ &nbsp; Contenidos del libro <span class="nav-toggle-arrow">▼</span>
+  </button>
+  <div class="nav-body">
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidad I</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_01.html" class="nav-item"><span class="nav-num">01</span> Pensamiento Algorítmico</a></li>
+        <li><a href="capitulo_02.html" class="nav-item"><span class="nav-num">02</span> Tipos de Datos</a></li>
+        <li><a href="capitulo_03.html" class="nav-item"><span class="nav-num">03</span> Depuración</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidad II — Control</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_04.html" class="nav-item"><span class="nav-num">04</span> Estructuras Selectivas</a></li>
+        <li><a href="practica_04.html" class="nav-item practica"><span class="nav-num">↳</span> Práctica 4</a></li>
+        <li><a href="capitulo_05.html" class="nav-item activo"><span class="nav-num">05</span> Repetitivas I — for</a></li>
+        <li><a href="practica_05.html" class="nav-item practica"><span class="nav-num">↳</span> Práctica 5</a></li>
+        <li><a href="capitulo_06.html" class="nav-item prox"><span class="nav-num">06</span> Repetitivas II — while</a></li>
+        <li><a href="practica_06.html" class="nav-item practica prox"><span class="nav-num">↳</span> Práctica 6</a></li>
+        <li><a href="capitulo_07.html" class="nav-item prox"><span class="nav-num">07</span> Integración</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidades III y IV</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_08.html" class="nav-item prox"><span class="nav-num">08</span> Funciones</a></li>
+        <li><a href="capitulo_12.html" class="nav-item prox"><span class="nav-num">12</span> Arreglos</a></li>
+        <li><a href="anexos.html" class="nav-item prox"><span class="nav-num">—</span> Anexos</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section class="page-header">
+  <div class="ph-num">5</div>
+  <div class="ph-inner">
+    <div class="ph-badge">📘 Unidad II · Capítulo 5</div>
+    <h1 class="ph-titulo">Estructuras Repetitivas I: el Ciclo <code style="font-size:32px;color:var(--verde-claro);">for</code></h1>
+    <p class="ph-subtitulo">Anatomía del for · Acumuladores y contadores · Variantes · Ciclos anidados · for + if</p>
+    <div class="ph-meta">
+      <div class="ph-meta-item"><span class="ph-meta-label">Horas presenciales</span><span class="ph-meta-valor">3 ACD + 2 PECD</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Horas autónomas</span><span class="ph-meta-valor">3 AA + 1 PEND</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-valor">R.A. — B</span><span class="ph-meta-label">Resultado</span></div>
+    </div>
+  </div>
+</section>
+
+<nav class="anclas">
+  <a class="ancla" href="#s51">5.1 El ciclo for</a>
+  <a class="ancla" href="#s52">5.2 Anatomía y flujo</a>
+  <a class="ancla" href="#s53">5.3 Acumuladores y contadores</a>
+  <a class="ancla" href="#s54">5.4 Variantes del for</a>
+  <a class="ancla" href="#s55">5.5 for + if</a>
+  <a class="ancla" href="#s56">5.6 Ciclos anidados</a>
+  <a class="ancla" href="#s57">5.7 Ejercicios</a>
+</nav>
+
+<main class="body-wrap">
+
+  <div class="ra-box">
+    <div class="ra-label">Resultado de Aprendizaje — Capítulo 5</div>
+    <div class="ra-texto">El estudiante <strong>implementa el ciclo <code>for</code></strong> con sus tres componentes correctamente, aplica acumuladores y contadores, combina el ciclo con estructuras selectivas, y construye ciclos anidados para resolver problemas de tabla y serie.</div>
+  </div>
+
+  <!-- 5.1 -->
+  <section class="seccion" id="s51">
+    <span class="seccion-num">5.1</span>
+    <h2>¿Por qué necesitamos repetición?</h2>
+    <p>Imagina calcular el promedio de 30 estudiantes con <code>if-else</code> y variables individuales: necesitarías 30 variables y 30 líneas de lectura. Los ciclos resuelven este problema repitiendo un bloque de código controladamente.</p>
+    <p>El ciclo <code>for</code> es el más adecuado cuando <strong>sabes de antemano cuántas veces</strong> necesitas repetir. Es el ciclo del contador.</p>
+
+    <div class="caja-ia">
+      <div class="ci-label">🤖 IA y los ciclos</div>
+      <p>La IA genera ciclos <code>for</code> sintácticamente correctos con facilidad. El peligro está en los detalles: <strong>off-by-one errors</strong> (contar una vez de más o de menos), acumuladores que no se inicializan, o condiciones con <code>&lt;</code> cuando debería ser <code>&lt;=</code>. Aprende a verificar estos detalles tú mismo antes de confiar en cualquier código generado.</p>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 5.2 -->
+  <section class="seccion" id="s52">
+    <span class="seccion-num">5.2</span>
+    <h2>Anatomía del <code>for</code> y su Flujo de Ejecución</h2>
+
+    <div class="for-anatomy">
+      <div class="fa-titulo">Anatomía del ciclo for</div>
+      <div class="fa-code">
+        <span class="fa-kw">for</span> (<span class="fa-init">int i = 1</span>; <span class="fa-cond">i &lt;= 5</span>; <span class="fa-incr">i++</span>) {<br>
+        &nbsp;&nbsp;&nbsp;&nbsp;<span class="fa-body">// bloque que se repite</span><br>
+        }
+      </div>
+      <div class="fa-partes">
+        <div class="fa-parte init">
+          <div class="fa-parte-label">① Inicialización</div>
+          <div class="fa-parte-desc">Se ejecuta <strong>una sola vez</strong> al inicio. Declara y asigna valor inicial al contador.</div>
+        </div>
+        <div class="fa-parte cond">
+          <div class="fa-parte-label">② Condición</div>
+          <div class="fa-parte-desc">Se evalúa <strong>antes de cada iteración</strong>. Si es falsa, el ciclo termina.</div>
+        </div>
+        <div class="fa-parte incr">
+          <div class="fa-parte-label">③ Incremento</div>
+          <div class="fa-parte-desc">Se ejecuta <strong>al final de cada iteración</strong>. Actualiza el contador.</div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Tabla de simulación — <code>for (int i = 1; i &lt;= 4; i++)</code></h3>
+    <table class="tabla-sim">
+      <thead><tr><th>Iteración</th><th>i antes</th><th>i &lt;= 4 ?</th><th>Ejecuta bloque</th><th>i después (i++)</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>1</td><td style="color:var(--turquesa)">✓</td><td class="acc">Sí</td><td>2</td></tr>
+        <tr><td>2</td><td>2</td><td style="color:var(--turquesa)">✓</td><td class="acc">Sí</td><td>3</td></tr>
+        <tr><td>3</td><td>3</td><td style="color:var(--turquesa)">✓</td><td class="acc">Sí</td><td>4</td></tr>
+        <tr><td>4</td><td>4</td><td style="color:var(--turquesa)">✓</td><td class="acc">Sí</td><td>5</td></tr>
+        <tr><td>—</td><td>5</td><td style="color:#c0392b">✗</td><td class="res">No — termina</td><td>—</td></tr>
+      </tbody>
+    </table>
+
+    <div class="caja-nota">
+      <div class="cn-label">📌 El contador existe solo dentro del for</div>
+      <p>Cuando escribes <code>for (int i = 1; ...)</code>, la variable <code>i</code> solo existe dentro del bloque del ciclo. Si intentas usarla después, el compilador te dará error. Esto es correcto y deseable — evita contaminar el resto del programa.</p>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 5.3 -->
+  <section class="seccion" id="s53">
+    <span class="seccion-num">5.3</span>
+    <h2>Acumuladores y Contadores</h2>
+    <p>Los patrones más frecuentes dentro de un ciclo <code>for</code> son el <strong>acumulador</strong> (suma progresiva) y el <strong>contador condicional</strong> (cuenta cuántos cumplen una condición).</p>
+
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:8px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · acumulador + contador</span></div>
+        <span class="codigo-archivo">estadisticas_notas.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">int</span>    n, aprobados = <span class="c-num">0</span>;
+    <span class="c-tipo">double</span> nota, suma = <span class="c-num">0.0</span>;   <span class="c-com">// acumulador inicializado en 0</span>
+
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"¿Cuántos estudiantes? "</span>;
+    <span class="c-fn">cin</span>  &gt;&gt; n;
+
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">1</span>; i &lt;= n; i++) {
+        <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Nota estudiante "</span> &lt;&lt; i &lt;&lt; <span class="c-str">": "</span>;
+        <span class="c-fn">cin</span>  &gt;&gt; nota;
+        suma += nota;              <span class="c-com">// acumular</span>
+        <span class="c-kw">if</span> (nota >= <span class="c-num">7.0</span>) aprobados++;  <span class="c-com">// contar</span>
+    }
+
+    <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>);
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Promedio:   "</span> &lt;&lt; suma / n  &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Aprobados:  "</span> &lt;&lt; aprobados &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Reprobados: "</span> &lt;&lt; n - aprobados &lt;&lt; endl;
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+    </div>
+
+    <div class="caja-adv">
+      <div class="ca-label">⚠️ Inicializar siempre antes del ciclo</div>
+      <p><code>suma</code> y <code>aprobados</code> se declaran e inicializan <strong>antes</strong> del <code>for</code>. Si se declararan dentro del ciclo, se reiniciarían en cada iteración y el acumulador nunca acumularía nada.</p>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 5.4 -->
+  <section class="seccion" id="s54">
+    <span class="seccion-num">5.4</span>
+    <h2>Variantes del Ciclo <code>for</code></h2>
+    <p>El incremento no tiene que ser <code>i++</code>. El contador puede avanzar de cualquier forma.</p>
+
+    <div class="variantes">
+      <div class="variante">
+        <div class="variante-label">Cuenta regresiva</div>
+        <pre><span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">10</span>; i >= <span class="c-num">1</span>; i--) {
+    <span class="c-fn">cout</span> &lt;&lt; i &lt;&lt; <span class="c-str">" "</span>;
+}
+<span class="c-com">// Salida: 10 9 8 7 6 5 4 3 2 1</span></pre>
+      </div>
+      <div class="variante">
+        <div class="variante-label">Paso 2 — solo pares</div>
+        <pre><span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">2</span>; i &lt;= <span class="c-num">20</span>; i += <span class="c-num">2</span>) {
+    <span class="c-fn">cout</span> &lt;&lt; i &lt;&lt; <span class="c-str">" "</span>;
+}
+<span class="c-com">// Salida: 2 4 6 8 10 12 14 16 18 20</span></pre>
+      </div>
+      <div class="variante">
+        <div class="variante-label">Índice desde 0 (estilo arreglo)</div>
+        <pre><span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">0</span>; i &lt; <span class="c-num">5</span>; i++) {
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Elemento "</span> &lt;&lt; i;
+}
+<span class="c-com">// i: 0, 1, 2, 3, 4 (5 elementos)</span></pre>
+      </div>
+      <div class="variante">
+        <div class="variante-label">Paso variable — tabla de multiplicar</div>
+        <pre><span class="c-tipo">int</span> base = <span class="c-num">7</span>;
+<span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">1</span>; i &lt;= <span class="c-num">10</span>; i++) {
+    <span class="c-fn">cout</span> &lt;&lt; base &lt;&lt; <span class="c-str">"x"</span> &lt;&lt; i
+         &lt;&lt; <span class="c-str">"="</span> &lt;&lt; base*i &lt;&lt; endl;
+}</pre>
+      </div>
+    </div>
+
+    <div class="caja-nota">
+      <div class="cn-label">📌 Condición &lt; vs &lt;=</div>
+      <p><code>i &lt; n</code> ejecuta el ciclo <strong>n veces</strong> (i: 0…n-1). <code>i &lt;= n</code> ejecuta el ciclo <strong>n+1 veces</strong> (i: 0…n). Confundirlos es el error off-by-one más frecuente. Antes de escribir el ciclo, decide: ¿el último valor de <code>i</code> debe entrar o no?</p>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 5.5 -->
+  <section class="seccion" id="s55">
+    <span class="seccion-num">5.5</span>
+    <h2>for + if: Ciclo con Selección Interna</h2>
+    <p>Combinar el ciclo <code>for</code> con <code>if-else</code> dentro es el patrón más poderoso de esta etapa: permite clasificar, filtrar y acumular selectivamente en una sola pasada.</p>
+
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:8px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · for + if · análisis de ventas</span></div>
+        <span class="codigo-archivo">analisis_ventas.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-kw">const</span> <span class="c-tipo">int</span>    DIAS   = <span class="c-num">7</span>;
+    <span class="c-kw">const</span> <span class="c-tipo">double</span> META   = <span class="c-num">500.0</span>;
+
+    <span class="c-tipo">double</span> venta, totalSemana = <span class="c-num">0.0</span>;
+    <span class="c-tipo">int</span>    diasSuperaron = <span class="c-num">0</span>, diasNoCumplieron = <span class="c-num">0</span>;
+
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> dia = <span class="c-num">1</span>; dia &lt;= DIAS; dia++) {
+        <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Venta día "</span> &lt;&lt; dia &lt;&lt; <span class="c-str">": $"</span>;
+        <span class="c-fn">cin</span>  &gt;&gt; venta;
+        totalSemana += venta;
+
+        <span class="c-kw">if</span> (venta >= META) {
+            diasSuperaron++;
+            <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  ✓ Meta superada\n"</span>;
+        } <span class="c-kw">else</span> {
+            diasNoCumplieron++;
+            <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  ✗ Faltan $"</span> &lt;&lt; META - venta &lt;&lt; <span class="c-str">"\n"</span>;
+        }
+    }
+
+    <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>) &lt;&lt; <span class="c-str">"\n=== RESUMEN ===\n"</span>;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Total semana:     $"</span> &lt;&lt; totalSemana              &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Promedio diario:  $"</span> &lt;&lt; totalSemana / DIAS        &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Días sobre meta:  "</span>  &lt;&lt; diasSuperaron             &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Días bajo meta:   "</span>  &lt;&lt; diasNoCumplieron          &lt;&lt; endl;
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 5.6 -->
+  <section class="seccion" id="s56">
+    <span class="seccion-num">5.6</span>
+    <h2>Ciclos Anidados</h2>
+    <p>Un ciclo <code>for</code> puede contener otro <code>for</code> en su interior. Por cada iteración del ciclo externo, el ciclo interno se ejecuta completo. Úsalo para tablas de dos dimensiones o series combinadas.</p>
+
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:8px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · ciclos anidados · tabla de multiplicar 1–5</span></div>
+        <span class="codigo-archivo">tabla_multiplicar.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-kw">for</span> (<span class="c-tipo">int</span> fila = <span class="c-num">1</span>; fila &lt;= <span class="c-num">5</span>; fila++) {
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> col = <span class="c-num">1</span>; col &lt;= <span class="c-num">5</span>; col++) {
+        <span class="c-fn">cout</span> &lt;&lt; setw(<span class="c-num">4</span>) &lt;&lt; fila * col;
+    }
+    <span class="c-fn">cout</span> &lt;&lt; endl;   <span class="c-com">// salto de línea al terminar cada fila</span>
+}
+<span class="c-com">/*
+Salida:
+   1   2   3   4   5
+   2   4   6   8  10
+   3   6   9  12  15
+   4   8  12  16  20
+   5  10  15  20  25
+*/</span></pre></div>
+    </div>
+
+    <h3>Tabla de ejecución — ciclos anidados (primeras 3 iteraciones externas)</h3>
+    <table class="tabla-sim">
+      <thead><tr><th>fila</th><th>col (recorre)</th><th>Valores impresos en esa fila</th></tr></thead>
+      <tbody>
+        <tr><td>1</td><td>1→2→3→4→5</td><td class="acc">1  2  3  4  5</td></tr>
+        <tr><td>2</td><td>1→2→3→4→5</td><td class="acc">2  4  6  8  10</td></tr>
+        <tr><td>3</td><td>1→2→3→4→5</td><td class="acc">3  6  9  12  15</td></tr>
+      </tbody>
+    </table>
+
+    <div class="caja-adv">
+      <div class="ca-label">⚠️ No más de 2 niveles de anidamiento en esta etapa</div>
+      <p>Tres ciclos anidados son muy difíciles de depurar para un programador principiante. Si tu solución requiere tres niveles, es señal de que probablemente el problema necesita un enfoque diferente.</p>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- 5.7 -->
+  <section class="seccion" id="s57">
+    <span class="seccion-num">5.7</span>
+    <h2>Ejercicios de Aplicación</h2>
+
+    <div class="ejercicios-section">
+      <div class="ejercicios-titulo">✏️ Actividades de Aplicación</div>
+      <div class="ejercicio-item">
+        <div class="ej-num">1</div>
+        <div class="ej-badge comp">Comprensión</div>
+        <div class="ej-enunciado"><strong>Trazar sin computadora.</strong> ¿Cuántas veces ejecuta el bloque cada ciclo y cuál es el valor final de <code>suma</code>? (a) <code>for (int i=1; i&lt;=5; i++) suma += i;</code> (b) <code>for (int i=0; i&lt;5; i++) suma += i*2;</code> (c) <code>for (int i=10; i&gt;=1; i-=3) suma++;</code></div>
+      </div>
+      <div class="ejercicio-item">
+        <div class="ej-num">2</div>
+        <div class="ej-badge aplic">Aplicación</div>
+        <div class="ej-enunciado"><strong>Serie de Fibonacci.</strong> Escribe un programa que muestre los primeros N términos de la serie de Fibonacci (0, 1, 1, 2, 3, 5, 8…). N se lee del usuario. Primero: pseudocódigo + tabla de simulación con N=6. Luego: código C++.</div>
+      </div>
+      <div class="ejercicio-item">
+        <div class="ej-num">3</div>
+        <div class="ej-badge aplic">Aplicación</div>
+        <div class="ej-enunciado"><strong>Análisis de notas con estadísticas.</strong> Lee N notas y calcula: suma, promedio, nota más alta, nota más baja, cantidad de aprobados (≥7) y reprobados. Usa un solo ciclo <code>for</code>. Muestra todos los resultados al final.</div>
+      </div>
+      <div class="ejercicio-item">
+        <div class="ej-num">4</div>
+        <div class="ej-badge aplic">Aplicación</div>
+        <div class="ej-enunciado"><strong>Tabla de conversión.</strong> Muestra una tabla de temperatura de 0°C a 100°C en pasos de 10, con su equivalente en Fahrenheit y Kelvin. Usa <code>setw</code> para alinear columnas. Encabezado: <code>°C | °F | K</code>.</div>
+      </div>
+      <div class="ejercicio-item">
+        <div class="ej-num">5</div>
+        <div class="ej-badge integ">Integrador + IA</div>
+        <div class="ej-enunciado"><strong>Auditar un ciclo generado por IA.</strong> Pide a la IA que genere un programa que calcule la suma de todos los números impares entre 1 y N. Verifica: ¿la condición usa <code>&lt;</code> o <code>&lt;=</code>? ¿Incluye correctamente el N si es impar? Prueba con N=10 (esperado: 25) y N=11 (esperado: 36). ¿El código de la IA pasa ambos?</div>
+      </div>
+    </div>
+
+    <div class="evaluativa">
+      <div class="evaluativa-titulo">Actividad Presencial Evaluativa — Capítulo 5</div>
+      <div class="evaluativa-sub">Sesión 5 · Tiempo: 45 min · Sin acceso a IA</div>
+      <div class="evaluativa-enunciado">
+        Una empresa paga comisiones semanales a sus vendedores. Leer el número de vendedores N, y para cada uno leer su nombre (string) y ventas de 5 días. Calcular: total semanal de cada vendedor, comisión (3% si ventas &gt; $2000, si no 1.5%), y al final: vendedor con más ventas, promedio general y cuántos superaron la meta de $2000 diarios en al menos 3 de 5 días.
+      </div>
+      <ul class="evaluativa-criterios">
+        <li>Pseudocódigo correcto entregado en papel antes de codificar.</li>
+        <li>Ciclo externo sobre vendedores + ciclo interno sobre los 5 días.</li>
+        <li><code>if-else</code> dentro del ciclo para la comisión.</li>
+        <li>Variables de máximo correctamente inicializadas.</li>
+        <li>Salida formateada y tabla de simulación con 2 vendedores de prueba.</li>
+      </ul>
+    </div>
+
+    <div class="puente">
+      <div class="puente-titulo">🌉 Hacia el while y do-while</div>
+      <div class="puente-sub">Preparación para Cap. 6</div>
+      <div class="puente-texto">El <code>for</code> es perfecto cuando el número de iteraciones es conocido. Pero ¿y si el programa debe repetirse hasta que el usuario diga "salir"? ¿O validar una entrada hasta que sea correcta? Para eso existe el <strong><code>while</code></strong> — el ciclo del "mientras que". En el Cap. 6 verás cuándo elegir uno u otro.</div>
+    </div>
+  </section>
+
+</main>
+
+<div class="nav-caps">
+  <a href="practica_04.html" class="nav-cap-btn"><span class="ncb-arrow">←</span><div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Práctica 4 — Selectivas</span></div></a>
+  <a href="practica_05.html" class="nav-cap-btn sig"><span class="ncb-arrow">→</span><div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Sesión Práctica 5</span></div></a>
+</div>
+
+<footer class="pie">
+  <span>Cap. 5 — Estructuras Repetitivas I: for · Unidad II · ESPAM MFL</span>
+  <span>espam.edu.ec</span>
+</footer>
+</body>
+</html>
