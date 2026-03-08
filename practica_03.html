@@ -1,0 +1,565 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Práctica 3 — Depuración y Buenas Prácticas | ESPAM MFL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{--verde:#005846;--verde-medio:#007a5e;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;--rojo:#c0392b;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fondo);font-size:16px;line-height:1.7;overflow-x:hidden;}
+.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--verde);display:flex;align-items:center;padding:0 24px;gap:14px;z-index:1000;border-bottom:3px solid var(--verde-claro);}
+.topbar-logo{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--verde-claro);}
+.topbar-sep{width:1px;height:20px;background:rgba(255,255,255,.2);}
+.topbar-titulo{font-size:12px;color:rgba(255,255,255,.65);}
+.topbar-right{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;}
+.nav-menu{background:var(--verde);border-bottom:2px solid rgba(203,219,42,.3);margin-top:50px;}
+.nav-toggle{width:100%;background:transparent;color:white;border:none;padding:11px 24px;text-align:left;cursor:pointer;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;}
+.nav-toggle:hover{background:rgba(255,255,255,.04);}
+.nav-toggle-arrow{color:var(--verde-claro);font-size:12px;}
+.nav-body{display:none;padding:18px 24px 22px;}
+.nav-body.abierto{display:flex;flex-wrap:wrap;gap:28px;}
+.nav-grupo{min-width:170px;}
+.nav-grupo-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:7px;display:block;padding-bottom:5px;border-bottom:1px solid rgba(203,219,42,.2);}
+.nav-items{list-style:none;}
+.nav-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12px;color:rgba(255,255,255,.72);text-decoration:none;transition:color .15s;}
+.nav-item:hover{color:var(--verde-claro);}
+.nav-item.activo{color:var(--turquesa);font-weight:700;}
+.nav-item.practica{color:rgba(8,184,157,.85);font-style:italic;}
+.nav-item.practica:hover{color:var(--turquesa);}
+.nav-item.prox{color:rgba(255,255,255,.28);pointer-events:none;}
+.nav-num{font-family:'Space Mono',monospace;font-size:9px;min-width:20px;flex-shrink:0;color:rgba(255,255,255,.28);}
+.nav-item.activo .nav-num{color:var(--turquesa);}
+.nav-item.practica .nav-num{color:rgba(8,184,157,.45);}
+/* PAGE HEADER */
+.page-header{background:linear-gradient(135deg,#005846 0%,#067a65 100%);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--turquesa);}
+.page-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(8,184,157,.1) 1px,transparent 1px);background-size:28px 28px;}
+.ph-num{position:absolute;right:48px;top:0;font-size:200px;font-weight:900;color:rgba(255,255,255,.04);line-height:1;font-family:'Space Mono',monospace;}
+.ph-inner{position:relative;z-index:1;}
+.ph-badge-practica{display:inline-block;background:rgba(8,184,157,.2);border:1px solid rgba(8,184,157,.4);color:var(--turquesa);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+.ph-titulo{font-size:36px;font-weight:900;line-height:1.1;color:white;margin-bottom:8px;}
+.ph-subtitulo{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:28px;}
+.ph-meta{display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;}
+.ph-meta-item{display:flex;flex-direction:column;gap:3px;}
+.ph-meta-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.ph-meta-valor{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;}
+/* FASES NAV */
+.fases-nav{background:white;border-bottom:1px solid var(--borde);padding:12px 64px;display:flex;gap:6px;overflow-x:auto;}
+.fase-chip{font-family:'Space Mono',monospace;font-size:9px;color:var(--texto-suave);text-decoration:none;padding:5px 12px;border:1px solid var(--borde);border-radius:20px;white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:6px;}
+.fase-chip:hover{background:var(--turquesa);color:white;border-color:var(--turquesa);}
+/* BODY */
+.body-wrap{max-width:960px;margin:0 auto;padding:56px 64px 0;}
+.fase{margin-bottom:48px;scroll-margin-top:120px;}
+.fase-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--borde);}
+.fase-num{min-width:44px;height:44px;background:var(--turquesa);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;flex-shrink:0;}
+.fase-titulo{font-size:20px;font-weight:800;color:var(--verde);line-height:1.2;}
+.fase-tiempo{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+h3{font-size:16px;font-weight:700;color:var(--verde);margin:24px 0 10px;}
+p{margin-bottom:14px;color:var(--texto-suave);font-size:15px;}
+hr{border:none;border-top:1px solid var(--borde);margin:40px 0;}
+code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70,.07);padding:1px 6px;border-radius:3px;color:var(--verde);}
+/* PROBLEMA BOX */
+.problema-box{background:var(--verde);border-radius:12px;padding:24px 28px;margin:20px 0;border-left:5px solid var(--verde-claro);}
+.pb-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:10px;display:block;}
+.pb-enunciado{font-size:15px;color:white;line-height:1.75;}
+.pb-enunciado strong{color:var(--verde-claro);}
+/* CÓDIGO */
+.codigo-bloque{background:var(--codigo-bg);border-radius:10px;overflow:hidden;margin:16px 0;}
+.codigo-header{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);}
+.codigo-dots{display:flex;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
+.codigo-lang{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.3);}
+.codigo-archivo{font-family:'Space Mono',monospace;font-size:10px;color:var(--turquesa);}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+.c-inc{color:#c792ea;}.c-str{color:#a8d8b0;}.c-kw{color:var(--verde-claro);}.c-ns{color:var(--turquesa);}.c-tipo{color:#82aaff;}.c-fn{color:var(--turquesa);}.c-num{color:#f78c6c;}.c-com{color:rgba(255,255,255,.3);font-style:italic;}.c-err{color:#ff9090;}
+/* TABLA PAPEL */
+.tabla-papel{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;}
+.tabla-papel thead tr{background:var(--verde);}
+.tabla-papel thead th{padding:10px 14px;color:white;text-align:left;font-size:11px;font-family:'Space Mono',monospace;letter-spacing:.5px;}
+.tabla-papel tbody tr{border-bottom:1px solid var(--borde);}
+.tabla-papel tbody tr:nth-child(even){background:rgba(0,88,70,.025);}
+.tabla-papel tbody td{padding:12px 14px;color:var(--texto-suave);vertical-align:top;}
+.tabla-papel td:first-child{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);width:80px;}
+.espacio{height:26px;border-bottom:1px dashed rgba(0,88,70,.18);}
+/* ACTIVIDADES */
+.actividades{display:flex;flex-direction:column;gap:12px;margin:20px 0;}
+.actividad{background:white;border:1px solid var(--borde);border-radius:10px;padding:18px 22px;display:flex;align-items:flex-start;gap:14px;}
+.act-num{min-width:30px;height:30px;border-radius:50%;background:var(--turquesa);color:white;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.act-titulo{font-size:14px;font-weight:700;color:var(--verde);margin-bottom:4px;}
+.act-desc{font-size:13.5px;color:var(--texto-suave);line-height:1.6;}
+/* MSG COMPILADOR */
+.msg-compilador{background:#1a0a0a;border-radius:8px;padding:14px 18px;margin:12px 0;border-left:4px solid var(--rojo);font-family:'Space Mono',monospace;font-size:12px;line-height:1.8;}
+.msg-compilador .mc-line{color:#ff9090;}
+.msg-compilador .mc-ok{color:#a8d8b0;}
+/* COMPARAR */
+.comparar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0;}
+.comp-bloque{border-radius:10px;overflow:hidden;}
+.comp-label{padding:8px 16px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.comp-bloque.mal .comp-label{background:rgba(192,57,43,.15);color:var(--rojo);}
+.comp-bloque.bien .comp-label{background:rgba(8,184,157,.12);color:var(--turquesa);}
+.comp-bloque pre{font-family:'Space Mono',monospace;font-size:12px;line-height:1.75;padding:14px 16px;overflow-x:auto;}
+.comp-bloque.mal pre{background:rgba(192,57,43,.04);color:#6a2020;border:1px solid rgba(192,57,43,.15);}
+.comp-bloque.bien pre{background:rgba(8,184,157,.04);color:#0a4a3a;border:1px solid rgba(8,184,157,.15);}
+/* CAJAS */
+.caja-ia{background:#0d1e18;border-radius:10px;padding:20px 24px;margin:20px 0;border-left:4px solid var(--turquesa);}
+.caja-ia .ci-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:9px;display:block;}
+.caja-ia p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin:0;}
+.caja-ia p strong{color:var(--verde-claro);}
+.caja-nota{background:rgba(0,88,70,.05);border-left:4px solid var(--verde);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-nota .cn-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:6px;display:block;}
+.caja-nota p{margin:0;font-size:14px;color:var(--texto);}
+/* CHECKLIST INTERACTIVO */
+.checklist{background:white;border:1px solid var(--borde);border-radius:10px;overflow:hidden;margin:18px 0;}
+.checklist-titulo{background:var(--verde);color:white;padding:10px 18px;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;}
+.check-item{display:flex;align-items:flex-start;gap:12px;padding:12px 18px;border-bottom:1px solid var(--borde);}
+.check-item:last-child{border-bottom:none;}
+.check-box{min-width:20px;height:20px;border:2px solid var(--verde);border-radius:4px;flex-shrink:0;margin-top:2px;}
+.check-texto{font-size:13.5px;color:var(--texto-suave);line-height:1.5;}
+.check-texto strong{color:var(--verde);display:block;font-size:13px;margin-bottom:1px;}
+/* TABLA ERRORES */
+.tabla-errores{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;}
+.tabla-errores thead tr{background:var(--codigo-bg);}
+.tabla-errores thead th{padding:10px 14px;color:var(--verde-claro);font-family:'Space Mono',monospace;font-size:10px;text-align:left;}
+.tabla-errores tbody tr{border-bottom:1px solid var(--borde);}
+.tabla-errores tbody tr:nth-child(even){background:rgba(0,88,70,.025);}
+.tabla-errores tbody td{padding:10px 14px;color:var(--texto-suave);vertical-align:top;}
+.tabla-errores td:first-child{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--rojo);text-align:center;width:60px;}
+/* RÚBRICA */
+.rubrica{width:100%;border-collapse:collapse;margin:18px 0;font-size:12.5px;}
+.rubrica thead tr{background:var(--verde);}
+.rubrica thead th{padding:10px 14px;color:white;text-align:left;font-size:11px;}
+.rubrica tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.rubrica tbody td{padding:9px 14px;border-bottom:1px solid var(--borde);color:var(--texto-suave);vertical-align:top;}
+.rubrica tbody td:first-child{font-weight:700;color:var(--verde);font-size:12px;}
+.rubrica tfoot td{padding:10px 14px;font-weight:700;color:var(--verde);background:rgba(0,88,70,.05);}
+/* BITÁCORA */
+.bitacora{border:2px dashed rgba(0,88,70,.2);border-radius:10px;padding:22px;background:white;margin:18px 0;}
+.bitacora-campo{display:flex;gap:12px;border-bottom:1px solid var(--borde);padding:9px 0;align-items:center;}
+.bitacora-campo:last-child{border-bottom:none;}
+.bitacora-campo label{min-width:220px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);flex-shrink:0;}
+.linea-campo{flex:1;border-bottom:1px solid rgba(0,88,70,.12);min-height:22px;}
+/* NAV + PIE */
+.nav-caps{display:flex;justify-content:space-between;align-items:center;padding:20px 64px;background:var(--fondo-alt);border-top:1px solid var(--borde);margin-top:48px;flex-wrap:wrap;gap:12px;}
+.nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 18px;border:1.5px solid rgba(0,88,70,.2);border-radius:8px;background:white;max-width:280px;transition:all .2s;}
+.nav-cap-btn:hover{border-color:var(--verde);}
+.nav-cap-btn.sig{flex-direction:row-reverse;text-align:right;}
+.ncb-arrow{font-size:16px;color:var(--verde);}
+.ncb-label{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,88,70,.45);margin-bottom:2px;display:block;}
+.ncb-titulo{font-size:13px;font-weight:700;color:var(--verde);}
+.pie{background:var(--verde);color:rgba(255,255,255,.35);padding:14px 64px;font-family:'Space Mono',monospace;font-size:9px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:1px;}
+.pie span:first-child{color:rgba(255,255,255,.55);}
+@media(max-width:768px){
+  .page-header,.body-wrap,.nav-caps,.pie,.fases-nav{padding-left:24px;padding-right:24px;}
+  .ph-titulo{font-size:26px;}
+  .comparar{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-logo">ESPAM MFL</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-titulo">Introducción a la Programación</div>
+  <div class="topbar-right">CARRERA DE COMPUTACIÓN</div>
+</header>
+
+<nav class="nav-menu">
+  <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">
+    ☰ &nbsp; Contenidos del libro
+    <span class="nav-toggle-arrow">▼</span>
+  </button>
+  <div class="nav-body">
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Inicio</span>
+      <ul class="nav-items">
+        <li><a href="index.html" class="nav-item"><span class="nav-num">◉</span> Portada</a></li>
+        <li><a href="preliminares.html" class="nav-item"><span class="nav-num">—</span> Preliminares</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidad I — Fundamentos</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_01.html" class="nav-item"><span class="nav-num">01</span> Pensamiento Algorítmico</a></li>
+        <li><a href="practica_01.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 1</a></li>
+        <li><a href="capitulo_02.html" class="nav-item"><span class="nav-num">02</span> Tipos de Datos y Variables</a></li>
+        <li><a href="practica_02.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 2</a></li>
+        <li><a href="capitulo_03.html" class="nav-item"><span class="nav-num">03</span> Depuración y Buenas Prácticas</a></li>
+        <li><a href="practica_03.html" class="nav-item practica activo"><span class="nav-num">↳</span> Sesión Práctica 3</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidad II — Control</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_04.html" class="nav-item prox"><span class="nav-num">04</span> Estructuras Selectivas</a></li>
+        <li><a href="practica_04.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 4</a></li>
+        <li><a href="capitulo_05.html" class="nav-item prox"><span class="nav-num">05</span> Repetitivas I</a></li>
+        <li><a href="capitulo_06.html" class="nav-item prox"><span class="nav-num">06</span> Repetitivas II</a></li>
+        <li><a href="capitulo_07.html" class="nav-item prox"><span class="nav-num">07</span> Integración</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidades III y IV</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_08.html" class="nav-item prox"><span class="nav-num">08</span> Funciones en C++</a></li>
+        <li><a href="capitulo_12.html" class="nav-item prox"><span class="nav-num">12</span> Arreglos Unidimensionales</a></li>
+        <li><a href="capitulo_15.html" class="nav-item prox"><span class="nav-num">15</span> Proyecto Integrador</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section class="page-header">
+  <div class="ph-num">P3</div>
+  <div class="ph-inner">
+    <div class="ph-badge-practica">⚗️ Sesión Práctica · Cierre Unidad I</div>
+    <h1 class="ph-titulo">Práctica 3 — Detective de Código: Depurar y Refactorizar</h1>
+    <p class="ph-subtitulo">Leer errores del compilador · Trazar errores lógicos · Reescribir con buenas prácticas · Cierre de Unidad I</p>
+    <div class="ph-meta">
+      <div class="ph-meta-item"><span class="ph-meta-label">Duración</span><span class="ph-meta-valor">3 horas (3 ACD)</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Modalidad</span><span class="ph-meta-valor">Individual + parejas</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Entrega</span><span class="ph-meta-valor">Papel + digital (.cpp)</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Cierra</span><span class="ph-meta-valor">Unidad I completa</span></div>
+    </div>
+  </div>
+</section>
+
+<nav class="fases-nav">
+  <a class="fase-chip" href="#fase1"><span>F1</span> Diagnóstico en papel (0–20 min)</a>
+  <a class="fase-chip" href="#fase2"><span>F2</span> Errores de sintaxis (20–55 min)</a>
+  <a class="fase-chip" href="#fase3"><span>F3</span> Errores lógicos (55–100 min)</a>
+  <a class="fase-chip" href="#fase4"><span>F4</span> Refactorizar (100–135 min)</a>
+  <a class="fase-chip" href="#fase5"><span>F5</span> Análisis con IA (135–160 min)</a>
+  <a class="fase-chip" href="#fase6"><span>F6</span> Cierre Unidad I (160–180 min)</a>
+</nav>
+
+<main class="body-wrap">
+
+  <div class="problema-box">
+    <span class="pb-label">🎯 Misión de la sesión</span>
+    <div class="pb-enunciado">
+      Eres el <strong>auditor de calidad</strong> de un equipo de desarrollo. Tu tarea: recibir tres programas con distintos tipos de errores, diagnosticarlos, corregirlos y elevar su calidad con buenas prácticas. Al final habrás integrado todas las habilidades de la Unidad I: <strong>algoritmos → tipos → código limpio y depurado</strong>.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- FASE 1 -->
+  <div class="fase" id="fase1">
+    <div class="fase-header">
+      <div class="fase-num">F1</div>
+      <div class="fase-info">
+        <div class="fase-titulo">Diagnóstico inicial — Individual, sin computadora</div>
+        <div class="fase-tiempo">⏱ 0 – 20 minutos</div>
+      </div>
+    </div>
+    <p>Lee los tres programas de las fases siguientes <strong>solo con tus ojos</strong>. Completa la tabla de diagnóstico antes de encender el compilador.</p>
+
+    <table class="tabla-papel">
+      <thead><tr><th>Programa</th><th>¿Qué hace?</th><th>Errores que identifico visualmente</th><th>Tipo de error (S/L/E)</th></tr></thead>
+      <tbody>
+        <tr><td>Prog A</td><td class="espacio"></td><td class="espacio"></td><td class="espacio"></td></tr>
+        <tr><td>Prog B</td><td class="espacio"></td><td class="espacio"></td><td class="espacio"></td></tr>
+        <tr><td>Prog C</td><td class="espacio"></td><td class="espacio"></td><td class="espacio"></td></tr>
+      </tbody>
+    </table>
+    <p style="font-size:13px;color:var(--texto-suave);">S = Sintaxis · L = Lógico · E = Ejecución</p>
+  </div>
+
+  <hr>
+
+  <!-- FASE 2 -->
+  <div class="fase" id="fase2">
+    <div class="fase-header">
+      <div class="fase-num">F2</div>
+      <div class="fase-info">
+        <div class="fase-titulo">Programa A — Errores de sintaxis — Individual</div>
+        <div class="fase-tiempo">⏱ 20 – 55 minutos</div>
+      </div>
+    </div>
+    <p>El siguiente programa calcula el área de un triángulo. Tiene <strong>4 errores de sintaxis</strong>. Encuéntralos primero en papel, luego verifica con el compilador.</p>
+
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:10px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · PROGRAMA A — con 4 errores de sintaxis</span></div>
+        <span class="codigo-archivo">programa_a.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">double</span> base, altura area;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Ingrese la base: "</span>;
+    <span class="c-fn">cin</span> &gt;&gt; base;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Ingrese la altura: "</span>
+    <span class="c-fn">cin</span> &gt;&gt; altura;
+    area = (base * altura) / <span class="c-num">2</span>;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Área = "</span> &lt;&lt; area &lt;&lt; endl;
+    <span class="c-kw">return</span> <span class="c-num">0</span>
+}</pre></div>
+    </div>
+
+    <table class="tabla-errores">
+      <thead><tr><th>Línea</th><th>Error encontrado</th><th>Corrección</th><th>¿Compilador lo detectó?</th></tr></thead>
+      <tbody>
+        <tr><td></td><td class="espacio"></td><td class="espacio"></td><td class="espacio"></td></tr>
+        <tr><td></td><td class="espacio"></td><td class="espacio"></td><td class="espacio"></td></tr>
+        <tr><td></td><td class="espacio"></td><td class="espacio"></td><td class="espacio"></td></tr>
+        <tr><td></td><td class="espacio"></td><td class="espacio"></td><td class="espacio"></td></tr>
+      </tbody>
+    </table>
+
+    <div class="actividades">
+      <div class="actividad">
+        <div class="act-num">✓</div>
+        <div class="act-body">
+          <div class="act-titulo">Verifica con el compilador</div>
+          <div class="act-desc">Escribe el código con errores, compila, y copia el primer mensaje de error aquí. Corrígelo, vuelve a compilar hasta que compile limpio. Resultado esperado: base=10, altura=6 → Área = 30.00</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="msg-compilador">
+      <div class="mc-line">Espacio para copiar el mensaje del compilador:</div>
+      <div class="mc-line" style="opacity:.3;">programa_a.cpp:N:M: error: ...</div>
+      <div class="mc-line mc-ok" style="margin-top:10px;">Compilación exitosa (objetivo final):</div>
+      <div class="mc-line mc-ok" style="opacity:.3;">Ingrese la base: 10 → Área = 30.00 ✓</div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- FASE 3 -->
+  <div class="fase" id="fase3">
+    <div class="fase-header">
+      <div class="fase-num">F3</div>
+      <div class="fase-info">
+        <div class="fase-titulo">Programa B — Errores lógicos — Individual</div>
+        <div class="fase-tiempo">⏱ 55 – 100 minutos</div>
+      </div>
+    </div>
+    <p>Este programa <strong>compila sin errores</strong> pero produce resultados incorrectos. Contiene <strong>3 errores lógicos</strong>. Usa la tabla de simulación para encontrarlos <em>sin</em> ejecutar primero.</p>
+
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:10px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · PROGRAMA B — compila pero tiene 3 errores lógicos</span></div>
+        <span class="codigo-archivo">programa_b.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-com">// Calcular promedio ponderado y sueldo neto</span>
+    <span class="c-tipo">int</span>    nota1 = <span class="c-num">8</span>, nota2 = <span class="c-num">7</span>, nota3 = <span class="c-num">9</span>;
+    <span class="c-tipo">int</span>    promedio = nota1 + nota2 + nota3 / <span class="c-num">3</span>;  <span class="c-err">// Error 1</span>
+
+    <span class="c-tipo">double</span> sueldo = <span class="c-num">1200</span>;
+    <span class="c-tipo">double</span> descuento = <span class="c-num">9</span> / <span class="c-num">100</span>;                  <span class="c-err">// Error 2</span>
+    <span class="c-tipo">double</span> neto = sueldo - sueldo * descuento;
+
+    <span class="c-tipo">double</span> celsius = <span class="c-num">100</span>;
+    <span class="c-tipo">double</span> fahrenheit = celsius * <span class="c-num">9</span> / <span class="c-num">5</span> + <span class="c-num">32</span>;     <span class="c-err">// Error 3 ← analizar</span>
+    <span class="c-com">// Pista: ¿qué pasa si celsius fuera un int?</span>
+
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Promedio: "</span>    &lt;&lt; promedio    &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Sueldo neto: $"</span> &lt;&lt; neto        &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Fahrenheit: "</span>  &lt;&lt; fahrenheit  &lt;&lt; endl;
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+    </div>
+
+    <h3>Tabla de simulación — traza paso a paso</h3>
+    <table class="tabla-papel">
+      <thead><tr><th>Variable</th><th>Valor esperado</th><th>Valor real (¿por qué?)</th><th>Corrección</th></tr></thead>
+      <tbody>
+        <tr><td>promedio</td><td>8</td><td class="espacio"></td><td class="espacio"></td></tr>
+        <tr><td>descuento</td><td>0.09</td><td class="espacio"></td><td class="espacio"></td></tr>
+        <tr><td>neto</td><td>1092.00</td><td class="espacio"></td><td class="espacio"></td></tr>
+        <tr><td>fahrenheit</td><td>212.0</td><td class="espacio"></td><td class="espacio"></td></tr>
+      </tbody>
+    </table>
+
+    <div class="comparar">
+      <div class="comp-bloque mal">
+        <div class="comp-label">🚫 Salida incorrecta (sin corregir)</div>
+        <pre>Promedio: 18   ← mal
+Sueldo neto: $1200  ← mal
+Fahrenheit: 212  ← ¿bien?</pre>
+      </div>
+      <div class="comp-bloque bien">
+        <div class="comp-label">✅ Salida correcta (objetivo)</div>
+        <pre>Promedio: 8
+Sueldo neto: $1092.00
+Fahrenheit: 212.00</pre>
+      </div>
+    </div>
+
+    <div class="caja-nota">
+      <div class="cn-label">💡 Pista sobre el Error 3</div>
+      <p>La fórmula <code>celsius * 9 / 5 + 32</code> puede dar 212 con <code>double celsius = 100</code>, pero fallará si <code>celsius</code> fuera <code>int</code> con valores como 37. El error latente está en la <strong>falta de un cast explícito</strong> que garantice la división real en todos los casos.</p>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- FASE 4 -->
+  <div class="fase" id="fase4">
+    <div class="fase-header">
+      <div class="fase-num">F4</div>
+      <div class="fase-info">
+        <div class="fase-titulo">Programa C — Refactorizar con buenas prácticas — Parejas</div>
+        <div class="fase-tiempo">⏱ 100 – 135 minutos</div>
+      </div>
+    </div>
+    <p>El Programa C <strong>funciona correctamente</strong> — compila y da resultados correctos. Pero tiene pésimas prácticas. Tu misión: reescribirlo completo respetando el checklist del §3.5. No cambies la lógica, solo la forma.</p>
+
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:10px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · PROGRAMA C — funciona, pero malas prácticas</span></div>
+        <span class="codigo-archivo">programa_c_original.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-inc">#include</span><span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span><span class="c-str">&lt;iomanip&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+<span class="c-tipo">int</span> <span class="c-fn">main</span>(){
+<span class="c-tipo">double</span> a,b,c,d,e,f;
+<span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"ingrese dato1: "</span>;<span class="c-fn">cin</span>&gt;&gt;a;
+<span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"ingrese dato2: "</span>;<span class="c-fn">cin</span>&gt;&gt;b;
+<span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"ingrese dato3: "</span>;<span class="c-fn">cin</span>&gt;&gt;c;
+b=a*<span class="c-num">0.12</span>;
+c=a*<span class="c-num">0.095</span>;
+d=a-b-c;
+e=d*<span class="c-num">12</span>;<span class="c-fn">cout</span>&lt;&lt;fixed&lt;&lt;setprecision(<span class="c-num">2</span>);
+<span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"res1: "</span>&lt;&lt;b&lt;&lt;endl;
+<span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"res2: "</span>&lt;&lt;c&lt;&lt;endl;
+<span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"res3: "</span>&lt;&lt;d&lt;&lt;endl;
+<span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"res4: "</span>&lt;&lt;e&lt;&lt;endl;
+<span class="c-kw">return</span> <span class="c-num">0</span>;}</pre></div>
+    </div>
+
+    <div class="actividades">
+      <div class="actividad">
+        <div class="act-num">1</div>
+        <div class="act-body">
+          <div class="act-titulo">Descifrar el programa original</div>
+          <div class="act-desc">Antes de reescribir, entiende qué hace. Prueba con: dato1 = 1500. ¿Qué representan b, c, d, e? Pista: piensa en un rol de pagos. Una vez que lo entiendas, ponle nombres descriptivos a todas las variables.</div>
+        </div>
+      </div>
+      <div class="actividad">
+        <div class="act-num">2</div>
+        <div class="act-body">
+          <div class="act-titulo">Reescribir con nombre de archivo: <code>programa_c_mejorado.cpp</code></div>
+          <div class="act-desc">Aplica: encabezado de programa, nombres significativos, constantes <code>const</code>, indentación 4 espacios, comentarios de sección (entrada/proceso/salida), una instrucción por línea, etiquetas descriptivas en el <code>cout</code>.</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="checklist">
+      <div class="checklist-titulo">✅ Verificar antes de pasar a la siguiente fase</div>
+      <div class="check-item"><div class="check-box"></div><div class="check-texto"><strong>Encabezado de programa</strong> Nombre del programa, descripción, autor, fecha.</div></div>
+      <div class="check-item"><div class="check-box"></div><div class="check-texto"><strong>Cero variables de una letra</strong> Todas tienen nombre significativo.</div></div>
+      <div class="check-item"><div class="check-box"></div><div class="check-texto"><strong>Porcentajes como <code>const double</code></strong> No hay literales 0.12 ni 0.095 sueltos.</div></div>
+      <div class="check-item"><div class="check-box"></div><div class="check-texto"><strong>Indentación consistente</strong> 4 espacios, llaves alineadas.</div></div>
+      <div class="check-item"><div class="check-box"></div><div class="check-texto"><strong>Etiquetas descriptivas</strong> El <code>cout</code> dice qué es cada valor (no "res1", "res2").</div></div>
+      <div class="check-item"><div class="check-box"></div><div class="check-texto"><strong>Salida igual al original</strong> Los números calculados son idénticos.</div></div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- FASE 5 -->
+  <div class="fase" id="fase5">
+    <div class="fase-header">
+      <div class="fase-num">F5</div>
+      <div class="fase-info">
+        <div class="fase-titulo">Análisis con IA — Documentado</div>
+        <div class="fase-tiempo">⏱ 135 – 160 minutos</div>
+      </div>
+    </div>
+
+    <div class="caja-ia">
+      <div class="ci-label">🤖 Actividad documentada de uso de IA</div>
+      <p>Usa la IA únicamente en esta fase. <strong>Documenta prompt y análisis completo en la bitácora.</strong></p>
+    </div>
+
+    <div class="actividades">
+      <div class="actividad">
+        <div class="act-num">1</div>
+        <div class="act-body">
+          <div class="act-titulo">Pídele a la IA que encuentre los errores del Programa B</div>
+          <div class="act-desc">Prompt sugerido: <em>"El siguiente programa C++ compila sin errores pero produce resultados incorrectos. Identifica todos los errores lógicos y explica por qué ocurren: [pegar código]"</em></div>
+        </div>
+      </div>
+      <div class="actividad">
+        <div class="act-num">2</div>
+        <div class="act-body">
+          <div class="act-titulo">Compara con tu análisis de la Fase 3</div>
+          <div class="act-desc">¿La IA encontró los mismos 3 errores que tú? ¿Encontró alguno que tú pasaste por alto? ¿Pasó por alto alguno que tú sí viste? ¿Sus explicaciones son correctas o hay algo impreciso?</div>
+        </div>
+      </div>
+      <div class="actividad">
+        <div class="act-num">3</div>
+        <div class="act-body">
+          <div class="act-titulo">Pídele que evalúe el Programa C original con buenas prácticas</div>
+          <div class="act-desc">Prompt: <em>"Evalúa este código C++ según buenas prácticas de programación. Lista todos los problemas de legibilidad, nomenclatura y estilo: [pegar programa_c_original.cpp]"</em> ¿Coincide con lo que reescribiste en la Fase 4?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- FASE 6 -->
+  <div class="fase" id="fase6">
+    <div class="fase-header">
+      <div class="fase-num">F6</div>
+      <div class="fase-info">
+        <div class="fase-titulo">Cierre de Unidad I — Bitácora y reflexión</div>
+        <div class="fase-tiempo">⏱ 160 – 180 minutos</div>
+      </div>
+    </div>
+
+    <p>Esta práctica cierra la Unidad I. Antes de completar la bitácora, responde mentalmente: ¿puedo modelar un problema, elegir los tipos correctos, calcular sin errores de tipo, y entregar un código limpio y depurado? Si la respuesta a todo es sí, estás listo para la Unidad II.</p>
+
+    <div class="bitacora">
+      <div class="bitacora-campo"><label>Sesión N°:</label><div class="linea-campo"></div><label style="margin-left:20px;min-width:60px;">Fecha:</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>Tema trabajado:</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>Errores de sintaxis encontrados:</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>Errores lógicos encontrados:</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>¿Cuál fue el más difícil de ver?</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>Mejoras aplicadas en refactorización:</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>¿La IA detectó algo que yo no vi?</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>Lo que me llevo de la Unidad I:</label><div class="linea-campo"></div></div>
+    </div>
+
+    <h3>Rúbrica de evaluación</h3>
+    <table class="rubrica">
+      <thead><tr><th>Criterio</th><th>Excelente (4)</th><th>Satisfactorio (3)</th><th>En desarrollo (2)</th><th>Insuficiente (1)</th></tr></thead>
+      <tbody>
+        <tr><td>Diagnóstico inicial (F1)</td><td>Clasificó correctamente los 3 programas antes de compilar.</td><td>Clasificó 2 de 3 correctamente.</td><td>Clasificó 1 de 3.</td><td>Sin diagnóstico previo.</td></tr>
+        <tr><td>Errores de sintaxis (F2)</td><td>4/4 errores identificados, explicados y corregidos.</td><td>3/4 errores corregidos.</td><td>1–2 errores corregidos.</td><td>No logró compilar.</td></tr>
+        <tr><td>Errores lógicos (F3)</td><td>3/3 errores identificados con tabla de simulación completa.</td><td>2/3 con simulación parcial.</td><td>1/3 identificado.</td><td>Sin análisis lógico.</td></tr>
+        <tr><td>Refactorización (F4)</td><td>Checklist completo. Lógica idéntica al original. Nombres descriptivos.</td><td>Checklist con 1–2 ítems faltantes.</td><td>Mejoras parciales sin estructura.</td><td>Sin refactorización.</td></tr>
+        <tr><td>Análisis IA + bitácora (F5/F6)</td><td>Comparación crítica documentada. Bitácora completa con reflexión de Unidad I.</td><td>Comparación básica. Bitácora completa.</td><td>Análisis superficial o bitácora incompleta.</td><td>Sin análisis ni bitácora.</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="5">Puntaje máximo: 20 puntos · Mínimo de aprobación: 14 puntos</td></tr></tfoot>
+    </table>
+  </div>
+
+</main>
+
+<div class="nav-caps">
+  <a href="capitulo_03.html" class="nav-cap-btn"><span class="ncb-arrow">←</span><div><span class="ncb-label">Volver al capítulo</span><span class="ncb-titulo">Cap. 3 — Depuración y Buenas Prácticas</span></div></a>
+  <a href="capitulo_04.html" class="nav-cap-btn sig"><span class="ncb-arrow">→</span><div><span class="ncb-label">Siguiente — Unidad II</span><span class="ncb-titulo">Cap. 4 — Estructuras Selectivas</span></div></a>
+</div>
+
+<footer class="pie">
+  <span>Práctica 3 — Depuración y Buenas Prácticas · Cierre Unidad I · ESPAM MFL</span>
+  <span>espam.edu.ec</span>
+</footer>
+
+</body>
+</html>
