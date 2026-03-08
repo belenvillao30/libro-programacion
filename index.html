@@ -5,287 +5,991 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Portada | Introducción a la Programación — ESPAM MFL</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
-:root{--azul:#0f2744;--azul-medio:#1a4f8a;--azul-claro:#dce8f7;--azul-palido:#f0f5fc;--acento:#c8420a;--acento-claro:#fdf0ea;--verde:#1a5c3a;--verde-claro:#e8f5ee;--gris:#f7f8fa;--gris-medio:#e4e8f0;--texto:#1a1a2e;--texto-medio:#3a3a5a;--texto-suave:#6a6a8a;--borde:#d0d8e8;--sidebar-w:272px;--codigo-bg:#0d1b2e;--codigo-text:#cdd6f4}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{font-family:'Source Serif 4',Georgia,serif;color:var(--texto);background:#e8ecf4;font-size:16px;line-height:1.8;overflow-x:hidden}
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
 
-/* TOPBAR */
-.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--azul);border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;padding:0 18px;gap:14px;z-index:1000}
-.topbar-logo{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#7ab3e0}
-.topbar-sep{color:rgba(255,255,255,.15);font-size:16px}
-.topbar-titulo{font-family:'Source Serif 4',serif;font-size:13px;color:#c8daf0;font-weight:300;font-style:italic}
-.topbar-right{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px;color:#3a5a7a;letter-spacing:1px}
-.menu-toggle{display:none;background:none;border:none;color:#7ab3e0;font-size:20px;cursor:pointer;margin-right:6px}
-
-/* APP LAYOUT */
-.app{display:flex;padding-top:50px;min-height:100vh}
-
-/* SIDEBAR */
-.sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:50px;bottom:0;left:0;background:#fff;border-right:1px solid var(--borde);overflow-y:auto;overflow-x:hidden;z-index:900;transition:transform .3s}
-.sidebar::-webkit-scrollbar{width:3px}
-.sidebar::-webkit-scrollbar-thumb{background:var(--gris-medio);border-radius:3px}
-.sidebar-inner{padding:20px 0 40px}
-.nav-libro-titulo{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--azul-medio);padding:0 18px 12px;border-bottom:1px solid var(--borde);margin-bottom:6px}
-.nav-grupo{margin-bottom:2px}
-.nav-grupo-header{display:flex;align-items:center;gap:8px;padding:9px 18px 4px;cursor:pointer;user-select:none}
-.nav-grupo-header:hover{background:var(--azul-palido)}
-.nav-grupo-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--texto-suave);flex:1}
-.nav-grupo-label.unidad{color:var(--azul-medio);font-size:9.5px}
-.nav-chevron{font-size:11px;color:var(--texto-suave);transition:transform .2s;display:inline-block}
-.nav-grupo.open .nav-chevron{transform:rotate(90deg)}
-.nav-items{display:none}
-.nav-grupo.open .nav-items{display:block}
-.nav-item{display:flex;align-items:center;gap:9px;padding:7px 18px 7px 26px;font-size:12.5px;font-family:'Source Serif 4',serif;color:var(--texto-medio);text-decoration:none;transition:all .12s;border-left:3px solid transparent;line-height:1.35}
-.nav-item:hover{background:var(--azul-palido);color:var(--azul);border-left-color:var(--azul-claro)}
-.nav-item.activo{background:var(--azul-claro);color:var(--azul);font-weight:600;border-left-color:var(--acento)}
-.nav-item.prox{color:var(--texto-suave);font-style:italic;pointer-events:none;opacity:.55}
-.nav-num{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--texto-suave);min-width:20px;flex-shrink:0}
-.nav-item.activo .nav-num{color:var(--acento)}
-.nav-progreso{padding:14px 18px;margin-top:8px;border-top:1px solid var(--borde)}
-.nav-progreso-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--texto-suave);margin-bottom:7px;display:flex;justify-content:space-between}
-.barra-progreso{height:4px;background:var(--gris-medio);border-radius:4px;overflow:hidden}
-.barra-fill{height:100%;background:linear-gradient(90deg,var(--azul-medio),var(--acento));border-radius:4px}
-
-/* MAIN CONTENT */
-.main{margin-left:var(--sidebar-w);flex:1;min-height:calc(100vh - 50px);background:#fff}
-
-/* PAGE HEADER (unidad / cap) */
-.page-header{background:linear-gradient(155deg,#0a1e38 0%,#0f2744 50%,#122b4a 100%);color:#fff;padding:52px 72px 44px;position:relative;overflow:hidden;border-top:3px solid var(--acento)}
-.ph-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px}
-.ph-num-bg{position:absolute;right:56px;top:-20px;font-family:'Playfair Display',serif;font-size:190px;font-weight:900;color:rgba(255,255,255,.04);line-height:1}
-.ph-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(200,66,10,.2);border:1px solid rgba(200,66,10,.35);color:#f4a87a;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 13px;border-radius:20px;margin-bottom:14px;position:relative;z-index:1}
-.ph-titulo{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;line-height:1.2;margin-bottom:10px;max-width:680px;position:relative;z-index:1}
-.ph-subtitulo{font-size:14px;color:#7ab3e0;font-style:italic;margin-bottom:24px;position:relative;z-index:1}
-.ph-meta{display:flex;gap:26px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.08);padding-top:18px;position:relative;z-index:1}
-.ph-meta-item{display:flex;flex-direction:column;gap:3px}
-.ph-meta-label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:#3a5a7a}
-.ph-meta-valor{font-size:13px;color:#c8daf0}
-
-/* BODY */
-.cap-body{padding:60px 72px;max-width:960px}
-.seccion{margin-bottom:50px;scroll-margin-top:68px}
-.seccion-num{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--acento);margin-bottom:4px}
-h2{font-family:'Playfair Display',serif;font-size:25px;font-weight:700;color:var(--azul);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--azul-claro);line-height:1.25}
-h3{font-family:'Source Serif 4',serif;font-size:17px;font-weight:600;color:var(--azul);margin:28px 0 10px}
-p{margin-bottom:14px;color:var(--texto-medio)}
-
-/* RA BOX */
-.ra-box{background:linear-gradient(135deg,var(--azul) 0%,var(--azul-medio) 100%);color:#fff;border-radius:12px;padding:26px 30px;margin-bottom:48px;position:relative;overflow:hidden}
-.ra-box::after{content:'R.A.';position:absolute;right:18px;bottom:-12px;font-family:'Playfair Display',serif;font-size:72px;font-weight:900;color:rgba(255,255,255,.05);line-height:1}
-.ra-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#7ab3e0;margin-bottom:7px}
-.ra-texto{font-size:15px;line-height:1.65;font-style:italic;position:relative;z-index:1}
-.ra-texto strong{font-style:normal;color:#f4c891}
-
-/* COMPONENTES */
-.def-formal{border:1px solid var(--azul-claro);border-left:5px solid var(--azul-medio);border-radius:0 10px 10px 0;padding:18px 24px;margin:20px 0;background:var(--azul-palido)}
-.def-formal .def-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--azul-medio);margin-bottom:6px}
-.def-formal p{margin:0;font-size:14px;color:var(--texto)}
-.def-formal em{font-style:italic;color:var(--azul)}
-.props-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin:18px 0}
-.prop-card{border:1px solid var(--borde);border-radius:10px;padding:15px 17px;transition:box-shadow .2s,border-color .2s}
-.prop-card:hover{box-shadow:0 4px 14px rgba(15,39,68,.07);border-color:var(--azul-claro)}
-.prop-card .prop-icon{font-size:19px;margin-bottom:6px}
-.prop-card h4{font-family:'Source Serif 4',serif;font-size:13.5px;font-weight:600;color:var(--azul);margin-bottom:4px}
-.prop-card p{font-size:12.5px;color:var(--texto-suave);margin:0;line-height:1.5}
-.tabla-est{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
-.tabla-est thead tr{background:var(--azul);color:#fff}
-.tabla-est thead th{padding:10px 15px;text-align:left;font-size:12.5px;font-weight:600}
-.tabla-est tbody tr:nth-child(even){background:var(--gris)}
-.tabla-est tbody tr:hover{background:var(--azul-palido)}
-.tabla-est tbody td{padding:9px 15px;border-bottom:1px solid var(--borde);color:var(--texto-medio);vertical-align:top}
-.tabla-est tbody td:first-child{font-weight:600;color:var(--azul)}
-.diagrama-container{background:var(--gris);border:1px solid var(--borde);border-radius:12px;padding:26px 30px;margin:20px 0;display:flex;flex-direction:column;align-items:center}
-.diagrama-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1px;color:var(--texto-suave);text-transform:uppercase;margin-bottom:18px;align-self:flex-start}
-.df-wrap{display:flex;flex-direction:column;align-items:center}
-.df-terminal{background:var(--azul);color:#fff;border-radius:50px;padding:8px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600}
-.df-flecha{width:2px;height:24px;background:var(--azul-medio);position:relative}
-.df-flecha::after{content:'';position:absolute;bottom:-1px;left:-5px;border-left:6px solid transparent;border-right:6px solid transparent;border-top:8px solid var(--azul-medio)}
-.df-proceso{background:#fff;border:2px solid var(--azul-medio);border-radius:6px;padding:8px 24px;font-size:13px;color:var(--azul);min-width:190px;text-align:center}
-.df-entrada{background:var(--verde-claro);border:2px solid var(--verde);padding:8px 16px;font-size:13px;color:var(--verde);min-width:190px;text-align:center;transform:skewX(-10deg)}
-.df-entrada span,.df-salida span{display:inline-block;transform:skewX(10deg)}
-.df-salida{background:var(--acento-claro);border:2px solid var(--acento);padding:8px 16px;font-size:13px;color:var(--acento);min-width:190px;text-align:center;transform:skewX(-10deg)}
-.pseudocodigo{background:#f9fafb;border:1px solid var(--borde);border-left:5px solid var(--verde);border-radius:0 10px 10px 0;padding:20px 24px;margin:18px 0}
-.pseudo-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:10px}
-.pseudo-code{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2;color:var(--texto)}
-.pseudo-kw{color:var(--azul-medio);font-weight:600}
-.pseudo-str{color:#1a8a3a}
-.pseudo-ind{padding-left:22px;display:block}
-.codigo-bloque{background:var(--codigo-bg);border-radius:10px;margin:18px 0;overflow:hidden}
-.codigo-header{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.07)}
-.codigo-dots{display:flex;gap:5px}
-.dot{width:9px;height:9px;border-radius:50%}
-.dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
-.codigo-lang{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5a7fa8;margin-left:9px}
-.codigo-archivo{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#3a5a7a}
-.codigo-body{padding:18px 22px;overflow-x:auto}
-pre{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.8;color:var(--codigo-text)}
-.c-com{color:#5a7a9a;font-style:italic}.c-kw{color:#89b4fa}.c-tipo{color:#cba6f7}.c-str{color:#a6e3a1}.c-num{color:#fab387}.c-fn{color:#89dceb}.c-inc{color:#f38ba8}.c-ns{color:#f5c2e7}
-.codigo-anotado{margin:18px 0;border:1px solid var(--borde);border-radius:10px;overflow:hidden}
-.linea-codigo{display:grid;grid-template-columns:32px 1fr auto;align-items:stretch;border-bottom:1px solid rgba(255,255,255,.03)}
-.linea-codigo:last-child{border-bottom:none}
-.ln-num{background:#0d1b2e;color:#2a4a6a;font-family:'JetBrains Mono',monospace;font-size:10px;display:flex;align-items:center;justify-content:center;border-right:1px solid rgba(255,255,255,.04)}
-.ln-code{background:var(--codigo-bg);padding:6px 16px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--codigo-text);line-height:1.6}
-.ln-nota{background:#0a1525;border-left:3px solid var(--azul-medio);padding:6px 13px;font-size:11.5px;color:#5a88b8;font-family:'Source Serif 4',serif;font-style:italic;max-width:250px;display:flex;align-items:center}
-.tabla-sim{width:100%;border-collapse:collapse;margin:16px 0;font-family:'JetBrains Mono',monospace;font-size:12px}
-.tabla-sim thead tr{background:var(--azul);color:#fff}
-.tabla-sim thead th{padding:9px 13px;text-align:center;font-size:10.5px;font-weight:600;letter-spacing:1px}
-.tabla-sim tbody tr:nth-child(even){background:var(--gris)}
-.tabla-sim tbody td{padding:7px 13px;border:1px solid var(--borde);text-align:center;color:var(--texto-medio)}
-.tabla-sim tbody td.res{background:var(--acento-claro);color:var(--acento);font-weight:700}
-.tabla-sim tfoot td{padding:7px 13px;background:var(--verde-claro);color:var(--verde);font-weight:600;border:1px solid var(--borde);text-align:center}
-.caja-nota{background:var(--azul-palido);border-left:5px solid var(--azul-medio);border-radius:0 10px 10px 0;padding:16px 20px;margin:18px 0}
-.caja-nota .cn-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--azul-medio);margin-bottom:5px}
-.caja-nota p{margin:0;font-size:13.5px;color:var(--texto-medio)}
-.caja-adv{background:var(--acento-claro);border-left:5px solid var(--acento);border-radius:0 10px 10px 0;padding:16px 20px;margin:18px 0}
-.caja-adv .ca-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--acento);margin-bottom:5px}
-.caja-adv p{margin:0;font-size:13.5px}
-.caja-ia{background:#0d1b2e;border-radius:10px;padding:20px 24px;margin:20px 0}
-.caja-ia .ci-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#5a88b8;margin-bottom:9px}
-.caja-ia p{font-size:13.5px;color:#8aaccc;line-height:1.65;margin:0}
-.caja-ia strong{color:#cdd6f4}
-.tarjetas-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:18px 0}
-.tarjeta{border:1px solid var(--borde);border-radius:10px;padding:16px;transition:box-shadow .2s}
-.tarjeta:hover{box-shadow:0 4px 14px rgba(15,39,68,.07)}
-.tarjeta .t-icono{font-size:20px;margin-bottom:7px}
-.tarjeta h4{font-family:'Source Serif 4',serif;font-size:13.5px;font-weight:600;color:var(--azul);margin-bottom:4px}
-.tarjeta p{font-size:13px;color:var(--texto-suave);margin:0;line-height:1.5}
-.eval-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}
-.eval-card{border-radius:10px;padding:16px 12px;text-align:center}
-.eval-card.c1{background:var(--azul-claro)}.eval-card.c2{background:var(--verde-claro)}.eval-card.c3{background:var(--acento-claro)}.eval-card.c4{background:#f3e8ff}
-.eval-pct{font-size:24px;font-weight:700;line-height:1;margin-bottom:5px}
-.c1 .eval-pct{color:var(--azul)}.c2 .eval-pct{color:var(--verde)}.c3 .eval-pct{color:var(--acento)}.c4 .eval-pct{color:#6b3fa0}
-.eval-label{font-size:11px;font-weight:600;color:var(--texto-suave);line-height:1.4}
-.lista-principios{list-style:none;margin:16px 0}
-.lista-principios li{display:flex;align-items:flex-start;gap:13px;padding:12px 0;border-bottom:1px solid var(--borde)}
-.lista-principios li:last-child{border-bottom:none}
-.num-circulo{min-width:28px;height:28px;border-radius:50%;background:var(--azul);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.li-texto strong{display:block;font-size:13.5px;font-weight:600;color:var(--azul);margin-bottom:2px}
-.li-texto span{font-size:12.5px;color:var(--texto-suave)}
-.bitacora-plantilla{border:2px dashed var(--borde);border-radius:10px;padding:22px;background:#fafbfd;margin:18px 0}
-.bitacora-campo{display:flex;gap:13px;border-bottom:1px solid var(--borde);padding:8px 0;align-items:center}
-.bitacora-campo label{min-width:155px;font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;color:var(--azul)}
-.linea-campo{flex:1;border-bottom:1px solid var(--gris-medio);min-height:20px}
-.ejercicios-section{background:var(--gris);border:1px solid var(--gris-medio);border-radius:14px;padding:28px 32px;margin:32px 0}
-.ejercicios-titulo{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--azul);margin-bottom:20px}
-.ejercicio-item{background:#fff;border:1px solid var(--borde);border-radius:10px;padding:18px 22px;margin-bottom:12px;position:relative}
-.ejercicio-item:last-child{margin-bottom:0}
-.ej-badge{display:inline-flex;align-items:center;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:9px}
-.ej-badge.comp{background:var(--azul-claro);color:var(--azul-medio)}.ej-badge.aplic{background:var(--verde-claro);color:var(--verde)}.ej-badge.integ{background:var(--acento-claro);color:var(--acento)}
-.ej-num{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--azul-claro);position:absolute;top:13px;right:16px;line-height:1}
-.ej-enunciado{font-size:13.5px;color:var(--texto-medio);line-height:1.65}
-.evaluativa{background:linear-gradient(135deg,#0f2744,#1a4f8a);color:#fff;border-radius:14px;padding:28px 32px;margin:32px 0}
-.evaluativa-titulo{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;margin-bottom:4px}
-.evaluativa-sub{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;color:#7ab3e0;margin-bottom:18px}
-.evaluativa-enunciado{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:16px 20px;font-size:13.5px;color:#c8daf0;line-height:1.65;margin-bottom:12px}
-.evaluativa-criterios{list-style:none}
-.evaluativa-criterios li{display:flex;align-items:flex-start;gap:9px;padding:6px 0;font-size:13px;color:#8ab4d8;border-bottom:1px solid rgba(255,255,255,.06)}
-.evaluativa-criterios li::before{content:'◆';color:#f4c891;font-size:9px;margin-top:5px;flex-shrink:0}
-.puente-ed{background:linear-gradient(135deg,#1a5c3a,#1a6b4a);color:#fff;border-radius:14px;padding:26px 30px;margin:32px 0}
-.puente-titulo{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:3px}
-.puente-sub{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#7ac8a0;margin-bottom:12px}
-.puente-texto{font-size:13.5px;color:#a8d8b8;line-height:1.7}
-.divisor{border:none;border-top:1px solid var(--borde);margin:44px 0}
-.pie-pagina{background:var(--azul);color:#3a5a7a;padding:16px 72px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.5px;display:flex;justify-content:space-between;align-items:center}
-
-/* NAV PREV/NEXT */
-.nav-capitulos{display:flex;justify-content:space-between;padding:28px 72px;background:var(--gris);border-top:1px solid var(--borde)}
-.nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:14px 20px;border:1px solid var(--borde);border-radius:10px;background:#fff;transition:all .2s;max-width:280px}
-.nav-cap-btn:hover{border-color:var(--azul-medio);box-shadow:0 4px 14px rgba(15,39,68,.08)}
-.nav-cap-btn.siguiente{flex-direction:row-reverse;text-align:right}
-.ncb-arrow{font-size:20px;color:var(--azul-medio);flex-shrink:0}
-.ncb-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--texto-suave);margin-bottom:3px}
-.ncb-titulo{font-size:13px;font-weight:600;color:var(--azul);line-height:1.3}
-
-/* RESPONSIVE */
-@media(max-width:960px){
-  .menu-toggle{display:block}
-  .sidebar{transform:translateX(-100%)}
-  .sidebar.open{transform:translateX(0)}
-  .main{margin-left:0}
-  .cap-body,.page-header,.nav-capitulos,.pie-pagina{padding-left:22px;padding-right:22px}
-  .props-grid,.tarjetas-grid,.eval-grid{grid-template-columns:1fr}
+:root {
+  --verde:       #005846;
+  --verde-medio: #007a5e;
+  --verde-claro: #cbdb2a;
+  --turquesa:    #08b89d;
+  --fondo:       #F8F8F2;
+  --fondo-alt:   #edeee8;
+  --texto:       #1a1f1c;
+  --texto-suave: #4a5550;
+  --blanco:      #ffffff;
+  --borde:       rgba(0,88,70,.13);
 }
-@media print{
-  .topbar,.sidebar,.menu-toggle,.nav-capitulos{display:none!important}
-  .main{margin-left:0}
-  .cap-body{padding:20px}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'Work Sans', 'Helvetica Neue', Arial, sans-serif;
+  color: var(--texto);
+  background: var(--fondo);
+  font-size: 16px;
+  line-height: 1.7;
+  overflow-x: hidden;
+}
+
+/* ── TOPBAR ─────────────────────────────────────────────── */
+.topbar {
+  position: fixed; top: 0; left: 0; right: 0; height: 50px;
+  background: var(--verde);
+  display: flex; align-items: center; padding: 0 24px; gap: 14px;
+  z-index: 1000;
+  border-bottom: 3px solid var(--verde-claro);
+}
+.topbar-logo {
+  font-family: 'Space Mono', monospace;
+  font-size: 11px; font-weight: 700; letter-spacing: 3px;
+  text-transform: uppercase; color: var(--verde-claro);
+}
+.topbar-sep { width: 1px; height: 20px; background: rgba(255,255,255,.2); }
+.topbar-titulo { font-size: 12px; color: rgba(255,255,255,.65); font-weight: 400; }
+.topbar-right {
+  margin-left: auto;
+  font-family: 'Space Mono', monospace; font-size: 9px;
+  color: rgba(255,255,255,.3); letter-spacing: 1.5px;
+}
+
+/* ── NAV COLAPSABLE ─────────────────────────────────────── */
+.nav-menu { background: var(--verde); border-bottom: 2px solid rgba(203,219,42,.3); }
+.nav-toggle {
+  width: 100%; background: transparent; color: white; border: none;
+  padding: 11px 24px; text-align: left; cursor: pointer;
+  font-family: 'Space Mono', monospace; font-size: 9.5px;
+  letter-spacing: 2px; text-transform: uppercase;
+  display: flex; justify-content: space-between; align-items: center;
+  border-top: 1px solid rgba(255,255,255,.08);
+}
+.nav-toggle:hover { background: rgba(255,255,255,.04); }
+.nav-toggle-arrow { color: var(--verde-claro); font-size: 12px; }
+.nav-body { display: none; padding: 18px 24px 22px; }
+.nav-body.abierto { display: flex; flex-wrap: wrap; gap: 28px; }
+.nav-grupo { min-width: 170px; }
+.nav-grupo-label {
+  font-family: 'Space Mono', monospace; font-size: 8px;
+  font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--verde-claro); margin-bottom: 7px; display: block;
+  padding-bottom: 5px; border-bottom: 1px solid rgba(203,219,42,.2);
+}
+.nav-items { list-style: none; }
+.nav-item {
+  display: flex; align-items: center; gap: 7px;
+  padding: 4px 0; font-size: 12px;
+  color: rgba(255,255,255,.72); text-decoration: none;
+  font-weight: 400; transition: color .15s;
+}
+.nav-item:hover { color: var(--verde-claro); text-decoration: none; }
+.nav-item.activo { color: var(--verde-claro); font-weight: 700; }
+.nav-item.practica { color: rgba(8,184,157,.85); font-style: italic; }
+.nav-item.practica:hover { color: var(--turquesa); }
+.nav-item.prox { color: rgba(255,255,255,.28); pointer-events: none; }
+.nav-num {
+  font-family: 'Space Mono', monospace; font-size: 9px;
+  min-width: 20px; flex-shrink: 0; color: rgba(255,255,255,.28);
+}
+.nav-item.activo .nav-num { color: var(--verde-claro); }
+.nav-item.practica .nav-num { color: rgba(8,184,157,.45); }
+
+/* ── APP LAYOUT ─────────────────────────────────────────── */
+.app { padding-top: 50px; min-height: 100vh; }
+
+/* ── HERO ────────────────────────────────────────────────── */
+.hero {
+  background: var(--verde);
+  padding: 72px 64px 64px;
+  position: relative; overflow: hidden;
+  border-bottom: 4px solid var(--verde-claro);
+}
+/* patrón octagonal / puntos de fondo */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    radial-gradient(circle, rgba(203,219,42,.08) 1px, transparent 1px);
+  background-size: 28px 28px;
+}
+/* gran número decorativo */
+.hero-deco {
+  position: absolute; right: 48px; top: -10px;
+  font-family: 'Work Sans', sans-serif;
+  font-size: 260px; font-weight: 900;
+  color: rgba(255,255,255,.03); line-height: 1;
+  user-select: none; pointer-events: none;
+  letter-spacing: -10px;
+}
+/* círculo decorativo turquesa */
+.hero-circle {
+  position: absolute; right: -60px; bottom: -60px;
+  width: 300px; height: 300px;
+  border: 60px solid rgba(8,184,157,.07);
+  border-radius: 50%;
+}
+.hero-inner { position: relative; z-index: 1; max-width: 820px; }
+
+/* SVG octagonal isotipo */
+.hero-logo-row {
+  display: flex; align-items: center; gap: 18px; margin-bottom: 28px;
+}
+.hero-isotipo { flex-shrink: 0; }
+.hero-inst {
+  display: flex; flex-direction: column; gap: 2px;
+}
+.hero-inst-nombre {
+  font-family: 'Space Mono', monospace;
+  font-size: 13px; font-weight: 700; letter-spacing: 2px;
+  color: var(--verde-claro); text-transform: uppercase;
+}
+.hero-inst-sub {
+  font-size: 11px; color: rgba(255,255,255,.5);
+  font-weight: 300; letter-spacing: .3px;
+}
+
+.hero-badge {
+  display: inline-block;
+  background: rgba(203,219,42,.15);
+  border: 1px solid rgba(203,219,42,.35);
+  color: var(--verde-claro);
+  font-family: 'Space Mono', monospace;
+  font-size: 8.5px; font-weight: 700;
+  letter-spacing: 2px; text-transform: uppercase;
+  padding: 4px 12px; border-radius: 2px;
+  margin-bottom: 18px;
+}
+.hero-titulo {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 44px; font-weight: 900; line-height: 1.1;
+  color: white; margin-bottom: 8px; letter-spacing: -1px;
+}
+.hero-titulo span { color: var(--verde-claro); }
+.hero-subtitulo {
+  font-size: 16px; color: rgba(255,255,255,.55);
+  font-weight: 300; margin-bottom: 36px; max-width: 540px;
+}
+.hero-meta {
+  display: flex; gap: 36px; flex-wrap: wrap;
+  border-top: 1px solid rgba(255,255,255,.1);
+  padding-top: 24px;
+}
+.hero-meta-item { display: flex; flex-direction: column; gap: 3px; }
+.hero-meta-label {
+  font-family: 'Space Mono', monospace; font-size: 8px;
+  letter-spacing: 1.5px; text-transform: uppercase;
+  color: rgba(255,255,255,.3);
+}
+.hero-meta-valor { font-size: 14px; color: rgba(255,255,255,.85); font-weight: 600; }
+
+/* ── BLOQUE DE CONTENIDO PRINCIPAL ─────────────────────── */
+.main-content { max-width: 980px; margin: 0 auto; padding: 56px 48px 0; }
+
+/* ── SECCIÓN ────────────────────────────────────────────── */
+.seccion { margin-bottom: 52px; }
+.seccion-num {
+  font-family: 'Space Mono', monospace; font-size: 9px;
+  font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--turquesa); margin-bottom: 4px; display: block;
+}
+h2 {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 24px; font-weight: 800; color: var(--verde);
+  margin-bottom: 16px; padding-bottom: 10px;
+  border-bottom: 2px solid rgba(0,88,70,.12); line-height: 1.2;
+}
+h3 {
+  font-family: 'Work Sans', sans-serif;
+  font-size: 16px; font-weight: 700; color: var(--verde);
+  margin: 28px 0 10px;
+}
+p { margin-bottom: 14px; color: var(--texto-suave); font-size: 15px; }
+hr { border: none; border-top: 1px solid var(--borde); margin: 44px 0; }
+
+/* ── CAJA MISIÓN ────────────────────────────────────────── */
+.mision-box {
+  background: var(--verde); border-radius: 10px;
+  padding: 28px 32px; margin-bottom: 44px;
+  border-left: 5px solid var(--verde-claro);
+  position: relative; overflow: hidden;
+}
+.mision-box::after {
+  content: '❝'; position: absolute; right: 20px; bottom: -10px;
+  font-size: 80px; color: rgba(255,255,255,.04); line-height: 1;
+}
+.mision-label {
+  font-family: 'Space Mono', monospace; font-size: 8.5px;
+  font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  color: var(--verde-claro); margin-bottom: 10px; display: block;
+}
+.mision-texto {
+  font-size: 16px; line-height: 1.75; color: rgba(255,255,255,.88);
+  font-style: italic; position: relative; z-index: 1;
+}
+.mision-texto strong { color: var(--verde-claro); font-style: normal; font-weight: 700; }
+
+/* ── TARJETAS DE CARACTERÍSTICAS ───────────────────────── */
+.cards-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 12px; margin: 24px 0;
+}
+.card {
+  background: white; border: 1px solid var(--borde);
+  border-radius: 10px; padding: 20px 18px;
+  transition: box-shadow .2s, border-color .2s;
+}
+.card:hover { box-shadow: 0 6px 20px rgba(0,88,70,.1); border-color: rgba(0,88,70,.25); }
+.card-icono { font-size: 22px; margin-bottom: 10px; display: block; }
+.card h4 {
+  font-family: 'Work Sans', sans-serif; font-size: 14px;
+  font-weight: 700; color: var(--verde); margin-bottom: 5px;
+}
+.card p { font-size: 13px; color: var(--texto-suave); margin: 0; line-height: 1.55; }
+
+/* ── HILO CONDUCTOR ─────────────────────────────────────── */
+.hilo {
+  display: flex; align-items: center; gap: 0;
+  background: white; border: 1px solid var(--borde);
+  border-radius: 10px; overflow: hidden; margin: 24px 0;
+}
+.hilo-paso {
+  flex: 1; padding: 20px 18px; text-align: center;
+  border-right: 1px solid var(--borde);
+}
+.hilo-paso:last-child { border-right: none; }
+.hilo-paso-num {
+  font-family: 'Space Mono', monospace; font-size: 9px;
+  letter-spacing: 1px; text-transform: uppercase;
+  color: rgba(0,88,70,.4); margin-bottom: 6px; display: block;
+}
+.hilo-paso-icono { font-size: 24px; display: block; margin-bottom: 6px; }
+.hilo-paso-titulo {
+  font-size: 13px; font-weight: 700; color: var(--verde); margin-bottom: 3px;
+}
+.hilo-paso-desc { font-size: 11.5px; color: var(--texto-suave); }
+.hilo-flecha {
+  font-size: 18px; color: var(--verde-claro); font-weight: 900;
+  padding: 0 4px; flex-shrink: 0;
+}
+
+/* ── ESTRUCTURA DEL LIBRO ───────────────────────────────── */
+.unidades-grid { display: flex; flex-direction: column; gap: 10px; margin: 24px 0; }
+.unidad-row {
+  background: white; border: 1px solid var(--borde);
+  border-radius: 10px; overflow: hidden;
+  display: grid; grid-template-columns: 200px 1fr;
+}
+.unidad-header {
+  background: var(--verde); padding: 20px 20px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.unidad-num {
+  font-family: 'Space Mono', monospace; font-size: 9px;
+  font-weight: 700; letter-spacing: 2px; color: rgba(203,219,42,.6);
+  text-transform: uppercase; margin-bottom: 4px;
+}
+.unidad-titulo {
+  font-size: 14px; font-weight: 700; color: white; line-height: 1.3;
+}
+.unidad-horas {
+  font-family: 'Space Mono', monospace; font-size: 9.5px;
+  color: rgba(255,255,255,.4); margin-top: 6px;
+}
+.unidad-caps { padding: 16px 20px; display: flex; flex-wrap: wrap; gap: 8px; align-content: flex-start; }
+.cap-chip {
+  display: flex; align-items: center; gap: 6px;
+  background: var(--fondo); border: 1px solid var(--borde);
+  border-radius: 6px; padding: 5px 10px; text-decoration: none;
+  transition: all .15s;
+}
+.cap-chip:hover {
+  background: rgba(0,88,70,.06); border-color: var(--verde);
+  text-decoration: none;
+}
+.cap-chip-num {
+  font-family: 'Space Mono', monospace; font-size: 9px;
+  color: rgba(0,88,70,.4);
+}
+.cap-chip-titulo { font-size: 12px; font-weight: 600; color: var(--verde); }
+.cap-chip-practica {
+  display: flex; align-items: center; gap: 5px;
+  background: rgba(8,184,157,.07); border: 1px solid rgba(8,184,157,.2);
+  border-radius: 6px; padding: 4px 9px; text-decoration: none;
+  transition: all .15s;
+}
+.cap-chip-practica:hover {
+  background: rgba(8,184,157,.12); border-color: var(--turquesa);
+}
+.cap-chip-practica span { font-size: 11.5px; color: var(--turquesa); font-style: italic; }
+
+/* ── INSTRUCCIONES DE USO ───────────────────────────────── */
+.uso-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin: 20px 0; }
+.uso-card {
+  background: white; border: 1px solid var(--borde);
+  border-radius: 10px; padding: 18px 20px;
+  display: flex; gap: 14px; align-items: flex-start;
+}
+.uso-num {
+  min-width: 32px; height: 32px; border-radius: 50%;
+  background: var(--verde); color: white;
+  font-size: 13px; font-weight: 800;
+  display: flex; align-items: center; justify-content: center;
+  flex-shrink: 0;
+}
+.uso-card h4 {
+  font-size: 13.5px; font-weight: 700; color: var(--verde); margin-bottom: 3px;
+}
+.uso-card p { font-size: 12.5px; color: var(--texto-suave); margin: 0; line-height: 1.5; }
+
+/* ── POLÍTICA IA ────────────────────────────────────────── */
+.ia-policy {
+  background: var(--verde); border-radius: 10px;
+  padding: 24px 28px; margin: 24px 0;
+  display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+}
+.ia-policy-titulo {
+  font-family: 'Work Sans', sans-serif; font-size: 15px;
+  font-weight: 700; color: white; margin-bottom: 12px;
+  grid-column: 1 / -1;
+}
+.ia-col-label {
+  font-family: 'Space Mono', monospace; font-size: 8.5px;
+  font-weight: 700; letter-spacing: 2px; text-transform: uppercase;
+  margin-bottom: 8px; display: block;
+}
+.ia-col-label.perm { color: var(--verde-claro); }
+.ia-col-label.proh { color: rgba(255,100,100,.8); }
+.ia-list { list-style: none; }
+.ia-list li {
+  font-size: 13px; padding: 5px 0;
+  border-bottom: 1px solid rgba(255,255,255,.06);
+  color: rgba(255,255,255,.75);
+  display: flex; gap: 8px; align-items: flex-start;
+}
+.ia-list li:last-child { border-bottom: none; }
+.ia-list li::before { flex-shrink: 0; margin-top: 2px; }
+.ia-list.perm li::before { content: '✓'; color: var(--verde-claro); }
+.ia-list.proh li::before { content: '✕'; color: rgba(255,100,100,.8); }
+
+/* ── DOCENTE ────────────────────────────────────────────── */
+.docente-card {
+  background: white; border: 1px solid var(--borde);
+  border-radius: 10px; padding: 24px 28px; margin: 20px 0;
+  display: flex; gap: 20px; align-items: center;
+}
+.docente-avatar {
+  width: 64px; height: 64px; border-radius: 50%;
+  background: var(--verde); display: flex; align-items: center;
+  justify-content: center; font-size: 28px; flex-shrink: 0;
+}
+.docente-nombre {
+  font-size: 16px; font-weight: 700; color: var(--verde); margin-bottom: 2px;
+}
+.docente-rol {
+  font-family: 'Space Mono', monospace; font-size: 9.5px;
+  letter-spacing: 1px; color: rgba(0,88,70,.5);
+  text-transform: uppercase; margin-bottom: 6px;
+}
+.docente-info { font-size: 13px; color: var(--texto-suave); }
+
+/* ── PIE ─────────────────────────────────────────────────── */
+.nav-caps {
+  display: flex; justify-content: flex-end; align-items: center;
+  padding: 20px 48px; background: var(--fondo-alt);
+  border-top: 1px solid var(--borde);
+  margin-top: 48px;
+}
+.nav-cap-btn {
+  display: flex; align-items: center; gap: 12px;
+  text-decoration: none; padding: 12px 18px;
+  border: 1.5px solid rgba(0,88,70,.2); border-radius: 8px;
+  background: white; max-width: 280px; transition: all .2s;
+}
+.nav-cap-btn:hover { border-color: var(--verde); background: var(--fondo); text-decoration: none; }
+.nav-cap-btn.sig { flex-direction: row-reverse; text-align: right; }
+.ncb-arrow { font-size: 16px; color: var(--verde); flex-shrink: 0; }
+.ncb-label {
+  font-family: 'Space Mono', monospace; font-size: 8.5px;
+  letter-spacing: 2px; text-transform: uppercase;
+  color: rgba(0,88,70,.45); margin-bottom: 2px; display: block;
+}
+.ncb-titulo { font-size: 13px; font-weight: 700; color: var(--verde); }
+
+.pie {
+  background: var(--verde); color: rgba(255,255,255,.35);
+  padding: 14px 48px;
+  font-family: 'Space Mono', monospace; font-size: 9px;
+  display: flex; justify-content: space-between;
+  align-items: center; flex-wrap: wrap; gap: 8px;
+  letter-spacing: 1px;
+}
+.pie span:first-child { color: rgba(255,255,255,.55); }
+
+/* ── RESPONSIVE ─────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero { padding: 48px 24px 40px; }
+  .hero-titulo { font-size: 30px; }
+  .main-content { padding: 36px 24px 0; }
+  .cards-grid { grid-template-columns: 1fr; }
+  .unidad-row { grid-template-columns: 1fr; }
+  .uso-grid { grid-template-columns: 1fr; }
+  .ia-policy { grid-template-columns: 1fr; }
+  .hilo { flex-direction: column; }
+  .hilo-flecha { transform: rotate(90deg); }
+  .nav-caps { padding: 20px 24px; }
+  .pie { padding: 14px 24px; }
 }
 </style>
 </head>
 <body>
+
+<!-- ── TOPBAR ────────────────────────────────────────────── -->
 <header class="topbar">
-  <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
-  <span class="topbar-logo">ESPAM MFL</span>
-  <span class="topbar-sep">|</span>
-  <span class="topbar-titulo">Introducción a la Programación — Fundamentos Algorítmicos en C++</span>
-  <span class="topbar-right">Computación · 2025</span>
+  <div class="topbar-logo">ESPAM MFL</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-titulo">Introducción a la Programación</div>
+  <div class="topbar-right">CARRERA DE COMPUTACIÓN</div>
 </header>
-<div class="app">
-<nav class="sidebar" id="sidebar">
-  <div class="sidebar-inner">
-    <div class="nav-libro-titulo">Índice del Libro</div>
-    <div class="nav-grupo open">
-      <div class="nav-grupo-header" onclick="this.parentElement.classList.toggle('open')">
-        <span class="nav-grupo-label">Inicio y Preliminares</span><span class="nav-chevron">›</span>
-      </div>
-      <div class="nav-items"><a class="nav-item activo" href="index.html"><span class="nav-num">📖</span>Portada</a><a class="nav-item" href="preliminares.html"><span class="nav-num">—</span>Preliminares</a></div>
-    </div>
+
+<!-- ── NAV MENÚ ─────────────────────────────────────────── -->
+<nav class="nav-menu">
+  <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">
+    ☰ &nbsp; Contenidos del libro
+    <span class="nav-toggle-arrow">▼</span>
+  </button>
+  <div class="nav-body">
+
     <div class="nav-grupo">
-      <div class="nav-grupo-header" onclick="this.parentElement.classList.toggle('open')">
-        <span class="nav-grupo-label unidad">Unidad I — Fundamentos</span><span class="nav-chevron">›</span>
-      </div>
-      <div class="nav-items"><a class="nav-item" href="unidad_1_intro.html"><span class="nav-num">→</span>Introducción Unidad I</a><a class="nav-item" href="capitulo_01.html"><span class="nav-num">1</span>Pensamiento Algorítmico</a><a class="nav-item" href="capitulo_02.html"><span class="nav-num">2</span>Tipos de Datos</a><a class="nav-item" href="capitulo_03.html"><span class="nav-num">3</span>Depuración</a></div>
+      <span class="nav-grupo-label">Inicio</span>
+      <ul class="nav-items">
+        <li><a href="index.html" class="nav-item activo"><span class="nav-num">◉</span> Portada</a></li>
+        <li><a href="preliminares.html" class="nav-item"><span class="nav-num">—</span> Preliminares</a></li>
+      </ul>
     </div>
+
     <div class="nav-grupo">
-      <div class="nav-grupo-header" onclick="this.parentElement.classList.toggle('open')">
-        <span class="nav-grupo-label unidad">Unidad II — Estructuras</span><span class="nav-chevron">›</span>
-      </div>
-      <div class="nav-items"><a class="nav-item" href="unidad_2_intro.html"><span class="nav-num">→</span>Introducción Unidad II</a><a class="nav-item" href="capitulo_04.html"><span class="nav-num">4</span>Estructuras Selectivas</a><a class="nav-item" href="capitulo_05.html"><span class="nav-num">5</span>Repetitivas I</a><a class="nav-item" href="capitulo_06.html"><span class="nav-num">6</span>Repetitivas II</a><a class="nav-item" href="capitulo_07.html"><span class="nav-num">7</span>Integración</a></div>
+      <span class="nav-grupo-label">Unidad I — Fundamentos</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_01.html" class="nav-item"><span class="nav-num">01</span> Pensamiento Algorítmico</a></li>
+        <li><a href="practica_01.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 1</a></li>
+        <li><a href="capitulo_02.html" class="nav-item prox"><span class="nav-num">02</span> Tipos de Datos y Variables</a></li>
+        <li><a href="practica_02.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 2</a></li>
+        <li><a href="capitulo_03.html" class="nav-item prox"><span class="nav-num">03</span> Depuración y Buenas Prácticas</a></li>
+        <li><a href="practica_03.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 3</a></li>
+      </ul>
     </div>
+
     <div class="nav-grupo">
-      <div class="nav-grupo-header" onclick="this.parentElement.classList.toggle('open')">
-        <span class="nav-grupo-label unidad">Unidad III — Funciones</span><span class="nav-chevron">›</span>
-      </div>
-      <div class="nav-items"><a class="nav-item" href="unidad_3_intro.html"><span class="nav-num">→</span>Introducción Unidad III</a><a class="nav-item" href="capitulo_08.html"><span class="nav-num">8</span>Funciones en C++</a><a class="nav-item" href="capitulo_09.html"><span class="nav-num">9</span>Paso por Valor/Ref.</a><a class="nav-item" href="capitulo_10.html"><span class="nav-num">10</span>Pila de Ejecución</a><a class="nav-item" href="capitulo_11.html"><span class="nav-num">11</span>Integración Funcional</a></div>
+      <span class="nav-grupo-label">Unidad II — Control</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_04.html" class="nav-item prox"><span class="nav-num">04</span> Estructuras Selectivas</a></li>
+        <li><a href="practica_04.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 4</a></li>
+        <li><a href="capitulo_05.html" class="nav-item prox"><span class="nav-num">05</span> Estructuras Repetitivas I</a></li>
+        <li><a href="practica_05.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 5</a></li>
+        <li><a href="capitulo_06.html" class="nav-item prox"><span class="nav-num">06</span> Estructuras Repetitivas II</a></li>
+        <li><a href="practica_06.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 6</a></li>
+        <li><a href="capitulo_07.html" class="nav-item prox"><span class="nav-num">07</span> Integración de Estructuras</a></li>
+        <li><a href="practica_07.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 7</a></li>
+      </ul>
     </div>
+
     <div class="nav-grupo">
-      <div class="nav-grupo-header" onclick="this.parentElement.classList.toggle('open')">
-        <span class="nav-grupo-label unidad">Unidad IV — Arreglos</span><span class="nav-chevron">›</span>
-      </div>
-      <div class="nav-items"><a class="nav-item" href="unidad_4_intro.html"><span class="nav-num">→</span>Introducción Unidad IV</a><a class="nav-item" href="capitulo_12.html"><span class="nav-num">12</span>Arreglos 1D</a><a class="nav-item" href="capitulo_13.html"><span class="nav-num">13</span>Búsqueda y Orden.</a><a class="nav-item" href="capitulo_14.html"><span class="nav-num">14</span>Arreglos 2D</a><a class="nav-item" href="capitulo_15.html"><span class="nav-num">15</span>Proyecto Integrador</a></div>
+      <span class="nav-grupo-label">Unidad III — Funciones</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_08.html" class="nav-item prox"><span class="nav-num">08</span> Funciones en C++</a></li>
+        <li><a href="practica_08.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 8</a></li>
+        <li><a href="capitulo_09.html" class="nav-item prox"><span class="nav-num">09</span> Paso por Valor y Referencia</a></li>
+        <li><a href="practica_09.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 9</a></li>
+        <li><a href="capitulo_10.html" class="nav-item prox"><span class="nav-num">10</span> Pila y Modularidad</a></li>
+        <li><a href="practica_10.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 10</a></li>
+        <li><a href="capitulo_11.html" class="nav-item prox"><span class="nav-num">11</span> Aplicaciones Funcionales</a></li>
+        <li><a href="practica_11.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 11</a></li>
+      </ul>
     </div>
+
     <div class="nav-grupo">
-      <div class="nav-grupo-header" onclick="this.parentElement.classList.toggle('open')">
-        <span class="nav-grupo-label">Anexos</span><span class="nav-chevron">›</span>
-      </div>
-      <div class="nav-items"><a class="nav-item" href="anexos.html"><span class="nav-num">A–F</span>Rúbricas, plantillas y glosario</a></div>
+      <span class="nav-grupo-label">Unidad IV — Arreglos</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_12.html" class="nav-item prox"><span class="nav-num">12</span> Arreglos Unidimensionales</a></li>
+        <li><a href="practica_12.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 12</a></li>
+        <li><a href="capitulo_13.html" class="nav-item prox"><span class="nav-num">13</span> Búsqueda y Ordenamiento</a></li>
+        <li><a href="practica_13.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 13</a></li>
+        <li><a href="capitulo_14.html" class="nav-item prox"><span class="nav-num">14</span> Arreglos Bidimensionales</a></li>
+        <li><a href="practica_14.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 14</a></li>
+        <li><a href="capitulo_15.html" class="nav-item prox"><span class="nav-num">15</span> Proyecto Integrador Final</a></li>
+        <li><a href="practica_15.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 15</a></li>
+      </ul>
     </div>
-    <div class="nav-progreso">
-      <div class="nav-progreso-label"><span>Capítulos publicados</span><span>2 / 15</span></div>
-      <div class="barra-progreso"><div class="barra-fill" style="width:13%"></div></div>
+
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Recursos</span>
+      <ul class="nav-items">
+        <li><a href="anexos.html" class="nav-item prox"><span class="nav-num">—</span> Anexos y Rúbricas</a></li>
+      </ul>
     </div>
+
   </div>
 </nav>
-<div class="main">
 
-<div style="background:linear-gradient(145deg,#0a1e38 0%,#0f2744 45%,#142d52 100%);color:#fff;min-height:calc(100vh - 50px);display:flex;flex-direction:column;justify-content:center;padding:80px 100px;position:relative;overflow:hidden">
-  <div style="position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:48px 48px"></div>
-  <div style="position:absolute;top:-100px;right:-100px;width:560px;height:560px;border-radius:50%;background:radial-gradient(circle,rgba(26,79,138,.28) 0%,transparent 70%)"></div>
-  <div style="font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:3px;text-transform:uppercase;color:#5a88b8;margin-bottom:18px;position:relative;z-index:1">Escuela Superior Politécnica Agropecuaria de Manabí MFL · Carrera de Computación</div>
-  <h1 style="font-family:'Playfair Display',serif;font-size:50px;font-weight:700;line-height:1.15;max-width:780px;margin-bottom:18px;position:relative;z-index:1">Introducción a la <span style="color:#f4c891">Programación</span><br>Fundamentos Algorítmicos y<br>Modelado Computacional en C++</h1>
-  <div style="font-size:17px;color:#7ab3e0;font-weight:300;font-style:italic;margin-bottom:56px;position:relative;z-index:1">Base conceptual para Estructuras de Datos · Nivel II</div>
-  <div style="display:grid;grid-template-columns:repeat(4,auto);gap:28px;margin-bottom:56px;position:relative;z-index:1">
-    <div><div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#3a5a7a;margin-bottom:4px">Docente</div><div style="font-size:14px;color:#c8daf0">María Belén Villao Loor</div></div>
-    <div><div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#3a5a7a;margin-bottom:4px">Período</div><div style="font-size:14px;color:#c8daf0">Abril – Agosto 2025</div></div>
-    <div><div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#3a5a7a;margin-bottom:4px">Carga horaria</div><div style="font-size:14px;color:#c8daf0">144 horas · 15 sesiones</div></div>
-    <div><div style="font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#3a5a7a;margin-bottom:4px">Lenguaje</div><div style="font-size:14px;color:#c8daf0">C / C++ · PSeInt</div></div>
+<!-- ── HERO ────────────────────────────────────────────── -->
+<div class="app">
+<section class="hero">
+  <div class="hero-deco">C++</div>
+  <div class="hero-circle"></div>
+  <div class="hero-inner">
+
+    <div class="hero-logo-row">
+      <!-- Isotipo de puntos octagonal ESPAM MFL (SVG) -->
+      <svg class="hero-isotipo" width="52" height="52" viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="26" cy="7"  r="3.2" fill="#cbdb2a" opacity=".9"/>
+        <circle cx="38" cy="11" r="2.8" fill="#cbdb2a" opacity=".75"/>
+        <circle cx="45" cy="22" r="2.4" fill="#cbdb2a" opacity=".6"/>
+        <circle cx="45" cy="34" r="2.4" fill="#cbdb2a" opacity=".5"/>
+        <circle cx="38" cy="44" r="2.8" fill="#cbdb2a" opacity=".55"/>
+        <circle cx="26" cy="48" r="3.2" fill="#cbdb2a" opacity=".65"/>
+        <circle cx="14" cy="44" r="2.8" fill="#cbdb2a" opacity=".55"/>
+        <circle cx="7"  cy="34" r="2.4" fill="#cbdb2a" opacity=".5"/>
+        <circle cx="7"  cy="22" r="2.4" fill="#cbdb2a" opacity=".6"/>
+        <circle cx="14" cy="11" r="2.8" fill="#cbdb2a" opacity=".75"/>
+        <!-- inner ring -->
+        <circle cx="26" cy="14" r="2.2" fill="#08b89d" opacity=".7"/>
+        <circle cx="34" cy="18" r="1.9" fill="#08b89d" opacity=".6"/>
+        <circle cx="38" cy="26" r="1.9" fill="#08b89d" opacity=".5"/>
+        <circle cx="34" cy="34" r="1.9" fill="#08b89d" opacity=".5"/>
+        <circle cx="26" cy="38" r="2.2" fill="#08b89d" opacity=".55"/>
+        <circle cx="18" cy="34" r="1.9" fill="#08b89d" opacity=".5"/>
+        <circle cx="14" cy="26" r="1.9" fill="#08b89d" opacity=".5"/>
+        <circle cx="18" cy="18" r="1.9" fill="#08b89d" opacity=".6"/>
+        <!-- center -->
+        <circle cx="26" cy="26" r="3.5" fill="white" opacity=".9"/>
+      </svg>
+      <div class="hero-inst">
+        <div class="hero-inst-nombre">ESPAM MFL</div>
+        <div class="hero-inst-sub">Escuela Superior Politécnica Agropecuaria de Manabí · Manuel Félix López</div>
+      </div>
+    </div>
+
+    <div class="hero-badge">Manual de Programación · Carrera de Computación</div>
+    <h1 class="hero-titulo">Introducción a la<br><span>Programación</span></h1>
+    <p class="hero-subtitulo">Fundamentos Algorítmicos y Modelado Computacional en C++</p>
+
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Unidades</span>
+        <span class="hero-meta-valor">4 Unidades</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Capítulos</span>
+        <span class="hero-meta-valor">15 Capítulos</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Sesiones Prácticas</span>
+        <span class="hero-meta-valor">15 Sesiones</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Carga horaria</span>
+        <span class="hero-meta-valor">144 horas ACD</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-label">Lenguaje</span>
+        <span class="hero-meta-valor">C++ / PSeInt</span>
+      </div>
+    </div>
   </div>
-  <a href="preliminares.html" style="display:inline-flex;align-items:center;gap:10px;background:#c8420a;color:#fff;border:none;border-radius:8px;padding:14px 28px;font-family:'Source Serif 4',serif;font-size:15px;text-decoration:none;position:relative;z-index:1">Comenzar a leer →</a>
+</section>
+
+<!-- ── CONTENIDO PRINCIPAL ───────────────────────────────── -->
+<main class="main-content">
+
+  <!-- PRESENTACIÓN -->
+  <section class="seccion">
+    <span class="seccion-num">§ 1 · Presentación</span>
+    <h2>Sobre este libro</h2>
+
+    <div class="mision-box">
+      <span class="mision-label">Propósito central</span>
+      <p class="mision-texto">
+        Este manual nace de la convicción de que <strong>programar es, ante todo, pensar con claridad.</strong>
+        Antes de escribir una sola línea de código, el estudiante debe ser capaz de modelar un problema,
+        trazar su solución en papel y verificarla con sus propios razonamientos.
+        Solo entonces el código es la consecuencia natural de ese pensamiento.
+      </p>
+    </div>
+
+    <p>El libro está organizado en cuatro unidades que avanzan desde los fundamentos del pensamiento algorítmico hasta la construcción de programas modulares con arreglos bidimensionales. Cada capítulo sigue un hilo conductor consistente: <strong>modelado → pseudocódigo → C++</strong>, nunca al revés.</p>
+
+    <p>Cada unidad incluye sus respectivas <strong>sesiones prácticas presenciales</strong>, diseñadas para consolidar en laboratorio lo trabajado teóricamente, con tiempo diferenciado para trabajo en papel, PSeInt, C++ y reflexión crítica sobre el uso de herramientas de inteligencia artificial.</p>
+  </section>
+
+  <hr>
+
+  <!-- ENFOQUE PEDAGÓGICO -->
+  <section class="seccion">
+    <span class="seccion-num">§ 2 · Enfoque Pedagógico</span>
+    <h2>Metodología de aprendizaje</h2>
+
+    <div class="hilo">
+      <div class="hilo-paso">
+        <span class="hilo-paso-num">Paso 1</span>
+        <span class="hilo-paso-icono">✏️</span>
+        <div class="hilo-paso-titulo">Modelado en papel</div>
+        <div class="hilo-paso-desc">Diagrama de flujo y pseudocódigo sin computadora</div>
+      </div>
+      <div class="hilo-flecha">→</div>
+      <div class="hilo-paso">
+        <span class="hilo-paso-num">Paso 2</span>
+        <span class="hilo-paso-icono">🔬</span>
+        <div class="hilo-paso-titulo">Verificación PSeInt</div>
+        <div class="hilo-paso-desc">Simulación del algoritmo y tabla de trazado</div>
+      </div>
+      <div class="hilo-flecha">→</div>
+      <div class="hilo-paso">
+        <span class="hilo-paso-num">Paso 3</span>
+        <span class="hilo-paso-icono">💻</span>
+        <div class="hilo-paso-titulo">Implementación C++</div>
+        <div class="hilo-paso-desc">Traducción comentada y compilación real</div>
+      </div>
+      <div class="hilo-flecha">→</div>
+      <div class="hilo-paso">
+        <span class="hilo-paso-num">Paso 4</span>
+        <span class="hilo-paso-icono">🤝</span>
+        <div class="hilo-paso-titulo">Revisión crítica</div>
+        <div class="hilo-paso-desc">Análisis entre pares y reflexión sobre IA</div>
+      </div>
+    </div>
+
+    <div class="cards-grid">
+      <div class="card">
+        <span class="card-icono">🧠</span>
+        <h4>Razonamiento primero</h4>
+        <p>Ninguna evaluación acepta código generado por IA sin comprensión demostrada. El estudiante debe defender su solución oralmente.</p>
+      </div>
+      <div class="card">
+        <span class="card-icono">📐</span>
+        <h4>Modelado riguroso</h4>
+        <p>Cada problema inicia con un diagrama de flujo y una tabla de simulación de ejecución antes de tocar el teclado.</p>
+      </div>
+      <div class="card">
+        <span class="card-icono">🔄</span>
+        <h4>Aprendizaje incremental</h4>
+        <p>Los conceptos se construyen sobre sí mismos. Lo que se aprende en la Unidad I es fundamento indispensable de la Unidad IV.</p>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- ESTRUCTURA DEL LIBRO -->
+  <section class="seccion">
+    <span class="seccion-num">§ 3 · Estructura del libro</span>
+    <h2>Organización por unidades</h2>
+    <p>El manual comprende cuatro unidades de aprendizaje progresivas. Cada capítulo lleva una sesión práctica de laboratorio asociada.</p>
+
+    <div class="unidades-grid">
+
+      <div class="unidad-row">
+        <div class="unidad-header">
+          <div class="unidad-num">Unidad I</div>
+          <div class="unidad-titulo">Fundamentos de Programación</div>
+          <div class="unidad-horas">3 capítulos · 3 sesiones</div>
+        </div>
+        <div class="unidad-caps">
+          <a href="capitulo_01.html" class="cap-chip">
+            <span class="cap-chip-num">01</span>
+            <span class="cap-chip-titulo">Pensamiento Algorítmico</span>
+          </a>
+          <a href="practica_01.html" class="cap-chip-practica">
+            <span>↳ Práctica 1</span>
+          </a>
+          <a href="capitulo_02.html" class="cap-chip">
+            <span class="cap-chip-num">02</span>
+            <span class="cap-chip-titulo">Tipos de Datos y Variables</span>
+          </a>
+          <a href="practica_02.html" class="cap-chip-practica">
+            <span>↳ Práctica 2</span>
+          </a>
+          <a href="capitulo_03.html" class="cap-chip">
+            <span class="cap-chip-num">03</span>
+            <span class="cap-chip-titulo">Depuración y Buenas Prácticas</span>
+          </a>
+          <a href="practica_03.html" class="cap-chip-practica">
+            <span>↳ Práctica 3</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="unidad-row">
+        <div class="unidad-header">
+          <div class="unidad-num">Unidad II</div>
+          <div class="unidad-titulo">Estructuras de Control y Algoritmos</div>
+          <div class="unidad-horas">4 capítulos · 4 sesiones</div>
+        </div>
+        <div class="unidad-caps">
+          <a href="capitulo_04.html" class="cap-chip">
+            <span class="cap-chip-num">04</span>
+            <span class="cap-chip-titulo">Estructuras Selectivas</span>
+          </a>
+          <a href="practica_04.html" class="cap-chip-practica"><span>↳ Práctica 4</span></a>
+          <a href="capitulo_05.html" class="cap-chip">
+            <span class="cap-chip-num">05</span>
+            <span class="cap-chip-titulo">Repetitivas I</span>
+          </a>
+          <a href="practica_05.html" class="cap-chip-practica"><span>↳ Práctica 5</span></a>
+          <a href="capitulo_06.html" class="cap-chip">
+            <span class="cap-chip-num">06</span>
+            <span class="cap-chip-titulo">Repetitivas II</span>
+          </a>
+          <a href="practica_06.html" class="cap-chip-practica"><span>↳ Práctica 6</span></a>
+          <a href="capitulo_07.html" class="cap-chip">
+            <span class="cap-chip-num">07</span>
+            <span class="cap-chip-titulo">Integración de Estructuras</span>
+          </a>
+          <a href="practica_07.html" class="cap-chip-practica"><span>↳ Práctica 7</span></a>
+        </div>
+      </div>
+
+      <div class="unidad-row">
+        <div class="unidad-header">
+          <div class="unidad-num">Unidad III</div>
+          <div class="unidad-titulo">Programación Procedimental y Funcional</div>
+          <div class="unidad-horas">4 capítulos · 4 sesiones</div>
+        </div>
+        <div class="unidad-caps">
+          <a href="capitulo_08.html" class="cap-chip">
+            <span class="cap-chip-num">08</span>
+            <span class="cap-chip-titulo">Funciones en C++</span>
+          </a>
+          <a href="practica_08.html" class="cap-chip-practica"><span>↳ Práctica 8</span></a>
+          <a href="capitulo_09.html" class="cap-chip">
+            <span class="cap-chip-num">09</span>
+            <span class="cap-chip-titulo">Paso por Valor y Referencia</span>
+          </a>
+          <a href="practica_09.html" class="cap-chip-practica"><span>↳ Práctica 9</span></a>
+          <a href="capitulo_10.html" class="cap-chip">
+            <span class="cap-chip-num">10</span>
+            <span class="cap-chip-titulo">Pila y Modularidad</span>
+          </a>
+          <a href="practica_10.html" class="cap-chip-practica"><span>↳ Práctica 10</span></a>
+          <a href="capitulo_11.html" class="cap-chip">
+            <span class="cap-chip-num">11</span>
+            <span class="cap-chip-titulo">Aplicaciones Funcionales</span>
+          </a>
+          <a href="practica_11.html" class="cap-chip-practica"><span>↳ Práctica 11</span></a>
+        </div>
+      </div>
+
+      <div class="unidad-row">
+        <div class="unidad-header">
+          <div class="unidad-num">Unidad IV</div>
+          <div class="unidad-titulo">Arreglos y Proyecto Integrador</div>
+          <div class="unidad-horas">4 capítulos · 4 sesiones</div>
+        </div>
+        <div class="unidad-caps">
+          <a href="capitulo_12.html" class="cap-chip">
+            <span class="cap-chip-num">12</span>
+            <span class="cap-chip-titulo">Arreglos Unidimensionales</span>
+          </a>
+          <a href="practica_12.html" class="cap-chip-practica"><span>↳ Práctica 12</span></a>
+          <a href="capitulo_13.html" class="cap-chip">
+            <span class="cap-chip-num">13</span>
+            <span class="cap-chip-titulo">Búsqueda y Ordenamiento</span>
+          </a>
+          <a href="practica_13.html" class="cap-chip-practica"><span>↳ Práctica 13</span></a>
+          <a href="capitulo_14.html" class="cap-chip">
+            <span class="cap-chip-num">14</span>
+            <span class="cap-chip-titulo">Arreglos Bidimensionales</span>
+          </a>
+          <a href="practica_14.html" class="cap-chip-practica"><span>↳ Práctica 14</span></a>
+          <a href="capitulo_15.html" class="cap-chip">
+            <span class="cap-chip-num">15</span>
+            <span class="cap-chip-titulo">Proyecto Integrador Final</span>
+          </a>
+          <a href="practica_15.html" class="cap-chip-practica"><span>↳ Práctica 15</span></a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- SESIONES PRÁCTICAS -->
+  <section class="seccion">
+    <span class="seccion-num">§ 4 · Sesiones Prácticas</span>
+    <h2>Estructura de cada sesión de laboratorio</h2>
+    <p>Cada capítulo tiene una sesión práctica presencial de <strong>3 horas (3 ACD)</strong>, con una estructura de seis fases diseñada para garantizar comprensión real y uso crítico de la tecnología.</p>
+
+    <div class="uso-grid">
+      <div class="uso-card">
+        <div class="uso-num" style="background:#5a4a10; color:#f4c870;">1</div>
+        <div>
+          <h4>Fase en papel (0–20 min)</h4>
+          <p>Modelado individual sin computadora. Diagrama de flujo y pseudocódigo a mano.</p>
+        </div>
+      </div>
+      <div class="uso-card">
+        <div class="uso-num" style="background:#006654; color:white;">2</div>
+        <div>
+          <h4>Fase PSeInt (20–50 min)</h4>
+          <p>Implementación del algoritmo en PSeInt. Verificación con casos de prueba.</p>
+        </div>
+      </div>
+      <div class="uso-card">
+        <div class="uso-num">3</div>
+        <div>
+          <h4>Fase C++ (50–90 min)</h4>
+          <p>Traducción a C++ con comentarios explicativos. Compilación y prueba en terminal.</p>
+        </div>
+      </div>
+      <div class="uso-card">
+        <div class="uso-num" style="background:#08b89d; color:white;">4</div>
+        <div>
+          <h4>Fase grupal (90–130 min)</h4>
+          <p>Revisión cruzada entre pares. Identificación de errores y mejoras al código.</p>
+        </div>
+      </div>
+      <div class="uso-card">
+        <div class="uso-num" style="background:#2a4a8a; color:white;">5</div>
+        <div>
+          <h4>Fase plenaria (130–160 min)</h4>
+          <p>Ejercicio documentado de análisis crítico con IA. Reflexión grupal sobre resultados.</p>
+        </div>
+      </div>
+      <div class="uso-card">
+        <div class="uso-num" style="background:#cbdb2a; color:#2a3a10;">6</div>
+        <div>
+          <h4>Cierre y bitácora (160–180 min)</h4>
+          <p>Registro en bitácora personal. Qué aprendí, qué me costó, qué haría distinto.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- POLÍTICA DE IA -->
+  <section class="seccion">
+    <span class="seccion-num">§ 5 · Uso de Inteligencia Artificial</span>
+    <h2>Política de uso responsable de IA</h2>
+    <p>La inteligencia artificial es una herramienta poderosa que puede apoyar el aprendizaje o anularlo completamente, dependiendo del modo en que se use. Este libro adopta una postura explícita y documentada.</p>
+
+    <div class="ia-policy">
+      <div class="ia-policy-titulo">Reglas claras desde el primer día</div>
+      <div>
+        <span class="ia-col-label perm">✓ Permitido</span>
+        <ul class="ia-list perm">
+          <li>Consultar conceptos que no quedaron claros en clase</li>
+          <li>Pedir explicaciones alternativas de un tema</li>
+          <li>Analizar críticamente código generado (ejercicio explícito)</li>
+          <li>Obtener ejemplos adicionales para practicar</li>
+          <li>Depurar errores después de intentarlo por cuenta propia</li>
+        </ul>
+      </div>
+      <div>
+        <span class="ia-col-label proh">✕ Prohibido en evaluaciones</span>
+        <ul class="ia-list proh">
+          <li>Generar el código de un ejercicio evaluado</li>
+          <li>Usar IA durante exámenes o evaluaciones orales</li>
+          <li>Entregar código de IA sin comprenderlo</li>
+          <li>No declarar el uso de IA cuando se ha usado</li>
+          <li>Sustituir el razonamiento propio por respuestas de IA</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- INSTRUCCIONES DE USO -->
+  <section class="seccion">
+    <span class="seccion-num">§ 6 · Cómo usar este libro</span>
+    <h2>Guía de uso para el estudiante</h2>
+
+    <div class="uso-grid">
+      <div class="uso-card">
+        <div class="uso-num">1</div>
+        <div>
+          <h4>Lee el capítulo completo</h4>
+          <p>No saltes directamente a los ejercicios. El diseño de cada sección construye el conocimiento de forma progresiva.</p>
+        </div>
+      </div>
+      <div class="uso-card">
+        <div class="uso-num">2</div>
+        <div>
+          <h4>Reproduce el código manualmente</h4>
+          <p>Escribe el código tú mismo, no lo copies. La acción de escribir fija la sintaxis en la memoria.</p>
+        </div>
+      </div>
+      <div class="uso-card">
+        <div class="uso-num">3</div>
+        <div>
+          <h4>Completa la tabla de simulación</h4>
+          <p>Antes de ejecutar, traza manualmente las variables para verificar tu comprensión del flujo.</p>
+        </div>
+      </div>
+      <div class="uso-card">
+        <div class="uso-num">4</div>
+        <div>
+          <h4>Intenta los ejercicios en orden</h4>
+          <p>Los ejercicios van de comprensión básica a integración. Cada nivel prepara el siguiente.</p>
+        </div>
+      </div>
+      <div class="uso-card">
+        <div class="uso-num">5</div>
+        <div>
+          <h4>Asiste a la sesión práctica</h4>
+          <p>El laboratorio es donde el conocimiento se consolida. La sesión práctica está diseñada para complementar, no repetir, el capítulo.</p>
+        </div>
+      </div>
+      <div class="uso-card">
+        <div class="uso-num">6</div>
+        <div>
+          <h4>Lleva tu bitácora al día</h4>
+          <p>El registro reflexivo de cada sesión es parte de tu evaluación y de tu propio proceso de aprendizaje.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <hr>
+
+  <!-- DOCENTE -->
+  <section class="seccion">
+    <span class="seccion-num">§ 7 · Docente responsable</span>
+    <h2>Información de contacto</h2>
+
+    <div class="docente-card">
+      <div class="docente-avatar">👩‍🏫</div>
+      <div>
+        <div class="docente-nombre">María Belén Villao Loor</div>
+        <div class="docente-rol">Docente · Carrera de Computación · ESPAM MFL</div>
+        <div class="docente-info">
+          Repositorio del libro: 
+          <a href="https://github.com/belenvillao30/libro-programacion" 
+             style="color:var(--verde); font-weight:600;"
+             target="_blank">github.com/belenvillao30/libro-programacion</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<!-- ── NAV SIGUIENTE ────────────────────────────────────── -->
+<div class="nav-caps">
+  <a href="preliminares.html" class="nav-cap-btn sig">
+    <span class="ncb-arrow">→</span>
+    <div>
+      <span class="ncb-label">Siguiente</span>
+      <span class="ncb-titulo">Preliminares</span>
+    </div>
+  </a>
 </div>
-<div class="nav-capitulos"><div></div><a class="nav-cap-btn siguiente" href="preliminares.html"><span class="ncb-arrow">→</span><div><div class="ncb-label">Siguiente</div><div class="ncb-titulo">Preliminares</div></div></a></div><div class="pie-pagina"><span>Portada · Introducción a la Programación C++</span><span>ESPAM MFL · Computación · 2025</span></div>
-</div>
-</div>
+
+<!-- ── PIE ───────────────────────────────────────────────── -->
+<footer class="pie">
+  <span>ESPAM MFL · Carrera de Computación · Introducción a la Programación</span>
+  <span>espam.edu.ec</span>
+</footer>
+
+</div><!-- .app -->
 </body>
 </html>
