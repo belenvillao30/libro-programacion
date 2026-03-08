@@ -1,0 +1,277 @@
+<style>
+.libro-root,.libro-root *{box-sizing:border-box!important;font-family:inherit}
+.libro-root{font-family:Georgia,'Times New Roman',serif!important;color:#1a1a2e!important;background:#fff!important;font-size:16px!important;line-height:1.8!important;max-width:960px!important;margin:0 auto!important;padding:0!important}
+.lp-topbar{background:#0f2744!important;color:white!important;padding:14px 24px!important;display:flex!important;align-items:center!important;gap:12px!important;flex-wrap:wrap!important}
+.lp-topbar-logo{font-family:'Courier New',Courier,monospace!important;font-size:10px!important;font-weight:700!important;letter-spacing:2px!important;text-transform:uppercase!important;color:#7ab3e0!important}
+.lp-topbar-sep{color:rgba(255,255,255,.2)!important}
+.lp-topbar-titulo{font-size:13px!important;color:#c8daf0!important;font-style:italic!important}
+.lp-topbar-right{margin-left:auto!important;font-family:'Courier New',Courier,monospace!important;font-size:10px!important;color:#3a5a7a!important}
+.lp-nav{background:#f0f5fc!important;border:1px solid #d0d8e8!important}
+.lp-nav-toggle{width:100%!important;background:#0f2744!important;color:white!important;border:none!important;padding:12px 24px!important;text-align:left!important;font-family:'Courier New',Courier,monospace!important;font-size:11px!important;letter-spacing:2px!important;text-transform:uppercase!important;cursor:pointer!important;display:flex!important;justify-content:space-between!important;align-items:center!important}
+.lp-nav-toggle span{color:#7ab3e0!important;font-size:14px!important}
+.lp-nav-body{display:none!important;padding:16px 0!important}
+.lp-nav-body.abierto{display:block!important}
+.lp-nav-grupo-label{font-family:'Courier New',Courier,monospace!important;font-size:9px!important;font-weight:700!important;letter-spacing:2px!important;text-transform:uppercase!important;color:#1a4f8a!important;padding:8px 24px 3px!important;display:block!important}
+.lp-nav-items{padding:0!important;margin:0!important;list-style:none!important}
+.lp-nav-item{display:flex!important;align-items:center!important;gap:8px!important;padding:6px 24px 6px 32px!important;font-size:13px!important;color:#3a3a5a!important;text-decoration:none!important;border-left:3px solid transparent!important;font-family:Georgia,serif!important}
+.lp-nav-item:hover{background:#dce8f7!important;color:#0f2744!important;text-decoration:none!important}
+.lp-nav-item.activo{background:#dce8f7!important;color:#0f2744!important;font-weight:600!important;border-left-color:#c8420a!important}
+.lp-nav-item.prox{color:#9a9ab8!important;font-style:italic!important;pointer-events:none!important}
+.lp-nav-num{font-family:'Courier New',Courier,monospace!important;font-size:10px!important;color:#9a9ab8!important;min-width:20px!important;flex-shrink:0!important}
+.lp-nav-item.activo .lp-nav-num{color:#c8420a!important}
+.lp-cap-header{background:#0f2744!important;color:white!important;padding:48px 40px 40px!important;position:relative!important;border-top:4px solid #c8420a!important;overflow:hidden!important}
+.lp-cap-num-bg{position:absolute!important;right:32px!important;top:-10px!important;font-family:Georgia,serif!important;font-size:160px!important;font-weight:900!important;color:rgba(255,255,255,.04)!important;line-height:1!important;user-select:none!important}
+.lp-cap-badge{display:inline-block!important;background:rgba(200,66,10,.25)!important;border:1px solid rgba(200,66,10,.4)!important;color:#f4a87a!important;font-family:'Courier New',Courier,monospace!important;font-size:9.5px!important;font-weight:700!important;letter-spacing:2px!important;text-transform:uppercase!important;padding:4px 12px!important;border-radius:20px!important;margin-bottom:14px!important}
+.lp-cap-titulo{font-family:Georgia,'Times New Roman',serif!important;font-size:32px!important;font-weight:700!important;line-height:1.2!important;color:white!important;margin-bottom:10px!important;max-width:680px!important}
+.lp-cap-subtitulo{font-size:14px!important;color:#7ab3e0!important;font-style:italic!important;margin-bottom:24px!important}
+.lp-cap-meta{display:flex!important;gap:24px!important;flex-wrap:wrap!important;border-top:1px solid rgba(255,255,255,.1)!important;padding-top:18px!important}
+.lp-cap-meta-label{font-family:'Courier New',Courier,monospace!important;font-size:8.5px!important;letter-spacing:1.5px!important;text-transform:uppercase!important;color:#3a5a7a!important;display:block!important}
+.lp-cap-meta-valor{font-size:13px!important;color:#c8daf0!important}
+.lp-body{padding:48px 40px!important;background:white!important}
+.lp-seccion{margin-bottom:48px!important}
+.lp-seccion-num{font-family:'Courier New',Courier,monospace!important;font-size:9.5px!important;font-weight:700!important;letter-spacing:2px!important;text-transform:uppercase!important;color:#c8420a!important;margin-bottom:4px!important;display:block!important}
+.libro-root h2{font-family:Georgia,'Times New Roman',serif!important;font-size:24px!important;font-weight:700!important;color:#0f2744!important;margin-bottom:16px!important;padding-bottom:10px!important;border-bottom:2px solid #dce8f7!important;line-height:1.25!important}
+.libro-root h3{font-family:Georgia,'Times New Roman',serif!important;font-size:17px!important;font-weight:600!important;color:#0f2744!important;margin:28px 0 10px!important}
+.libro-root p{margin-bottom:14px!important;color:#3a3a5a!important;font-family:Georgia,'Times New Roman',serif!important}
+.lp-ra{background:linear-gradient(135deg,#0f2744 0%,#1a4f8a 100%)!important;color:white!important;border-radius:10px!important;padding:24px 28px!important;margin-bottom:44px!important}
+.lp-ra-label{font-family:'Courier New',Courier,monospace!important;font-size:9px!important;letter-spacing:2px!important;text-transform:uppercase!important;color:#7ab3e0!important;margin-bottom:7px!important;display:block!important}
+.lp-ra-texto{font-size:15px!important;line-height:1.65!important;font-style:italic!important;color:white!important}
+.lp-ra-texto strong{font-style:normal!important;color:#f4c891!important}
+.lp-def{border:1px solid #dce8f7!important;border-left:5px solid #1a4f8a!important;border-radius:0 10px 10px 0!important;padding:18px 22px!important;margin:20px 0!important;background:#f0f5fc!important}
+.lp-def-label{font-family:'Courier New',Courier,monospace!important;font-size:9px!important;font-weight:700!important;letter-spacing:2px!important;text-transform:uppercase!important;color:#1a4f8a!important;margin-bottom:6px!important;display:block!important}
+.lp-def p{margin:0!important;font-size:14px!important;color:#1a1a2e!important}
+.lp-def em{font-style:italic!important;color:#0f2744!important}
+.lp-caja-nota{background:#f0f5fc!important;border-left:5px solid #1a4f8a!important;border-radius:0 10px 10px 0!important;padding:16px 20px!important;margin:18px 0!important}
+.lp-caja-nota .lp-cn-label,.lp-caja-adv .lp-ca-label,.lp-caja-ia .lp-ci-label{font-family:'Courier New',Courier,monospace!important;font-size:9px!important;font-weight:700!important;letter-spacing:2px!important;text-transform:uppercase!important;margin-bottom:5px!important;display:block!important}
+.lp-caja-nota .lp-cn-label{color:#1a4f8a!important}
+.lp-caja-nota p{margin:0!important;font-size:14px!important;color:#3a3a5a!important}
+.lp-caja-adv{background:#fdf0ea!important;border-left:5px solid #c8420a!important;border-radius:0 10px 10px 0!important;padding:16px 20px!important;margin:18px 0!important}
+.lp-caja-adv .lp-ca-label{color:#c8420a!important}
+.lp-caja-adv p{margin:0!important;font-size:14px!important;color:#3a3a5a!important}
+.lp-caja-ia{background:#0d1b2e!important;border-radius:10px!important;padding:20px 24px!important;margin:20px 0!important}
+.lp-caja-ia .lp-ci-label{color:#5a88b8!important}
+.lp-caja-ia p{font-size:14px!important;color:#8aaccc!important;line-height:1.65!important;margin:0!important}
+.lp-caja-ia strong{color:#cdd6f4!important}
+.lp-codigo{background:#0d1b2e!important;border-radius:10px!important;margin:18px 0!important;overflow:hidden!important}
+.lp-codigo-header{display:flex!important;align-items:center!important;justify-content:space-between!important;padding:9px 16px!important;background:rgba(255,255,255,.04)!important;border-bottom:1px solid rgba(255,255,255,.07)!important}
+.lp-dots{display:flex!important;gap:5px!important}
+.lp-dot{width:9px!important;height:9px!important;border-radius:50%!important;display:inline-block!important}
+.lp-dot-r{background:#ff5f57!important}.lp-dot-y{background:#febc2e!important}.lp-dot-g{background:#28c840!important}
+.lp-codigo-lang,.lp-codigo-archivo{font-family:'Courier New',Courier,monospace!important;font-size:10.5px!important}
+.lp-codigo-lang{color:#5a7fa8!important;margin-left:8px!important}
+.lp-codigo-archivo{color:#3a5a7a!important}
+.lp-codigo-body{padding:18px 22px!important;overflow-x:auto!important}
+.lp-codigo pre,.lp-codigo code{font-family:'Courier New',Courier,monospace!important;font-size:13px!important;line-height:1.8!important;color:#cdd6f4!important;background:transparent!important;border:none!important;padding:0!important;margin:0!important;white-space:pre!important}
+.lp-c-com{color:#5a7a9a!important;font-style:italic!important}.lp-c-kw{color:#89b4fa!important}.lp-c-tipo{color:#cba6f7!important}.lp-c-str{color:#a6e3a1!important}.lp-c-num{color:#fab387!important}.lp-c-fn{color:#89dceb!important}.lp-c-inc{color:#f38ba8!important}.lp-c-ns{color:#f5c2e7!important}
+.lp-codigo-anotado{margin:18px 0!important;border:1px solid #d0d8e8!important;border-radius:10px!important;overflow:hidden!important}
+.lp-linea{display:flex!important;border-bottom:1px solid rgba(255,255,255,.03)!important}
+.lp-linea:last-child{border-bottom:none!important}
+.lp-ln-num{background:#0d1b2e!important;color:#2a4a6a!important;font-family:'Courier New',Courier,monospace!important;font-size:10px!important;min-width:32px!important;display:flex!important;align-items:center!important;justify-content:center!important;border-right:1px solid rgba(255,255,255,.04)!important;flex-shrink:0!important}
+.lp-ln-code{background:#0d1b2e!important;padding:7px 16px!important;font-family:'Courier New',Courier,monospace!important;font-size:12.5px!important;color:#cdd6f4!important;line-height:1.6!important;flex:1!important}
+.lp-ln-nota{background:#0a1525!important;border-left:3px solid #1a4f8a!important;padding:7px 12px!important;font-size:11.5px!important;color:#5a88b8!important;font-style:italic!important;min-width:200px!important;max-width:240px!important;display:flex!important;align-items:center!important}
+.lp-pseudo{background:#f9fafb!important;border:1px solid #d0d8e8!important;border-left:5px solid #1a5c3a!important;border-radius:0 10px 10px 0!important;padding:20px 24px!important;margin:18px 0!important}
+.lp-pseudo-label{font-family:'Courier New',Courier,monospace!important;font-size:9px!important;font-weight:700!important;letter-spacing:2px!important;text-transform:uppercase!important;color:#1a5c3a!important;margin-bottom:10px!important;display:block!important}
+.lp-pseudo pre,.lp-pseudo code{font-family:'Courier New',Courier,monospace!important;font-size:13px!important;line-height:2!important;color:#1a1a2e!important;background:transparent!important;border:none!important;padding:0!important;margin:0!important;white-space:pre!important}
+.lp-ps-kw{color:#1a4f8a!important;font-weight:700!important}.lp-ps-str{color:#1a5c3a!important}.lp-ps-ind{padding-left:22px!important;display:block!important}
+.libro-root table{width:100%!important;border-collapse:collapse!important;margin:18px 0!important;font-size:13.5px!important}
+.libro-root table thead tr{background:#0f2744!important;color:white!important}
+.libro-root table thead th{padding:10px 14px!important;text-align:left!important;font-size:12.5px!important;font-weight:600!important;color:white!important;border:none!important}
+.libro-root table tbody tr:nth-child(even){background:#f7f8fa!important}
+.libro-root table tbody td{padding:9px 14px!important;border-bottom:1px solid #d0d8e8!important;color:#3a3a5a!important;vertical-align:top!important}
+.libro-root table tbody td:first-child{font-weight:600!important;color:#0f2744!important}
+.lp-tabla-sim{font-family:'Courier New',Courier,monospace!important}
+.lp-tabla-sim thead th{text-align:center!important;font-size:10.5px!important;letter-spacing:1px!important}
+.lp-tabla-sim tbody td{text-align:center!important;font-size:12px!important}
+.lp-tabla-sim .res{background:#fdf0ea!important;color:#c8420a!important;font-weight:700!important}
+.lp-tabla-sim tfoot td{background:#e8f5ee!important;color:#1a5c3a!important;font-weight:600!important;text-align:center!important}
+.lp-diagrama{background:#f7f8fa!important;border:1px solid #d0d8e8!important;border-radius:10px!important;padding:24px 28px!important;margin:20px 0!important;display:flex!important;flex-direction:column!important;align-items:center!important}
+.lp-diagrama-label{font-family:'Courier New',Courier,monospace!important;font-size:9.5px!important;letter-spacing:1px!important;color:#6a6a8a!important;text-transform:uppercase!important;margin-bottom:16px!important;align-self:flex-start!important;display:block!important}
+.lp-df-wrap{display:flex!important;flex-direction:column!important;align-items:center!important}
+.lp-df-terminal{background:#0f2744!important;color:white!important;border-radius:50px!important;padding:8px 22px!important;font-family:'Courier New',Courier,monospace!important;font-size:12px!important;font-weight:700!important}
+.lp-df-flecha{width:2px!important;height:22px!important;background:#1a4f8a!important;margin:0 auto!important}
+.lp-df-proceso{background:white!important;border:2px solid #1a4f8a!important;border-radius:6px!important;padding:8px 22px!important;font-size:13px!important;color:#0f2744!important;min-width:180px!important;text-align:center!important}
+.lp-df-entrada{background:#e8f5ee!important;border:2px solid #1a5c3a!important;padding:8px 16px!important;font-size:13px!important;color:#1a5c3a!important;min-width:180px!important;text-align:center!important;transform:skewX(-8deg)!important}
+.lp-df-entrada span,.lp-df-salida span{display:inline-block!important;transform:skewX(8deg)!important}
+.lp-df-salida{background:#fdf0ea!important;border:2px solid #c8420a!important;padding:8px 16px!important;font-size:13px!important;color:#c8420a!important;min-width:180px!important;text-align:center!important;transform:skewX(-8deg)!important}
+.lp-props-grid{display:flex!important;flex-wrap:wrap!important;gap:11px!important;margin:18px 0!important}
+.lp-prop-card{border:1px solid #d0d8e8!important;border-radius:10px!important;padding:15px 17px!important;flex:1 1 200px!important;background:white!important}
+.lp-prop-icon{font-size:19px!important;margin-bottom:6px!important;display:block!important}
+.lp-prop-card h4{font-family:Georgia,serif!important;font-size:13.5px!important;font-weight:600!important;color:#0f2744!important;margin-bottom:4px!important}
+.lp-prop-card p{font-size:12.5px!important;color:#6a6a8a!important;margin:0!important;line-height:1.5!important}
+.lp-tarjetas{display:flex!important;flex-wrap:wrap!important;gap:12px!important;margin:18px 0!important}
+.lp-tarjeta{border:1px solid #d0d8e8!important;border-radius:10px!important;padding:16px!important;flex:1 1 200px!important;background:white!important}
+.lp-t-icono{font-size:20px!important;margin-bottom:7px!important;display:block!important}
+.lp-tarjeta h4{font-family:Georgia,serif!important;font-size:13.5px!important;font-weight:600!important;color:#0f2744!important;margin-bottom:4px!important}
+.lp-tarjeta p{font-size:13px!important;color:#6a6a8a!important;margin:0!important}
+.lp-eval-grid{display:flex!important;flex-wrap:wrap!important;gap:10px!important;margin:18px 0!important}
+.lp-eval-card{flex:1 1 100px!important;border-radius:10px!important;padding:16px 12px!important;text-align:center!important}
+.lp-eval-card.c1{background:#dce8f7!important}.lp-eval-card.c2{background:#e8f5ee!important}.lp-eval-card.c3{background:#fdf0ea!important}.lp-eval-card.c4{background:#f3e8ff!important}
+.lp-eval-pct{font-size:24px!important;font-weight:700!important;line-height:1!important;margin-bottom:5px!important;display:block!important}
+.c1 .lp-eval-pct{color:#0f2744!important}.c2 .lp-eval-pct{color:#1a5c3a!important}.c3 .lp-eval-pct{color:#c8420a!important}.c4 .lp-eval-pct{color:#6b3fa0!important}
+.lp-eval-label{font-size:11px!important;font-weight:600!important;color:#6a6a8a!important;line-height:1.4!important;display:block!important}
+.lp-lista-p{list-style:none!important;margin:16px 0!important;padding:0!important}
+.lp-lista-p li{display:flex!important;align-items:flex-start!important;gap:13px!important;padding:12px 0!important;border-bottom:1px solid #d0d8e8!important}
+.lp-lista-p li:last-child{border-bottom:none!important}
+.lp-num-c{min-width:28px!important;height:28px!important;border-radius:50%!important;background:#0f2744!important;color:white!important;font-size:12px!important;font-weight:700!important;display:flex!important;align-items:center!important;justify-content:center!important;flex-shrink:0!important}
+.lp-li-titulo{font-size:13.5px!important;font-weight:600!important;color:#0f2744!important;margin-bottom:2px!important;display:block!important}
+.lp-li-desc{font-size:12.5px!important;color:#6a6a8a!important}
+.lp-bitacora{border:2px dashed #d0d8e8!important;border-radius:10px!important;padding:20px!important;background:#fafbfd!important;margin:18px 0!important}
+.lp-bitacora-campo{display:flex!important;gap:12px!important;border-bottom:1px solid #d0d8e8!important;padding:8px 0!important;align-items:center!important}
+.lp-bitacora-campo label{min-width:150px!important;font-family:'Courier New',Courier,monospace!important;font-size:11.5px!important;font-weight:600!important;color:#0f2744!important}
+.lp-linea-campo{flex:1!important;border-bottom:1px solid #e4e8f0!important;min-height:20px!important}
+.lp-ejercicios{background:#f7f8fa!important;border:1px solid #e4e8f0!important;border-radius:12px!important;padding:28px 30px!important;margin:30px 0!important}
+.lp-ejercicios-titulo{font-family:Georgia,serif!important;font-size:19px!important;font-weight:700!important;color:#0f2744!important;margin-bottom:18px!important}
+.lp-ej{background:white!important;border:1px solid #d0d8e8!important;border-radius:10px!important;padding:18px 22px!important;margin-bottom:12px!important;position:relative!important}
+.lp-ej:last-child{margin-bottom:0!important}
+.lp-ej-badge{display:inline-block!important;font-family:'Courier New',Courier,monospace!important;font-size:9px!important;font-weight:700!important;letter-spacing:2px!important;text-transform:uppercase!important;padding:3px 10px!important;border-radius:20px!important;margin-bottom:9px!important}
+.lp-ej-badge.comp{background:#dce8f7!important;color:#1a4f8a!important}.lp-ej-badge.aplic{background:#e8f5ee!important;color:#1a5c3a!important}.lp-ej-badge.integ{background:#fdf0ea!important;color:#c8420a!important}
+.lp-ej-num{font-family:Georgia,serif!important;font-size:26px!important;font-weight:900!important;color:#dce8f7!important;position:absolute!important;top:13px!important;right:16px!important;line-height:1!important}
+.lp-ej p{font-size:13.5px!important;color:#3a3a5a!important;line-height:1.65!important;margin:0!important}
+.lp-evaluativa{background:#0f2744!important;color:white!important;border-radius:12px!important;padding:28px 30px!important;margin:30px 0!important}
+.lp-evaluativa h3{font-family:Georgia,serif!important;font-size:19px!important;font-weight:700!important;color:white!important;margin-bottom:3px!important}
+.lp-evaluativa-sub{font-family:'Courier New',Courier,monospace!important;font-size:10px!important;letter-spacing:1px!important;color:#7ab3e0!important;margin-bottom:18px!important;display:block!important}
+.lp-evaluativa-enunciado{background:rgba(255,255,255,.06)!important;border:1px solid rgba(255,255,255,.1)!important;border-radius:10px!important;padding:16px 20px!important;font-size:13.5px!important;color:#c8daf0!important;line-height:1.65!important;margin-bottom:12px!important}
+.lp-eval-crit{list-style:none!important;padding:0!important}
+.lp-eval-crit li{display:flex!important;align-items:flex-start!important;gap:9px!important;padding:6px 0!important;font-size:13px!important;color:#8ab4d8!important;border-bottom:1px solid rgba(255,255,255,.06)!important}
+.lp-eval-crit li::before{content:'◆'!important;color:#f4c891!important;font-size:9px!important;margin-top:5px!important;flex-shrink:0!important}
+.lp-puente{background:#1a5c3a!important;color:white!important;border-radius:12px!important;padding:24px 28px!important;margin:30px 0!important}
+.lp-puente h4{font-family:Georgia,serif!important;font-size:16px!important;font-weight:700!important;color:white!important;margin-bottom:3px!important}
+.lp-puente-sub{font-family:'Courier New',Courier,monospace!important;font-size:9px!important;letter-spacing:2px!important;text-transform:uppercase!important;color:#7ac8a0!important;margin-bottom:12px!important;display:block!important}
+.lp-puente p{font-size:13.5px!important;color:#a8d8b8!important;line-height:1.7!important;margin:0!important}
+.libro-root hr{border:none!important;border-top:1px solid #d0d8e8!important;margin:44px 0!important}
+.lp-nav-caps{display:flex!important;justify-content:space-between!important;padding:24px 40px!important;background:#f7f8fa!important;border-top:1px solid #d0d8e8!important;flex-wrap:wrap!important;gap:12px!important}
+.lp-nav-cap-btn{display:flex!important;align-items:center!important;gap:12px!important;text-decoration:none!important;padding:12px 18px!important;border:1px solid #d0d8e8!important;border-radius:10px!important;background:white!important;max-width:260px!important}
+.lp-nav-cap-btn:hover{border-color:#1a4f8a!important;text-decoration:none!important}
+.lp-nav-cap-btn.sig{flex-direction:row-reverse!important;text-align:right!important}
+.lp-ncb-arrow{font-size:18px!important;color:#1a4f8a!important;flex-shrink:0!important}
+.lp-ncb-label{font-family:'Courier New',Courier,monospace!important;font-size:9px!important;letter-spacing:2px!important;text-transform:uppercase!important;color:#6a6a8a!important;margin-bottom:2px!important;display:block!important}
+.lp-ncb-titulo{font-size:13px!important;font-weight:600!important;color:#0f2744!important;line-height:1.3!important;display:block!important}
+.lp-pie{background:#0f2744!important;color:#3a5a7a!important;padding:14px 40px!important;font-family:'Courier New',Courier,monospace!important;font-size:10px!important;display:flex!important;justify-content:space-between!important;align-items:center!important;flex-wrap:wrap!important;gap:8px!important}
+</style>
+<div class="libro-root">
+<div class="lp-topbar">
+  <span class="lp-topbar-logo">ESPAM MFL</span>
+  <span class="lp-topbar-sep">|</span>
+  <span class="lp-topbar-titulo">Introducción a la Programación — Fundamentos Algorítmicos en C++</span>
+  <span class="lp-topbar-right">Computación · 2025</span>
+</div>
+<div class="lp-nav">
+  <button class="lp-nav-toggle" onclick="var b=this.nextElementSibling;b.classList.toggle('abierto');this.querySelector('span').textContent=b.classList.contains('abierto')?'▲':'▼'">
+    📚 Índice del libro <span>▼</span>
+  </button>
+  <div class="lp-nav-body">
+    <div class="lp-nav-grupo"><span class="lp-nav-grupo-label">Inicio y Preliminares</span><div class="lp-nav-items"><a class="lp-nav-item" href="index.html"><span class="lp-nav-num">📖</span>Portada</a><a class="lp-nav-item activo" href="preliminares.html"><span class="lp-nav-num">—</span>Preliminares</a></div></div><div class="lp-nav-grupo"><span class="lp-nav-grupo-label">Unidad I — Fundamentos</span><div class="lp-nav-items"><a class="lp-nav-item" href="unidad_1_intro.html"><span class="lp-nav-num">→</span>Introducción Unidad I</a><a class="lp-nav-item" href="capitulo_01.html"><span class="lp-nav-num">1</span>Pensamiento Algorítmico</a><a class="lp-nav-item" href="capitulo_02.html"><span class="lp-nav-num">2</span>Tipos de Datos</a><a class="lp-nav-item" href="capitulo_03.html"><span class="lp-nav-num">3</span>Depuración</a></div></div><div class="lp-nav-grupo"><span class="lp-nav-grupo-label">Unidad II — Estructuras</span><div class="lp-nav-items"><a class="lp-nav-item" href="unidad_2_intro.html"><span class="lp-nav-num">→</span>Introducción Unidad II</a><a class="lp-nav-item" href="capitulo_04.html"><span class="lp-nav-num">4</span>Estructuras Selectivas</a><a class="lp-nav-item" href="capitulo_05.html"><span class="lp-nav-num">5</span>Repetitivas I</a><a class="lp-nav-item" href="capitulo_06.html"><span class="lp-nav-num">6</span>Repetitivas II</a><a class="lp-nav-item" href="capitulo_07.html"><span class="lp-nav-num">7</span>Integración</a></div></div><div class="lp-nav-grupo"><span class="lp-nav-grupo-label">Unidad III — Funciones</span><div class="lp-nav-items"><a class="lp-nav-item" href="unidad_3_intro.html"><span class="lp-nav-num">→</span>Introducción Unidad III</a><a class="lp-nav-item" href="capitulo_08.html"><span class="lp-nav-num">8</span>Funciones en C++</a><a class="lp-nav-item" href="capitulo_09.html"><span class="lp-nav-num">9</span>Paso por Valor/Ref.</a><a class="lp-nav-item" href="capitulo_10.html"><span class="lp-nav-num">10</span>Pila de Ejecución</a><a class="lp-nav-item" href="capitulo_11.html"><span class="lp-nav-num">11</span>Integración Funcional</a></div></div><div class="lp-nav-grupo"><span class="lp-nav-grupo-label">Unidad IV — Arreglos</span><div class="lp-nav-items"><a class="lp-nav-item" href="unidad_4_intro.html"><span class="lp-nav-num">→</span>Introducción Unidad IV</a><a class="lp-nav-item" href="capitulo_12.html"><span class="lp-nav-num">12</span>Arreglos 1D</a><a class="lp-nav-item" href="capitulo_13.html"><span class="lp-nav-num">13</span>Búsqueda y Orden.</a><a class="lp-nav-item" href="capitulo_14.html"><span class="lp-nav-num">14</span>Arreglos 2D</a><a class="lp-nav-item" href="capitulo_15.html"><span class="lp-nav-num">15</span>Proyecto Integrador</a></div></div><div class="lp-nav-grupo"><span class="lp-nav-grupo-label">Anexos</span><div class="lp-nav-items"><a class="lp-nav-item" href="anexos.html"><span class="lp-nav-num">A–F</span>Rúbricas, plantillas y glosario</a></div></div>
+    <div style="padding:12px 24px 4px;border-top:1px solid #d0d8e8;margin-top:8px">
+      <div style="font-family:'Courier New',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:#6a6a8a;margin-bottom:6px;display:flex;justify-content:space-between"><span>Capítulos publicados</span><span>2/15</span></div>
+      <div style="height:4px;background:#e4e8f0;border-radius:4px;overflow:hidden"><div style="height:100%;width:13%;background:linear-gradient(90deg,#1a4f8a,#c8420a);border-radius:4px"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="lp-cap-header">
+  <div class="lp-cap-num-bg">P</div>
+  <div class="lp-cap-badge">📘 Sección Preliminar</div>
+  <h1 class="lp-cap-titulo">Preliminares</h1>
+  <p class="lp-cap-subtitulo">Fundamentos pedagógicos, metodológicos y éticos del curso</p>
+</div>
+<div class="lp-body">
+
+  <div class="lp-seccion">
+    <span class="lp-seccion-num">Preliminares</span>
+    <h2>Presentación</h2>
+    <p>Este manual nació de una convicción pedagógica simple pero urgente: <strong>aprender a programar no es aprender a pedirle código a una máquina</strong>. Es aprender a pensar.</p>
+    <p>En un momento en que herramientas de inteligencia artificial pueden generar código funcional en segundos, la tentación de saltarse el proceso de comprensión es real y comprensible. Pero también es peligrosa.</p>
+    <div class="lp-caja-nota"><span class="lp-cn-label">📌 Principio rector</span><p>El objetivo es que el estudiante <strong>comprenda por qué el código funciona</strong> — y sea capaz de construirlo, corregirlo y mejorarlo con criterio propio.</p></div>
+  </div>
+  <hr>
+
+  <div class="lp-seccion">
+    <span class="lp-seccion-num">Preliminares</span>
+    <h2>Fundamentación Pedagógica</h2>
+    <div class="lp-caja-adv"><span class="lp-ca-label">⚠️ El riesgo pedagógico real</span><p>Un estudiante que usa IA para completar ejercicios sin comprenderlos llega a Estructuras de Datos sin los fundamentos necesarios. El daño no se ve en Introducción a la Programación — se ve un semestre después.</p></div>
+    <h3>Principios pedagógicos</h3>
+    <ul class="lp-lista-p">
+      <li><div class="lp-num-c">1</div><div><span class="lp-li-titulo">Modelado antes que código</span><span class="lp-li-desc">Todo problema se diseña primero en papel. La implementación en C++ es la última etapa.</span></div></li>
+      <li><div class="lp-num-c">2</div><div><span class="lp-li-titulo">Comprensión verificable</span><span class="lp-li-desc">El estudiante debe poder explicar su código línea por línea y predecir su salida.</span></div></li>
+      <li><div class="lp-num-c">3</div><div><span class="lp-li-titulo">IA como herramienta crítica, no como oráculo</span><span class="lp-li-desc">Usar IA para verificar y cuestionar, no para reemplazar el razonamiento propio.</span></div></li>
+      <li><div class="lp-num-c">4</div><div><span class="lp-li-titulo">El error como evidencia de comprensión</span><span class="lp-li-desc">Depurar un error propio requiere más comprensión que ejecutar código generado externamente.</span></div></li>
+      <li><div class="lp-num-c">5</div><div><span class="lp-li-titulo">Progresión hacia Estructuras de Datos</span><span class="lp-li-desc">Cada sesión prepara explícitamente para los temas del siguiente nivel.</span></div></li>
+    </ul>
+  </div>
+  <hr>
+
+  <div class="lp-seccion">
+    <span class="lp-seccion-num">Preliminares</span>
+    <h2>Competencias Generales del Curso</h2>
+    <table>
+      <thead><tr><th>R.A.</th><th>Competencia</th><th>Nivel</th><th>Unidad</th></tr></thead>
+      <tbody>
+        <tr><td>A</td><td>Aplica conceptos básicos en algoritmos simples para resolver problemas cotidianos.</td><td>N3 — Aplicar</td><td>I</td></tr>
+        <tr><td>B</td><td>Ejecuta estructuras de control mediante diagramas de flujo y pseudocódigo.</td><td>N3 — Aplicar</td><td>II</td></tr>
+        <tr><td>C</td><td>Desarrolla funciones y procedimientos con paradigmas procedimental y funcional.</td><td>N3 — Aplicar</td><td>III</td></tr>
+        <tr><td>D</td><td>Utiliza arreglos para almacenar, manipular y procesar datos.</td><td>N3 — Aplicar</td><td>IV</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <hr>
+
+  <div class="lp-seccion">
+    <span class="lp-seccion-num">Preliminares</span>
+    <h2>Metodología de Trabajo</h2>
+    <div class="lp-tarjetas">
+      <div class="lp-tarjeta"><span class="lp-t-icono">🧠</span><h4>Modelado en papel</h4><p>Antes de abrir el compilador, el estudiante diseña su solución. Esta etapa no es opcional.</p></div>
+      <div class="lp-tarjeta"><span class="lp-t-icono">💻</span><h4>Implementación guiada</h4><p>Se traduce el diseño a C++ con análisis línea por línea.</p></div>
+      <div class="lp-tarjeta"><span class="lp-t-icono">🔍</span><h4>Análisis crítico con IA</h4><p>El estudiante compara su solución con una de IA e identifica diferencias.</p></div>
+      <div class="lp-tarjeta"><span class="lp-t-icono">📓</span><h4>Bitácora académica</h4><p>Registro semanal del proceso de aprendizaje.</p></div>
+    </div>
+  </div>
+  <hr>
+
+  <div class="lp-seccion">
+    <span class="lp-seccion-num">Preliminares</span>
+    <h2>Sistema de Evaluación</h2>
+    <div class="lp-eval-grid">
+      <div class="lp-eval-card c1"><span class="lp-eval-pct">30%</span><span class="lp-eval-label">Diseño algorítmico en papel</span></div>
+      <div class="lp-eval-card c2"><span class="lp-eval-pct">40%</span><span class="lp-eval-label">Implementación en laboratorio</span></div>
+      <div class="lp-eval-card c3"><span class="lp-eval-pct">20%</span><span class="lp-eval-label">Defensa técnica oral</span></div>
+      <div class="lp-eval-card c4"><span class="lp-eval-pct">10%</span><span class="lp-eval-label">Bitácora y reflexión crítica</span></div>
+    </div>
+  </div>
+  <hr>
+
+  <div class="lp-seccion">
+    <span class="lp-seccion-num">Preliminares</span>
+    <h2>Uso Académico Responsable de IA</h2>
+    <div class="lp-caja-ia"><span class="lp-ci-label">🤖 La pregunta correcta</span><p>No es "¿puedo usar IA?". Es: <strong>"¿Entiendo suficientemente bien el problema como para evaluar si la solución que me da la IA es correcta?"</strong></p></div>
+    <table>
+      <thead><tr><th>✅ Permitido</th><th>🚫 No permitido</th></tr></thead>
+      <tbody>
+        <tr><td>Verificar tu solución comparándola con IA</td><td>Copiar código de IA sin entenderlo</td></tr>
+        <tr><td>Pedir a IA que explique un concepto</td><td>Usar IA durante evaluaciones</td></tr>
+        <tr><td>Analizar críticamente el código de IA</td><td>Entregar bitácoras generadas por IA</td></tr>
+        <tr><td>Usar IA para depurar tras intentarlo tú mismo</td><td>Usar IA en la fase de diseño en papel</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <hr>
+
+  <div class="lp-seccion">
+    <span class="lp-seccion-num">Preliminares</span>
+    <h2>Guía de la Bitácora Académica</h2>
+    <p>La bitácora no es un resumen de clase. Es un instrumento de metacognición.</p>
+    <div class="lp-bitacora">
+      <div class="lp-bitacora-campo"><label>Sesión N°:</label><div class="lp-linea-campo"></div><label style="margin-left:16px">Fecha:</label><div class="lp-linea-campo"></div></div>
+      <div class="lp-bitacora-campo"><label>Tema trabajado:</label><div class="lp-linea-campo"></div></div>
+      <div class="lp-bitacora-campo"><label>¿Qué comprendí hoy?</label><div class="lp-linea-campo"></div></div>
+      <div class="lp-bitacora-campo"><label>¿Qué me costó?</label><div class="lp-linea-campo"></div></div>
+      <div class="lp-bitacora-campo"><label>¿Cómo lo resolví?</label><div class="lp-linea-campo"></div></div>
+      <div class="lp-bitacora-campo"><label>¿Usé IA? ¿Cómo?</label><div class="lp-linea-campo"></div></div>
+      <div class="lp-bitacora-campo"><label>¿Qué haría diferente?</label><div class="lp-linea-campo"></div></div>
+    </div>
+  </div>
+
+</div>
+<div class="lp-nav-caps"><a class="lp-nav-cap-btn" href="index.html"><span class="lp-ncb-arrow">←</span><div><span class="lp-ncb-label">Anterior</span><span class="lp-ncb-titulo">Portada</span></div></a><a class="lp-nav-cap-btn sig" href="unidad_1_intro.html"><span class="lp-ncb-arrow">→</span><div><span class="lp-ncb-label">Siguiente</span><span class="lp-ncb-titulo">Introducción Unidad I</span></div></a></div>
+<div class="lp-pie"><span>Preliminares · Introducción a la Programación C++</span><span>ESPAM MFL · Computación · 2025</span></div>
+
+</div>
