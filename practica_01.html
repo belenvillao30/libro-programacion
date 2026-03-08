@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Práctica 1 — Pensamiento Algorítmico | ESPAM MFL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{--verde:#005846;--verde-medio:#007a5e;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fondo);font-size:16px;line-height:1.7;overflow-x:hidden;}
+.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--verde);display:flex;align-items:center;padding:0 24px;gap:14px;z-index:1000;border-bottom:3px solid var(--verde-claro);}
+.topbar-logo{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--verde-claro);}
+.topbar-sep{width:1px;height:20px;background:rgba(255,255,255,.2);}
+.topbar-titulo{font-size:12px;color:rgba(255,255,255,.65);}
+.topbar-right{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;}
+.nav-menu{background:var(--verde);border-bottom:2px solid rgba(203,219,42,.3);margin-top:50px;}
+.nav-toggle{width:100%;background:transparent;color:white;border:none;padding:11px 24px;text-align:left;cursor:pointer;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;}
+.nav-toggle:hover{background:rgba(255,255,255,.04);}
+.nav-toggle-arrow{color:var(--verde-claro);font-size:12px;}
+.nav-body{display:none;padding:18px 24px 22px;}
+.nav-body.abierto{display:flex;flex-wrap:wrap;gap:28px;}
+.nav-grupo{min-width:170px;}
+.nav-grupo-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:7px;display:block;padding-bottom:5px;border-bottom:1px solid rgba(203,219,42,.2);}
+.nav-items{list-style:none;}
+.nav-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12px;color:rgba(255,255,255,.72);text-decoration:none;transition:color .15s;}
+.nav-item:hover{color:var(--verde-claro);}
+.nav-item.activo{color:var(--turquesa);font-weight:700;}
+.nav-item.practica{color:rgba(8,184,157,.85);font-style:italic;}
+.nav-item.practica:hover{color:var(--turquesa);}
+.nav-item.prox{color:rgba(255,255,255,.28);pointer-events:none;}
+.nav-num{font-family:'Space Mono',monospace;font-size:9px;min-width:20px;flex-shrink:0;color:rgba(255,255,255,.28);}
+.nav-item.activo .nav-num{color:var(--turquesa);}
+/* PAGE HEADER — turquesa para prácticas */
+.page-header{background:linear-gradient(135deg,#005846 0%,#067a65 100%);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--turquesa);}
+.page-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(8,184,157,.1) 1px,transparent 1px);background-size:28px 28px;}
+.ph-num{position:absolute;right:48px;top:0;font-size:200px;font-weight:900;color:rgba(255,255,255,.04);line-height:1;font-family:'Space Mono',monospace;}
+.ph-inner{position:relative;z-index:1;}
+.ph-badge-practica{display:inline-block;background:rgba(8,184,157,.2);border:1px solid rgba(8,184,157,.4);color:var(--turquesa);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+.ph-titulo{font-size:36px;font-weight:900;line-height:1.1;color:white;margin-bottom:8px;}
+.ph-subtitulo{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:28px;}
+.ph-meta{display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;}
+.ph-meta-item{display:flex;flex-direction:column;gap:3px;}
+.ph-meta-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.ph-meta-valor{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;}
+/* FASES */
+.fases-nav{background:white;border-bottom:1px solid var(--borde);padding:12px 64px;display:flex;gap:6px;overflow-x:auto;}
+.fase-chip{font-family:'Space Mono',monospace;font-size:9px;color:var(--texto-suave);text-decoration:none;padding:5px 12px;border:1px solid var(--borde);border-radius:20px;white-space:nowrap;transition:all .15s;display:flex;align-items:center;gap:6px;}
+.fase-chip:hover{background:var(--turquesa);color:white;border-color:var(--turquesa);}
+.fase-chip .fc-num{font-weight:700;}
+/* BODY */
+.body-wrap{max-width:960px;margin:0 auto;padding:56px 64px 0;}
+.fase{margin-bottom:48px;scroll-margin-top:120px;}
+.fase-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--borde);}
+.fase-num{min-width:44px;height:44px;background:var(--turquesa);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;flex-shrink:0;}
+.fase-info{}
+.fase-titulo{font-size:20px;font-weight:800;color:var(--verde);line-height:1.2;}
+.fase-tiempo{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+p{margin-bottom:14px;color:var(--texto-suave);font-size:15px;}
+hr{border:none;border-top:1px solid var(--borde);margin:40px 0;}
+/* PROBLEMA BOX */
+.problema-box{background:var(--verde);border-radius:12px;padding:24px 28px;margin:20px 0;border-left:5px solid var(--verde-claro);}
+.pb-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:10px;display:block;}
+.pb-enunciado{font-size:16px;color:white;line-height:1.7;font-weight:500;}
+.pb-enunciado strong{color:var(--verde-claro);}
+/* ACTIVIDADES */
+.actividades{display:flex;flex-direction:column;gap:14px;margin:20px 0;}
+.actividad{background:white;border:1px solid var(--borde);border-radius:10px;padding:18px 22px;display:flex;align-items:flex-start;gap:14px;}
+.act-num{min-width:30px;height:30px;border-radius:50%;background:var(--turquesa);color:white;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.act-body{}
+.act-titulo{font-size:14px;font-weight:700;color:var(--verde);margin-bottom:4px;}
+.act-desc{font-size:13.5px;color:var(--texto-suave);line-height:1.6;}
+/* TABLA PAPEL */
+.tabla-papel{width:100%;border-collapse:collapse;margin:18px 0;font-size:13px;}
+.tabla-papel thead tr{background:var(--verde);}
+.tabla-papel thead th{padding:10px 14px;color:white;text-align:left;font-size:11.5px;}
+.tabla-papel tbody td{padding:10px 14px;border-bottom:1px solid var(--borde);color:var(--texto-suave);vertical-align:top;}
+.tabla-papel tbody td:first-child{font-family:'Space Mono',monospace;font-size:11px;color:var(--verde);font-weight:700;white-space:nowrap;}
+.espacio-papel{height:32px;border-bottom:1px dashed rgba(0,88,70,.15);}
+/* PSEUDOCÓDIGO */
+.pseudocodigo{background:var(--codigo-bg);border-radius:10px;margin:18px 0;overflow:hidden;}
+.pseudo-label{background:rgba(255,255,255,.05);padding:8px 18px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);border-bottom:1px solid rgba(255,255,255,.08);}
+.pseudo-code{padding:20px 24px;font-family:'Space Mono',monospace;font-size:13px;line-height:1.9;color:rgba(255,255,255,.85);}
+.pseudo-kw{color:var(--verde-claro);font-weight:700;}
+.pseudo-str{color:#a8d8b0;}
+.pseudo-ind{display:block;padding-left:24px;}
+.pseudo-blank{display:block;height:8px;}
+/* CÓDIGO BLOQUE */
+.codigo-bloque{background:var(--codigo-bg);border-radius:10px;overflow:hidden;margin:18px 0;}
+.codigo-header{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);}
+.codigo-dots{display:flex;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
+.codigo-lang{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.3);}
+.codigo-archivo{font-family:'Space Mono',monospace;font-size:10px;color:var(--turquesa);}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+.c-inc{color:#c792ea;}.c-str{color:#a8d8b0;}.c-kw{color:var(--verde-claro);}.c-ns{color:var(--turquesa);}.c-tipo{color:#82aaff;}.c-fn{color:var(--turquesa);}.c-num{color:#f78c6c;}.c-com{color:rgba(255,255,255,.3);font-style:italic;}
+/* CAJA IA */
+.caja-ia{background:#0d1e18;border-radius:10px;padding:20px 24px;margin:20px 0;border-left:4px solid var(--turquesa);}
+.caja-ia .ci-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:9px;display:block;}
+.caja-ia p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin:0;}
+.caja-ia p strong{color:var(--verde-claro);}
+/* CAJA NOTA */
+.caja-nota{background:rgba(0,88,70,.05);border-left:4px solid var(--verde);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-nota .cn-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:6px;display:block;}
+.caja-nota p{margin:0;font-size:14px;color:var(--texto);}
+/* RÚBRICA */
+.rubrica{width:100%;border-collapse:collapse;margin:18px 0;font-size:12.5px;}
+.rubrica thead tr{background:var(--verde);}
+.rubrica thead th{padding:10px 14px;color:white;text-align:left;font-size:11px;}
+.rubrica tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.rubrica tbody td{padding:9px 14px;border-bottom:1px solid var(--borde);color:var(--texto-suave);vertical-align:top;}
+.rubrica tbody td:first-child{font-weight:700;color:var(--verde);font-size:12px;}
+.rubrica tfoot td{padding:10px 14px;font-weight:700;color:var(--verde);background:rgba(0,88,70,.05);}
+/* BITÁCORA */
+.bitacora{border:2px dashed rgba(0,88,70,.2);border-radius:10px;padding:22px;background:white;margin:18px 0;}
+.bitacora-campo{display:flex;gap:12px;border-bottom:1px solid var(--borde);padding:9px 0;align-items:center;}
+.bitacora-campo:last-child{border-bottom:none;}
+.bitacora-campo label{min-width:175px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);flex-shrink:0;}
+.linea-campo{flex:1;border-bottom:1px solid rgba(0,88,70,.12);min-height:22px;}
+/* NAV CAPS */
+.nav-caps{display:flex;justify-content:space-between;align-items:center;padding:20px 64px;background:var(--fondo-alt);border-top:1px solid var(--borde);margin-top:48px;flex-wrap:wrap;gap:12px;}
+.nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 18px;border:1.5px solid rgba(0,88,70,.2);border-radius:8px;background:white;max-width:280px;transition:all .2s;}
+.nav-cap-btn:hover{border-color:var(--verde);text-decoration:none;}
+.nav-cap-btn.sig{flex-direction:row-reverse;text-align:right;}
+.ncb-arrow{font-size:16px;color:var(--verde);}
+.ncb-label{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,88,70,.45);margin-bottom:2px;display:block;}
+.ncb-titulo{font-size:13px;font-weight:700;color:var(--verde);}
+.pie{background:var(--verde);color:rgba(255,255,255,.35);padding:14px 64px;font-family:'Space Mono',monospace;font-size:9px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:1px;}
+.pie span:first-child{color:rgba(255,255,255,.55);}
+@media(max-width:768px){
+  .page-header,.body-wrap,.nav-caps,.pie,.fases-nav{padding-left:24px;padding-right:24px;}
+  .ph-titulo{font-size:26px;}
+}
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="topbar-logo">ESPAM MFL</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-titulo">Introducción a la Programación</div>
+  <div class="topbar-right">CARRERA DE COMPUTACIÓN</div>
+</header>
+
+<nav class="nav-menu">
+  <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">
+    ☰ &nbsp; Contenidos del libro
+    <span class="nav-toggle-arrow">▼</span>
+  </button>
+  <div class="nav-body">
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Inicio</span>
+      <ul class="nav-items">
+        <li><a href="index.html" class="nav-item"><span class="nav-num">◉</span> Portada</a></li>
+        <li><a href="preliminares.html" class="nav-item"><span class="nav-num">—</span> Preliminares</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidad I — Fundamentos</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_01.html" class="nav-item"><span class="nav-num">01</span> Pensamiento Algorítmico</a></li>
+        <li><a href="practica_01.html" class="nav-item practica activo"><span class="nav-num">↳</span> Sesión Práctica 1</a></li>
+        <li><a href="capitulo_02.html" class="nav-item prox"><span class="nav-num">02</span> Tipos de Datos y Variables</a></li>
+        <li><a href="practica_02.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 2</a></li>
+        <li><a href="capitulo_03.html" class="nav-item prox"><span class="nav-num">03</span> Depuración y Buenas Prácticas</a></li>
+        <li><a href="practica_03.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 3</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidad II — Control</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_04.html" class="nav-item prox"><span class="nav-num">04</span> Estructuras Selectivas</a></li>
+        <li><a href="capitulo_05.html" class="nav-item prox"><span class="nav-num">05</span> Estructuras Repetitivas I</a></li>
+        <li><a href="capitulo_06.html" class="nav-item prox"><span class="nav-num">06</span> Estructuras Repetitivas II</a></li>
+        <li><a href="capitulo_07.html" class="nav-item prox"><span class="nav-num">07</span> Integración de Estructuras</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidad III — Funciones</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_08.html" class="nav-item prox"><span class="nav-num">08</span> Funciones en C++</a></li>
+        <li><a href="capitulo_09.html" class="nav-item prox"><span class="nav-num">09</span> Paso por Valor y Referencia</a></li>
+        <li><a href="capitulo_10.html" class="nav-item prox"><span class="nav-num">10</span> Pila y Modularidad</a></li>
+        <li><a href="capitulo_11.html" class="nav-item prox"><span class="nav-num">11</span> Aplicaciones Funcionales</a></li>
+      </ul>
+    </div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Unidad IV — Arreglos</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_12.html" class="nav-item prox"><span class="nav-num">12</span> Arreglos Unidimensionales</a></li>
+        <li><a href="capitulo_13.html" class="nav-item prox"><span class="nav-num">13</span> Búsqueda y Ordenamiento</a></li>
+        <li><a href="capitulo_14.html" class="nav-item prox"><span class="nav-num">14</span> Arreglos Bidimensionales</a></li>
+        <li><a href="capitulo_15.html" class="nav-item prox"><span class="nav-num">15</span> Proyecto Integrador Final</a></li>
+      </ul>
+    </div>
+  </div>
+</nav>
+
+<section class="page-header">
+  <div class="ph-num">P1</div>
+  <div class="ph-inner">
+    <div class="ph-badge-practica">⚗️ Sesión Práctica · Unidad I</div>
+    <h1 class="ph-titulo">Práctica 1 — Modelado Algorítmico y Primer Programa en C++</h1>
+    <p class="ph-subtitulo">Del papel al pseudocódigo · Del pseudocódigo al código · Del código al análisis crítico</p>
+    <div class="ph-meta">
+      <div class="ph-meta-item"><span class="ph-meta-label">Duración</span><span class="ph-meta-valor">3 horas (3 ACD)</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Modalidad</span><span class="ph-meta-valor">Mixto: individual + parejas</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Entrega</span><span class="ph-meta-valor">Papel + digital (.cpp)</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Capítulo base</span><span class="ph-meta-valor">Cap. 1</span></div>
+    </div>
+  </div>
+</section>
+
+<nav class="fases-nav">
+  <a class="fase-chip" href="#fase1"><span class="fc-num">F1</span> Papel (0–20 min)</a>
+  <a class="fase-chip" href="#fase2"><span class="fc-num">F2</span> PSeInt (20–50 min)</a>
+  <a class="fase-chip" href="#fase3"><span class="fc-num">F3</span> C++ (50–90 min)</a>
+  <a class="fase-chip" href="#fase4"><span class="fc-num">F4</span> Revisión grupal (90–130 min)</a>
+  <a class="fase-chip" href="#fase5"><span class="fc-num">F5</span> Análisis con IA (130–160 min)</a>
+  <a class="fase-chip" href="#fase6"><span class="fc-num">F6</span> Cierre (160–180 min)</a>
+</nav>
+
+<main class="body-wrap">
+
+  <!-- PROBLEMA CENTRAL -->
+  <div class="problema-box">
+    <span class="pb-label">🎯 Problema central de la sesión</span>
+    <div class="pb-enunciado">
+      Una tienda necesita calcular el <strong>precio final con descuento e impuesto</strong> de un producto. El programa debe solicitar el precio base, el porcentaje de descuento y el porcentaje de impuesto (IVA), y mostrar: precio con descuento, monto del impuesto y precio final a pagar.<br><br>
+      <strong>Fórmulas:</strong><br>
+      · precio_descuento = precio_base × (1 − descuento/100)<br>
+      · impuesto = precio_descuento × (iva/100)<br>
+      · precio_final = precio_descuento + impuesto
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- FASE 1 -->
+  <div class="fase" id="fase1">
+    <div class="fase-header">
+      <div class="fase-num">F1</div>
+      <div class="fase-info">
+        <div class="fase-titulo">Modelado en papel — Individual, sin computadora</div>
+        <div class="fase-tiempo">⏱ 0 – 20 minutos</div>
+      </div>
+    </div>
+    <p>Antes de encender el computador, modela el problema completo en papel. Esta fase no es opcional y se entrega al docente al finalizar.</p>
+    <div class="actividades">
+      <div class="actividad">
+        <div class="act-num">1</div>
+        <div class="act-body">
+          <div class="act-titulo">Identificar entradas, proceso y salidas</div>
+          <div class="act-desc">Completa la tabla en tu cuaderno o en la hoja entregada por el docente:</div>
+        </div>
+      </div>
+    </div>
+    <table class="tabla-papel">
+      <thead><tr><th>Componente</th><th>Descripción</th><th>Tipo de dato</th></tr></thead>
+      <tbody>
+        <tr><td>Entrada 1</td><td class="espacio-papel"></td><td class="espacio-papel"></td></tr>
+        <tr><td>Entrada 2</td><td class="espacio-papel"></td><td class="espacio-papel"></td></tr>
+        <tr><td>Entrada 3</td><td class="espacio-papel"></td><td class="espacio-papel"></td></tr>
+        <tr><td>Proceso</td><td class="espacio-papel"></td><td>—</td></tr>
+        <tr><td>Salida 1</td><td class="espacio-papel"></td><td class="espacio-papel"></td></tr>
+        <tr><td>Salida 2</td><td class="espacio-papel"></td><td class="espacio-papel"></td></tr>
+        <tr><td>Salida 3</td><td class="espacio-papel"></td><td class="espacio-papel"></td></tr>
+      </tbody>
+    </table>
+    <div class="actividades">
+      <div class="actividad">
+        <div class="act-num">2</div>
+        <div class="act-body">
+          <div class="act-titulo">Pseudocódigo en papel</div>
+          <div class="act-desc">Escribe el pseudocódigo completo con la estructura <code style="font-family:'Space Mono';font-size:12px;">Algoritmo / FinAlgoritmo</code>, declaración de variables, entradas, cálculos y salidas.</div>
+        </div>
+      </div>
+      <div class="actividad">
+        <div class="act-num">3</div>
+        <div class="act-body">
+          <div class="act-titulo">Tabla de simulación manual</div>
+          <div class="act-desc">Ejecuta mentalmente tu algoritmo con los valores: <strong>precio_base = 80.00, descuento = 15%, IVA = 12%</strong>. Llena cada columna paso a paso. El resultado esperado es precio_final ≈ 76.16.</div>
+        </div>
+      </div>
+    </div>
+    <div class="caja-nota">
+      <div class="cn-label">📋 Entrega de fase 1</div>
+      <p>Entrega la hoja de papel firmada al docente antes de encender el computador. <strong>Sin entrega de papel no hay acceso al laboratorio.</strong></p>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- FASE 2 -->
+  <div class="fase" id="fase2">
+    <div class="fase-header">
+      <div class="fase-num">F2</div>
+      <div class="fase-info">
+        <div class="fase-titulo">Implementación en PSeInt — Individual</div>
+        <div class="fase-tiempo">⏱ 20 – 50 minutos</div>
+      </div>
+    </div>
+    <p>Abre PSeInt e implementa el pseudocódigo que diseñaste en papel. No copies el modelo de abajo directamente — usa primero el tuyo y corrígelo si es necesario.</p>
+    <div class="pseudocodigo">
+      <div class="pseudo-label">Referencia — Pseudocódigo en PSeInt</div>
+      <div class="pseudo-code">
+        <span class="pseudo-kw">Algoritmo</span> PrecioFinal<br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Definir</span> precio_base, descuento, iva <span class="pseudo-kw">Como</span> Real</span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Definir</span> precio_desc, monto_imp, precio_final <span class="pseudo-kw">Como</span> Real</span><br>
+        <span class="pseudo-blank"></span>
+        <span class="pseudo-ind"><span class="pseudo-kw">Escribir</span> <span class="pseudo-str">"Ingrese el precio base: "</span></span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Leer</span> precio_base</span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Escribir</span> <span class="pseudo-str">"Ingrese el descuento (%): "</span></span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Leer</span> descuento</span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Escribir</span> <span class="pseudo-str">"Ingrese el IVA (%): "</span></span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Leer</span> iva</span><br>
+        <span class="pseudo-blank"></span>
+        <span class="pseudo-ind">precio_desc ← precio_base * (1 - descuento / 100)</span><br>
+        <span class="pseudo-ind">monto_imp   ← precio_desc * (iva / 100)</span><br>
+        <span class="pseudo-ind">precio_final ← precio_desc + monto_imp</span><br>
+        <span class="pseudo-blank"></span>
+        <span class="pseudo-ind"><span class="pseudo-kw">Escribir</span> <span class="pseudo-str">"Precio con descuento: $"</span>, precio_desc</span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Escribir</span> <span class="pseudo-str">"Monto de impuesto:    $"</span>, monto_imp</span><br>
+        <span class="pseudo-ind"><span class="pseudo-kw">Escribir</span> <span class="pseudo-str">"Precio final a pagar: $"</span>, precio_final</span><br>
+        <span class="pseudo-kw">FinAlgoritmo</span>
+      </div>
+    </div>
+    <div class="actividades">
+      <div class="actividad">
+        <div class="act-num">✓</div>
+        <div class="act-body">
+          <div class="act-titulo">Verificación en PSeInt</div>
+          <div class="act-desc">Ejecuta con precio=80, descuento=15%, IVA=12%. Compara la salida de PSeInt con tu tabla de simulación manual. ¿Coinciden? Si no coinciden, ¿en qué paso está el error?</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- FASE 3 -->
+  <div class="fase" id="fase3">
+    <div class="fase-header">
+      <div class="fase-num">F3</div>
+      <div class="fase-info">
+        <div class="fase-titulo">Implementación en C++ — Individual</div>
+        <div class="fase-tiempo">⏱ 50 – 90 minutos</div>
+      </div>
+    </div>
+    <p>Traduce el pseudocódigo verificado a C++. Cada línea debe tener un comentario que explique su propósito — esto se evalúa en la defensa técnica.</p>
+    <div class="codigo-bloque">
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:10px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · Referencia</span></div>
+        <span class="codigo-archivo">precio_final.cpp</span>
+      </div>
+      <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>    <span class="c-com">// Para setprecision y fixed</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-com">// --- Variables de entrada ---</span>
+    <span class="c-tipo">double</span> precio_base, descuento, iva;
+
+    <span class="c-com">// --- Variables de salida ---</span>
+    <span class="c-tipo">double</span> precio_desc, monto_imp, precio_final;
+
+    <span class="c-com">// --- Entrada de datos ---</span>
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Ingrese el precio base: $"</span>;
+    <span class="c-fn">cin</span>  &gt;&gt; precio_base;
+
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Ingrese el descuento (%): "</span>;
+    <span class="c-fn">cin</span>  &gt;&gt; descuento;
+
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Ingrese el IVA (%): "</span>;
+    <span class="c-fn">cin</span>  &gt;&gt; iva;
+
+    <span class="c-com">// --- Proceso ---</span>
+    precio_desc  = precio_base * (<span class="c-num">1.0</span> - descuento / <span class="c-num">100.0</span>);
+    monto_imp    = precio_desc  * (iva / <span class="c-num">100.0</span>);
+    precio_final = precio_desc  + monto_imp;
+
+    <span class="c-com">// --- Salida con 2 decimales ---</span>
+    <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>);
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"\n--- Resumen de compra ---\n"</span>;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Precio con descuento: $"</span> &lt;&lt; precio_desc  &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Monto de impuesto:    $"</span> &lt;&lt; monto_imp    &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Precio final a pagar: $"</span> &lt;&lt; precio_final &lt;&lt; endl;
+
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+    </div>
+    <div class="actividades">
+      <div class="actividad">
+        <div class="act-num">✓</div>
+        <div class="act-body">
+          <div class="act-titulo">Pruebas de verificación</div>
+          <div class="act-desc">Prueba con tres conjuntos de valores distintos y registra los resultados. Si el programa no compila, identifica el mensaje de error y corrígelo <strong>antes de pedir ayuda</strong>.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- FASE 4 -->
+  <div class="fase" id="fase4">
+    <div class="fase-header">
+      <div class="fase-num">F4</div>
+      <div class="fase-info">
+        <div class="fase-titulo">Revisión cruzada en parejas</div>
+        <div class="fase-tiempo">⏱ 90 – 130 minutos</div>
+      </div>
+    </div>
+    <p>Intercambia tu programa con un compañero. Debes revisar el código ajeno y documentar tus hallazgos.</p>
+    <div class="actividades">
+      <div class="actividad">
+        <div class="act-num">A</div>
+        <div class="act-body">
+          <div class="act-titulo">¿El código compila sin errores?</div>
+          <div class="act-desc">Compila el código del compañero. Si hay errores, identifícalos y anótalos sin corregirlos todavía.</div>
+        </div>
+      </div>
+      <div class="actividad">
+        <div class="act-num">B</div>
+        <div class="act-body">
+          <div class="act-titulo">¿Las fórmulas son correctas?</div>
+          <div class="act-desc">Verifica que las tres fórmulas coincidan con el enunciado. Anota cualquier discrepancia.</div>
+        </div>
+      </div>
+      <div class="actividad">
+        <div class="act-num">C</div>
+        <div class="act-body">
+          <div class="act-titulo">¿Los comentarios son descriptivos?</div>
+          <div class="act-desc">¿Los comentarios explican <em>por qué</em> o solo repiten <em>qué</em> hace la línea? Propón una mejora para al menos un comentario.</div>
+        </div>
+      </div>
+      <div class="actividad">
+        <div class="act-num">D</div>
+        <div class="act-body">
+          <div class="act-titulo">Devolución de retroalimentación</div>
+          <div class="act-desc">Devuelve el trabajo con tus notas escritas. El autor original lee la retroalimentación y decide si aplica los cambios o justifica por qué no.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- FASE 5 -->
+  <div class="fase" id="fase5">
+    <div class="fase-header">
+      <div class="fase-num">F5</div>
+      <div class="fase-info">
+        <div class="fase-titulo">Análisis crítico con IA — Grupal</div>
+        <div class="fase-tiempo">⏱ 130 – 160 minutos</div>
+      </div>
+    </div>
+    <div class="caja-ia">
+      <div class="ci-label">🤖 Actividad documentada de uso de IA</div>
+      <p>Esta es la <strong>única fase de la sesión donde se permite usar IA</strong>. Todo uso debe quedar registrado en tu bitácora con el prompt exacto utilizado y el análisis de la respuesta.</p>
+    </div>
+    <div class="actividades">
+      <div class="actividad">
+        <div class="act-num">1</div>
+        <div class="act-body">
+          <div class="act-titulo">Pide a una IA una solución alternativa al mismo problema</div>
+          <div class="act-desc">Usa el prompt: <em>"Escribe un programa en C++ que calcule el precio final de un producto aplicando descuento e IVA."</em> — sin dar más contexto.</div>
+        </div>
+      </div>
+      <div class="actividad">
+        <div class="act-num">2</div>
+        <div class="act-body">
+          <div class="act-titulo">Compara las dos soluciones</div>
+          <div class="act-desc">¿Qué diferencias encuentras en los nombres de variables, los mensajes de salida, el uso de <code style="font-family:'Space Mono';font-size:12px;">setprecision</code>? ¿La IA incluyó comentarios? ¿Son más o menos descriptivos que los tuyos?</div>
+        </div>
+      </div>
+      <div class="actividad">
+        <div class="act-num">3</div>
+        <div class="act-body">
+          <div class="act-titulo">¿Hay errores en la solución de la IA?</div>
+          <div class="act-desc">Ejecuta el código generado por la IA. ¿Compila? ¿Los resultados son correctos con tus mismos valores de prueba? Documenta cada error que encuentres.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- FASE 6 -->
+  <div class="fase" id="fase6">
+    <div class="fase-header">
+      <div class="fase-num">F6</div>
+      <div class="fase-info">
+        <div class="fase-titulo">Cierre y bitácora — Individual</div>
+        <div class="fase-tiempo">⏱ 160 – 180 minutos</div>
+      </div>
+    </div>
+    <div class="bitacora">
+      <div class="bitacora-campo"><label>Sesión N°:</label><div class="linea-campo"></div><label style="margin-left:20px;min-width:60px;">Fecha:</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>Tema trabajado:</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>¿Qué comprendí hoy?</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>¿Qué me costó?</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>¿Cómo lo resolví?</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>¿Qué encontré en la IA?</label><div class="linea-campo"></div></div>
+      <div class="bitacora-campo"><label>¿Qué haría diferente?</label><div class="linea-campo"></div></div>
+    </div>
+
+    <h3>Rúbrica de evaluación</h3>
+    <table class="rubrica">
+      <thead><tr><th>Criterio</th><th>Excelente (4)</th><th>Satisfactorio (3)</th><th>En desarrollo (2)</th><th>Insuficiente (1)</th></tr></thead>
+      <tbody>
+        <tr><td>Modelado en papel</td><td>Pseudocódigo completo, tabla de simulación correcta.</td><td>Pseudocódigo correcto, tabla incompleta.</td><td>Pseudocódigo con errores menores.</td><td>Sin modelado en papel.</td></tr>
+        <tr><td>Implementación C++</td><td>Compila, salida correcta, comentarios descriptivos.</td><td>Compila, salida correcta, pocos comentarios.</td><td>Compila con correcciones menores.</td><td>No compila.</td></tr>
+        <tr><td>Revisión cruzada</td><td>Retroalimentación detallada y pertinente.</td><td>Retroalimentación básica pero correcta.</td><td>Retroalimentación superficial.</td><td>No realizó la revisión.</td></tr>
+        <tr><td>Análisis de IA</td><td>Identificó diferencias y errores con justificación.</td><td>Identificó diferencias superficialmente.</td><td>Comparación básica sin análisis.</td><td>Copió la solución de IA sin analizar.</td></tr>
+        <tr><td>Bitácora</td><td>Reflexión profunda sobre aprendizaje y uso de IA.</td><td>Reflexión básica completa.</td><td>Reflexión incompleta.</td><td>Sin bitácora.</td></tr>
+      </tbody>
+      <tfoot><tr><td colspan="5">Puntaje máximo: 20 puntos · Puntaje mínimo de aprobación: 14 puntos</td></tr></tfoot>
+    </table>
+  </div>
+
+</main>
+
+<div class="nav-caps">
+  <a href="capitulo_01.html" class="nav-cap-btn"><span class="ncb-arrow">←</span><div><span class="ncb-label">Volver al capítulo</span><span class="ncb-titulo">Cap. 1 — Pensamiento Algorítmico</span></div></a>
+  <a href="capitulo_02.html" class="nav-cap-btn sig"><span class="ncb-arrow">→</span><div><span class="ncb-label">Siguiente capítulo</span><span class="ncb-titulo">Cap. 2 — Tipos de Datos y Variables</span></div></a>
+</div>
+
+<footer class="pie">
+  <span>Práctica 1 — Modelado Algorítmico · Unidad I · ESPAM MFL</span>
+  <span>espam.edu.ec</span>
+</footer>
+
+</body>
+</html>

@@ -3,295 +3,310 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Capítulo 1 — Pensamiento Algorítmico | Introducción a la Programación — ESPAM MFL</title>
+<title>Cap. 1 — Pensamiento Algorítmico | Introducción a la Programación — ESPAM MFL</title>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Serif+4:ital,wght@0,300;0,400;0,600;1,400&family=JetBrains+Mono:wght@400;500;600&display=swap');
-:root{--azul:#0f2744;--azul-medio:#1a4f8a;--azul-claro:#dce8f7;--azul-palido:#f0f5fc;--acento:#c8420a;--acento-claro:#fdf0ea;--verde:#1a5c3a;--verde-claro:#e8f5ee;--gris:#f7f8fa;--gris-medio:#e4e8f0;--texto:#1a1a2e;--texto-medio:#3a3a5a;--texto-suave:#6a6a8a;--borde:#d0d8e8;--sidebar-w:272px;--codigo-bg:#0d1b2e;--codigo-text:#cdd6f4}
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{scroll-behavior:smooth}
-body{font-family:'Source Serif 4',Georgia,serif;color:var(--texto);background:#e8ecf4;font-size:16px;line-height:1.8;overflow-x:hidden}
-
-/* TOPBAR */
-.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--azul);border-bottom:1px solid rgba(255,255,255,.07);display:flex;align-items:center;padding:0 18px;gap:14px;z-index:1000}
-.topbar-logo{font-family:'JetBrains Mono',monospace;font-size:10px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:#7ab3e0}
-.topbar-sep{color:rgba(255,255,255,.15);font-size:16px}
-.topbar-titulo{font-family:'Source Serif 4',serif;font-size:13px;color:#c8daf0;font-weight:300;font-style:italic}
-.topbar-right{margin-left:auto;font-family:'JetBrains Mono',monospace;font-size:10px;color:#3a5a7a;letter-spacing:1px}
-.menu-toggle{display:none;background:none;border:none;color:#7ab3e0;font-size:20px;cursor:pointer;margin-right:6px}
-
-/* APP LAYOUT */
-.app{display:flex;padding-top:50px;min-height:100vh}
-
-/* SIDEBAR */
-.sidebar{width:var(--sidebar-w);flex-shrink:0;position:fixed;top:50px;bottom:0;left:0;background:#fff;border-right:1px solid var(--borde);overflow-y:auto;overflow-x:hidden;z-index:900;transition:transform .3s}
-.sidebar::-webkit-scrollbar{width:3px}
-.sidebar::-webkit-scrollbar-thumb{background:var(--gris-medio);border-radius:3px}
-.sidebar-inner{padding:20px 0 40px}
-.nav-libro-titulo{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--azul-medio);padding:0 18px 12px;border-bottom:1px solid var(--borde);margin-bottom:6px}
-.nav-grupo{margin-bottom:2px}
-.nav-grupo-header{display:flex;align-items:center;gap:8px;padding:9px 18px 4px;cursor:pointer;user-select:none}
-.nav-grupo-header:hover{background:var(--azul-palido)}
-.nav-grupo-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--texto-suave);flex:1}
-.nav-grupo-label.unidad{color:var(--azul-medio);font-size:9.5px}
-.nav-chevron{font-size:11px;color:var(--texto-suave);transition:transform .2s;display:inline-block}
-.nav-grupo.open .nav-chevron{transform:rotate(90deg)}
-.nav-items{display:none}
-.nav-grupo.open .nav-items{display:block}
-.nav-item{display:flex;align-items:center;gap:9px;padding:7px 18px 7px 26px;font-size:12.5px;font-family:'Source Serif 4',serif;color:var(--texto-medio);text-decoration:none;transition:all .12s;border-left:3px solid transparent;line-height:1.35}
-.nav-item:hover{background:var(--azul-palido);color:var(--azul);border-left-color:var(--azul-claro)}
-.nav-item.activo{background:var(--azul-claro);color:var(--azul);font-weight:600;border-left-color:var(--acento)}
-.nav-item.prox{color:var(--texto-suave);font-style:italic;pointer-events:none;opacity:.55}
-.nav-num{font-family:'JetBrains Mono',monospace;font-size:9.5px;color:var(--texto-suave);min-width:20px;flex-shrink:0}
-.nav-item.activo .nav-num{color:var(--acento)}
-.nav-progreso{padding:14px 18px;margin-top:8px;border-top:1px solid var(--borde)}
-.nav-progreso-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;color:var(--texto-suave);margin-bottom:7px;display:flex;justify-content:space-between}
-.barra-progreso{height:4px;background:var(--gris-medio);border-radius:4px;overflow:hidden}
-.barra-fill{height:100%;background:linear-gradient(90deg,var(--azul-medio),var(--acento));border-radius:4px}
-
-/* MAIN CONTENT */
-.main{margin-left:var(--sidebar-w);flex:1;min-height:calc(100vh - 50px);background:#fff}
-
-/* PAGE HEADER (unidad / cap) */
-.page-header{background:linear-gradient(155deg,#0a1e38 0%,#0f2744 50%,#122b4a 100%);color:#fff;padding:52px 72px 44px;position:relative;overflow:hidden;border-top:3px solid var(--acento)}
-.ph-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,.02) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.02) 1px,transparent 1px);background-size:40px 40px}
-.ph-num-bg{position:absolute;right:56px;top:-20px;font-family:'Playfair Display',serif;font-size:190px;font-weight:900;color:rgba(255,255,255,.04);line-height:1}
-.ph-badge{display:inline-flex;align-items:center;gap:7px;background:rgba(200,66,10,.2);border:1px solid rgba(200,66,10,.35);color:#f4a87a;font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 13px;border-radius:20px;margin-bottom:14px;position:relative;z-index:1}
-.ph-titulo{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;line-height:1.2;margin-bottom:10px;max-width:680px;position:relative;z-index:1}
-.ph-subtitulo{font-size:14px;color:#7ab3e0;font-style:italic;margin-bottom:24px;position:relative;z-index:1}
-.ph-meta{display:flex;gap:26px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.08);padding-top:18px;position:relative;z-index:1}
-.ph-meta-item{display:flex;flex-direction:column;gap:3px}
-.ph-meta-label{font-family:'JetBrains Mono',monospace;font-size:8.5px;letter-spacing:1.5px;text-transform:uppercase;color:#3a5a7a}
-.ph-meta-valor{font-size:13px;color:#c8daf0}
-
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{--verde:#005846;--verde-medio:#007a5e;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fondo);font-size:16px;line-height:1.7;overflow-x:hidden;}
+.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--verde);display:flex;align-items:center;padding:0 24px;gap:14px;z-index:1000;border-bottom:3px solid var(--verde-claro);}
+.topbar-logo{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--verde-claro);}
+.topbar-sep{width:1px;height:20px;background:rgba(255,255,255,.2);}
+.topbar-titulo{font-size:12px;color:rgba(255,255,255,.65);font-weight:400;}
+.topbar-right{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;}
+.nav-menu{background:var(--verde);border-bottom:2px solid rgba(203,219,42,.3);margin-top:50px;}
+.nav-toggle{width:100%;background:transparent;color:white;border:none;padding:11px 24px;text-align:left;cursor:pointer;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;border-top:1px solid rgba(255,255,255,.08);}
+.nav-toggle:hover{background:rgba(255,255,255,.04);}
+.nav-toggle-arrow{color:var(--verde-claro);font-size:12px;}
+.nav-body{display:none;padding:18px 24px 22px;}
+.nav-body.abierto{display:flex;flex-wrap:wrap;gap:28px;}
+.nav-grupo{min-width:170px;}
+.nav-grupo-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:7px;display:block;padding-bottom:5px;border-bottom:1px solid rgba(203,219,42,.2);}
+.nav-items{list-style:none;}
+.nav-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12px;color:rgba(255,255,255,.72);text-decoration:none;transition:color .15s;}
+.nav-item:hover{color:var(--verde-claro);}
+.nav-item.activo{color:var(--verde-claro);font-weight:700;}
+.nav-item.practica{color:rgba(8,184,157,.85);font-style:italic;}
+.nav-item.practica:hover{color:var(--turquesa);}
+.nav-item.prox{color:rgba(255,255,255,.28);pointer-events:none;}
+.nav-num{font-family:'Space Mono',monospace;font-size:9px;min-width:20px;flex-shrink:0;color:rgba(255,255,255,.28);}
+.nav-item.activo .nav-num{color:var(--verde-claro);}
+.nav-item.practica .nav-num{color:rgba(8,184,157,.45);}
+/* PAGE HEADER */
+.page-header{background:var(--verde);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--verde-claro);}
+.page-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(203,219,42,.07) 1px,transparent 1px);background-size:28px 28px;}
+.ph-num{position:absolute;right:48px;top:0;font-size:240px;font-weight:900;color:rgba(255,255,255,.04);line-height:1;font-family:'Space Mono',monospace;}
+.ph-inner{position:relative;z-index:1;}
+.ph-badge{display:inline-block;background:rgba(203,219,42,.15);border:1px solid rgba(203,219,42,.35);color:var(--verde-claro);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+.ph-titulo{font-size:36px;font-weight:900;line-height:1.1;color:white;margin-bottom:8px;}
+.ph-subtitulo{font-size:15px;color:rgba(255,255,255,.55);font-weight:300;margin-bottom:28px;}
+.ph-meta{display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;}
+.ph-meta-item{display:flex;flex-direction:column;gap:3px;}
+.ph-meta-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.ph-meta-valor{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;}
+/* ANCLAS */
+.anclas{background:white;border-bottom:1px solid var(--borde);padding:12px 64px;display:flex;gap:6px;flex-wrap:wrap;}
+.ancla{font-family:'Space Mono',monospace;font-size:9.5px;color:var(--verde-medio);text-decoration:none;padding:4px 10px;border:1px solid var(--borde);border-radius:4px;transition:all .15s;}
+.ancla:hover{background:var(--verde);color:var(--verde-claro);border-color:var(--verde);}
 /* BODY */
-.cap-body{padding:60px 72px;max-width:960px}
-.seccion{margin-bottom:50px;scroll-margin-top:68px}
-.seccion-num{font-family:'JetBrains Mono',monospace;font-size:9.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--acento);margin-bottom:4px}
-h2{font-family:'Playfair Display',serif;font-size:25px;font-weight:700;color:var(--azul);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid var(--azul-claro);line-height:1.25}
-h3{font-family:'Source Serif 4',serif;font-size:17px;font-weight:600;color:var(--azul);margin:28px 0 10px}
-p{margin-bottom:14px;color:var(--texto-medio)}
-
+.body-wrap{max-width:960px;margin:0 auto;padding:56px 64px 0;}
+.seccion{margin-bottom:52px;scroll-margin-top:120px;}
+.seccion-num{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:4px;display:block;}
+h2{font-size:24px;font-weight:800;color:var(--verde);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid rgba(0,88,70,.12);}
+h3{font-size:16px;font-weight:700;color:var(--verde);margin:28px 0 10px;}
+p{margin-bottom:14px;color:var(--texto-suave);font-size:15px;}
+hr{border:none;border-top:1px solid var(--borde);margin:48px 0;}
+strong{color:var(--texto);}
 /* RA BOX */
-.ra-box{background:linear-gradient(135deg,var(--azul) 0%,var(--azul-medio) 100%);color:#fff;border-radius:12px;padding:26px 30px;margin-bottom:48px;position:relative;overflow:hidden}
-.ra-box::after{content:'R.A.';position:absolute;right:18px;bottom:-12px;font-family:'Playfair Display',serif;font-size:72px;font-weight:900;color:rgba(255,255,255,.05);line-height:1}
-.ra-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#7ab3e0;margin-bottom:7px}
-.ra-texto{font-size:15px;line-height:1.65;font-style:italic;position:relative;z-index:1}
-.ra-texto strong{font-style:normal;color:#f4c891}
-
-/* COMPONENTES */
-.def-formal{border:1px solid var(--azul-claro);border-left:5px solid var(--azul-medio);border-radius:0 10px 10px 0;padding:18px 24px;margin:20px 0;background:var(--azul-palido)}
-.def-formal .def-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--azul-medio);margin-bottom:6px}
-.def-formal p{margin:0;font-size:14px;color:var(--texto)}
-.def-formal em{font-style:italic;color:var(--azul)}
-.props-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:11px;margin:18px 0}
-.prop-card{border:1px solid var(--borde);border-radius:10px;padding:15px 17px;transition:box-shadow .2s,border-color .2s}
-.prop-card:hover{box-shadow:0 4px 14px rgba(15,39,68,.07);border-color:var(--azul-claro)}
-.prop-card .prop-icon{font-size:19px;margin-bottom:6px}
-.prop-card h4{font-family:'Source Serif 4',serif;font-size:13.5px;font-weight:600;color:var(--azul);margin-bottom:4px}
-.prop-card p{font-size:12.5px;color:var(--texto-suave);margin:0;line-height:1.5}
-.tabla-est{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px}
-.tabla-est thead tr{background:var(--azul);color:#fff}
-.tabla-est thead th{padding:10px 15px;text-align:left;font-size:12.5px;font-weight:600}
-.tabla-est tbody tr:nth-child(even){background:var(--gris)}
-.tabla-est tbody tr:hover{background:var(--azul-palido)}
-.tabla-est tbody td{padding:9px 15px;border-bottom:1px solid var(--borde);color:var(--texto-medio);vertical-align:top}
-.tabla-est tbody td:first-child{font-weight:600;color:var(--azul)}
-.diagrama-container{background:var(--gris);border:1px solid var(--borde);border-radius:12px;padding:26px 30px;margin:20px 0;display:flex;flex-direction:column;align-items:center}
-.diagrama-label{font-family:'JetBrains Mono',monospace;font-size:9.5px;letter-spacing:1px;color:var(--texto-suave);text-transform:uppercase;margin-bottom:18px;align-self:flex-start}
-.df-wrap{display:flex;flex-direction:column;align-items:center}
-.df-terminal{background:var(--azul);color:#fff;border-radius:50px;padding:8px 24px;font-family:'JetBrains Mono',monospace;font-size:12px;font-weight:600}
-.df-flecha{width:2px;height:24px;background:var(--azul-medio);position:relative}
-.df-flecha::after{content:'';position:absolute;bottom:-1px;left:-5px;border-left:6px solid transparent;border-right:6px solid transparent;border-top:8px solid var(--azul-medio)}
-.df-proceso{background:#fff;border:2px solid var(--azul-medio);border-radius:6px;padding:8px 24px;font-size:13px;color:var(--azul);min-width:190px;text-align:center}
-.df-entrada{background:var(--verde-claro);border:2px solid var(--verde);padding:8px 16px;font-size:13px;color:var(--verde);min-width:190px;text-align:center;transform:skewX(-10deg)}
-.df-entrada span,.df-salida span{display:inline-block;transform:skewX(10deg)}
-.df-salida{background:var(--acento-claro);border:2px solid var(--acento);padding:8px 16px;font-size:13px;color:var(--acento);min-width:190px;text-align:center;transform:skewX(-10deg)}
-.pseudocodigo{background:#f9fafb;border:1px solid var(--borde);border-left:5px solid var(--verde);border-radius:0 10px 10px 0;padding:20px 24px;margin:18px 0}
-.pseudo-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:10px}
-.pseudo-code{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:2;color:var(--texto)}
-.pseudo-kw{color:var(--azul-medio);font-weight:600}
-.pseudo-str{color:#1a8a3a}
-.pseudo-ind{padding-left:22px;display:block}
-.codigo-bloque{background:var(--codigo-bg);border-radius:10px;margin:18px 0;overflow:hidden}
-.codigo-header{display:flex;align-items:center;justify-content:space-between;padding:9px 16px;background:rgba(255,255,255,.04);border-bottom:1px solid rgba(255,255,255,.07)}
-.codigo-dots{display:flex;gap:5px}
-.dot{width:9px;height:9px;border-radius:50%}
-.dot-r{background:#ff5f57}.dot-y{background:#febc2e}.dot-g{background:#28c840}
-.codigo-lang{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#5a7fa8;margin-left:9px}
-.codigo-archivo{font-family:'JetBrains Mono',monospace;font-size:10.5px;color:#3a5a7a}
-.codigo-body{padding:18px 22px;overflow-x:auto}
-pre{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.8;color:var(--codigo-text)}
-.c-com{color:#5a7a9a;font-style:italic}.c-kw{color:#89b4fa}.c-tipo{color:#cba6f7}.c-str{color:#a6e3a1}.c-num{color:#fab387}.c-fn{color:#89dceb}.c-inc{color:#f38ba8}.c-ns{color:#f5c2e7}
-.codigo-anotado{margin:18px 0;border:1px solid var(--borde);border-radius:10px;overflow:hidden}
-.linea-codigo{display:grid;grid-template-columns:32px 1fr auto;align-items:stretch;border-bottom:1px solid rgba(255,255,255,.03)}
-.linea-codigo:last-child{border-bottom:none}
-.ln-num{background:#0d1b2e;color:#2a4a6a;font-family:'JetBrains Mono',monospace;font-size:10px;display:flex;align-items:center;justify-content:center;border-right:1px solid rgba(255,255,255,.04)}
-.ln-code{background:var(--codigo-bg);padding:6px 16px;font-family:'JetBrains Mono',monospace;font-size:12.5px;color:var(--codigo-text);line-height:1.6}
-.ln-nota{background:#0a1525;border-left:3px solid var(--azul-medio);padding:6px 13px;font-size:11.5px;color:#5a88b8;font-family:'Source Serif 4',serif;font-style:italic;max-width:250px;display:flex;align-items:center}
-.tabla-sim{width:100%;border-collapse:collapse;margin:16px 0;font-family:'JetBrains Mono',monospace;font-size:12px}
-.tabla-sim thead tr{background:var(--azul);color:#fff}
-.tabla-sim thead th{padding:9px 13px;text-align:center;font-size:10.5px;font-weight:600;letter-spacing:1px}
-.tabla-sim tbody tr:nth-child(even){background:var(--gris)}
-.tabla-sim tbody td{padding:7px 13px;border:1px solid var(--borde);text-align:center;color:var(--texto-medio)}
-.tabla-sim tbody td.res{background:var(--acento-claro);color:var(--acento);font-weight:700}
-.tabla-sim tfoot td{padding:7px 13px;background:var(--verde-claro);color:var(--verde);font-weight:600;border:1px solid var(--borde);text-align:center}
-.caja-nota{background:var(--azul-palido);border-left:5px solid var(--azul-medio);border-radius:0 10px 10px 0;padding:16px 20px;margin:18px 0}
-.caja-nota .cn-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--azul-medio);margin-bottom:5px}
-.caja-nota p{margin:0;font-size:13.5px;color:var(--texto-medio)}
-.caja-adv{background:var(--acento-claro);border-left:5px solid var(--acento);border-radius:0 10px 10px 0;padding:16px 20px;margin:18px 0}
-.caja-adv .ca-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--acento);margin-bottom:5px}
-.caja-adv p{margin:0;font-size:13.5px}
-.caja-ia{background:#0d1b2e;border-radius:10px;padding:20px 24px;margin:20px 0}
-.caja-ia .ci-label{font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#5a88b8;margin-bottom:9px}
-.caja-ia p{font-size:13.5px;color:#8aaccc;line-height:1.65;margin:0}
-.caja-ia strong{color:#cdd6f4}
-.tarjetas-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:18px 0}
-.tarjeta{border:1px solid var(--borde);border-radius:10px;padding:16px;transition:box-shadow .2s}
-.tarjeta:hover{box-shadow:0 4px 14px rgba(15,39,68,.07)}
-.tarjeta .t-icono{font-size:20px;margin-bottom:7px}
-.tarjeta h4{font-family:'Source Serif 4',serif;font-size:13.5px;font-weight:600;color:var(--azul);margin-bottom:4px}
-.tarjeta p{font-size:13px;color:var(--texto-suave);margin:0;line-height:1.5}
-.eval-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}
-.eval-card{border-radius:10px;padding:16px 12px;text-align:center}
-.eval-card.c1{background:var(--azul-claro)}.eval-card.c2{background:var(--verde-claro)}.eval-card.c3{background:var(--acento-claro)}.eval-card.c4{background:#f3e8ff}
-.eval-pct{font-size:24px;font-weight:700;line-height:1;margin-bottom:5px}
-.c1 .eval-pct{color:var(--azul)}.c2 .eval-pct{color:var(--verde)}.c3 .eval-pct{color:var(--acento)}.c4 .eval-pct{color:#6b3fa0}
-.eval-label{font-size:11px;font-weight:600;color:var(--texto-suave);line-height:1.4}
-.lista-principios{list-style:none;margin:16px 0}
-.lista-principios li{display:flex;align-items:flex-start;gap:13px;padding:12px 0;border-bottom:1px solid var(--borde)}
-.lista-principios li:last-child{border-bottom:none}
-.num-circulo{min-width:28px;height:28px;border-radius:50%;background:var(--azul);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.li-texto strong{display:block;font-size:13.5px;font-weight:600;color:var(--azul);margin-bottom:2px}
-.li-texto span{font-size:12.5px;color:var(--texto-suave)}
-.bitacora-plantilla{border:2px dashed var(--borde);border-radius:10px;padding:22px;background:#fafbfd;margin:18px 0}
-.bitacora-campo{display:flex;gap:13px;border-bottom:1px solid var(--borde);padding:8px 0;align-items:center}
-.bitacora-campo label{min-width:155px;font-family:'JetBrains Mono',monospace;font-size:11.5px;font-weight:600;color:var(--azul)}
-.linea-campo{flex:1;border-bottom:1px solid var(--gris-medio);min-height:20px}
-.ejercicios-section{background:var(--gris);border:1px solid var(--gris-medio);border-radius:14px;padding:28px 32px;margin:32px 0}
-.ejercicios-titulo{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;color:var(--azul);margin-bottom:20px}
-.ejercicio-item{background:#fff;border:1px solid var(--borde);border-radius:10px;padding:18px 22px;margin-bottom:12px;position:relative}
-.ejercicio-item:last-child{margin-bottom:0}
-.ej-badge{display:inline-flex;align-items:center;font-family:'JetBrains Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:3px 10px;border-radius:20px;margin-bottom:9px}
-.ej-badge.comp{background:var(--azul-claro);color:var(--azul-medio)}.ej-badge.aplic{background:var(--verde-claro);color:var(--verde)}.ej-badge.integ{background:var(--acento-claro);color:var(--acento)}
-.ej-num{font-family:'Playfair Display',serif;font-size:26px;font-weight:900;color:var(--azul-claro);position:absolute;top:13px;right:16px;line-height:1}
-.ej-enunciado{font-size:13.5px;color:var(--texto-medio);line-height:1.65}
-.evaluativa{background:linear-gradient(135deg,#0f2744,#1a4f8a);color:#fff;border-radius:14px;padding:28px 32px;margin:32px 0}
-.evaluativa-titulo{font-family:'Playfair Display',serif;font-size:19px;font-weight:700;margin-bottom:4px}
-.evaluativa-sub{font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:1px;color:#7ab3e0;margin-bottom:18px}
-.evaluativa-enunciado{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:10px;padding:16px 20px;font-size:13.5px;color:#c8daf0;line-height:1.65;margin-bottom:12px}
-.evaluativa-criterios{list-style:none}
-.evaluativa-criterios li{display:flex;align-items:flex-start;gap:9px;padding:6px 0;font-size:13px;color:#8ab4d8;border-bottom:1px solid rgba(255,255,255,.06)}
-.evaluativa-criterios li::before{content:'◆';color:#f4c891;font-size:9px;margin-top:5px;flex-shrink:0}
-.puente-ed{background:linear-gradient(135deg,#1a5c3a,#1a6b4a);color:#fff;border-radius:14px;padding:26px 30px;margin:32px 0}
-.puente-titulo{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;margin-bottom:3px}
-.puente-sub{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:#7ac8a0;margin-bottom:12px}
-.puente-texto{font-size:13.5px;color:#a8d8b8;line-height:1.7}
-.divisor{border:none;border-top:1px solid var(--borde);margin:44px 0}
-.pie-pagina{background:var(--azul);color:#3a5a7a;padding:16px 72px;font-family:'JetBrains Mono',monospace;font-size:10px;letter-spacing:.5px;display:flex;justify-content:space-between;align-items:center}
-
-/* NAV PREV/NEXT */
-.nav-capitulos{display:flex;justify-content:space-between;padding:28px 72px;background:var(--gris);border-top:1px solid var(--borde)}
-.nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:14px 20px;border:1px solid var(--borde);border-radius:10px;background:#fff;transition:all .2s;max-width:280px}
-.nav-cap-btn:hover{border-color:var(--azul-medio);box-shadow:0 4px 14px rgba(15,39,68,.08)}
-.nav-cap-btn.siguiente{flex-direction:row-reverse;text-align:right}
-.ncb-arrow{font-size:20px;color:var(--azul-medio);flex-shrink:0}
-.ncb-label{font-family:'JetBrains Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--texto-suave);margin-bottom:3px}
-.ncb-titulo{font-size:13px;font-weight:600;color:var(--azul);line-height:1.3}
-
-/* RESPONSIVE */
-@media(max-width:960px){
-  .menu-toggle{display:block}
-  .sidebar{transform:translateX(-100%)}
-  .sidebar.open{transform:translateX(0)}
-  .main{margin-left:0}
-  .cap-body,.page-header,.nav-capitulos,.pie-pagina{padding-left:22px;padding-right:22px}
-  .props-grid,.tarjetas-grid,.eval-grid{grid-template-columns:1fr}
-}
-@media print{
-  .topbar,.sidebar,.menu-toggle,.nav-capitulos{display:none!important}
-  .main{margin-left:0}
-  .cap-body{padding:20px}
+.ra-box{background:rgba(0,88,70,.06);border:1px solid rgba(0,88,70,.15);border-left:4px solid var(--verde);border-radius:0 10px 10px 0;padding:18px 22px;margin-bottom:40px;}
+.ra-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:8px;}
+.ra-texto{font-size:14px;color:var(--texto);line-height:1.65;}
+/* DEFINICIÓN */
+.def-formal{background:var(--codigo-bg);border-radius:10px;padding:22px 26px;margin:20px 0;border-left:4px solid var(--verde-claro);}
+.def-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:10px;}
+.def-formal p{color:rgba(255,255,255,.82);font-size:14.5px;line-height:1.75;margin:0;}
+.def-formal em{color:var(--verde-claro);font-style:normal;font-weight:700;}
+/* CAJAS */
+.caja-nota{background:rgba(0,88,70,.05);border-left:4px solid var(--verde);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-nota .cn-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:6px;display:block;}
+.caja-nota p{margin:0;font-size:14px;color:var(--texto);}
+.caja-nota p strong{color:var(--verde);}
+.caja-adv{background:rgba(203,219,42,.08);border-left:4px solid var(--verde-claro);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-adv .ca-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7a8a10;margin-bottom:6px;display:block;}
+.caja-adv p{margin:0;font-size:14px;color:#4a540a;}
+.caja-ia{background:#0d1e18;border-radius:10px;padding:20px 24px;margin:20px 0;border-left:4px solid var(--turquesa);}
+.caja-ia .ci-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:9px;display:block;}
+.caja-ia p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin:0;}
+.caja-ia p strong{color:var(--verde-claro);}
+/* PROPS GRID */
+.props-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin:20px 0;}
+.prop-card{background:white;border:1px solid var(--borde);border-radius:10px;padding:18px 20px;}
+.prop-icon{font-size:22px;margin-bottom:8px;display:block;}
+.prop-card h4{font-size:14px;font-weight:700;color:var(--verde);margin-bottom:5px;}
+.prop-card p{font-size:13px;color:var(--texto-suave);margin:0;line-height:1.55;}
+/* TABLA */
+.tabla-est{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;}
+.tabla-est thead tr{background:var(--verde);}
+.tabla-est thead th{padding:11px 15px;text-align:left;font-size:12px;font-weight:700;color:white;}
+.tabla-est tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-est tbody tr:hover{background:rgba(0,88,70,.06);}
+.tabla-est tbody td{padding:10px 15px;border-bottom:1px solid var(--borde);color:var(--texto-suave);vertical-align:top;}
+.tabla-est tbody td:first-child{font-weight:600;color:var(--verde);}
+/* PSEUDOCÓDIGO */
+.pseudocodigo{background:var(--codigo-bg);border-radius:10px;margin:18px 0;overflow:hidden;}
+.pseudo-label{background:rgba(255,255,255,.05);padding:8px 18px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);border-bottom:1px solid rgba(255,255,255,.08);}
+.pseudo-code{padding:20px 24px;font-family:'Space Mono',monospace;font-size:13px;line-height:1.9;color:rgba(255,255,255,.85);}
+.pseudo-kw{color:var(--verde-claro);font-weight:700;}
+.pseudo-str{color:#a8d8b0;}
+.pseudo-ind{display:block;padding-left:24px;}
+/* DIAGRAMA */
+.diagrama-container{background:white;border:1px solid var(--borde);border-radius:10px;padding:24px;margin:18px 0;}
+.diagrama-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:20px;display:block;}
+.df-wrap{display:flex;flex-direction:column;align-items:center;gap:0;}
+.df-terminal{background:var(--verde);color:white;border-radius:20px;padding:8px 28px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;letter-spacing:2px;}
+.df-proceso{background:white;border:2px solid var(--verde);border-radius:4px;padding:9px 22px;font-size:13px;color:var(--verde);font-weight:600;text-align:center;min-width:220px;}
+.df-entrada,.df-salida{background:rgba(8,184,157,.08);border:2px solid var(--turquesa);padding:9px 22px;font-size:13px;color:var(--verde);font-weight:600;text-align:center;min-width:220px;clip-path:polygon(10px 0%,calc(100% - 10px) 0%,100% 50%,calc(100% - 10px) 100%,10px 100%,0% 50%);}
+.df-flecha{width:2px;height:22px;background:var(--verde);position:relative;}
+.df-flecha::after{content:'';position:absolute;bottom:-6px;left:-4px;border-left:5px solid transparent;border-right:5px solid transparent;border-top:7px solid var(--verde);}
+/* CÓDIGO ANOTADO */
+.codigo-anotado{background:var(--codigo-bg);border-radius:10px;overflow:hidden;margin:18px 0;}
+.linea-codigo{display:grid;grid-template-columns:36px 1fr auto;align-items:stretch;border-bottom:1px solid rgba(255,255,255,.04);}
+.linea-codigo:last-child{border-bottom:none;}
+.ln-num{font-family:'Space Mono',monospace;font-size:11px;color:rgba(255,255,255,.2);padding:10px 0 10px 12px;text-align:right;}
+.ln-code{font-family:'Space Mono',monospace;font-size:12.5px;color:rgba(255,255,255,.85);padding:10px 16px;white-space:pre;}
+.ln-nota{font-size:11.5px;color:rgba(255,255,255,.45);padding:10px 14px;border-left:1px solid rgba(255,255,255,.06);background:rgba(0,0,0,.2);max-width:300px;display:flex;align-items:center;}
+.c-inc{color:#c792ea;}
+.c-str{color:#a8d8b0;}
+.c-kw{color:var(--verde-claro);}
+.c-ns{color:var(--turquesa);}
+.c-tipo{color:#82aaff;}
+.c-fn{color:var(--turquesa);}
+.c-num{color:#f78c6c;}
+.c-com{color:rgba(255,255,255,.3);font-style:italic;}
+/* CÓDIGO BLOQUE */
+.codigo-bloque{background:var(--codigo-bg);border-radius:10px;overflow:hidden;margin:18px 0;}
+.codigo-header{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);}
+.codigo-dots{display:flex;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#ff5f57;}
+.dot-y{background:#febc2e;}
+.dot-g{background:#28c840;}
+.codigo-lang{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.3);}
+.codigo-archivo{font-family:'Space Mono',monospace;font-size:10px;color:var(--turquesa);}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+/* TABLA SIMULACIÓN */
+.tabla-sim{width:100%;border-collapse:collapse;margin:18px 0;font-family:'Space Mono',monospace;font-size:12px;}
+.tabla-sim thead tr{background:var(--verde);}
+.tabla-sim thead th{padding:9px 12px;color:white;font-size:10px;text-align:center;letter-spacing:.5px;}
+.tabla-sim tbody tr{border-bottom:1px solid var(--borde);}
+.tabla-sim tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-sim tbody td{padding:8px 12px;text-align:center;color:var(--texto-suave);}
+.tabla-sim tbody td:nth-child(2){text-align:left;font-size:11px;}
+.tabla-sim td.res{background:rgba(203,219,42,.15);color:var(--verde);font-weight:700;}
+.tabla-sim tfoot td{padding:8px 12px;font-family:'Work Sans',sans-serif;font-size:12px;color:var(--verde);font-style:italic;background:rgba(0,88,70,.04);}
+/* EJERCICIOS */
+.ejercicios-section{background:white;border:1px solid var(--borde);border-radius:12px;overflow:hidden;margin:20px 0;}
+.ejercicios-titulo{background:var(--verde);color:white;padding:12px 20px;font-size:13px;font-weight:700;letter-spacing:.3px;}
+.ejercicio-item{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid var(--borde);}
+.ejercicio-item:last-child{border-bottom:none;}
+.ej-num{min-width:28px;height:28px;background:var(--fondo-alt);border:1px solid var(--borde);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);flex-shrink:0;}
+.ej-badge{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:3px;flex-shrink:0;margin-top:4px;}
+.ej-badge.comp{background:rgba(0,88,70,.08);color:var(--verde);}
+.ej-badge.aplic{background:rgba(8,184,157,.1);color:var(--turquesa);}
+.ej-badge.integ{background:rgba(203,219,42,.12);color:#7a8a10;}
+.ej-enunciado{font-size:13.5px;color:var(--texto-suave);line-height:1.6;}
+.ej-enunciado strong{color:var(--texto);}
+/* EVALUATIVA */
+.evaluativa{background:rgba(0,88,70,.04);border:2px solid rgba(0,88,70,.15);border-radius:12px;padding:24px 28px;margin-top:36px;}
+.evaluativa-titulo{font-size:15px;font-weight:800;color:var(--verde);margin-bottom:3px;}
+.evaluativa-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;}
+.evaluativa-enunciado{font-size:14px;color:var(--texto-suave);line-height:1.7;margin-bottom:14px;}
+.evaluativa-criterios{margin:0;padding-left:18px;}
+.evaluativa-criterios li{font-size:13px;color:var(--texto-suave);margin-bottom:5px;}
+/* PUENTE */
+.puente{background:var(--codigo-bg);border-radius:12px;padding:24px 28px;margin-top:28px;border-left:4px solid var(--turquesa);}
+.puente-titulo{font-size:15px;font-weight:800;color:white;margin-bottom:3px;}
+.puente-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+.puente-texto{font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;}
+.puente-texto strong{color:var(--verde-claro);}
+/* NAV CAPS */
+.nav-caps{display:flex;justify-content:space-between;align-items:center;padding:20px 64px;background:var(--fondo-alt);border-top:1px solid var(--borde);margin-top:48px;flex-wrap:wrap;gap:12px;}
+.nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 18px;border:1.5px solid rgba(0,88,70,.2);border-radius:8px;background:white;max-width:280px;transition:all .2s;}
+.nav-cap-btn:hover{border-color:var(--verde);background:var(--fondo);text-decoration:none;}
+.nav-cap-btn.sig{flex-direction:row-reverse;text-align:right;}
+.ncb-arrow{font-size:16px;color:var(--verde);}
+.ncb-label{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,88,70,.45);margin-bottom:2px;display:block;}
+.ncb-titulo{font-size:13px;font-weight:700;color:var(--verde);}
+/* PIE */
+.pie{background:var(--verde);color:rgba(255,255,255,.35);padding:14px 64px;font-family:'Space Mono',monospace;font-size:9px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;letter-spacing:1px;}
+.pie span:first-child{color:rgba(255,255,255,.55);}
+@media(max-width:768px){
+  .page-header,.body-wrap,.nav-caps,.pie,.anclas{padding-left:24px;padding-right:24px;}
+  .ph-titulo{font-size:26px;}
+  .props-grid{grid-template-columns:1fr;}
+  .linea-codigo{grid-template-columns:28px 1fr;}
+  .ln-nota{display:none;}
+  .codigo-body pre{font-size:11px;}
 }
 </style>
 </head>
 <body>
+
 <header class="topbar">
-  <button class="menu-toggle" onclick="document.getElementById('sidebar').classList.toggle('open')">☰</button>
-  <span class="topbar-logo">ESPAM MFL</span>
-  <span class="topbar-sep">|</span>
-  <span class="topbar-titulo">Introducción a la Programación — Fundamentos Algorítmicos en C++</span>
-  <span class="topbar-right">Computación · 2025</span>
+  <div class="topbar-logo">ESPAM MFL</div>
+  <div class="topbar-sep"></div>
+  <div class="topbar-titulo">Introducción a la Programación</div>
+  <div class="topbar-right">CARRERA DE COMPUTACIÓN</div>
 </header>
-<div class="app">
-<nav class="sidebar" id="sidebar">
-  <div class="sidebar-inner">
-    <div class="nav-libro-titulo">Índice del Libro</div>
+
+<nav class="nav-menu">
+  <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">
+    ☰ &nbsp; Contenidos del libro
+    <span class="nav-toggle-arrow">▼</span>
+  </button>
+  <div class="nav-body">
     <div class="nav-grupo">
-      <div class="nav-grupo-header" onclick="this.parentElement.classList.toggle('open')">
-        <span class="nav-grupo-label">Inicio y Preliminares</span><span class="nav-chevron">›</span>
-      </div>
-      <div class="nav-items"><a class="nav-item" href="index.html"><span class="nav-num">📖</span>Portada</a><a class="nav-item" href="preliminares.html"><span class="nav-num">—</span>Preliminares</a></div>
-    </div>
-    <div class="nav-grupo open">
-      <div class="nav-grupo-header" onclick="this.parentElement.classList.toggle('open')">
-        <span class="nav-grupo-label unidad">Unidad I — Fundamentos</span><span class="nav-chevron">›</span>
-      </div>
-      <div class="nav-items"><a class="nav-item" href="unidad_1_intro.html"><span class="nav-num">→</span>Introducción Unidad I</a><a class="nav-item activo" href="capitulo_01.html"><span class="nav-num">1</span>Pensamiento Algorítmico</a><a class="nav-item" href="capitulo_02.html"><span class="nav-num">2</span>Tipos de Datos</a><a class="nav-item" href="capitulo_03.html"><span class="nav-num">3</span>Depuración</a></div>
+      <span class="nav-grupo-label">Inicio</span>
+      <ul class="nav-items">
+        <li><a href="index.html" class="nav-item"><span class="nav-num">◉</span> Portada</a></li>
+        <li><a href="preliminares.html" class="nav-item"><span class="nav-num">—</span> Preliminares</a></li>
+      </ul>
     </div>
     <div class="nav-grupo">
-      <div class="nav-grupo-header" onclick="this.parentElement.classList.toggle('open')">
-        <span class="nav-grupo-label unidad">Unidad II — Estructuras</span><span class="nav-chevron">›</span>
-      </div>
-      <div class="nav-items"><a class="nav-item" href="unidad_2_intro.html"><span class="nav-num">→</span>Introducción Unidad II</a><a class="nav-item" href="capitulo_04.html"><span class="nav-num">4</span>Estructuras Selectivas</a><a class="nav-item" href="capitulo_05.html"><span class="nav-num">5</span>Repetitivas I</a><a class="nav-item" href="capitulo_06.html"><span class="nav-num">6</span>Repetitivas II</a><a class="nav-item" href="capitulo_07.html"><span class="nav-num">7</span>Integración</a></div>
+      <span class="nav-grupo-label">Unidad I — Fundamentos</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_01.html" class="nav-item activo"><span class="nav-num">01</span> Pensamiento Algorítmico</a></li>
+        <li><a href="practica_01.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 1</a></li>
+        <li><a href="capitulo_02.html" class="nav-item prox"><span class="nav-num">02</span> Tipos de Datos y Variables</a></li>
+        <li><a href="practica_02.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 2</a></li>
+        <li><a href="capitulo_03.html" class="nav-item prox"><span class="nav-num">03</span> Depuración y Buenas Prácticas</a></li>
+        <li><a href="practica_03.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 3</a></li>
+      </ul>
     </div>
     <div class="nav-grupo">
-      <div class="nav-grupo-header" onclick="this.parentElement.classList.toggle('open')">
-        <span class="nav-grupo-label unidad">Unidad III — Funciones</span><span class="nav-chevron">›</span>
-      </div>
-      <div class="nav-items"><a class="nav-item" href="unidad_3_intro.html"><span class="nav-num">→</span>Introducción Unidad III</a><a class="nav-item" href="capitulo_08.html"><span class="nav-num">8</span>Funciones en C++</a><a class="nav-item" href="capitulo_09.html"><span class="nav-num">9</span>Paso por Valor/Ref.</a><a class="nav-item" href="capitulo_10.html"><span class="nav-num">10</span>Pila de Ejecución</a><a class="nav-item" href="capitulo_11.html"><span class="nav-num">11</span>Integración Funcional</a></div>
+      <span class="nav-grupo-label">Unidad II — Control</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_04.html" class="nav-item prox"><span class="nav-num">04</span> Estructuras Selectivas</a></li>
+        <li><a href="practica_04.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 4</a></li>
+        <li><a href="capitulo_05.html" class="nav-item prox"><span class="nav-num">05</span> Estructuras Repetitivas I</a></li>
+        <li><a href="practica_05.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 5</a></li>
+        <li><a href="capitulo_06.html" class="nav-item prox"><span class="nav-num">06</span> Estructuras Repetitivas II</a></li>
+        <li><a href="practica_06.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 6</a></li>
+        <li><a href="capitulo_07.html" class="nav-item prox"><span class="nav-num">07</span> Integración de Estructuras</a></li>
+        <li><a href="practica_07.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 7</a></li>
+      </ul>
     </div>
     <div class="nav-grupo">
-      <div class="nav-grupo-header" onclick="this.parentElement.classList.toggle('open')">
-        <span class="nav-grupo-label unidad">Unidad IV — Arreglos</span><span class="nav-chevron">›</span>
-      </div>
-      <div class="nav-items"><a class="nav-item" href="unidad_4_intro.html"><span class="nav-num">→</span>Introducción Unidad IV</a><a class="nav-item" href="capitulo_12.html"><span class="nav-num">12</span>Arreglos 1D</a><a class="nav-item" href="capitulo_13.html"><span class="nav-num">13</span>Búsqueda y Orden.</a><a class="nav-item" href="capitulo_14.html"><span class="nav-num">14</span>Arreglos 2D</a><a class="nav-item" href="capitulo_15.html"><span class="nav-num">15</span>Proyecto Integrador</a></div>
+      <span class="nav-grupo-label">Unidad III — Funciones</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_08.html" class="nav-item prox"><span class="nav-num">08</span> Funciones en C++</a></li>
+        <li><a href="practica_08.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 8</a></li>
+        <li><a href="capitulo_09.html" class="nav-item prox"><span class="nav-num">09</span> Paso por Valor y Referencia</a></li>
+        <li><a href="practica_09.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 9</a></li>
+        <li><a href="capitulo_10.html" class="nav-item prox"><span class="nav-num">10</span> Pila y Modularidad</a></li>
+        <li><a href="practica_10.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 10</a></li>
+        <li><a href="capitulo_11.html" class="nav-item prox"><span class="nav-num">11</span> Aplicaciones Funcionales</a></li>
+        <li><a href="practica_11.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 11</a></li>
+      </ul>
     </div>
     <div class="nav-grupo">
-      <div class="nav-grupo-header" onclick="this.parentElement.classList.toggle('open')">
-        <span class="nav-grupo-label">Anexos</span><span class="nav-chevron">›</span>
-      </div>
-      <div class="nav-items"><a class="nav-item" href="anexos.html"><span class="nav-num">A–F</span>Rúbricas, plantillas y glosario</a></div>
+      <span class="nav-grupo-label">Unidad IV — Arreglos</span>
+      <ul class="nav-items">
+        <li><a href="capitulo_12.html" class="nav-item prox"><span class="nav-num">12</span> Arreglos Unidimensionales</a></li>
+        <li><a href="practica_12.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 12</a></li>
+        <li><a href="capitulo_13.html" class="nav-item prox"><span class="nav-num">13</span> Búsqueda y Ordenamiento</a></li>
+        <li><a href="practica_13.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 13</a></li>
+        <li><a href="capitulo_14.html" class="nav-item prox"><span class="nav-num">14</span> Arreglos Bidimensionales</a></li>
+        <li><a href="practica_14.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 14</a></li>
+        <li><a href="capitulo_15.html" class="nav-item prox"><span class="nav-num">15</span> Proyecto Integrador Final</a></li>
+        <li><a href="practica_15.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 15</a></li>
+      </ul>
     </div>
-    <div class="nav-progreso">
-      <div class="nav-progreso-label"><span>Capítulos publicados</span><span>2 / 15</span></div>
-      <div class="barra-progreso"><div class="barra-fill" style="width:13%"></div></div>
+    <div class="nav-grupo">
+      <span class="nav-grupo-label">Recursos</span>
+      <ul class="nav-items">
+        <li><a href="anexos.html" class="nav-item prox"><span class="nav-num">—</span> Anexos y Rúbricas</a></li>
+      </ul>
     </div>
   </div>
 </nav>
-<div class="main">
 
-<div class="page-header">
-  <div class="ph-grid"></div>
-  <div class="ph-num-bg">1</div>
-  <div class="ph-badge">📗 Unidad I · Sesión 1</div>
-  <h1 class="ph-titulo">Pensamiento Algorítmico y Estructura Básica de un Programa</h1>
-  <p class="ph-subtitulo">Del problema al algoritmo, del algoritmo al código</p>
-  <div class="ph-meta">
-    <div class="ph-meta-item"><span class="ph-meta-label">Horas presenciales</span><span class="ph-meta-valor">3 ACD + 2 PECD</span></div>
-    <div class="ph-meta-item"><span class="ph-meta-label">Horas autónomas</span><span class="ph-meta-valor">3 AA + 1 PEND</span></div>
-    <div class="ph-meta-item"><span class="ph-meta-label">Resultado</span><span class="ph-meta-valor">R.A. — A</span></div>
-    <div class="ph-meta-item"><span class="ph-meta-label">Herramientas</span><span class="ph-meta-valor">C++ · PSeInt</span></div>
+<section class="page-header">
+  <div class="ph-num">1</div>
+  <div class="ph-inner">
+    <div class="ph-badge">📗 Unidad I · Capítulo 1</div>
+    <h1 class="ph-titulo">Pensamiento Algorítmico y Estructura Básica de un Programa</h1>
+    <p class="ph-subtitulo">Del problema al algoritmo · Del algoritmo al código</p>
+    <div class="ph-meta">
+      <div class="ph-meta-item"><span class="ph-meta-label">Horas presenciales</span><span class="ph-meta-valor">3 ACD + 2 PECD</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Horas autónomas</span><span class="ph-meta-valor">3 AA + 1 PEND</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Resultado</span><span class="ph-meta-valor">R.A. — A</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Herramientas</span><span class="ph-meta-valor">PSeInt · C++</span></div>
+    </div>
   </div>
-</div>
-<div class="cap-body">
+</section>
+
+<nav class="anclas">
+  <a class="ancla" href="#s11">1.1 Algoritmo</a>
+  <a class="ancla" href="#s12">1.2 Propiedades</a>
+  <a class="ancla" href="#s13">1.3 Representaciones</a>
+  <a class="ancla" href="#s14">1.4 Entorno</a>
+  <a class="ancla" href="#s15">1.5 Anatomía C++</a>
+  <a class="ancla" href="#s16">1.6 Flujo secuencial</a>
+  <a class="ancla" href="#s17">1.7 Ejercicios</a>
+</nav>
+
+<main class="body-wrap">
 
   <div class="ra-box">
     <div class="ra-label">Resultado de Aprendizaje — Capítulo 1</div>
     <div class="ra-texto">El estudiante <strong>diseña algoritmos secuenciales</strong>, los representa en pseudocódigo y diagrama de flujo, e <strong>implementa su primer programa en C++</strong> explicando el flujo de ejecución de cada instrucción.</div>
   </div>
 
+  <!-- 1.1 -->
   <section class="seccion" id="s11">
-    <div class="seccion-num">1.1</div>
+    <span class="seccion-num">1.1</span>
     <h2>Concepto Formal de Algoritmo</h2>
     <p>Antes de escribir una sola línea de código es necesario comprender qué es lo que el código ejecuta. Un programa no es otra cosa que la traducción de un algoritmo a un lenguaje que la máquina puede interpretar.</p>
     <div class="def-formal">
@@ -299,39 +314,47 @@ pre{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.8;color:
       <p>Un <em>algoritmo</em> es una secuencia <em>finita</em>, <em>ordenada</em> y <em>no ambigua</em> de pasos bien definidos que describe cómo resolver un problema. Los algoritmos son <em>independientes del lenguaje de programación</em>: un mismo algoritmo puede implementarse en C++, Python, Java o cualquier otro lenguaje.</p>
     </div>
     <p>Esta independencia del lenguaje es fundamental: la habilidad de diseñar algoritmos correctos es más valiosa —y más transferible— que conocer la sintaxis de un lenguaje específico.</p>
-    <div class="caja-ia"><div class="ci-label">🤖 Reflexión sobre IA</div><p>Cuando le pides a una IA que resuelva un problema de programación, ella <strong>genera código, no un algoritmo razonado</strong>. Si no comprendes el algoritmo subyacente, no puedes verificar si la solución es correcta o eficiente. El algoritmo es la capa que debes dominar tú.</p></div>
+    <div class="caja-ia">
+      <div class="ci-label">🤖 Reflexión sobre IA</div>
+      <p>Cuando le pides a una IA que resuelva un problema de programación, ella <strong>genera código, no un algoritmo razonado</strong>. Si no comprendes el algoritmo subyacente, no puedes verificar si la solución es correcta o eficiente. El algoritmo es la capa que debes dominar tú.</p>
+    </div>
   </section>
 
-  <hr class="divisor">
+  <hr>
 
+  <!-- 1.2 -->
   <section class="seccion" id="s12">
-    <div class="seccion-num">1.2</div>
+    <span class="seccion-num">1.2</span>
     <h2>Características y Propiedades</h2>
     <p>No toda secuencia de pasos constituye un algoritmo válido. Para serlo, debe cumplir cinco propiedades:</p>
     <div class="props-grid">
-      <div class="prop-card"><div class="prop-icon">🔢</div><h4>Finitud</h4><p>El algoritmo debe terminar después de un número finito de pasos. Un proceso indefinido no es un algoritmo.</p></div>
-      <div class="prop-card"><div class="prop-icon">📌</div><h4>Precisión</h4><p>Cada paso debe estar definido sin ambigüedades. "Dividir la suma entre la cantidad" es preciso; "calcular algo con los datos" no lo es.</p></div>
-      <div class="prop-card"><div class="prop-icon">📥</div><h4>Entrada</h4><p>Puede tener cero o más datos de entrada — valores que recibe del mundo exterior para procesar.</p></div>
-      <div class="prop-card"><div class="prop-icon">📤</div><h4>Salida</h4><p>Debe producir al menos un resultado. Un algoritmo sin salida no resuelve ningún problema observable.</p></div>
-      <div class="prop-card" style="grid-column:span 2"><div class="prop-icon">✅</div><h4>Efectividad</h4><p>Cada operación debe ser suficientemente básica como para ejecutarse en tiempo finito. Las operaciones deben ser realizables en la práctica, no solo en teoría.</p></div>
+      <div class="prop-card"><span class="prop-icon">🔢</span><h4>Finitud</h4><p>El algoritmo debe terminar después de un número finito de pasos. Un proceso indefinido no es un algoritmo.</p></div>
+      <div class="prop-card"><span class="prop-icon">📌</span><h4>Precisión</h4><p>Cada paso debe estar definido sin ambigüedades. "Dividir la suma entre la cantidad" es preciso; "calcular algo con los datos" no lo es.</p></div>
+      <div class="prop-card"><span class="prop-icon">📥</span><h4>Entrada</h4><p>Puede tener cero o más datos de entrada — valores que recibe del mundo exterior para procesar.</p></div>
+      <div class="prop-card"><span class="prop-icon">📤</span><h4>Salida</h4><p>Debe producir al menos un resultado. Un algoritmo sin salida no resuelve ningún problema observable.</p></div>
     </div>
-    <div class="caja-nota"><div class="cn-label">📌 Ejemplo cotidiano</div><p>Una receta de cocina es un algoritmo: tiene entrada (ingredientes), pasos finitos (instrucciones), y produce una salida (el plato). Si dice "añadir sal al gusto", pierde precisión — y deja de ser un algoritmo formal.</p></div>
+    <div class="prop-card" style="margin-top:12px;"><span class="prop-icon">✅</span><h4>Efectividad</h4><p>Cada operación debe ser suficientemente básica como para ejecutarse en tiempo finito. Las operaciones deben ser realizables en la práctica, no solo en teoría.</p></div>
+    <div class="caja-nota">
+      <div class="cn-label">📌 Ejemplo cotidiano</div>
+      <p>Una receta de cocina es un algoritmo: tiene entrada (ingredientes), pasos finitos (instrucciones), y produce una salida (el plato). Si dice <strong>"añadir sal al gusto"</strong>, pierde precisión — y deja de ser un algoritmo formal.</p>
+    </div>
   </section>
 
-  <hr class="divisor">
+  <hr>
 
+  <!-- 1.3 -->
   <section class="seccion" id="s13">
-    <div class="seccion-num">1.3</div>
+    <span class="seccion-num">1.3</span>
     <h2>Representaciones: Lenguaje Natural, Pseudocódigo y Diagramas</h2>
     <table class="tabla-est">
       <thead><tr><th>Representación</th><th>Descripción</th><th>Ventaja</th><th>Limitación</th></tr></thead>
       <tbody>
-        <tr><td>Lenguaje natural</td><td>Descripción en español, como lista de instrucciones.</td><td>Fácil de escribir y comprender.</td><td>Puede ser ambigua; difícil de traducir a código.</td></tr>
+        <tr><td>Lenguaje natural</td><td>Descripción en español, como lista de instrucciones.</td><td>Fácil de escribir y comprender.</td><td>Puede ser ambigua; difícil de traducir directamente a código.</td></tr>
         <tr><td>Pseudocódigo</td><td>Notación estructurada similar a un lenguaje de programación.</td><td>Balance entre legibilidad y precisión.</td><td>No estandarizado universalmente.</td></tr>
-        <tr><td>Diagrama de flujo</td><td>Representación gráfica con símbolos normalizados.</td><td>Visualiza el flujo de control intuitivamente.</td><td>Poco práctico para algoritmos complejos.</td></tr>
+        <tr><td>Diagrama de flujo</td><td>Representación gráfica con símbolos normalizados.</td><td>Visualiza el flujo de control intuitivamente.</td><td>Poco práctico para algoritmos muy complejos.</td></tr>
       </tbody>
     </table>
-    <h3>Ejemplo — Calcular el promedio de dos números</h3>
+    <h3>Ejemplo completo — Calcular el promedio de dos números</h3>
     <div class="pseudocodigo">
       <div class="pseudo-label">Pseudocódigo — PSeInt</div>
       <div class="pseudo-code">
@@ -358,44 +381,56 @@ pre{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.8;color:
     </div>
   </section>
 
-  <hr class="divisor">
+  <hr>
 
+  <!-- 1.4 -->
   <section class="seccion" id="s14">
-    <div class="seccion-num">1.4</div>
+    <span class="seccion-num">1.4</span>
     <h2>Introducción al Entorno de Programación</h2>
     <div class="props-grid">
-      <div class="prop-card"><div class="prop-icon">📝</div><h4>PSeInt</h4><p>Diseña y prueba algoritmos en pseudocódigo. Permite ejecutar el algoritmo sin código C++. Herramienta de modelado del curso.</p></div>
-      <div class="prop-card"><div class="prop-icon">⚙️</div><h4>Compilador C++</h4><p>Traduce código fuente C++ a código ejecutable. Se usará g++, Code::Blocks o Dev-C++.</p></div>
+      <div class="prop-card"><span class="prop-icon">📝</span><h4>PSeInt</h4><p>Diseña y prueba algoritmos en pseudocódigo. Permite ejecutar el algoritmo sin código C++. Es la herramienta de modelado del curso: siempre va primero.</p></div>
+      <div class="prop-card"><span class="prop-icon">⚙️</span><h4>Compilador C++</h4><p>Traduce código fuente C++ a código ejecutable. En este curso se utilizará g++, Code::Blocks o Dev-C++ según disponibilidad del laboratorio.</p></div>
     </div>
-    <div class="caja-nota"><div class="cn-label">📌 Flujo de trabajo del curso</div><p><strong>PSeInt</strong> (diseño) → pseudocódigo correcto → <strong>C++</strong> (implementación) → compilar → ejecutar → verificar. El modelo en papel siempre va antes del código.</p></div>
+    <div class="caja-nota">
+      <div class="cn-label">📌 Flujo de trabajo del curso</div>
+      <p><strong>Papel</strong> (diseño) → <strong>PSeInt</strong> (verificación) → <strong>C++</strong> (implementación) → compilar → ejecutar → verificar con tabla de simulación. El modelo siempre va antes que el código.</p>
+    </div>
   </section>
 
-  <hr class="divisor">
+  <hr>
 
+  <!-- 1.5 -->
   <section class="seccion" id="s15">
-    <div class="seccion-num">1.5</div>
+    <span class="seccion-num">1.5</span>
     <h2>Anatomía de un Programa en C++</h2>
     <p>Todo programa en C++ comparte una estructura mínima. Comprender cada componente es esencial para no memorizar de forma ciega.</p>
     <div class="codigo-anotado">
       <div class="linea-codigo"><span class="ln-num">1</span><span class="ln-code"><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span></span><span class="ln-nota">Incluye la librería de entrada/salida. Sin esto, cout y cin no existen.</span></div>
       <div class="linea-codigo"><span class="ln-num">2</span><span class="ln-code"><span class="c-kw">using namespace</span> <span class="c-ns">std</span>;</span><span class="ln-nota">Permite usar cout y cin sin escribir std:: antes de cada uno.</span></div>
-      <div class="linea-codigo"><span class="ln-num">3</span><span class="ln-code"></span><span class="ln-nota" style="border-left-color:transparent;background:#0a1525"></span></div>
+      <div class="linea-codigo"><span class="ln-num">3</span><span class="ln-code"></span><span class="ln-nota" style="border-left-color:transparent;background:rgba(0,0,0,.3)"></span></div>
       <div class="linea-codigo"><span class="ln-num">4</span><span class="ln-code"><span class="c-tipo">int</span> <span class="c-fn">main</span>() {</span><span class="ln-nota">Función principal. La ejecución siempre comienza aquí.</span></div>
-      <div class="linea-codigo"><span class="ln-num">5</span><span class="ln-code" style="padding-left:32px"><span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Hola, mundo!"</span>;</span><span class="ln-nota">cout envía texto a pantalla. &lt;&lt; es el operador de inserción.</span></div>
-      <div class="linea-codigo"><span class="ln-num">6</span><span class="ln-code" style="padding-left:32px"><span class="c-kw">return</span> <span class="c-num">0</span>;</span><span class="ln-nota">Indica al SO que el programa terminó correctamente.</span></div>
-      <div class="linea-codigo"><span class="ln-num">7</span><span class="ln-code">}</span><span class="ln-nota" style="border-left-color:transparent;background:#0a1525"></span></div>
+      <div class="linea-codigo"><span class="ln-num">5</span><span class="ln-code">    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Hola, mundo!"</span>;</span><span class="ln-nota">cout envía texto a pantalla. &lt;&lt; es el operador de inserción.</span></div>
+      <div class="linea-codigo"><span class="ln-num">6</span><span class="ln-code">    <span class="c-kw">return</span> <span class="c-num">0</span>;</span><span class="ln-nota">Indica al SO que el programa terminó correctamente.</span></div>
+      <div class="linea-codigo"><span class="ln-num">7</span><span class="ln-code">}</span><span class="ln-nota" style="border-left-color:transparent;background:rgba(0,0,0,.3)"></span></div>
     </div>
-    <div class="caja-adv"><div class="ca-label">⚠️ Error frecuente</div><p>Olvidar el punto y coma <code style="font-family:'JetBrains Mono';font-size:12px">;</code> al final de una instrucción es el error más común. Cada instrucción termina con <code style="font-family:'JetBrains Mono';font-size:12px">;</code>, excepto las que cierran con <code style="font-family:'JetBrains Mono';font-size:12px">{}</code>.</p></div>
+    <div class="caja-adv">
+      <div class="ca-label">⚠️ Error frecuente</div>
+      <p>Olvidar el punto y coma <code style="font-family:'Space Mono';font-size:12px;background:rgba(0,0,0,.08);padding:1px 5px;border-radius:3px;">;</code> al final de una instrucción es el error más común en C++. Cada instrucción termina con <code style="font-family:'Space Mono';font-size:12px;background:rgba(0,0,0,.08);padding:1px 5px;border-radius:3px;">;</code>, excepto las que abren bloque con <code style="font-family:'Space Mono';font-size:12px;background:rgba(0,0,0,.08);padding:1px 5px;border-radius:3px;">{}</code>.</p>
+    </div>
   </section>
 
-  <hr class="divisor">
+  <hr>
 
+  <!-- 1.6 -->
   <section class="seccion" id="s16">
-    <div class="seccion-num">1.6</div>
+    <span class="seccion-num">1.6</span>
     <h2>Flujo Secuencial de Ejecución</h2>
-    <p>Las instrucciones se ejecutan una después de otra, de arriba hacia abajo. No hay saltos, no hay decisiones, no hay repeticiones.</p>
+    <p>Las instrucciones se ejecutan una después de otra, de arriba hacia abajo. No hay saltos, no hay decisiones, no hay repeticiones — eso viene después. Por ahora, la ejecución es estrictamente lineal.</p>
     <div class="codigo-bloque">
-      <div class="codigo-header"><div style="display:flex;align-items:center;gap:10px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++</span></div><span class="codigo-archivo">promedio.cpp</span></div>
+      <div class="codigo-header">
+        <div style="display:flex;align-items:center;gap:10px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++</span></div>
+        <span class="codigo-archivo">promedio.cpp</span>
+      </div>
       <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
 <span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
 
@@ -422,7 +457,7 @@ pre{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.8;color:
     <table class="tabla-sim">
       <thead><tr><th>Paso</th><th>Instrucción</th><th>num1</th><th>num2</th><th>promedio</th><th>Pantalla</th></tr></thead>
       <tbody>
-        <tr><td>1</td><td>Declaración</td><td>?</td><td>?</td><td>?</td><td>—</td></tr>
+        <tr><td>1</td><td>Declaración de variables</td><td>?</td><td>?</td><td>?</td><td>—</td></tr>
         <tr><td>2</td><td>cout primer número</td><td>?</td><td>?</td><td>?</td><td>Ingrese el primer número:</td></tr>
         <tr><td>3</td><td>cin → usuario ingresa 8</td><td class="res">8.0</td><td>?</td><td>?</td><td>—</td></tr>
         <tr><td>4</td><td>cout segundo número</td><td>8.0</td><td>?</td><td>?</td><td>Ingrese el segundo número:</td></tr>
@@ -434,43 +469,75 @@ pre{font-family:'JetBrains Mono',monospace;font-size:13px;line-height:1.8;color:
     </table>
   </section>
 
-  <hr class="divisor">
+  <hr>
 
+  <!-- 1.7 -->
   <section class="seccion" id="s17">
-    <div class="seccion-num">1.7</div>
+    <span class="seccion-num">1.7</span>
     <h2>Ejercicios de Modelado Básico</h2>
     <div class="ejercicios-section">
       <div class="ejercicios-titulo">✏️ Actividades de Aplicación</div>
-      <div class="ejercicio-item"><div class="ej-num">1</div><div class="ej-badge comp">Comprensión</div><div class="ej-enunciado"><strong>Análisis de algoritmo.</strong> Identifica cuál propiedad algorítmica se viola: <em>"Paso 1: Pedir un número. Paso 2: Si es negativo, volver al Paso 1. Paso 3: Si sigue siendo negativo, volver al Paso 1."</em> Justifica tu respuesta.</div></div>
-      <div class="ejercicio-item"><div class="ej-num">2</div><div class="ej-badge comp">Comprensión</div><div class="ej-enunciado"><strong>Identificación de componentes.</strong> En <code style="font-family:'JetBrains Mono';font-size:12px;background:var(--gris);padding:1px 5px;border-radius:3px">promedio.cpp</code> señala: (a) librería incluida, (b) instrucción de entrada, (c) instrucción de proceso, (d) instrucción de salida.</div></div>
-      <div class="ejercicio-item"><div class="ej-num">3</div><div class="ej-badge aplic">Aplicación</div><div class="ej-enunciado"><strong>Suma de dos números.</strong> ① Pseudocódigo en PSeInt ② Diagrama de flujo ③ Tabla de simulación con 15 y 27 ④ Implementación en C++.</div></div>
-      <div class="ejercicio-item"><div class="ej-num">4</div><div class="ej-badge aplic">Aplicación</div><div class="ej-enunciado"><strong>Área de un rectángulo.</strong> Programa que solicite base y altura y calcule el área (<em>Área = base × altura</em>). Incluye pseudocódigo y tabla de simulación con base=5.5, altura=3.2.</div></div>
-      <div class="ejercicio-item"><div class="ej-num">5</div><div class="ej-badge integ">Integrador + IA</div><div class="ej-enunciado"><strong>Intercambio de valores.</strong> Implementa con variable auxiliar. Luego busca en IA una solución sin variable auxiliar y analiza: ¿cuál es más legible? ¿cuál es más eficiente? ¿cuál preferirías y por qué?</div></div>
+      <div class="ejercicio-item">
+        <div class="ej-num">1</div>
+        <div class="ej-badge comp">Comprensión</div>
+        <div class="ej-enunciado"><strong>Análisis de algoritmo.</strong> Identifica cuál propiedad algorítmica se viola en la siguiente secuencia: <em>"Paso 1: Pedir un número. Paso 2: Si es negativo, volver al Paso 1. Paso 3: Si sigue siendo negativo, volver al Paso 1."</em> Justifica tu respuesta por escrito.</div>
+      </div>
+      <div class="ejercicio-item">
+        <div class="ej-num">2</div>
+        <div class="ej-badge comp">Comprensión</div>
+        <div class="ej-enunciado"><strong>Identificación de componentes.</strong> En <code style="font-family:'Space Mono';font-size:12px;background:var(--fondo-alt);padding:1px 5px;border-radius:3px;">promedio.cpp</code> señala: (a) librería incluida, (b) instrucción de entrada, (c) instrucción de proceso, (d) instrucción de salida.</div>
+      </div>
+      <div class="ejercicio-item">
+        <div class="ej-num">3</div>
+        <div class="ej-badge aplic">Aplicación</div>
+        <div class="ej-enunciado"><strong>Suma de dos números.</strong> ① Pseudocódigo en PSeInt ② Diagrama de flujo ③ Tabla de simulación con valores 15 y 27 ④ Implementación en C++.</div>
+      </div>
+      <div class="ejercicio-item">
+        <div class="ej-num">4</div>
+        <div class="ej-badge aplic">Aplicación</div>
+        <div class="ej-enunciado"><strong>Área de un rectángulo.</strong> Programa que solicite base y altura y calcule el área (<em>Área = base × altura</em>). Incluye pseudocódigo y tabla de simulación con base=5.5, altura=3.2.</div>
+      </div>
+      <div class="ejercicio-item">
+        <div class="ej-num">5</div>
+        <div class="ej-badge integ">Integrador + IA</div>
+        <div class="ej-enunciado"><strong>Intercambio de valores.</strong> Implementa el intercambio de dos variables con variable auxiliar. Luego busca en IA una solución sin variable auxiliar y analiza: ¿cuál es más legible? ¿cuál es más eficiente en memoria? ¿cuál preferirías y por qué? Documenta el análisis en tu bitácora.</div>
+      </div>
+    </div>
+
+    <div class="evaluativa">
+      <div class="evaluativa-titulo">Actividad Presencial Evaluativa — Capítulo 1</div>
+      <div class="evaluativa-sub">Sesión 1 · Tiempo: 45 min · Sin acceso a IA</div>
+      <div class="evaluativa-enunciado">
+        Calcula la nota final de un estudiante: 40% exámenes, 35% prácticas, 25% tareas. Diseña el algoritmo que solicite las tres notas, calcule la nota final y la muestre con un mensaje apropiado.<br><br>
+        <strong>Entregables:</strong> pseudocódigo en papel + tabla de simulación + implementación en C++.
+      </div>
+      <ul class="evaluativa-criterios">
+        <li>Pseudocódigo correcto con <code>Algoritmo</code>/<code>FinAlgoritmo</code> y tipos declarados.</li>
+        <li>La fórmula refleja correctamente los porcentajes (40% + 35% + 25% = 100%).</li>
+        <li>Tabla de simulación completamente llenada con valores de prueba.</li>
+        <li>El programa C++ compila sin errores y produce la salida esperada.</li>
+        <li>El estudiante puede explicar cualquier línea al ser consultado por el docente.</li>
+      </ul>
+    </div>
+
+    <div class="puente">
+      <div class="puente-titulo">🌉 Conexión con Estructuras de Datos</div>
+      <div class="puente-sub">Preparación para el siguiente nivel</div>
+      <div class="puente-texto">El concepto de <strong>algoritmo como secuencia de pasos bien definidos</strong> es la base de todo lo que viene. Cuando en Estructuras de Datos diseñes algoritmos para recorrer listas enlazadas o implementar búsquedas en árboles, estarás aplicando exactamente el mismo proceso de modelado que aprendiste aquí — solo que con estructuras más complejas.</div>
     </div>
   </section>
 
-  <div class="evaluativa">
-    <div class="evaluativa-titulo">Actividad Presencial Evaluativa — Capítulo 1</div>
-    <div class="evaluativa-sub">Sesión 1 · Tiempo: 45 min · Sin acceso a IA</div>
-    <div class="evaluativa-enunciado">Calcula la nota final de un estudiante: 40% exámenes, 35% prácticas, 25% tareas. Diseña el algoritmo que solicite las tres notas, calcule la nota final y la muestre con mensaje.<br><br><strong>Entregables:</strong> pseudocódigo en papel + tabla de simulación + implementación C++.</div>
-    <ul class="evaluativa-criterios">
-      <li>Pseudocódigo con Algoritmo/FinAlgoritmo y tipos declarados.</li>
-      <li>La fórmula refleja correctamente los porcentajes.</li>
-      <li>Tabla de simulación completamente llenada.</li>
-      <li>El programa C++ compila y produce la salida esperada.</li>
-      <li>El estudiante puede explicar cualquier línea al ser consultado.</li>
-    </ul>
-  </div>
+</main>
 
-  <div class="puente-ed">
-    <div class="puente-titulo">🌉 Conexión con Estructuras de Datos</div>
-    <div class="puente-sub">Preparación para el siguiente nivel</div>
-    <div class="puente-texto">El concepto de <strong>algoritmo como secuencia de pasos bien definidos</strong> es la base de todo lo que viene. Cuando en Estructuras de Datos diseñes algoritmos para recorrer listas enlazadas o implementar búsquedas en árboles, estarás aplicando exactamente el mismo proceso de modelado que aprendiste aquí.</div>
-  </div>
+<div class="nav-caps">
+  <a href="preliminares.html" class="nav-cap-btn"><span class="ncb-arrow">←</span><div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Preliminares</span></div></a>
+  <a href="practica_01.html" class="nav-cap-btn sig"><span class="ncb-arrow">→</span><div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Sesión Práctica 1</span></div></a>
+</div>
 
-</div>
-<div class="nav-capitulos"><a class="nav-cap-btn anterior" href="unidad_1_intro.html"><span class="ncb-arrow">←</span><div><div class="ncb-label">Anterior</div><div class="ncb-titulo">Introducción Unidad I</div></div></a><a class="nav-cap-btn siguiente" href="capitulo_02.html"><span class="ncb-arrow">→</span><div><div class="ncb-label">Siguiente</div><div class="ncb-titulo">Cap. 2 — Tipos de Datos</div></div></a></div><div class="pie-pagina"><span>Cap. 1 — Pensamiento Algorítmico · Unidad I</span><span>ESPAM MFL · Computación · 2025</span></div>
-</div>
-</div>
+<footer class="pie">
+  <span>Cap. 1 — Pensamiento Algorítmico · Unidad I · ESPAM MFL</span>
+  <span>espam.edu.ec</span>
+</footer>
+
 </body>
 </html>
