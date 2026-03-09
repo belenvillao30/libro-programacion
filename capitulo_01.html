@@ -188,27 +188,28 @@ strong{color:var(--texto);}
   .linea-codigo{grid-template-columns:28px 1fr;}
   .ln-nota{display:none;}
   .codigo-body pre{font-size:11px;}
-  /* ── VIDEO EDUCATIVO ───────────────────────────── */
-.video-box{
+  .video-box{
   background:white;
   border:1px solid var(--borde);
   border-radius:10px;
-  padding:18px;
-  margin:26px 0;
+  padding:20px;
+  margin:30px auto;      /* centra el bloque */
+  max-width:900px;       /* aumenta el tamaño máximo */
 }
 
 .video-titulo{
   font-family:'Work Sans', sans-serif;
-  font-size:15px;
+  font-size:16px;
   font-weight:700;
   color:var(--verde);
-  margin-bottom:10px;
+  margin-bottom:12px;
+  text-align:center;     /* centra el título */
 }
 
 .video-frame{
   position:relative;
   width:100%;
-  padding-bottom:56.25%;
+  padding-bottom:56.25%; /* proporción 16:9 */
   border-radius:8px;
   overflow:hidden;
 }
