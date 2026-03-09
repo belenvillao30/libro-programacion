@@ -1,0 +1,615 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cap. 10 — Recursión | ESPAM MFL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{--verde:#005846;--verde-medio:#007a5e;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fondo);font-size:16px;line-height:1.7;overflow-x:hidden;}
+/* TOPBAR */
+.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--verde);display:flex;align-items:center;padding:0 24px;gap:14px;z-index:1000;border-bottom:3px solid var(--verde-claro);}
+.topbar-logo{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--verde-claro);}
+.topbar-sep{width:1px;height:20px;background:rgba(255,255,255,.2);}
+.topbar-titulo{font-size:12px;color:rgba(255,255,255,.65);}
+.topbar-right{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;}
+/* NAV */
+.nav-menu{background:var(--verde);border-bottom:2px solid rgba(203,219,42,.3);margin-top:50px;}
+.nav-toggle{width:100%;background:transparent;color:white;border:none;padding:11px 24px;text-align:left;cursor:pointer;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;}
+.nav-toggle:hover{background:rgba(255,255,255,.04);}
+.nav-toggle-arrow{color:var(--verde-claro);font-size:12px;}
+.nav-body{display:none;padding:18px 24px 22px;}
+.nav-body.abierto{display:flex;flex-wrap:wrap;gap:28px;}
+.nav-grupo{min-width:170px;}
+.nav-grupo-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:7px;display:block;padding-bottom:5px;border-bottom:1px solid rgba(203,219,42,.2);}
+.nav-items{list-style:none;}
+.nav-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12px;color:rgba(255,255,255,.72);text-decoration:none;transition:color .15s;}
+.nav-item:hover{color:var(--verde-claro);}
+.nav-item.activo{color:var(--verde-claro);font-weight:700;}
+.nav-item.activo .nav-num{color:var(--verde-claro);}
+.nav-item.practica{color:rgba(8,184,157,.85);font-style:italic;}
+.nav-item.practica:hover{color:var(--turquesa);}
+.nav-item.practica .nav-num{color:rgba(8,184,157,.45);}
+.nav-item.prox{color:rgba(255,255,255,.28);pointer-events:none;}
+.nav-num{font-family:'Space Mono',monospace;font-size:9px;min-width:20px;flex-shrink:0;color:rgba(255,255,255,.28);}
+/* PAGE HEADER */
+.page-header{background:var(--verde);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--verde-claro);}
+.page-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(203,219,42,.07) 1px,transparent 1px);background-size:28px 28px;}
+.ph-num{position:absolute;right:48px;top:0;font-size:240px;font-weight:900;color:rgba(255,255,255,.04);line-height:1;font-family:'Space Mono',monospace;}
+.ph-inner{position:relative;z-index:1;}
+.ph-badge{display:inline-block;background:rgba(203,219,42,.15);border:1px solid rgba(203,219,42,.35);color:var(--verde-claro);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+.ph-titulo{font-size:36px;font-weight:900;line-height:1.1;color:white;margin-bottom:8px;}
+.ph-subtitulo{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:28px;}
+.ph-meta{display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;}
+.ph-meta-item{display:flex;flex-direction:column;gap:3px;}
+.ph-meta-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.ph-meta-valor{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;}
+/* ANCLAS */
+.anclas{background:white;border-bottom:1px solid var(--borde);padding:12px 64px;display:flex;gap:6px;flex-wrap:wrap;}
+.ancla{font-family:'Space Mono',monospace;font-size:9.5px;color:var(--verde-medio);text-decoration:none;padding:4px 10px;border:1px solid var(--borde);border-radius:4px;transition:all .15s;}
+.ancla:hover{background:var(--verde);color:var(--verde-claro);border-color:var(--verde);}
+/* BODY */
+.body-wrap{max-width:960px;margin:0 auto;padding:56px 64px 0;}
+.seccion{margin-bottom:52px;scroll-margin-top:120px;}
+.seccion-num{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:4px;display:block;}
+h2{font-size:24px;font-weight:800;color:var(--verde);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid rgba(0,88,70,.12);}
+h3{font-size:16px;font-weight:700;color:var(--verde);margin:28px 0 10px;}
+p{margin-bottom:14px;color:var(--texto-suave);font-size:15px;}
+hr{border:none;border-top:1px solid var(--borde);margin:48px 0;}
+code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70,.07);padding:1px 6px;border-radius:3px;color:var(--verde);}
+/* RA BOX */
+.ra-box{background:rgba(0,88,70,.06);border:1px solid rgba(0,88,70,.15);border-left:4px solid var(--verde);border-radius:0 10px 10px 0;padding:18px 22px;margin-bottom:40px;}
+.ra-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:8px;}
+.ra-texto{font-size:14px;color:var(--texto);line-height:1.65;}
+/* DEF FORMAL */
+.def-formal{background:var(--codigo-bg);border-radius:10px;padding:22px 26px;margin:20px 0;border-left:4px solid var(--verde-claro);}
+.def-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:10px;}
+.def-formal p{color:rgba(255,255,255,.82);font-size:14.5px;line-height:1.75;margin:0;}
+.def-formal em{color:var(--verde-claro);font-style:normal;font-weight:700;}
+/* DIAGRAMA FLUJO */
+.diagrama{background:white;border:1px solid var(--borde);border-radius:12px;padding:24px;margin:20px 0;display:flex;flex-direction:column;align-items:center;gap:0;}
+.df-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:20px;align-self:flex-start;}
+.df-terminal{background:var(--verde);color:white;padding:8px 28px;border-radius:20px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;}
+.df-proceso{background:var(--fondo-alt);border:2px solid var(--borde);padding:10px 24px;font-family:'Space Mono',monospace;font-size:12px;color:var(--texto);min-width:180px;text-align:center;}
+.df-decision{background:rgba(203,219,42,.12);border:2px solid var(--verde-claro);padding:10px 20px;transform:skewX(-8deg);font-family:'Space Mono',monospace;font-size:12px;color:var(--verde);font-weight:700;min-width:200px;text-align:center;}
+.df-decision span{display:inline-block;transform:skewX(8deg);}
+.df-flecha{width:2px;height:24px;background:var(--borde);position:relative;}
+.df-flecha::after{content:'▼';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--verde-medio);}
+.df-rama{display:flex;gap:32px;align-items:flex-start;margin:8px 0;}
+.df-rama-item{display:flex;flex-direction:column;align-items:center;gap:0;}
+.df-rama-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--verde-medio);margin-bottom:6px;}
+.df-accion{background:rgba(8,184,157,.08);border:1.5px solid var(--turquesa);padding:9px 18px;border-radius:6px;font-family:'Space Mono',monospace;font-size:11.5px;color:var(--verde);min-width:130px;text-align:center;}
+/* TABLA VERDAD */
+.tabla-verdad{border-collapse:collapse;margin:18px auto;font-size:13px;font-family:'Space Mono',monospace;}
+.tabla-verdad thead tr{background:var(--verde);}
+.tabla-verdad thead th{padding:9px 18px;color:white;font-size:11px;text-align:center;}
+.tabla-verdad tbody tr:nth-child(even){background:rgba(0,88,70,.04);}
+.tabla-verdad tbody td{padding:8px 18px;border:1px solid var(--borde);text-align:center;color:var(--texto-suave);}
+.tv-v{color:var(--turquesa);font-weight:700;}
+.tv-f{color:#c0392b;font-weight:700;}
+/* CÓDIGO */
+.codigo-bloque{background:var(--codigo-bg);border-radius:10px;overflow:hidden;margin:18px 0;}
+.codigo-header{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);}
+.codigo-dots{display:flex;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
+.codigo-lang{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.3);}
+.codigo-archivo{font-family:'Space Mono',monospace;font-size:10px;color:var(--turquesa);}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+.c-inc{color:#c792ea;}.c-str{color:#a8d8b0;}.c-kw{color:var(--verde-claro);}.c-ns{color:var(--turquesa);}.c-tipo{color:#82aaff;}.c-fn{color:var(--turquesa);}.c-num{color:#f78c6c;}.c-com{color:rgba(255,255,255,.3);font-style:italic;}.c-const{color:#ffcb6b;}
+/* COMPARAR */
+.comparar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0;}
+.comp-bloque{border-radius:10px;overflow:hidden;}
+.comp-label{padding:8px 16px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.comp-bloque.if-bloque .comp-label{background:rgba(0,88,70,.12);color:var(--verde);}
+.comp-bloque.sw-bloque .comp-label{background:rgba(8,184,157,.1);color:var(--turquesa);}
+.comp-bloque pre{font-family:'Space Mono',monospace;font-size:12px;line-height:1.75;padding:16px 18px;overflow-x:auto;}
+.comp-bloque.if-bloque pre{background:rgba(0,88,70,.03);color:#0a3a28;border:1px solid rgba(0,88,70,.12);}
+.comp-bloque.sw-bloque pre{background:rgba(8,184,157,.03);color:#0a3a38;border:1px solid rgba(8,184,157,.15);}
+/* TABLA OP */
+.tabla-est{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;}
+.tabla-est thead tr{background:var(--verde);}
+.tabla-est thead th{padding:10px 15px;text-align:left;font-size:12px;font-weight:700;color:white;}
+.tabla-est tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-est tbody tr:hover{background:rgba(0,88,70,.06);}
+.tabla-est tbody td{padding:9px 15px;border-bottom:1px solid var(--borde);color:var(--texto-suave);vertical-align:top;}
+.tabla-est tbody td:first-child{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--verde);text-align:center;width:80px;}
+/* PSEUDOCÓDIGO */
+.pseudocodigo{background:var(--codigo-bg);border-radius:10px;margin:18px 0;overflow:hidden;}
+.pseudo-label{background:rgba(255,255,255,.05);padding:8px 18px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);border-bottom:1px solid rgba(255,255,255,.08);}
+.pseudo-code{padding:20px 24px;font-family:'Space Mono',monospace;font-size:13px;line-height:1.9;color:rgba(255,255,255,.85);}
+.p-kw{color:var(--verde-claro);font-weight:700;}
+.p-str{color:#a8d8b0;}
+.p-ind1{display:block;padding-left:24px;}
+.p-ind2{display:block;padding-left:48px;}
+.p-blank{display:block;height:8px;}
+/* TABLA SIM */
+.tabla-sim{width:100%;border-collapse:collapse;margin:18px 0;font-family:'Space Mono',monospace;font-size:12px;}
+.tabla-sim thead tr{background:var(--verde);}
+.tabla-sim thead th{padding:9px 12px;color:white;font-size:10px;text-align:center;letter-spacing:.5px;}
+.tabla-sim tbody tr{border-bottom:1px solid var(--borde);}
+.tabla-sim tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-sim tbody td{padding:8px 12px;text-align:center;color:var(--texto-suave);}
+.tabla-sim td.res{background:rgba(203,219,42,.15);color:var(--verde);font-weight:700;}
+/* CAJAS */
+.caja-nota{background:rgba(0,88,70,.05);border-left:4px solid var(--verde);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-nota .cn-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:6px;display:block;}
+.caja-nota p{margin:0;font-size:14px;color:var(--texto);}
+.caja-adv{background:rgba(203,219,42,.08);border-left:4px solid var(--verde-claro);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-adv .ca-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7a8a10;margin-bottom:6px;display:block;}
+.caja-adv p{margin:0;font-size:14px;color:#4a540a;}
+.caja-ia{background:#0d1e18;border-radius:10px;padding:20px 24px;margin:20px 0;border-left:4px solid var(--turquesa);}
+.caja-ia .ci-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:9px;display:block;}
+.caja-ia p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin:0;}
+.caja-ia p strong{color:var(--verde-claro);}
+/* EJERCICIOS */
+.ejercicios-section{background:white;border:1px solid var(--borde);border-radius:12px;overflow:hidden;margin:20px 0;}
+.ejercicios-titulo{background:var(--verde);color:white;padding:12px 20px;font-size:13px;font-weight:700;}
+.ejercicio-item{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid var(--borde);}
+.ejercicio-item:last-child{border-bottom:none;}
+.ej-num{min-width:28px;height:28px;background:var(--fondo-alt);border:1px solid var(--borde);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);flex-shrink:0;}
+.ej-badge{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:3px;flex-shrink:0;margin-top:4px;}
+.ej-badge.comp{background:rgba(0,88,70,.08);color:var(--verde);}
+.ej-badge.aplic{background:rgba(8,184,157,.1);color:var(--turquesa);}
+.ej-badge.integ{background:rgba(203,219,42,.12);color:#7a8a10;}
+.ej-enunciado{font-size:13.5px;color:var(--texto-suave);line-height:1.6;}
+/* EVALUATIVA + PUENTE */
+.evaluativa{background:rgba(0,88,70,.04);border:2px solid rgba(0,88,70,.15);border-radius:12px;padding:24px 28px;margin-top:36px;}
+.evaluativa-titulo{font-size:15px;font-weight:800;color:var(--verde);margin-bottom:3px;}
+.evaluativa-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;}
+.evaluativa-enunciado{font-size:14px;color:var(--texto-suave);line-height:1.7;margin-bottom:14px;}
+.evaluativa-criterios{margin:0;padding-left:18px;}
+.evaluativa-criterios li{font-size:13px;color:var(--texto-suave);margin-bottom:5px;}
+.puente{background:var(--codigo-bg);border-radius:12px;padding:24px 28px;margin-top:28px;border-left:4px solid var(--turquesa);}
+.puente-titulo{font-size:15px;font-weight:800;color:white;margin-bottom:3px;}
+.puente-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+.puente-texto{font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;}
+.puente-texto strong{color:var(--verde-claro);}
+/* NAV CAPS + PIE */
+.nav-caps{display:flex;justify-content:space-between;align-items:center;padding:20px 64px;background:var(--fondo-alt);border-top:1px solid var(--borde);margin-top:48px;flex-wrap:wrap;gap:12px;}
+.nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 18px;border:1.5px solid rgba(0,88,70,.2);border-radius:8px;background:white;max-width:280px;transition:all .2s;}
+.nav-cap-btn:hover{border-color:var(--verde);}
+.nav-cap-btn.sig{flex-direction:row-reverse;text-align:right;}
+.ncb-arrow{font-size:16px;color:var(--verde);}
+.ncb-label{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,88,70,.45);margin-bottom:2px;display:block;}
+.ncb-titulo{font-size:13px;font-weight:700;color:var(--verde);}
+.pie{background:var(--verde);color:rgba(255,255,255,.35);padding:14px 64px;font-family:'Space Mono',monospace;font-size:9px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:1px;}
+.pie span:first-child{color:rgba(255,255,255,.55);}
+@media(max-width:768px){
+  .page-header,.body-wrap,.nav-caps,.pie,.anclas{padding-left:24px;padding-right:24px;}
+  .ph-titulo{font-size:26px;}
+  .comparar{grid-template-columns:1fr;}
+  .df-rama{flex-direction:column;align-items:center;}
+}
+
+/* ── Componentes adicionales Cap 09-11 ── */
+.def-formal{background:var(--codigo-bg);border-radius:10px;padding:22px 26px;margin:20px 0;border-left:4px solid var(--verde-claro);}
+.def-formal p{color:rgba(255,255,255,.82);font-size:14.5px;line-height:1.75;margin:0;}
+.def-formal em{color:var(--verde-claro);font-style:normal;font-weight:700;}
+.def-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:8px;display:block;}
+.comparar{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;}
+.comp-bloque{background:var(--codigo-bg);border-radius:8px;overflow:hidden;}
+.comp-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;display:block;}
+.comp-label.bien{background:rgba(8,184,157,.15);color:var(--turquesa);}
+.comp-label.malo{background:rgba(203,219,42,.1);color:#9aaa15;}
+.comp-bloque pre{padding:14px 16px;font-family:'Space Mono',monospace;font-size:11.5px;line-height:1.8;color:rgba(255,255,255,.82);margin:0;overflow-x:auto;}
+@media(max-width:640px){.comparar{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-logo">ESPAM MFL</div><div class="topbar-sep"></div>
+  <div class="topbar-titulo">Introducción a la Programación</div>
+  <div class="topbar-right">CARRERA DE COMPUTACIÓN</div>
+</header>
+<nav class="nav-menu">
+  <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">
+    ☰ &nbsp; Contenidos del libro <span class="nav-toggle-arrow">▼</span>
+  </button>
+      <div class="nav-body">
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Inicio</span>
+        <ul class="nav-items">
+          <li><a href="index.html" class="nav-item"><span class="nav-num">◉</span> Portada</a></li>
+          <li><a href="preliminares.html" class="nav-item"><span class="nav-num">—</span> Preliminares</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad I — Fundamentos</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_01.html" class="nav-item"><span class="nav-num">01</span> Pensamiento Algorítmico</a></li>
+          <li><a href="practica_01.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 1</a></li>
+          <li><a href="capitulo_02.html" class="nav-item"><span class="nav-num">02</span> Tipos de Datos y Variables</a></li>
+          <li><a href="practica_02.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 2</a></li>
+          <li><a href="capitulo_03.html" class="nav-item"><span class="nav-num">03</span> Depuración y Buenas Prácticas</a></li>
+          <li><a href="practica_03.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 3</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad II — Control</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_04.html" class="nav-item"><span class="nav-num">04</span> Estructuras Selectivas</a></li>
+          <li><a href="practica_04.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 4</a></li>
+          <li><a href="capitulo_05.html" class="nav-item"><span class="nav-num">05</span> Estructuras Repetitivas I</a></li>
+          <li><a href="practica_05.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 5</a></li>
+          <li><a href="capitulo_06.html" class="nav-item"><span class="nav-num">06</span> Estructuras Repetitivas II</a></li>
+          <li><a href="practica_06.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 6</a></li>
+          <li><a href="capitulo_07.html" class="nav-item"><span class="nav-num">07</span> Integración de Estructuras</a></li>
+          <li><a href="practica_07.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 7</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad III — Funciones</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_08.html" class="nav-item"><span class="nav-num">08</span> Funciones en C++</a></li>
+          <li><a href="practica_08.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 8</a></li>
+          <li><a href="capitulo_09.html" class="nav-item"><span class="nav-num">09</span> Paso por Valor y Referencia</a></li>
+          <li><a href="practica_09.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 9</a></li>
+          <li><a href="capitulo_10.html" class="nav-item activo"><span class="nav-num">10</span> Pila y Modularidad</a></li>
+          <li><a href="practica_10.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 10</a></li>
+          <li><a href="capitulo_11.html" class="nav-item"><span class="nav-num">11</span> Aplicaciones Funcionales</a></li>
+          <li><a href="practica_11.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 11</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad IV — Arreglos</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_12.html" class="nav-item prox"><span class="nav-num">12</span> Arreglos Unidimensionales</a></li>
+          <li><a href="practica_12.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 12</a></li>
+          <li><a href="capitulo_13.html" class="nav-item prox"><span class="nav-num">13</span> Búsqueda y Ordenamiento</a></li>
+          <li><a href="practica_13.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 13</a></li>
+          <li><a href="capitulo_14.html" class="nav-item prox"><span class="nav-num">14</span> Arreglos Bidimensionales</a></li>
+          <li><a href="practica_14.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 14</a></li>
+          <li><a href="capitulo_15.html" class="nav-item prox"><span class="nav-num">15</span> Proyecto Integrador Final</a></li>
+          <li><a href="practica_15.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 15</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Recursos</span>
+        <ul class="nav-items">
+          <li><a href="anexos.html" class="nav-item prox"><span class="nav-num">—</span> Anexos y Rúbricas</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+  </nav>
+<section class="page-header">
+  <div class="ph-num">10</div>
+  <div class="ph-inner">
+    <div class="ph-badge">📗 Unidad III · Capítulo 10</div>
+    <h1 class="ph-titulo">Recursión</h1>
+    <p class="ph-subtitulo">Pila de ejecución · caso base · caso recursivo · factorial · Fibonacci · ventajas e inconvenientes</p>
+    <div class="ph-meta">
+      <div class="ph-meta-item"><span class="ph-meta-label">Horas presenciales</span><span class="ph-meta-valor">3 ACD + 2 PECD</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Horas autónomas</span><span class="ph-meta-valor">3 AA + 1 PEND</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Resultado</span><span class="ph-meta-valor">R.A. — C</span></div>
+    </div>
+  </div>
+</section>
+<nav class="anclas">
+  <a class="ancla" href="#s101">10.1 La pila</a>
+  <a class="ancla" href="#s102">10.2 ¿Qué es recursión?</a>
+  <a class="ancla" href="#s103">10.3 Factorial</a>
+  <a class="ancla" href="#s104">10.4 Fibonacci</a>
+  <a class="ancla" href="#s105">10.5 Suma de dígitos</a>
+  <a class="ancla" href="#s106">10.6 Recursión vs. Iteración</a>
+  <a class="ancla" href="#s107">10.7 Ejercicios</a>
+</nav>
+<main class="body-wrap">
+
+<div class="ra-box">
+  <div class="ra-label">Resultado de Aprendizaje — Capítulo 10</div>
+  <div class="ra-texto">El estudiante <strong>comprende el mecanismo de la pila de ejecución</strong> e <strong>implementa funciones recursivas correctas en C++</strong>, identificando caso base y caso recursivo, comparando la solución recursiva con su equivalente iterativa, y reconociendo cuándo la recursión es apropiada y cuándo no.</div>
+</div>
+
+<!-- 10.1 ────────────────────────────────────────────────── -->
+<section class="seccion" id="s101">
+  <span class="seccion-num">10.1</span>
+  <h2>La Pila de Ejecución — Cómo el Computador Gestiona las Llamadas</h2>
+  <p>Cada vez que una función es llamada, el computador reserva un bloque de memoria denominado <strong>marco de pila</strong> (<em>stack frame</em>) que almacena las variables locales, los parámetros y la dirección de retorno. Cuando la función termina, el marco se destruye y la ejecución regresa exactamente al punto en que fue llamada.</p>
+
+  <div class="def-formal">
+    <span class="def-label">Pila de ejecución (call stack)</span>
+    <p>Estructura LIFO (<em>Last In, First Out</em>) donde cada llamada a función apila un nuevo marco. La función activa siempre está en el <em>tope</em> de la pila. Al retornar, su marco se extrae y el control vuelve al marco anterior.</p>
+  </div>
+
+  <h3>Visualización de la pila con tres llamadas encadenadas</h3>
+  <table class="tabla-sim">
+    <thead><tr><th>Momento</th><th>Pila (tope→)</th><th>Variable activa</th></tr></thead>
+    <tbody>
+      <tr><td>main llama a A(3)</td><td>main ← A(3)</td><td>n=3 en A</td></tr>
+      <tr><td>A llama a B(2)</td><td>main ← A(3) ← B(2)</td><td>n=2 en B</td></tr>
+      <tr><td>B llama a C(1)</td><td>main ← A(3) ← B(2) ← C(1)</td><td>n=1 en C</td></tr>
+      <tr><td>C retorna 1</td><td>main ← A(3) ← B(2)</td><td>resultado=1 en B</td></tr>
+      <tr><td>B retorna 2</td><td>main ← A(3)</td><td>resultado=2 en A</td></tr>
+      <tr><td>A retorna 6</td><td class="res">main</td><td>resultado=6 en main</td></tr>
+    </tbody>
+  </table>
+
+  <div class="caja-nota">
+    <div class="cn-label">📌 La pila tiene límite</div>
+    <p>Si una función se llama a sí misma sin un caso base que la detenga, la pila crece indefinidamente hasta llenarse. El programa termina con un error llamado <strong>desbordamiento de pila</strong> (<em>stack overflow</em>). Por eso toda función recursiva necesita al menos un caso base.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- 10.2 ────────────────────────────────────────────────── -->
+<section class="seccion" id="s102">
+  <span class="seccion-num">10.2</span>
+  <h2>¿Qué es la Recursión?</h2>
+  <p>Una función es <strong>recursiva</strong> cuando su definición incluye una llamada a sí misma con parámetros que se acercan progresivamente a la condición de parada. La recursión no es magia: es la pila de ejecución trabajando de forma anidada.</p>
+
+  <div class="def-formal">
+    <span class="def-label">Dos componentes obligatorios de toda función recursiva</span>
+    <p><em>Caso base:</em> condición en la que la función <em>no</em> se llama a sí misma y retorna un valor conocido. Sin él la recursión es infinita. — <em>Caso recursivo:</em> la función se llama con un argumento más cercano al caso base, dividiendo el problema en una versión más pequeña del mismo problema.</p>
+  </div>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · estructura general de función recursiva</span>
+      </div>
+      <span class="codigo-archivo">estructura_recursiva.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-tipo">tipo_retorno</span> <span class="c-fn">funcionRecursiva</span>(<span class="c-tipo">parametros</span>) {
+    <span class="c-com">// ① CASO BASE — detiene la recursión</span>
+    <span class="c-kw">if</span> (condicion_base) {
+        <span class="c-kw">return</span> valor_conocido;
+    }
+
+    <span class="c-com">// ② CASO RECURSIVO — llama con parámetro más cercano al caso base</span>
+    <span class="c-kw">return</span> <span class="c-fn">funcionRecursiva</span>(parametros_reducidos);
+}</pre></div>
+  </div>
+
+  <div class="caja-adv">
+    <div class="ca-label">⚠️ Errores comunes en recursión</div>
+    <p><strong>Sin caso base:</strong> la función se llama infinitamente → stack overflow. <strong>Caso base inalcanzable:</strong> los parámetros nunca llegan a la condición base. <strong>Parámetro que no avanza:</strong> se llama siempre con el mismo valor → recursión infinita. Antes de codificar, verifica que el caso recursivo <em>siempre acerca</em> el parámetro al caso base.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- 10.3 ────────────────────────────────────────────────── -->
+<section class="seccion" id="s103">
+  <span class="seccion-num">10.3</span>
+  <h2>Ejemplo Clásico: Factorial</h2>
+  <p>El factorial de un número entero no negativo n se define matemáticamente como: n! = n × (n−1) × (n−2) × … × 1, con el caso base 0! = 1. Esta definición es naturalmente recursiva: <em>n! = n × (n−1)!</em></p>
+
+  <div class="comparar">
+    <div class="comp-bloque">
+      <span class="comp-label bien">Versión recursiva</span>
+      <pre><span class="c-tipo">long long</span> <span class="c-fn">factorialR</span>(<span class="c-tipo">int</span> n) {
+  <span class="c-kw">if</span> (n == <span class="c-num">0</span>) <span class="c-kw">return</span> <span class="c-num">1</span>;  <span class="c-com">// caso base</span>
+  <span class="c-kw">return</span> n * <span class="c-fn">factorialR</span>(n - <span class="c-num">1</span>);
+}</pre>
+    </div>
+    <div class="comp-bloque">
+      <span class="comp-label malo">Versión iterativa equivalente</span>
+      <pre><span class="c-tipo">long long</span> <span class="c-fn">factorialI</span>(<span class="c-tipo">int</span> n) {
+  <span class="c-tipo">long long</span> res = <span class="c-num">1</span>;
+  <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">2</span>; i &lt;= n; i++)
+    res *= i;
+  <span class="c-kw">return</span> res;
+}</pre>
+    </div>
+  </div>
+
+  <h3>Traza de pila — factorial(4)</h3>
+  <table class="tabla-sim">
+    <thead><tr><th>Llamada</th><th>Estado de la pila</th><th>Retorna</th></tr></thead>
+    <tbody>
+      <tr><td><code>factorial(4)</code></td><td>4 × factorial(3)</td><td>espera...</td></tr>
+      <tr><td><code>factorial(3)</code></td><td>3 × factorial(2)</td><td>espera...</td></tr>
+      <tr><td><code>factorial(2)</code></td><td>2 × factorial(1)</td><td>espera...</td></tr>
+      <tr><td><code>factorial(1)</code></td><td>1 × factorial(0)</td><td>espera...</td></tr>
+      <tr><td><code>factorial(0)</code> ← caso base</td><td>—</td><td class="res">1</td></tr>
+      <tr><td>Desapilando...</td><td>1 × 1 = 1 · 2×1=2 · 3×2=6</td><td class="res">4 × 6 = <strong>24</strong></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr>
+
+<!-- 10.4 ────────────────────────────────────────────────── -->
+<section class="seccion" id="s104">
+  <span class="seccion-num">10.4</span>
+  <h2>Fibonacci — Recursión con Dos Llamadas</h2>
+  <p>La secuencia de Fibonacci: 0, 1, 1, 2, 3, 5, 8, 13, 21... se define como F(n) = F(n−1) + F(n−2) con casos base F(0) = 0 y F(1) = 1. Es el ejemplo de recursión <em>múltiple</em>: cada llamada genera dos llamadas hijas, formando un árbol de llamadas.</p>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · Fibonacci recursivo con validación de entrada</span>
+      </div>
+      <span class="codigo-archivo">fibonacci.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-tipo">long long</span> <span class="c-fn">fibonacci</span>(<span class="c-tipo">int</span> n) {
+    <span class="c-kw">if</span> (n == <span class="c-num">0</span>) <span class="c-kw">return</span> <span class="c-num">0</span>;   <span class="c-com">// caso base 1</span>
+    <span class="c-kw">if</span> (n == <span class="c-num">1</span>) <span class="c-kw">return</span> <span class="c-num">1</span>;   <span class="c-com">// caso base 2</span>
+    <span class="c-kw">return</span> <span class="c-fn">fibonacci</span>(n - <span class="c-num">1</span>) + <span class="c-fn">fibonacci</span>(n - <span class="c-num">2</span>);  <span class="c-com">// dos llamadas recursivas</span>
+}
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">int</span> n;
+    <span class="c-kw">do</span> {
+        <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Ingresa n (0-40): "</span>;
+        <span class="c-fn">cin</span>  &gt;&gt; n;
+    } <span class="c-kw">while</span> (n &lt; <span class="c-num">0</span> || n &gt; <span class="c-num">40</span>);  <span class="c-com">// límite: Fibonacci recursivo es lento para n&gt;40</span>
+
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"F("</span> &lt;&lt; n &lt;&lt; <span class="c-str">") = "</span> &lt;&lt; <span class="c-fn">fibonacci</span>(n) &lt;&lt; endl;
+
+    <span class="c-com">// Imprimir toda la secuencia hasta n</span>
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Secuencia: "</span>;
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">0</span>; i &lt;= n; i++)
+        <span class="c-fn">cout</span> &lt;&lt; <span class="c-fn">fibonacci</span>(i) &lt;&lt; (i &lt; n ? <span class="c-str">" "</span> : <span class="c-str">"\n"</span>);
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+  </div>
+
+  <div class="caja-adv">
+    <div class="ca-label">⚠️ Costo exponencial de Fibonacci recursivo</div>
+    <p>Fibonacci recursivo tiene costo O(2ⁿ): <code>fibonacci(5)</code> se calcula 1 vez, pero <code>fibonacci(2)</code> se recalcula <strong>3 veces</strong>. Para n=40 hay ~330 millones de llamadas. Por eso se valida que n≤40. En la práctica, Fibonacci iterativo o con memoización es preferible; aquí se usa para ilustrar el árbol de llamadas.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- 10.5 ────────────────────────────────────────────────── -->
+<section class="seccion" id="s105">
+  <span class="seccion-num">10.5</span>
+  <h2>Suma de Dígitos — Recursión sobre Datos</h2>
+  <p>No toda recursión opera sobre contadores. La suma de dígitos muestra cómo dividir un dato (el número) en partes más pequeñas hasta alcanzar el caso base.</p>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · suma de dígitos recursiva</span>
+      </div>
+      <span class="codigo-archivo">suma_digitos.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-com">// sumaDigitos(1234) = 4 + sumaDigitos(123)
+//                   = 4 + 3 + sumaDigitos(12)
+//                   = 4 + 3 + 2 + sumaDigitos(1)
+//                   = 4 + 3 + 2 + 1 = 10</span>
+
+<span class="c-tipo">int</span> <span class="c-fn">sumaDigitos</span>(<span class="c-tipo">int</span> n) {
+    <span class="c-kw">if</span> (n &lt; <span class="c-num">10</span>) <span class="c-kw">return</span> n;           <span class="c-com">// caso base: un solo dígito</span>
+    <span class="c-kw">return</span> (n % <span class="c-num">10</span>) + <span class="c-fn">sumaDigitos</span>(n / <span class="c-num">10</span>);   <span class="c-com">// último dígito + resto</span>
+}
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">int</span> n;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Número: "</span>; <span class="c-fn">cin</span> &gt;&gt; n;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Suma de dígitos: "</span> &lt;&lt; <span class="c-fn">sumaDigitos</span>(n) &lt;&lt; endl;
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+  </div>
+
+  <h3>Traza — sumaDigitos(253)</h3>
+  <table class="tabla-sim">
+    <thead><tr><th>Llamada</th><th>n % 10</th><th>n / 10</th><th>Retorna</th></tr></thead>
+    <tbody>
+      <tr><td><code>sumaDigitos(253)</code></td><td>3</td><td>25</td><td>3 + sumaDigitos(25)</td></tr>
+      <tr><td><code>sumaDigitos(25)</code></td><td>5</td><td>2</td><td>5 + sumaDigitos(2)</td></tr>
+      <tr><td><code>sumaDigitos(2)</code> ← caso base</td><td>—</td><td>—</td><td class="res">2</td></tr>
+      <tr><td>Desapilando: 5+2=7 · 3+7=10</td><td></td><td></td><td class="res"><strong>10</strong></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr>
+
+<!-- 10.6 ────────────────────────────────────────────────── -->
+<section class="seccion" id="s106">
+  <span class="seccion-num">10.6</span>
+  <h2>Recursión vs. Iteración — ¿Cuándo usar cada una?</h2>
+
+  <table class="tabla-est">
+    <thead><tr><th>Aspecto</th><th>Recursión</th><th>Iteración</th></tr></thead>
+    <tbody>
+      <tr><td>Legibilidad</td><td>Elegante para problemas naturalmente divisibles (factorial, árboles)</td><td>Más directa y fácil de seguir línea a línea</td></tr>
+      <tr><td>Memoria</td><td>Usa la pila — riesgo de stack overflow para n grandes</td><td>Eficiente: solo variables locales del bucle</td></tr>
+      <tr><td>Velocidad</td><td>Puede ser lenta si hay llamadas repetidas (Fibonacci naïve)</td><td>Generalmente más rápida para problemas lineales</td></tr>
+      <tr><td>Depuración</td><td>Más difícil: múltiples marcos activos simultáneamente</td><td>Más sencilla: flujo lineal, fácil de rastrear</td></tr>
+      <tr><td>Cuándo es natural</td><td>Árboles, grafos, divide y vencerás, algoritmos matemáticos</td><td>Sumas, búsquedas lineales, procesamiento de arreglos</td></tr>
+    </tbody>
+  </table>
+
+  <div class="caja-ia">
+    <div class="ci-label">🤖 IA y la recursión</div>
+    <p>La IA tiende a proponer soluciones recursivas para problemas donde la iteración es más eficiente. Antes de aceptar una solución recursiva de la IA, pregúntate: <strong>(1)</strong> ¿El problema se divide naturalmente en subproblemas del mismo tipo? <strong>(2)</strong> ¿El n de entrada puede ser grande (riesgo de stack overflow)? <strong>(3)</strong> ¿Hay llamadas redundantes (riesgo de costo exponencial)? Si alguna respuesta es preocupante, pide la versión iterativa y compara.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- 10.7 ────────────────────────────────────────────────── -->
+<section class="seccion" id="s107">
+  <span class="seccion-num">10.7</span>
+  <h2>Ejercicios de Aplicación</h2>
+
+  <div class="ejercicios-section">
+    <div class="ejercicios-titulo">✏️ Actividades de Aplicación</div>
+
+    <div class="ejercicio-item">
+      <div class="ej-num">1</div>
+      <div class="ej-badge comp">Comprensión</div>
+      <div class="ej-enunciado"><strong>Traza de pila manual.</strong> Dibuja la pila de ejecución paso a paso para: (a) <code>factorial(3)</code> — (b) <code>fibonacci(4)</code> — (c) <code>sumaDigitos(321)</code>. Para cada llamada indica: qué valor recibe n, qué calcula, qué retorna. ¿Cuántos marcos activos simultáneos hay en el momento de mayor profundidad en cada caso?</div>
+    </div>
+
+    <div class="ejercicio-item">
+      <div class="ej-num">2</div>
+      <div class="ej-badge aplic">Aplicación</div>
+      <div class="ej-enunciado"><strong>potencia recursiva.</strong> Implementa <code>double potencia(double base, int exp)</code> donde exp ≥ 0. Caso base: exp==0 → retorna 1. Caso recursivo: base × potencia(base, exp−1). Prueba con (2,10)=1024, (3,0)=1, (2.5,3)=15.625. Después escribe la versión iterativa y compara el número de operaciones.</div>
+    </div>
+
+    <div class="ejercicio-item">
+      <div class="ej-num">3</div>
+      <div class="ej-badge aplic">Aplicación</div>
+      <div class="ej-enunciado"><strong>esPalindromo.</strong> Implementa <code>bool esPalindromo(const string&amp; s, int ini, int fin)</code>. Caso base: ini≥fin → true (cadena de 0 o 1 caracteres es palíndromo). Caso recursivo: si s[ini]==s[fin] → esPalindromo(s, ini+1, fin-1), si no → false. Prueba con "radar", "hello", "anilina", "a". ¿Por qué se usa <code>const string&amp;</code> y no copia?</div>
+    </div>
+
+    <div class="ejercicio-item">
+      <div class="ej-num">4</div>
+      <div class="ej-badge aplic">Aplicación</div>
+      <div class="ej-enunciado"><strong>contarDigitos.</strong> Implementa <code>int contarDigitos(int n)</code> recursivamente. Caso base: n&lt;10 → retorna 1. Caso recursivo: 1 + contarDigitos(n/10). Prueba con 1=1, 10=2, 999=3, 12345=5. Compara con la versión iterativa que usa un contador y división.</div>
+    </div>
+
+    <div class="ejercicio-item">
+      <div class="ej-num">5</div>
+      <div class="ej-badge integ">Integrador + IA</div>
+      <div class="ej-enunciado"><strong>Analizar la IA con Fibonacci.</strong> Pide a la IA que implemente Fibonacci de tres maneras: recursiva naïve, recursiva con memoización (array para guardar resultados), e iterativa. Mide y compara el tiempo de ejecución para n=35, 40, 45. Documenta: ¿cuánto más rápida es la iterativa? ¿Qué nueva técnica introduce la memoización? ¿Vale la pena aprenderla?</div>
+    </div>
+  </div>
+
+  <div class="evaluativa">
+    <div class="evaluativa-titulo">Actividad Presencial Evaluativa — Capítulo 10</div>
+    <div class="evaluativa-sub">Sesión 10 · Tiempo: 45 min · Sin acceso a IA ni a internet</div>
+    <div class="evaluativa-enunciado">Implementa un programa con tres funciones recursivas: <code>int mcd(int a, int b)</code> que calcula el Máximo Común Divisor usando el algoritmo de Euclides (caso base: b==0 → retorna a; caso recursivo: mcd(b, a%b)); <code>int sumaHasta(int n)</code> que calcula 1+2+…+n recursivamente; y <code>bool esPrimo(int n, int divisor)</code> que verifica primalidad recursiva (caso base: divisor*divisor &gt; n → true; recursivo: n%divisor==0 → false, si no → esPrimo(n, divisor+1)). El main lee n, muestra mcd(n,100), sumaHasta(n), esPrimo(n,2) y una tabla de primos hasta n.</div>
+    <ul class="evaluativa-criterios">
+      <li>Caso base y caso recursivo correctamente identificados y comentados en cada función.</li>
+      <li>Las tres funciones producen resultados correctos verificados con al menos 3 valores de n.</li>
+      <li>Tabla de traza manual para <code>mcd(48, 18)</code> mostrando cada llamada.</li>
+      <li>Comparación escrita: ¿cuál de las tres sería más eficiente en versión iterativa y por qué?</li>
+      <li>Validación de entrada: n debe ser entero positivo ≥ 2.</li>
+    </ul>
+  </div>
+
+  <div class="puente">
+    <div class="puente-titulo">🌉 Funciones + Arreglos</div>
+    <div class="puente-sub">Preparación para Cap. 11</div>
+    <div class="puente-texto">Dominas funciones, paso por referencia y recursión. El paso siguiente combina estos conocimientos con los <strong>arreglos</strong>: colecciones de datos del mismo tipo almacenados en posiciones contiguas de memoria. En el Cap. 11 aprenderás a pasar arreglos a funciones, recorrerlos con recursión y construir los algoritmos de búsqueda y ordenamiento que forman la base de todo el procesamiento de datos.</div>
+  </div>
+</section>
+
+</main>
+<div class="nav-caps">
+  <a href="practica_09.html" class="nav-cap-btn">
+    <span class="ncb-arrow">←</span>
+    <div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Práctica 9 — Conversor de Unidades</span></div>
+  </a>
+  <a href="practica_10.html" class="nav-cap-btn sig">
+    <span class="ncb-arrow">→</span>
+    <div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Sesión Práctica 10</span></div>
+  </a>
+</div>
+<footer class="pie"><span>Cap. 10 — Recursión · Unidad III · ESPAM MFL</span><span>espam.edu.ec</span></footer>
+</body></html>

@@ -1,0 +1,591 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Práctica 9 — Paso por Valor y Referencia | ESPAM MFL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{--verde:#005846;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fondo);font-size:16px;line-height:1.7;overflow-x:hidden;}
+.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--verde);display:flex;align-items:center;padding:0 24px;gap:14px;z-index:1000;border-bottom:3px solid var(--verde-claro);}
+.topbar-logo{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--verde-claro);}
+.topbar-sep{width:1px;height:20px;background:rgba(255,255,255,.2);}
+.topbar-titulo{font-size:12px;color:rgba(255,255,255,.65);}
+.topbar-right{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;}
+.nav-menu{background:var(--verde);border-bottom:2px solid rgba(203,219,42,.3);margin-top:50px;}
+.nav-toggle{width:100%;background:transparent;color:white;border:none;padding:11px 24px;text-align:left;cursor:pointer;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;}
+.nav-toggle:hover{background:rgba(255,255,255,.04);}
+.nav-toggle-arrow{color:var(--verde-claro);font-size:12px;}
+.nav-body{display:none;padding:18px 24px 22px;}
+.nav-body.abierto{display:flex;flex-wrap:wrap;gap:28px;}
+.nav-grupo{min-width:170px;}
+.nav-grupo-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:7px;display:block;padding-bottom:5px;border-bottom:1px solid rgba(203,219,42,.2);}
+.nav-items{list-style:none;}
+.nav-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12px;color:rgba(255,255,255,.72);text-decoration:none;transition:color .15s;}
+.nav-item:hover{color:var(--verde-claro);}
+.nav-item.activo{color:var(--turquesa);font-weight:700;}
+.nav-item.practica{color:rgba(8,184,157,.85);font-style:italic;}
+.nav-item.practica:hover{color:var(--turquesa);}
+.nav-item.prox{color:rgba(255,255,255,.28);pointer-events:none;}
+.nav-num{font-family:'Space Mono',monospace;font-size:9px;min-width:20px;flex-shrink:0;color:rgba(255,255,255,.28);}
+.nav-item.activo .nav-num{color:var(--turquesa);}
+.nav-item.practica .nav-num{color:rgba(8,184,157,.45);}
+.page-header{background:linear-gradient(135deg,#005846 0%,#067a65 100%);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--turquesa);}
+.page-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(8,184,157,.1) 1px,transparent 1px);background-size:28px 28px;}
+.ph-num{position:absolute;right:48px;top:0;font-size:200px;font-weight:900;color:rgba(255,255,255,.04);line-height:1;font-family:'Space Mono',monospace;}
+.ph-inner{position:relative;z-index:1;}
+.ph-badge{display:inline-block;background:rgba(8,184,157,.2);border:1px solid rgba(8,184,157,.4);color:var(--turquesa);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+.ph-titulo{font-size:36px;font-weight:900;line-height:1.1;color:white;margin-bottom:8px;}
+.ph-subtitulo{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:28px;}
+.ph-meta{display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;}
+.ph-meta-item{display:flex;flex-direction:column;gap:3px;}
+.ph-meta-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.ph-meta-valor{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;}
+.fases-nav{background:white;border-bottom:1px solid var(--borde);padding:12px 64px;display:flex;gap:6px;overflow-x:auto;}
+.fase-chip{font-family:'Space Mono',monospace;font-size:9px;color:var(--texto-suave);text-decoration:none;padding:5px 12px;border:1px solid var(--borde);border-radius:20px;white-space:nowrap;transition:all .15s;}
+.fase-chip:hover{background:var(--turquesa);color:white;border-color:var(--turquesa);}
+.body-wrap{max-width:960px;margin:0 auto;padding:56px 64px 0;}
+.fase{margin-bottom:48px;scroll-margin-top:120px;}
+.fase-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--borde);}
+.fase-num{min-width:44px;height:44px;background:var(--turquesa);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;flex-shrink:0;}
+.fase-titulo{font-size:20px;font-weight:800;color:var(--verde);line-height:1.2;}
+.fase-tiempo{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+h3{font-size:16px;font-weight:700;color:var(--verde);margin:24px 0 10px;}
+p{margin-bottom:14px;color:var(--texto-suave);font-size:15px;}
+hr{border:none;border-top:1px solid var(--borde);margin:40px 0;}
+code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70,.07);padding:1px 6px;border-radius:3px;color:var(--verde);}
+.problema-box{background:var(--verde);border-radius:12px;padding:24px 28px;margin:20px 0;border-left:5px solid var(--verde-claro);}
+.pb-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:10px;display:block;}
+.pb-enunciado{font-size:15px;color:white;line-height:1.75;}
+.pb-enunciado strong{color:var(--verde-claro);}
+.codigo-bloque{background:var(--codigo-bg);border-radius:10px;overflow:hidden;margin:16px 0;}
+.codigo-header{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);}
+.codigo-dots{display:flex;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
+.codigo-lang{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.3);}
+.codigo-archivo{font-family:'Space Mono',monospace;font-size:10px;color:var(--turquesa);}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+.c-kw{color:var(--verde-claro);}.c-str{color:#a8d8b0;}.c-ns{color:var(--turquesa);}.c-tipo{color:#82aaff;}.c-fn{color:var(--turquesa);}.c-num{color:#f78c6c;}.c-com{color:rgba(255,255,255,.3);font-style:italic;}.c-inc{color:#c792ea;}
+.tabla-papel{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;}
+.tabla-papel thead tr{background:var(--verde);}
+.tabla-papel thead th{padding:10px 14px;color:white;text-align:left;font-size:11px;font-family:'Space Mono',monospace;letter-spacing:.5px;}
+.tabla-papel tbody tr{border-bottom:1px solid var(--borde);}
+.tabla-papel tbody tr:nth-child(even){background:rgba(0,88,70,.025);}
+.tabla-papel tbody td{padding:12px 14px;color:var(--texto-suave);vertical-align:top;}
+.tabla-papel td.mono{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);}
+.espacio{height:26px;border-bottom:1px dashed rgba(0,88,70,.18) !important;}
+.actividades{display:flex;flex-direction:column;gap:12px;margin:20px 0;}
+.actividad{background:white;border:1px solid var(--borde);border-radius:10px;padding:18px 22px;display:flex;align-items:flex-start;gap:14px;}
+.act-num{min-width:30px;height:30px;border-radius:50%;background:var(--turquesa);color:white;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.act-titulo{font-size:14px;font-weight:700;color:var(--verde);margin-bottom:4px;}
+.act-desc{font-size:13.5px;color:var(--texto-suave);line-height:1.6;}
+.caja-ia{background:#0d1e18;border-radius:10px;padding:20px 24px;margin:20px 0;border-left:4px solid var(--turquesa);}
+.caja-ia .ci-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:9px;display:block;}
+.caja-ia p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin:0;}
+.caja-ia p strong{color:var(--verde-claro);}
+.caja-nota{background:rgba(0,88,70,.05);border-left:4px solid var(--verde);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-nota .cn-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:6px;display:block;}
+.caja-nota p{margin:0;font-size:14px;color:var(--texto);}
+.pseudocodigo{background:var(--codigo-bg);border-radius:10px;margin:18px 0;overflow:hidden;}
+.pseudo-label{background:rgba(255,255,255,.05);padding:8px 18px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);border-bottom:1px solid rgba(255,255,255,.08);}
+.pseudo-body{padding:20px 24px;font-family:'Space Mono',monospace;font-size:13px;line-height:1.9;color:rgba(255,255,255,.85);}
+.p-kw{color:var(--verde-claro);font-weight:700;}
+.p-str{color:#a8d8b0;}
+.rubrica{width:100%;border-collapse:collapse;margin:18px 0;font-size:12.5px;}
+.rubrica thead tr{background:var(--verde);}
+.rubrica thead th{padding:10px 14px;color:white;text-align:left;font-size:11px;}
+.rubrica tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.rubrica tbody td{padding:9px 14px;border-bottom:1px solid var(--borde);color:var(--texto-suave);vertical-align:top;}
+.rubrica tbody td:first-child{font-weight:700;color:var(--verde);font-size:12px;}
+.rubrica tfoot td{padding:10px 14px;font-weight:700;color:var(--verde);background:rgba(0,88,70,.05);}
+.bitacora{border:2px dashed rgba(0,88,70,.2);border-radius:10px;padding:22px;background:white;margin:18px 0;}
+.bitacora-campo{display:flex;gap:12px;border-bottom:1px solid var(--borde);padding:9px 0;align-items:center;}
+.bitacora-campo:last-child{border-bottom:none;}
+.bitacora-campo label{min-width:220px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);flex-shrink:0;}
+.linea-campo{flex:1;border-bottom:1px solid rgba(0,88,70,.12);min-height:22px;}
+.nav-caps{display:flex;justify-content:space-between;align-items:center;padding:20px 64px;background:var(--fondo-alt);border-top:1px solid var(--borde);margin-top:48px;flex-wrap:wrap;gap:12px;}
+.nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 18px;border:1.5px solid rgba(0,88,70,.2);border-radius:8px;background:white;max-width:280px;transition:all .2s;}
+.nav-cap-btn:hover{border-color:var(--verde);}
+.nav-cap-btn.sig{flex-direction:row-reverse;text-align:right;}
+.ncb-arrow{font-size:16px;color:var(--verde);}
+.ncb-label{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,88,70,.45);margin-bottom:2px;display:block;}
+.ncb-titulo{font-size:13px;font-weight:700;color:var(--verde);}
+.pie{background:var(--verde);color:rgba(255,255,255,.35);padding:14px 64px;font-family:'Space Mono',monospace;font-size:9px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:1px;}
+.pie span:first-child{color:rgba(255,255,255,.55);}
+@media(max-width:768px){.page-header,.body-wrap,.nav-caps,.pie,.fases-nav{padding-left:24px;padding-right:24px;}.ph-titulo{font-size:26px;}}
+
+/* ── Aliases para sesiones prácticas 06+ ── */
+.page-header-prac{background:linear-gradient(135deg,#005846 0%,#067a65 100%);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--turquesa);}
+.page-header-prac::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(8,184,157,.1) 1px,transparent 1px);background-size:28px 28px;}
+.ph-badge-prac{display:inline-block;background:rgba(8,184,157,.2);border:1px solid rgba(8,184,157,.4);color:var(--turquesa);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+@media(max-width:768px){.page-header-prac{padding-left:24px;padding-right:24px;}}
+
+/* ── Componentes de capítulos usados en prácticas ── */
+.ra-box{background:rgba(0,88,70,.06);border:1px solid rgba(0,88,70,.15);border-left:4px solid var(--verde);border-radius:0 10px 10px 0;padding:18px 22px;margin-bottom:40px;}
+.ra-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:8px;}
+.ra-texto{font-size:14px;color:var(--texto);line-height:1.65;}
+.caja-adv{background:rgba(203,219,42,.08);border-left:4px solid var(--verde-claro);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-adv .ca-label,.ca-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7a8a10;margin-bottom:6px;display:block;}
+.caja-adv p{margin:0;font-size:14px;color:#4a540a;}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-logo">ESPAM MFL</div><div class="topbar-sep"></div>
+  <div class="topbar-titulo">Introducción a la Programación</div>
+  <div class="topbar-right">CARRERA DE COMPUTACIÓN</div>
+</header>
+<nav class="nav-menu">
+  <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">
+    ☰ &nbsp; Contenidos del libro <span class="nav-toggle-arrow">▼</span>
+  </button>
+      <div class="nav-body">
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Inicio</span>
+        <ul class="nav-items">
+          <li><a href="index.html" class="nav-item"><span class="nav-num">◉</span> Portada</a></li>
+          <li><a href="preliminares.html" class="nav-item"><span class="nav-num">—</span> Preliminares</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad I — Fundamentos</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_01.html" class="nav-item"><span class="nav-num">01</span> Pensamiento Algorítmico</a></li>
+          <li><a href="practica_01.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 1</a></li>
+          <li><a href="capitulo_02.html" class="nav-item"><span class="nav-num">02</span> Tipos de Datos y Variables</a></li>
+          <li><a href="practica_02.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 2</a></li>
+          <li><a href="capitulo_03.html" class="nav-item"><span class="nav-num">03</span> Depuración y Buenas Prácticas</a></li>
+          <li><a href="practica_03.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 3</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad II — Control</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_04.html" class="nav-item"><span class="nav-num">04</span> Estructuras Selectivas</a></li>
+          <li><a href="practica_04.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 4</a></li>
+          <li><a href="capitulo_05.html" class="nav-item"><span class="nav-num">05</span> Estructuras Repetitivas I</a></li>
+          <li><a href="practica_05.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 5</a></li>
+          <li><a href="capitulo_06.html" class="nav-item"><span class="nav-num">06</span> Estructuras Repetitivas II</a></li>
+          <li><a href="practica_06.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 6</a></li>
+          <li><a href="capitulo_07.html" class="nav-item"><span class="nav-num">07</span> Integración de Estructuras</a></li>
+          <li><a href="practica_07.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 7</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad III — Funciones</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_08.html" class="nav-item"><span class="nav-num">08</span> Funciones en C++</a></li>
+          <li><a href="practica_08.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 8</a></li>
+          <li><a href="capitulo_09.html" class="nav-item"><span class="nav-num">09</span> Paso por Valor y Referencia</a></li>
+          <li><a href="practica_09.html" class="nav-item practica activo"><span class="nav-num">↳</span> Sesión Práctica 9</a></li>
+          <li><a href="capitulo_10.html" class="nav-item"><span class="nav-num">10</span> Pila y Modularidad</a></li>
+          <li><a href="practica_10.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 10</a></li>
+          <li><a href="capitulo_11.html" class="nav-item"><span class="nav-num">11</span> Aplicaciones Funcionales</a></li>
+          <li><a href="practica_11.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 11</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad IV — Arreglos</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_12.html" class="nav-item prox"><span class="nav-num">12</span> Arreglos Unidimensionales</a></li>
+          <li><a href="practica_12.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 12</a></li>
+          <li><a href="capitulo_13.html" class="nav-item prox"><span class="nav-num">13</span> Búsqueda y Ordenamiento</a></li>
+          <li><a href="practica_13.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 13</a></li>
+          <li><a href="capitulo_14.html" class="nav-item prox"><span class="nav-num">14</span> Arreglos Bidimensionales</a></li>
+          <li><a href="practica_14.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 14</a></li>
+          <li><a href="capitulo_15.html" class="nav-item prox"><span class="nav-num">15</span> Proyecto Integrador Final</a></li>
+          <li><a href="practica_15.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 15</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Recursos</span>
+        <ul class="nav-items">
+          <li><a href="anexos.html" class="nav-item prox"><span class="nav-num">—</span> Anexos y Rúbricas</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+  </nav>
+<section class="page-header-prac">
+  <div class="ph-num">P9</div>
+  <div class="ph-inner">
+    <div class="ph-badge-prac">🔬 Unidad III · Sesión Práctica 9</div>
+    <h1 class="ph-titulo">Sistema de Conversión de Unidades Modular</h1>
+    <p class="ph-subtitulo">paso por valor · paso por referencia · <code style="color:var(--turquesa)">const&amp;</code> · múltiples salidas · validador reutilizable</p>
+    <div class="ph-meta">
+      <div class="ph-meta-item"><span class="ph-meta-label">Duración</span><span class="ph-meta-valor">180 min (3h)</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Modalidad</span><span class="ph-meta-valor">Individual → Parejas</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Entregable</span><span class="ph-meta-valor">Código .cpp + bitácora</span></div>
+    </div>
+  </div>
+</section>
+<nav class="fases-nav">
+  <a class="fase-chip" href="#f1">F1 · Diseño</a>
+  <a class="fase-chip" href="#f2">F2 · Pseudocódigo</a>
+  <a class="fase-chip" href="#f3">F3 · C++ Individual</a>
+  <a class="fase-chip" href="#f4">F4 · Extensión</a>
+  <a class="fase-chip" href="#f5">F5 · Análisis IA</a>
+  <a class="fase-chip" href="#f6">F6 · Bitácora</a>
+</nav>
+<main class="body-wrap">
+
+<div class="ra-box">
+  <div class="ra-label">Objetivo de la Sesión</div>
+  <div class="ra-texto">El estudiante <strong>construye un sistema de conversión de unidades completamente modular</strong> donde cada grupo de conversiones devuelve múltiples resultados usando parámetros por referencia, las funciones de solo lectura usan <code>const&amp;</code>, y la validación de entrada es una función reutilizable en todos los contextos del menú. <code>main()</code> solo orquesta: no calcula nada directamente.</div>
+</div>
+
+<div class="problema-box">
+  <span class="pb-label">🔬 Contexto del Problema</span>
+  <div class="pb-enunciado">El laboratorio de física de ESPAM MFL necesita un conversor de unidades para sus prácticas. Menú con <code>do-while</code> + <code>switch</code>: <strong>1)</strong> Temperatura (°C → °F, K) <strong>2)</strong> Longitud (m → km, cm, mm, pulgadas, pies) <strong>3)</strong> Masa (kg → g, lb, oz) <strong>4)</strong> Salir. Cada conversión es una función <code>void</code> con las salidas por referencia. La función <code>leerPositivo(const string&amp;)</code> valida todas las entradas numéricas del programa.</div>
+</div>
+
+<!-- F1 ─────────────────────────────────────────────────── -->
+<section class="fase" id="f1">
+  <div class="fase-header">
+    <div class="fase-num">F1</div>
+    <div>
+      <div class="fase-titulo">Diseño de Firmas — Decidir Valor vs. Referencia en Papel</div>
+      <div class="fase-tiempo">0 – 20 min · SIN computadora</div>
+    </div>
+  </div>
+  <p>Antes de abrir el IDE, decide el tipo de paso de cada parámetro de cada función. Este es el trabajo de diseño más importante de la práctica.</p>
+  <div class="actividades">
+    <div class="actividad">
+      <div class="act-num">1</div>
+      <div>
+        <div class="act-titulo">Tabla de decisión de parámetros</div>
+        <div class="act-desc">Para cada función, llena una tabla con tres columnas: nombre del parámetro · tipo de paso (valor / referencia / const&amp;) · justificación. Funciones a analizar: <code>convertirTemperatura</code>, <code>convertirLongitud</code>, <code>convertirMasa</code>, <code>leerPositivo</code>, <code>mostrarMenu</code>. Recuerda la regla: si la función necesita escribir en el parámetro → referencia; si solo lee → valor o const&amp;; si lee un objeto grande → const&amp;.</div>
+      </div>
+    </div>
+    <div class="actividad">
+      <div class="act-num">2</div>
+      <div>
+        <div class="act-titulo">Fórmulas de conversión en papel</div>
+        <div class="act-desc">Escribe y verifica todas las fórmulas: °F = (°C × 9/5) + 32 · K = °C + 273.15 · km = m÷1000 · cm = m×100 · mm = m×1000 · in = m×39.3701 · ft = m×3.28084 · g = kg×1000 · lb = kg×2.20462 · oz = kg×35.274. Comprueba con valores conocidos: 0°C = 32°F = 273.15 K · 1 m = 100 cm · 1 kg = 1000 g.</div>
+      </div>
+    </div>
+    <div class="actividad">
+      <div class="act-num">3</div>
+      <div>
+        <div class="act-titulo">Casos de prueba manuales</div>
+        <div class="act-desc">Calcula a mano y anota los resultados esperados: <strong>100°C</strong> → ? °F, ? K · <strong>1.5 m</strong> → km, cm, mm, in, ft · <strong>2.0 kg</strong> → g, lb, oz. Estos valores son tu contrato de verificación en F3: si el programa arroja otro resultado, hay un error en el código.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- F2 ─────────────────────────────────────────────────── -->
+<section class="fase" id="f2">
+  <div class="fase-header">
+    <div class="fase-num">F2</div>
+    <div>
+      <div class="fase-titulo">Prototipos y Pseudocódigo en PSeInt</div>
+      <div class="fase-tiempo">20 – 55 min</div>
+    </div>
+  </div>
+
+  <div class="pseudocodigo">
+    <div class="pseudo-label">C++ · Prototipos completos — firmas con valor, referencia y const&amp;</div>
+    <div class="pseudo-body"><span class="c-com">// ENTRADA simple → valor  |  SALIDA → referencia &amp;  |  ENTRADA string → const &amp;</span>
+
+<span class="c-kw">void</span>   <span class="c-fn">mostrarMenu</span>();
+
+<span class="c-com">// msg: string grande, solo lectura → const string&amp;</span>
+<span class="c-tipo">double</span> <span class="c-fn">leerPositivo</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; msg);
+
+<span class="c-com">// celsius: entrada por valor · fahrenheit, kelvin: salida por &amp;</span>
+<span class="c-kw">void</span>   <span class="c-fn">convertirTemperatura</span>(<span class="c-tipo">double</span> celsius,
+                            <span class="c-tipo">double</span>&amp; fahrenheit,
+                            <span class="c-tipo">double</span>&amp; kelvin);
+
+<span class="c-kw">void</span>   <span class="c-fn">convertirLongitud</span>(<span class="c-tipo">double</span> metros,
+                         <span class="c-tipo">double</span>&amp; km,   <span class="c-tipo">double</span>&amp; cm,
+                         <span class="c-tipo">double</span>&amp; mm,   <span class="c-tipo">double</span>&amp; pulgadas,
+                         <span class="c-tipo">double</span>&amp; pies);
+
+<span class="c-kw">void</span>   <span class="c-fn">convertirMasa</span>(<span class="c-tipo">double</span> kg,
+                     <span class="c-tipo">double</span>&amp; gramos,
+                     <span class="c-tipo">double</span>&amp; libras,
+                     <span class="c-tipo">double</span>&amp; onzas);</div>
+  </div>
+
+  <div class="pseudocodigo">
+    <div class="pseudo-label">PSeInt · Algoritmo del menú principal</div>
+    <div class="pseudo-body"><span class="p-kw">Definir</span> opcion <span class="p-kw">Como</span> Entero
+<span class="p-kw">Definir</span> valor, r1, r2, r3, r4, r5 <span class="p-kw">Como</span> Real
+
+<span class="p-kw">Repetir</span>
+    mostrarMenu()
+    Leer opcion
+    <span class="p-kw">Segun</span> opcion <span class="p-kw">Hacer</span>
+        1:
+            valor &lt;- leerPositivo(<span class="p-str">"Temperatura en °C: "</span>)
+            convertirTemperatura(valor, <span class="p-kw">var</span> r1, <span class="p-kw">var</span> r2)
+            Escribir <span class="p-str">"→ "</span>, r1, <span class="p-str">"°F   "</span>, r2, <span class="p-str">"K"</span>
+        2:
+            valor &lt;- leerPositivo(<span class="p-str">"Distancia en metros: "</span>)
+            convertirLongitud(valor, <span class="p-kw">var</span> r1, <span class="p-kw">var</span> r2, <span class="p-kw">var</span> r3, <span class="p-kw">var</span> r4, <span class="p-kw">var</span> r5)
+            Escribir <span class="p-str">"→ "</span>, r1, <span class="p-str">"km | "</span>, r2, <span class="p-str">"cm | "</span>, r3, <span class="p-str">"mm | "</span>, r4, <span class="p-str">"in | "</span>, r5, <span class="p-str">"ft"</span>
+        3:
+            valor &lt;- leerPositivo(<span class="p-str">"Masa en kilogramos: "</span>)
+            convertirMasa(valor, <span class="p-kw">var</span> r1, <span class="p-kw">var</span> r2, <span class="p-kw">var</span> r3)
+            Escribir <span class="p-str">"→ "</span>, r1, <span class="p-str">"g | "</span>, r2, <span class="p-str">"lb | "</span>, r3, <span class="p-str">"oz"</span>
+        4:
+            Escribir <span class="p-str">"Hasta luego."</span>
+        De Otro Modo:
+            Escribir <span class="p-str">"Opción inválida. Intente de nuevo."</span>
+    <span class="p-kw">FinSegun</span>
+<span class="p-kw">Hasta Que</span> opcion = 4</div>
+  </div>
+
+  <div class="caja-nota">
+    <div class="cn-label">⚙️ Verifica en PSeInt antes de continuar</div>
+    <p>Corre el pseudocódigo con los tres casos de prueba calculados en F1. Si algún resultado no coincide, corrige la fórmula <strong>aquí</strong>, no en C++. Traducir código incorrecto a otro lenguaje solo produce código incorrecto más difícil de depurar.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- F3 ─────────────────────────────────────────────────── -->
+<section class="fase" id="f3">
+  <div class="fase-header">
+    <div class="fase-num">F3</div>
+    <div>
+      <div class="fase-titulo">Implementación Completa en C++ — Individual</div>
+      <div class="fase-tiempo">55 – 105 min</div>
+    </div>
+  </div>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · Implementación completa del conversor de unidades</span>
+      </div>
+      <span class="codigo-archivo">conversor_unidades.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;string&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-com">// ─── PROTOTIPOS ─────────────────────────────────────────────────</span>
+<span class="c-kw">void</span>   <span class="c-fn">mostrarMenu</span>();
+<span class="c-tipo">double</span> <span class="c-fn">leerPositivo</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; msg);
+<span class="c-kw">void</span>   <span class="c-fn">convertirTemperatura</span>(<span class="c-tipo">double</span> c, <span class="c-tipo">double</span>&amp; f, <span class="c-tipo">double</span>&amp; k);
+<span class="c-kw">void</span>   <span class="c-fn">convertirLongitud</span>(<span class="c-tipo">double</span> m, <span class="c-tipo">double</span>&amp; km, <span class="c-tipo">double</span>&amp; cm,
+                         <span class="c-tipo">double</span>&amp; mm, <span class="c-tipo">double</span>&amp; in, <span class="c-tipo">double</span>&amp; ft);
+<span class="c-kw">void</span>   <span class="c-fn">convertirMasa</span>(<span class="c-tipo">double</span> kg, <span class="c-tipo">double</span>&amp; g, <span class="c-tipo">double</span>&amp; lb, <span class="c-tipo">double</span>&amp; oz);
+
+<span class="c-com">// ─── MAIN ────────────────────────────────────────────────────────</span>
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">int</span> opcion;
+    <span class="c-kw">do</span> {
+        <span class="c-fn">mostrarMenu</span>();
+        <span class="c-fn">cin</span> &gt;&gt; opcion;
+        <span class="c-kw">switch</span> (opcion) {
+            <span class="c-kw">case</span> <span class="c-num">1</span>: {
+                <span class="c-tipo">double</span> f, k;
+                <span class="c-tipo">double</span> c = <span class="c-fn">leerPositivo</span>(<span class="c-str">"  Temperatura en °C: "</span>);
+                <span class="c-fn">convertirTemperatura</span>(c, f, k);
+                <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>)
+                     &lt;&lt; <span class="c-str">"  → "</span> &lt;&lt; f &lt;&lt; <span class="c-str">"°F   "</span> &lt;&lt; k &lt;&lt; <span class="c-str">" K
+"</span>;
+                <span class="c-kw">break</span>; }
+            <span class="c-kw">case</span> <span class="c-num">2</span>: {
+                <span class="c-tipo">double</span> km, cm, mm, pin, ft;
+                <span class="c-tipo">double</span> m = <span class="c-fn">leerPositivo</span>(<span class="c-str">"  Distancia en metros: "</span>);
+                <span class="c-fn">convertirLongitud</span>(m, km, cm, mm, pin, ft);
+                <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">4</span>)
+                     &lt;&lt; <span class="c-str">"  → "</span> &lt;&lt; km &lt;&lt; <span class="c-str">" km | "</span> &lt;&lt; cm &lt;&lt; <span class="c-str">" cm | "</span>
+                     &lt;&lt; mm &lt;&lt; <span class="c-str">" mm | "</span> &lt;&lt; pin &lt;&lt; <span class="c-str">" in | "</span> &lt;&lt; ft &lt;&lt; <span class="c-str">" ft
+"</span>;
+                <span class="c-kw">break</span>; }
+            <span class="c-kw">case</span> <span class="c-num">3</span>: {
+                <span class="c-tipo">double</span> g, lb, oz;
+                <span class="c-tipo">double</span> kg = <span class="c-fn">leerPositivo</span>(<span class="c-str">"  Masa en kg: "</span>);
+                <span class="c-fn">convertirMasa</span>(kg, g, lb, oz);
+                <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">3</span>)
+                     &lt;&lt; <span class="c-str">"  → "</span> &lt;&lt; g &lt;&lt; <span class="c-str">" g | "</span> &lt;&lt; lb &lt;&lt; <span class="c-str">" lb | "</span> &lt;&lt; oz &lt;&lt; <span class="c-str">" oz
+"</span>;
+                <span class="c-kw">break</span>; }
+            <span class="c-kw">case</span> <span class="c-num">4</span>:
+                <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Hasta luego.
+"</span>; <span class="c-kw">break</span>;
+            <span class="c-kw">default</span>:
+                <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Opción inválida. Intente de nuevo.
+"</span>;
+        }
+    } <span class="c-kw">while</span> (opcion != <span class="c-num">4</span>);
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}
+
+<span class="c-com">// ─── DEFINICIONES ────────────────────────────────────────────────</span>
+<span class="c-kw">void</span> <span class="c-fn">mostrarMenu</span>() {
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"
+╔══ CONVERSOR ESPAM MFL ══╗
+"</span>
+         &lt;&lt; <span class="c-str">"║ 1. Temperatura (°C)     ║
+"</span>
+         &lt;&lt; <span class="c-str">"║ 2. Longitud (m)         ║
+"</span>
+         &lt;&lt; <span class="c-str">"║ 3. Masa (kg)            ║
+"</span>
+         &lt;&lt; <span class="c-str">"║ 4. Salir               ║
+"</span>
+         &lt;&lt; <span class="c-str">"╚═══════════════════════╝
+"</span>
+         &lt;&lt; <span class="c-str">"Opción: "</span>;
+}
+
+<span class="c-tipo">double</span> <span class="c-fn">leerPositivo</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; msg) {
+    <span class="c-tipo">double</span> v;
+    <span class="c-kw">do</span> {
+        <span class="c-fn">cout</span> &lt;&lt; msg;
+        <span class="c-fn">cin</span>  &gt;&gt; v;
+        <span class="c-kw">if</span> (v &lt;= <span class="c-num">0</span>) <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  ✗ Debe ser un valor positivo.
+"</span>;
+    } <span class="c-kw">while</span> (v &lt;= <span class="c-num">0</span>);
+    <span class="c-kw">return</span> v;
+}
+
+<span class="c-kw">void</span> <span class="c-fn">convertirTemperatura</span>(<span class="c-tipo">double</span> c, <span class="c-tipo">double</span>&amp; f, <span class="c-tipo">double</span>&amp; k) {
+    f = (c * <span class="c-num">9.0</span> / <span class="c-num">5.0</span>) + <span class="c-num">32.0</span>;
+    k = c + <span class="c-num">273.15</span>;
+}
+
+<span class="c-kw">void</span> <span class="c-fn">convertirLongitud</span>(<span class="c-tipo">double</span> m, <span class="c-tipo">double</span>&amp; km, <span class="c-tipo">double</span>&amp; cm,
+                       <span class="c-tipo">double</span>&amp; mm, <span class="c-tipo">double</span>&amp; in, <span class="c-tipo">double</span>&amp; ft) {
+    km = m / <span class="c-num">1000.0</span>;
+    cm = m * <span class="c-num">100.0</span>;
+    mm = m * <span class="c-num">1000.0</span>;
+    in = m * <span class="c-num">39.3701</span>;
+    ft = m * <span class="c-num">3.28084</span>;
+}
+
+<span class="c-kw">void</span> <span class="c-fn">convertirMasa</span>(<span class="c-tipo">double</span> kg, <span class="c-tipo">double</span>&amp; g, <span class="c-tipo">double</span>&amp; lb, <span class="c-tipo">double</span>&amp; oz) {
+    g  = kg * <span class="c-num">1000.0</span>;
+    lb = kg * <span class="c-num">2.20462</span>;
+    oz = kg * <span class="c-num">35.274</span>;
+}</pre></div>
+  </div>
+
+  <div class="caja-adv">
+    <div class="ca-label">📋 Lista de verificación antes de avanzar a F4</div>
+    <p>☐ Cada parámetro de salida usa <code>&amp;</code>. ☐ Los parámetros de entrada de tipos simples van por valor. ☐ El mensaje en <code>leerPositivo</code> usa <code>const string&amp;</code>. ☐ <code>main()</code> no calcula nada directamente. ☐ Los tres casos del F1 producen los resultados esperados.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- F4 ─────────────────────────────────────────────────── -->
+<section class="fase" id="f4">
+  <div class="fase-header">
+    <div class="fase-num">F4</div>
+    <div>
+      <div class="fase-titulo">Extensión en Parejas</div>
+      <div class="fase-tiempo">105 – 140 min</div>
+    </div>
+  </div>
+  <p>Intercambia tu archivo con un compañero. Lee su código durante 5 minutos y luego implementen juntos ambas extensiones sobre la versión que consideren mejor estructurada.</p>
+  <div class="actividades">
+    <div class="actividad">
+      <div class="act-num">A</div>
+      <div>
+        <div class="act-titulo">Conversión inversa de temperatura</div>
+        <div class="act-desc">Agrega opción 5: convertir de °F a °C y K. Escribe <code>void convertirTempInversa(double f, double&amp; c, double&amp; k)</code>. Fórmulas: C = (F − 32) × 5/9 · K = C + 273.15. Observa que el parámetro que antes era salida (<code>celsius</code>) ahora es entrada, y el que era entrada (<code>fahrenheit</code>) ahora es salida. Documenta este "giro de roles" en tu bitácora con al menos 3 líneas de análisis.</div>
+      </div>
+    </div>
+    <div class="actividad">
+      <div class="act-num">B</div>
+      <div>
+        <div class="act-titulo">Historial de conversiones</div>
+        <div class="act-desc">Crea <code>void actualizarHistorial(int&amp; totalConv, double&amp; sumaEntradas, double entrada)</code> que acumula cuántas conversiones se han realizado y la suma total de los valores de entrada. Llámala desde cada <code>case</code> del menú. Al ejecutar la opción Salir, llama a <code>void mostrarHistorial(int total, double suma)</code> que imprime el resumen. ¿Por qué <code>total</code> y <code>sumaEntradas</code> usan <code>&amp;</code> y <code>entrada</code> no?</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- F5 ─────────────────────────────────────────────────── -->
+<section class="fase" id="f5">
+  <div class="fase-header">
+    <div class="fase-num">F5</div>
+    <div>
+      <div class="fase-titulo">Análisis Crítico con IA — Documentado</div>
+      <div class="fase-tiempo">140 – 163 min</div>
+    </div>
+  </div>
+  <div class="caja-ia">
+    <div class="ci-label">🤖 Protocolo de Análisis IA · Sesión 9</div>
+    <p>Muestra a la IA tu función <code>convertirLongitud</code> y pregúntale: <em>"¿Cómo harías esta misma función sin usar parámetros por referencia?"</em> Probablemente sugiera un <code>struct</code> o retornar varios valores con <code>std::tuple</code>. Responde por escrito estas 4 preguntas: <strong>(1)</strong> ¿La alternativa es más o menos legible para un estudiante de primer año? <strong>(2)</strong> ¿Requiere conocimiento nuevo que aún no hemos visto? <strong>(3)</strong> ¿En qué tipo de proyecto preferirías la versión con referencias y en cuál la alternativa? <strong>(4)</strong> ¿Hay alguna situación donde sea <em>obligatorio</em> usar referencia en lugar de retorno? Firma tu análisis con nombre y fecha.</p>
+  </div>
+  <div class="caja-nota">
+    <div class="cn-label">📌 Límite de uso de IA en esta práctica</div>
+    <p>Puedes usar la IA para entender errores del compilador, verificar fórmulas de conversión o explorar alternativas de diseño (F5). No puedes pedirle que escriba las funciones de conversión de tu entrega. Todo el código entregado debe ser tuyo y debes poder explicar cada línea en una revisión oral.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- F6 ─────────────────────────────────────────────────── -->
+<section class="fase" id="f6">
+  <div class="fase-header">
+    <div class="fase-num">F6</div>
+    <div>
+      <div class="fase-titulo">Bitácora y Rúbrica de Autoevaluación</div>
+      <div class="fase-tiempo">163 – 180 min</div>
+    </div>
+  </div>
+  <div class="bitacora">
+    <div class="bitacora-campo"><label>Nombre completo / Fecha / NRC</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>Total de parámetros por referencia en tu entrega</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>¿Hubo algún parámetro que pusiste mal al inicio? ¿Cómo lo detectaste?</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>¿Dónde usaste const&amp; y por qué fue la elección correcta?</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>Describe el "giro de roles" observado en la extensión A (3 líneas mínimo)</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>Conclusión del análisis IA — ¿cuándo usar referencia vs. alternativas modernas?</label><div class="linea-campo"></div></div>
+  </div>
+
+  <table class="rubrica">
+    <thead>
+      <tr><th>Criterio</th><th>Logrado ✓</th><th>Parcial △</th><th>No logrado ✗</th><th>Pts</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>F1: Tabla de decisión + fórmulas + casos de prueba manuales</td><td>Decisión y justificación correctas para todos los parámetros; fórmulas verificadas</td><td>Falta justificación en 1-2 parámetros o 1 fórmula sin verificar</td><td>No presentado o sin justificación</td><td>/15</td></tr>
+      <tr><td>F2: Prototipos correctos + pseudocódigo que pasa los casos de prueba</td><td>Firmas exactas; pseudocódigo produce resultados del F1 en PSeInt</td><td>1-2 firmas con tipo de paso incorrecto</td><td>No entregado</td><td>/15</td></tr>
+      <tr><td>F3: C++ compila, tres grupos correctos, const&amp; y referencias correctas, main solo orquesta</td><td>Todos los casos de prueba del F1 coinciden; sin cálculos en main</td><td>Un grupo de conversión incorrecto o un &amp; faltante</td><td>No compila</td><td>/40</td></tr>
+      <tr><td>F4: Ambas extensiones funcionales, historial y conversión inversa operativas</td><td>Extensión A y B funcionan sin romper el programa base</td><td>Solo una extensión implementada</td><td>No realizado</td><td>/15</td></tr>
+      <tr><td>F5 + F6: Análisis IA con 4 preguntas razonadas + bitácora completa y firmada</td><td>Análisis con ejemplos concretos; bitácora con 6 campos completos</td><td>Preguntas respondidas superficialmente</td><td>No entregado</td><td>/15</td></tr>
+    </tbody>
+    <tfoot><tr><td colspan="4">TOTAL</td><td>/100</td></tr></tfoot>
+  </table>
+</section>
+
+</main>
+<div class="nav-caps">
+  <a href="capitulo_09.html" class="nav-cap-btn">
+    <span class="ncb-arrow">←</span>
+    <div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Capítulo 9 — Valor y Referencia</span></div>
+  </a>
+  <a href="capitulo_10.html" class="nav-cap-btn sig">
+    <span class="ncb-arrow">→</span>
+    <div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Cap. 10 — Recursión</span></div>
+  </a>
+</div>
+<footer class="pie"><span>Práctica 9 — Paso por Valor y Referencia · Unidad III · ESPAM MFL</span><span>espam.edu.ec</span></footer>
+</body></html>

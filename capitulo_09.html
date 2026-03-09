@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cap. 9 — Paso por Valor y por Referencia | ESPAM MFL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{--verde:#005846;--verde-medio:#007a5e;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fondo);font-size:16px;line-height:1.7;overflow-x:hidden;}
+/* TOPBAR */
+.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--verde);display:flex;align-items:center;padding:0 24px;gap:14px;z-index:1000;border-bottom:3px solid var(--verde-claro);}
+.topbar-logo{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--verde-claro);}
+.topbar-sep{width:1px;height:20px;background:rgba(255,255,255,.2);}
+.topbar-titulo{font-size:12px;color:rgba(255,255,255,.65);}
+.topbar-right{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;}
+/* NAV */
+.nav-menu{background:var(--verde);border-bottom:2px solid rgba(203,219,42,.3);margin-top:50px;}
+.nav-toggle{width:100%;background:transparent;color:white;border:none;padding:11px 24px;text-align:left;cursor:pointer;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;}
+.nav-toggle:hover{background:rgba(255,255,255,.04);}
+.nav-toggle-arrow{color:var(--verde-claro);font-size:12px;}
+.nav-body{display:none;padding:18px 24px 22px;}
+.nav-body.abierto{display:flex;flex-wrap:wrap;gap:28px;}
+.nav-grupo{min-width:170px;}
+.nav-grupo-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:7px;display:block;padding-bottom:5px;border-bottom:1px solid rgba(203,219,42,.2);}
+.nav-items{list-style:none;}
+.nav-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12px;color:rgba(255,255,255,.72);text-decoration:none;transition:color .15s;}
+.nav-item:hover{color:var(--verde-claro);}
+.nav-item.activo{color:var(--verde-claro);font-weight:700;}
+.nav-item.activo .nav-num{color:var(--verde-claro);}
+.nav-item.practica{color:rgba(8,184,157,.85);font-style:italic;}
+.nav-item.practica:hover{color:var(--turquesa);}
+.nav-item.practica .nav-num{color:rgba(8,184,157,.45);}
+.nav-item.prox{color:rgba(255,255,255,.28);pointer-events:none;}
+.nav-num{font-family:'Space Mono',monospace;font-size:9px;min-width:20px;flex-shrink:0;color:rgba(255,255,255,.28);}
+/* PAGE HEADER */
+.page-header{background:var(--verde);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--verde-claro);}
+.page-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(203,219,42,.07) 1px,transparent 1px);background-size:28px 28px;}
+.ph-num{position:absolute;right:48px;top:0;font-size:240px;font-weight:900;color:rgba(255,255,255,.04);line-height:1;font-family:'Space Mono',monospace;}
+.ph-inner{position:relative;z-index:1;}
+.ph-badge{display:inline-block;background:rgba(203,219,42,.15);border:1px solid rgba(203,219,42,.35);color:var(--verde-claro);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+.ph-titulo{font-size:36px;font-weight:900;line-height:1.1;color:white;margin-bottom:8px;}
+.ph-subtitulo{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:28px;}
+.ph-meta{display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;}
+.ph-meta-item{display:flex;flex-direction:column;gap:3px;}
+.ph-meta-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.ph-meta-valor{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;}
+/* ANCLAS */
+.anclas{background:white;border-bottom:1px solid var(--borde);padding:12px 64px;display:flex;gap:6px;flex-wrap:wrap;}
+.ancla{font-family:'Space Mono',monospace;font-size:9.5px;color:var(--verde-medio);text-decoration:none;padding:4px 10px;border:1px solid var(--borde);border-radius:4px;transition:all .15s;}
+.ancla:hover{background:var(--verde);color:var(--verde-claro);border-color:var(--verde);}
+/* BODY */
+.body-wrap{max-width:960px;margin:0 auto;padding:56px 64px 0;}
+.seccion{margin-bottom:52px;scroll-margin-top:120px;}
+.seccion-num{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:4px;display:block;}
+h2{font-size:24px;font-weight:800;color:var(--verde);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid rgba(0,88,70,.12);}
+h3{font-size:16px;font-weight:700;color:var(--verde);margin:28px 0 10px;}
+p{margin-bottom:14px;color:var(--texto-suave);font-size:15px;}
+hr{border:none;border-top:1px solid var(--borde);margin:48px 0;}
+code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70,.07);padding:1px 6px;border-radius:3px;color:var(--verde);}
+/* RA BOX */
+.ra-box{background:rgba(0,88,70,.06);border:1px solid rgba(0,88,70,.15);border-left:4px solid var(--verde);border-radius:0 10px 10px 0;padding:18px 22px;margin-bottom:40px;}
+.ra-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:8px;}
+.ra-texto{font-size:14px;color:var(--texto);line-height:1.65;}
+/* DEF FORMAL */
+.def-formal{background:var(--codigo-bg);border-radius:10px;padding:22px 26px;margin:20px 0;border-left:4px solid var(--verde-claro);}
+.def-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:10px;}
+.def-formal p{color:rgba(255,255,255,.82);font-size:14.5px;line-height:1.75;margin:0;}
+.def-formal em{color:var(--verde-claro);font-style:normal;font-weight:700;}
+/* DIAGRAMA FLUJO */
+.diagrama{background:white;border:1px solid var(--borde);border-radius:12px;padding:24px;margin:20px 0;display:flex;flex-direction:column;align-items:center;gap:0;}
+.df-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:20px;align-self:flex-start;}
+.df-terminal{background:var(--verde);color:white;padding:8px 28px;border-radius:20px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;}
+.df-proceso{background:var(--fondo-alt);border:2px solid var(--borde);padding:10px 24px;font-family:'Space Mono',monospace;font-size:12px;color:var(--texto);min-width:180px;text-align:center;}
+.df-decision{background:rgba(203,219,42,.12);border:2px solid var(--verde-claro);padding:10px 20px;transform:skewX(-8deg);font-family:'Space Mono',monospace;font-size:12px;color:var(--verde);font-weight:700;min-width:200px;text-align:center;}
+.df-decision span{display:inline-block;transform:skewX(8deg);}
+.df-flecha{width:2px;height:24px;background:var(--borde);position:relative;}
+.df-flecha::after{content:'▼';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--verde-medio);}
+.df-rama{display:flex;gap:32px;align-items:flex-start;margin:8px 0;}
+.df-rama-item{display:flex;flex-direction:column;align-items:center;gap:0;}
+.df-rama-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--verde-medio);margin-bottom:6px;}
+.df-accion{background:rgba(8,184,157,.08);border:1.5px solid var(--turquesa);padding:9px 18px;border-radius:6px;font-family:'Space Mono',monospace;font-size:11.5px;color:var(--verde);min-width:130px;text-align:center;}
+/* TABLA VERDAD */
+.tabla-verdad{border-collapse:collapse;margin:18px auto;font-size:13px;font-family:'Space Mono',monospace;}
+.tabla-verdad thead tr{background:var(--verde);}
+.tabla-verdad thead th{padding:9px 18px;color:white;font-size:11px;text-align:center;}
+.tabla-verdad tbody tr:nth-child(even){background:rgba(0,88,70,.04);}
+.tabla-verdad tbody td{padding:8px 18px;border:1px solid var(--borde);text-align:center;color:var(--texto-suave);}
+.tv-v{color:var(--turquesa);font-weight:700;}
+.tv-f{color:#c0392b;font-weight:700;}
+/* CÓDIGO */
+.codigo-bloque{background:var(--codigo-bg);border-radius:10px;overflow:hidden;margin:18px 0;}
+.codigo-header{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);}
+.codigo-dots{display:flex;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
+.codigo-lang{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.3);}
+.codigo-archivo{font-family:'Space Mono',monospace;font-size:10px;color:var(--turquesa);}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+.c-inc{color:#c792ea;}.c-str{color:#a8d8b0;}.c-kw{color:var(--verde-claro);}.c-ns{color:var(--turquesa);}.c-tipo{color:#82aaff;}.c-fn{color:var(--turquesa);}.c-num{color:#f78c6c;}.c-com{color:rgba(255,255,255,.3);font-style:italic;}.c-const{color:#ffcb6b;}
+/* COMPARAR */
+.comparar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0;}
+.comp-bloque{border-radius:10px;overflow:hidden;}
+.comp-label{padding:8px 16px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.comp-bloque.if-bloque .comp-label{background:rgba(0,88,70,.12);color:var(--verde);}
+.comp-bloque.sw-bloque .comp-label{background:rgba(8,184,157,.1);color:var(--turquesa);}
+.comp-bloque pre{font-family:'Space Mono',monospace;font-size:12px;line-height:1.75;padding:16px 18px;overflow-x:auto;}
+.comp-bloque.if-bloque pre{background:rgba(0,88,70,.03);color:#0a3a28;border:1px solid rgba(0,88,70,.12);}
+.comp-bloque.sw-bloque pre{background:rgba(8,184,157,.03);color:#0a3a38;border:1px solid rgba(8,184,157,.15);}
+/* TABLA OP */
+.tabla-est{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;}
+.tabla-est thead tr{background:var(--verde);}
+.tabla-est thead th{padding:10px 15px;text-align:left;font-size:12px;font-weight:700;color:white;}
+.tabla-est tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-est tbody tr:hover{background:rgba(0,88,70,.06);}
+.tabla-est tbody td{padding:9px 15px;border-bottom:1px solid var(--borde);color:var(--texto-suave);vertical-align:top;}
+.tabla-est tbody td:first-child{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--verde);text-align:center;width:80px;}
+/* PSEUDOCÓDIGO */
+.pseudocodigo{background:var(--codigo-bg);border-radius:10px;margin:18px 0;overflow:hidden;}
+.pseudo-label{background:rgba(255,255,255,.05);padding:8px 18px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);border-bottom:1px solid rgba(255,255,255,.08);}
+.pseudo-code{padding:20px 24px;font-family:'Space Mono',monospace;font-size:13px;line-height:1.9;color:rgba(255,255,255,.85);}
+.p-kw{color:var(--verde-claro);font-weight:700;}
+.p-str{color:#a8d8b0;}
+.p-ind1{display:block;padding-left:24px;}
+.p-ind2{display:block;padding-left:48px;}
+.p-blank{display:block;height:8px;}
+/* TABLA SIM */
+.tabla-sim{width:100%;border-collapse:collapse;margin:18px 0;font-family:'Space Mono',monospace;font-size:12px;}
+.tabla-sim thead tr{background:var(--verde);}
+.tabla-sim thead th{padding:9px 12px;color:white;font-size:10px;text-align:center;letter-spacing:.5px;}
+.tabla-sim tbody tr{border-bottom:1px solid var(--borde);}
+.tabla-sim tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-sim tbody td{padding:8px 12px;text-align:center;color:var(--texto-suave);}
+.tabla-sim td.res{background:rgba(203,219,42,.15);color:var(--verde);font-weight:700;}
+/* CAJAS */
+.caja-nota{background:rgba(0,88,70,.05);border-left:4px solid var(--verde);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-nota .cn-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:6px;display:block;}
+.caja-nota p{margin:0;font-size:14px;color:var(--texto);}
+.caja-adv{background:rgba(203,219,42,.08);border-left:4px solid var(--verde-claro);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-adv .ca-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7a8a10;margin-bottom:6px;display:block;}
+.caja-adv p{margin:0;font-size:14px;color:#4a540a;}
+.caja-ia{background:#0d1e18;border-radius:10px;padding:20px 24px;margin:20px 0;border-left:4px solid var(--turquesa);}
+.caja-ia .ci-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:9px;display:block;}
+.caja-ia p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin:0;}
+.caja-ia p strong{color:var(--verde-claro);}
+/* EJERCICIOS */
+.ejercicios-section{background:white;border:1px solid var(--borde);border-radius:12px;overflow:hidden;margin:20px 0;}
+.ejercicios-titulo{background:var(--verde);color:white;padding:12px 20px;font-size:13px;font-weight:700;}
+.ejercicio-item{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid var(--borde);}
+.ejercicio-item:last-child{border-bottom:none;}
+.ej-num{min-width:28px;height:28px;background:var(--fondo-alt);border:1px solid var(--borde);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);flex-shrink:0;}
+.ej-badge{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:3px;flex-shrink:0;margin-top:4px;}
+.ej-badge.comp{background:rgba(0,88,70,.08);color:var(--verde);}
+.ej-badge.aplic{background:rgba(8,184,157,.1);color:var(--turquesa);}
+.ej-badge.integ{background:rgba(203,219,42,.12);color:#7a8a10;}
+.ej-enunciado{font-size:13.5px;color:var(--texto-suave);line-height:1.6;}
+/* EVALUATIVA + PUENTE */
+.evaluativa{background:rgba(0,88,70,.04);border:2px solid rgba(0,88,70,.15);border-radius:12px;padding:24px 28px;margin-top:36px;}
+.evaluativa-titulo{font-size:15px;font-weight:800;color:var(--verde);margin-bottom:3px;}
+.evaluativa-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;}
+.evaluativa-enunciado{font-size:14px;color:var(--texto-suave);line-height:1.7;margin-bottom:14px;}
+.evaluativa-criterios{margin:0;padding-left:18px;}
+.evaluativa-criterios li{font-size:13px;color:var(--texto-suave);margin-bottom:5px;}
+.puente{background:var(--codigo-bg);border-radius:12px;padding:24px 28px;margin-top:28px;border-left:4px solid var(--turquesa);}
+.puente-titulo{font-size:15px;font-weight:800;color:white;margin-bottom:3px;}
+.puente-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+.puente-texto{font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;}
+.puente-texto strong{color:var(--verde-claro);}
+/* NAV CAPS + PIE */
+.nav-caps{display:flex;justify-content:space-between;align-items:center;padding:20px 64px;background:var(--fondo-alt);border-top:1px solid var(--borde);margin-top:48px;flex-wrap:wrap;gap:12px;}
+.nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 18px;border:1.5px solid rgba(0,88,70,.2);border-radius:8px;background:white;max-width:280px;transition:all .2s;}
+.nav-cap-btn:hover{border-color:var(--verde);}
+.nav-cap-btn.sig{flex-direction:row-reverse;text-align:right;}
+.ncb-arrow{font-size:16px;color:var(--verde);}
+.ncb-label{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,88,70,.45);margin-bottom:2px;display:block;}
+.ncb-titulo{font-size:13px;font-weight:700;color:var(--verde);}
+.pie{background:var(--verde);color:rgba(255,255,255,.35);padding:14px 64px;font-family:'Space Mono',monospace;font-size:9px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:1px;}
+.pie span:first-child{color:rgba(255,255,255,.55);}
+@media(max-width:768px){
+  .page-header,.body-wrap,.nav-caps,.pie,.anclas{padding-left:24px;padding-right:24px;}
+  .ph-titulo{font-size:26px;}
+  .comparar{grid-template-columns:1fr;}
+  .df-rama{flex-direction:column;align-items:center;}
+}
+
+/* ── Componentes adicionales Cap 09-11 ── */
+.def-formal{background:var(--codigo-bg);border-radius:10px;padding:22px 26px;margin:20px 0;border-left:4px solid var(--verde-claro);}
+.def-formal p{color:rgba(255,255,255,.82);font-size:14.5px;line-height:1.75;margin:0;}
+.def-formal em{color:var(--verde-claro);font-style:normal;font-weight:700;}
+.def-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:8px;display:block;}
+.comparar{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;}
+.comp-bloque{background:var(--codigo-bg);border-radius:8px;overflow:hidden;}
+.comp-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;display:block;}
+.comp-label.bien{background:rgba(8,184,157,.15);color:var(--turquesa);}
+.comp-label.malo{background:rgba(203,219,42,.1);color:#9aaa15;}
+.comp-bloque pre{padding:14px 16px;font-family:'Space Mono',monospace;font-size:11.5px;line-height:1.8;color:rgba(255,255,255,.82);margin:0;overflow-x:auto;}
+@media(max-width:640px){.comparar{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-logo">ESPAM MFL</div><div class="topbar-sep"></div>
+  <div class="topbar-titulo">Introducción a la Programación</div>
+  <div class="topbar-right">CARRERA DE COMPUTACIÓN</div>
+</header>
+<nav class="nav-menu">
+  <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">
+    ☰ &nbsp; Contenidos del libro <span class="nav-toggle-arrow">▼</span>
+  </button>
+      <div class="nav-body">
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Inicio</span>
+        <ul class="nav-items">
+          <li><a href="index.html" class="nav-item"><span class="nav-num">◉</span> Portada</a></li>
+          <li><a href="preliminares.html" class="nav-item"><span class="nav-num">—</span> Preliminares</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad I — Fundamentos</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_01.html" class="nav-item"><span class="nav-num">01</span> Pensamiento Algorítmico</a></li>
+          <li><a href="practica_01.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 1</a></li>
+          <li><a href="capitulo_02.html" class="nav-item"><span class="nav-num">02</span> Tipos de Datos y Variables</a></li>
+          <li><a href="practica_02.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 2</a></li>
+          <li><a href="capitulo_03.html" class="nav-item"><span class="nav-num">03</span> Depuración y Buenas Prácticas</a></li>
+          <li><a href="practica_03.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 3</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad II — Control</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_04.html" class="nav-item"><span class="nav-num">04</span> Estructuras Selectivas</a></li>
+          <li><a href="practica_04.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 4</a></li>
+          <li><a href="capitulo_05.html" class="nav-item"><span class="nav-num">05</span> Estructuras Repetitivas I</a></li>
+          <li><a href="practica_05.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 5</a></li>
+          <li><a href="capitulo_06.html" class="nav-item"><span class="nav-num">06</span> Estructuras Repetitivas II</a></li>
+          <li><a href="practica_06.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 6</a></li>
+          <li><a href="capitulo_07.html" class="nav-item"><span class="nav-num">07</span> Integración de Estructuras</a></li>
+          <li><a href="practica_07.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 7</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad III — Funciones</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_08.html" class="nav-item"><span class="nav-num">08</span> Funciones en C++</a></li>
+          <li><a href="practica_08.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 8</a></li>
+          <li><a href="capitulo_09.html" class="nav-item activo"><span class="nav-num">09</span> Paso por Valor y Referencia</a></li>
+          <li><a href="practica_09.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 9</a></li>
+          <li><a href="capitulo_10.html" class="nav-item"><span class="nav-num">10</span> Pila y Modularidad</a></li>
+          <li><a href="practica_10.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 10</a></li>
+          <li><a href="capitulo_11.html" class="nav-item"><span class="nav-num">11</span> Aplicaciones Funcionales</a></li>
+          <li><a href="practica_11.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 11</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad IV — Arreglos</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_12.html" class="nav-item prox"><span class="nav-num">12</span> Arreglos Unidimensionales</a></li>
+          <li><a href="practica_12.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 12</a></li>
+          <li><a href="capitulo_13.html" class="nav-item prox"><span class="nav-num">13</span> Búsqueda y Ordenamiento</a></li>
+          <li><a href="practica_13.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 13</a></li>
+          <li><a href="capitulo_14.html" class="nav-item prox"><span class="nav-num">14</span> Arreglos Bidimensionales</a></li>
+          <li><a href="practica_14.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 14</a></li>
+          <li><a href="capitulo_15.html" class="nav-item prox"><span class="nav-num">15</span> Proyecto Integrador Final</a></li>
+          <li><a href="practica_15.html" class="nav-item practica prox"><span class="nav-num">↳</span> Sesión Práctica 15</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Recursos</span>
+        <ul class="nav-items">
+          <li><a href="anexos.html" class="nav-item prox"><span class="nav-num">—</span> Anexos y Rúbricas</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+  </nav>
+<section class="page-header">
+  <div class="ph-num">9</div>
+  <div class="ph-inner">
+    <div class="ph-badge">📗 Unidad III · Capítulo 9</div>
+    <h1 class="ph-titulo">Paso por Valor y por Referencia</h1>
+    <p class="ph-subtitulo">Copias vs. alias · operador <code style="color:var(--verde-claro);font-size:26px">&amp;</code> · <code style="color:var(--verde-claro);font-size:24px">const&amp;</code> · devolver múltiples resultados</p>
+    <div class="ph-meta">
+      <div class="ph-meta-item"><span class="ph-meta-label">Horas presenciales</span><span class="ph-meta-valor">3 ACD + 2 PECD</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Horas autónomas</span><span class="ph-meta-valor">3 AA + 1 PEND</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Resultado</span><span class="ph-meta-valor">R.A. — C</span></div>
+    </div>
+  </div>
+</section>
+<nav class="anclas">
+  <a class="ancla" href="#s91">9.1 El problema</a>
+  <a class="ancla" href="#s92">9.2 Paso por valor</a>
+  <a class="ancla" href="#s93">9.3 Paso por referencia</a>
+  <a class="ancla" href="#s94">9.4 Comparativa</a>
+  <a class="ancla" href="#s95">9.5 const&amp;</a>
+  <a class="ancla" href="#s96">9.6 Múltiples retornos</a>
+  <a class="ancla" href="#s97">9.7 Ejercicios</a>
+</nav>
+<main class="body-wrap">
+
+<div class="ra-box">
+  <div class="ra-label">Resultado de Aprendizaje — Capítulo 9</div>
+  <div class="ra-texto">El estudiante <strong>distingue y aplica correctamente el paso por valor y el paso por referencia</strong> en funciones C++, usa <code>const&amp;</code> para pasar datos de solo lectura de forma eficiente, y emplea parámetros por referencia para devolver múltiples resultados desde una función sin usar variables globales.</div>
+</div>
+
+<!-- 9.1 ─────────────────────────────────────────────────── -->
+<section class="seccion" id="s91">
+  <span class="seccion-num">9.1</span>
+  <h2>El Problema: Modificar la Variable Original</h2>
+  <p>Hasta ahora todas nuestras funciones recibían <em>copias</em> de los datos. Pero a veces necesitamos que la función <strong>modifique directamente</strong> la variable del llamador, no una copia. El intercambio de dos variables es el ejemplo clásico: parece que funciona, pero sin referencia no cambia nada fuera de la función.</p>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · intento fallido — intercambio sin referencia</span>
+      </div>
+      <span class="codigo-archivo">swap_falla.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-kw">void</span> <span class="c-fn">intercambiar</span>(<span class="c-tipo">int</span> a, <span class="c-tipo">int</span> b) {   <span class="c-com">// a y b son COPIAS locales</span>
+    <span class="c-tipo">int</span> temp = a;
+    a = b;
+    b = temp;
+    <span class="c-com">// los cambios mueren aquí: x e y en main quedan intactos</span>
+}
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">int</span> x = <span class="c-num">5</span>, y = <span class="c-num">10</span>;
+    <span class="c-fn">intercambiar</span>(x, y);
+    <span class="c-fn">cout</span> &lt;&lt; x &lt;&lt; <span class="c-str">" "</span> &lt;&lt; y;   <span class="c-com">// imprime: 5 10  ← ¡no cambió nada!</span>
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+  </div>
+
+  <div class="caja-adv">
+    <div class="ca-label">⚠️ El engaño del paso por valor</div>
+    <p>La función parece intercambiar, pero trabaja con copias locales. Al terminar la función esas copias se destruyen y <code>x</code> e <code>y</code> en <code>main</code> quedan intactos. La solución: pasar por <strong>referencia</strong> con el operador <code>&amp;</code>, que convierte el parámetro en un alias del original.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- 9.2 ─────────────────────────────────────────────────── -->
+<section class="seccion" id="s92">
+  <span class="seccion-num">9.2</span>
+  <h2>Paso por Valor — Trabaja con una Copia</h2>
+  <p>Es el comportamiento predeterminado en C++. La función recibe una <strong>copia independiente</strong> del argumento. Cualquier modificación dentro de la función <em>no afecta</em> a la variable original. Ideal cuando la función solo necesita leer el dato sin modificarlo.</p>
+
+  <div class="def-formal">
+    <span class="def-label">Cuándo usar paso por valor</span>
+    <p>Cuando la función <em>solo lee</em> el dato y <em>no debe modificarlo</em>. Para tipos simples (<em>int</em>, <em>double</em>, <em>bool</em>, <em>char</em>) el costo de copiar es despreciable. El compilador puede optimizarlo automáticamente con <em>copy elision</em>.</p>
+  </div>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · paso por valor — el original queda protegido</span>
+      </div>
+      <span class="codigo-archivo">por_valor.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-tipo">double</span> <span class="c-fn">calcularIVA</span>(<span class="c-tipo">double</span> precio) {    <span class="c-com">// precio es copia independiente</span>
+    precio *= <span class="c-num">1.12</span>;     <span class="c-com">// modifica la copia, NO el original</span>
+    <span class="c-kw">return</span> precio;
+}
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">double</span> subtotal = <span class="c-num">100.0</span>;
+    <span class="c-tipo">double</span> total    = <span class="c-fn">calcularIVA</span>(subtotal);
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Subtotal: "</span> &lt;&lt; subtotal &lt;&lt; endl;   <span class="c-com">// 100.0 — sin cambios</span>
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Con IVA:  "</span> &lt;&lt; total    &lt;&lt; endl;   <span class="c-com">// 112.0</span>
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+  </div>
+</section>
+
+<hr>
+
+<!-- 9.3 ─────────────────────────────────────────────────── -->
+<section class="seccion" id="s93">
+  <span class="seccion-num">9.3</span>
+  <h2>Paso por Referencia — Trabaja con el Original</h2>
+  <p>El operador <code>&amp;</code> en el parámetro convierte la variable en un <strong>alias</strong>: apunta a la misma posición de memoria que la variable original. Toda modificación dentro de la función afecta directamente al argumento del llamador.</p>
+
+  <div class="def-formal">
+    <span class="def-label">Sintaxis</span>
+    <p><em>tipo&amp;</em> nombre — el <em>&amp;</em> puede ir pegado al tipo (<em>int&amp; x</em>) o al nombre (<em>int &amp;x</em>); ambos son válidos en C++. Por convención académica se prefiere pegado al tipo.</p>
+  </div>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · intercambio correcto con referencia</span>
+      </div>
+      <span class="codigo-archivo">swap_correcto.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-kw">void</span> <span class="c-fn">intercambiar</span>(<span class="c-tipo">int</span>&amp; a, <span class="c-tipo">int</span>&amp; b) {    <span class="c-com">// &amp; = alias del original</span>
+    <span class="c-tipo">int</span> temp = a;
+    a = b;
+    b = temp;
+    <span class="c-com">// modifica directamente x e y en main</span>
+}
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">int</span> x = <span class="c-num">5</span>, y = <span class="c-num">10</span>;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Antes:   x="</span> &lt;&lt; x &lt;&lt; <span class="c-str">"  y="</span> &lt;&lt; y &lt;&lt; endl;   <span class="c-com">// 5  10</span>
+    <span class="c-fn">intercambiar</span>(x, y);
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Después: x="</span> &lt;&lt; x &lt;&lt; <span class="c-str">"  y="</span> &lt;&lt; y &lt;&lt; endl;   <span class="c-com">// 10  5</span>
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+  </div>
+
+  <h3>Traza de memoria — paso a paso</h3>
+  <table class="tabla-sim">
+    <thead>
+      <tr><th>Momento</th><th>x (main)</th><th>y (main)</th><th>a (alias→x)</th><th>b (alias→y)</th><th>temp</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Antes de llamar</td><td>5</td><td>10</td><td>—</td><td>—</td><td>—</td></tr>
+      <tr><td>Entrar a intercambiar</td><td>5</td><td>10</td><td>5 ← mismo lugar</td><td>10 ← mismo lugar</td><td>—</td></tr>
+      <tr><td><code>temp = a</code></td><td>5</td><td>10</td><td>5</td><td>10</td><td>5</td></tr>
+      <tr><td><code>a = b</code></td><td class="acc">10</td><td>10</td><td>10</td><td>10</td><td>5</td></tr>
+      <tr><td><code>b = temp</code></td><td>10</td><td class="acc">5</td><td>10</td><td>5</td><td>5</td></tr>
+      <tr><td>Salir de la función</td><td class="res">10</td><td class="res">5</td><td>destruida</td><td>destruida</td><td>destruida</td></tr>
+    </tbody>
+  </table>
+
+  <div class="caja-nota">
+    <div class="cn-label">📌 Alias = misma dirección de memoria</div>
+    <p>El alias <code>a</code> no es una nueva variable: es otro nombre para la dirección de <code>x</code>. Escribir en <code>a</code> es literalmente escribir en <code>x</code>. Por eso el cambio persiste al salir de la función. No se copió ningún dato.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- 9.4 ─────────────────────────────────────────────────── -->
+<section class="seccion" id="s94">
+  <span class="seccion-num">9.4</span>
+  <h2>Comparativa: Valor vs. Referencia</h2>
+
+  <table class="tabla-est">
+    <thead><tr><th>Aspecto</th><th>Paso por Valor</th><th>Paso por Referencia</th></tr></thead>
+    <tbody>
+      <tr><td>Sintaxis</td><td><code>void f(int x)</code></td><td><code>void f(int&amp; x)</code></td></tr>
+      <tr><td>¿Qué recibe la función?</td><td>Una copia independiente</td><td>Un alias al original (misma dirección)</td></tr>
+      <tr><td>¿Modifica el original?</td><td>No — protegido automáticamente</td><td>Sí — escritura directa en memoria</td></tr>
+      <tr><td>Costo de memoria</td><td>Copia el dato (mínimo para tipos simples)</td><td>Solo pasa la dirección (8 bytes en 64-bit)</td></tr>
+      <tr><td>Riesgo</td><td>Ninguno: el original es inaccesible</td><td>Modificar por error el original del llamador</td></tr>
+      <tr><td>Cuándo usarlo</td><td>Datos de entrada que no deben cambiar</td><td>Cuando la función debe modificar o devolver múltiples valores</td></tr>
+    </tbody>
+  </table>
+
+  <div class="caja-ia">
+    <div class="ci-label">🤖 IA y el paso por referencia</div>
+    <p>La IA frecuentemente genera funciones que reciben <em>todo</em> por referencia "por eficiencia". <strong>Esa práctica es incorrecta como regla general.</strong> Solo usa <code>&amp;</code> cuando la función <em>necesita modificar</em> el argumento o devolver múltiples valores. Para datos de entrada de solo lectura, usa <code>const&amp;</code> (§9.5) o paso por valor para tipos simples. Siempre revisa la elección de la IA y justifica cada parámetro.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- 9.5 ─────────────────────────────────────────────────── -->
+<section class="seccion" id="s95">
+  <span class="seccion-num">9.5</span>
+  <h2>Parámetros <code>const&amp;</code> — Eficiencia sin Riesgo</h2>
+  <p>Para pasar objetos grandes (como <code>string</code>) que la función solo necesita leer, <code>const&amp;</code> combina lo mejor de ambos mundos: evita la copia (eficiencia de referencia) y garantiza que el original no puede ser modificado (seguridad de valor). El compilador genera error si intentas escribir en él.</p>
+
+  <div class="comparar">
+    <div class="comp-bloque">
+      <span class="comp-label malo">Sin const&amp; — ineficiente</span>
+      <pre><span class="c-kw">void</span> <span class="c-fn">mostrar</span>(<span class="c-tipo">string</span> nombre) {
+  <span class="c-com">// copia todo el string</span>
+  <span class="c-fn">cout</span> &lt;&lt; nombre;
+}</pre>
+    </div>
+    <div class="comp-bloque">
+      <span class="comp-label bien">Con const&amp; — eficiente y seguro</span>
+      <pre><span class="c-kw">void</span> <span class="c-fn">mostrar</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; nombre) {
+  <span class="c-com">// alias sin copia, protegido</span>
+  <span class="c-fn">cout</span> &lt;&lt; nombre;
+}</pre>
+    </div>
+  </div>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · const&amp; en práctica — protección garantizada por el compilador</span>
+      </div>
+      <span class="codigo-archivo">const_ref.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-com">// Solo calcula — no necesita modificar precio</span>
+<span class="c-tipo">double</span> <span class="c-fn">calcularDescuento</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span>&amp; precio, <span class="c-tipo">double</span> pct) {
+    <span class="c-kw">return</span> precio * pct / <span class="c-num">100.0</span>;
+    <span class="c-com">// precio = 0;  ← ERROR de compilación: violación de const</span>
+}
+
+<span class="c-com">// Reporte de bienvenida — string grande, solo lectura</span>
+<span class="c-kw">void</span> <span class="c-fn">imprimirBienvenida</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; nombre, <span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; carrera) {
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Bienvenido/a, "</span> &lt;&lt; nombre &lt;&lt; <span class="c-str">"\nCarrera: "</span> &lt;&lt; carrera &lt;&lt; endl;
+}</pre></div>
+  </div>
+
+  <table class="tabla-est">
+    <thead><tr><th>Tipo de parámetro</th><th>¿Copia?</th><th>¿Puede modificar original?</th><th>Mejor para</th></tr></thead>
+    <tbody>
+      <tr><td><code>int x</code></td><td>Sí</td><td>No</td><td>Tipos simples de entrada (int, double, bool, char)</td></tr>
+      <tr><td><code>int&amp; x</code></td><td>No</td><td>Sí</td><td>Cuando la función debe modificar el original o devolver múltiples valores</td></tr>
+      <tr><td><code>const int&amp; x</code></td><td>No</td><td>No — error de compilación</td><td>Objetos grandes de solo lectura (string, struct, vector)</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr>
+
+<!-- 9.6 ─────────────────────────────────────────────────── -->
+<section class="seccion" id="s96">
+  <span class="seccion-num">9.6</span>
+  <h2>Devolver Múltiples Resultados con Referencias</h2>
+  <p>Una función en C++ solo puede retornar un valor con <code>return</code>. Cuando necesitamos varios resultados simultáneos, la solución clásica son los parámetros de <strong>salida por referencia</strong>: la función los escribe directamente en las variables del llamador.</p>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · calcularEstadisticas — tres valores de salida por referencia</span>
+      </div>
+      <span class="codigo-archivo">estadisticas_ref.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-com">// n: ENTRADA por valor · minV, maxV, prom: SALIDA por &amp;</span>
+<span class="c-kw">void</span> <span class="c-fn">calcularEstadisticas</span>(<span class="c-tipo">int</span> n, <span class="c-tipo">double</span>&amp; minV, <span class="c-tipo">double</span>&amp; maxV, <span class="c-tipo">double</span>&amp; prom);
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">int</span>    n = <span class="c-num">5</span>;
+    <span class="c-tipo">double</span> minimo, maximo, promedio;   <span class="c-com">// sin inicializar — la función las llena</span>
+    <span class="c-fn">calcularEstadisticas</span>(n, minimo, maximo, promedio);
+    <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>)
+         &lt;&lt; <span class="c-str">"Mín: "</span> &lt;&lt; minimo &lt;&lt; <span class="c-str">"  Máx: "</span> &lt;&lt; maximo
+         &lt;&lt; <span class="c-str">"  Prom: "</span> &lt;&lt; promedio &lt;&lt; endl;
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}
+
+<span class="c-kw">void</span> <span class="c-fn">calcularEstadisticas</span>(<span class="c-tipo">int</span> n, <span class="c-tipo">double</span>&amp; minV, <span class="c-tipo">double</span>&amp; maxV, <span class="c-tipo">double</span>&amp; prom) {
+    <span class="c-tipo">double</span> suma = <span class="c-num">0</span>, dato;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Ingresa "</span> &lt;&lt; n &lt;&lt; <span class="c-str">" números:\n"</span>;
+    <span class="c-fn">cin</span>  &gt;&gt; dato;
+    minV = maxV = dato;    <span class="c-com">// primer dato inicializa min y max</span>
+    suma = dato;
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">1</span>; i &lt; n; i++) {
+        <span class="c-fn">cin</span> &gt;&gt; dato;
+        <span class="c-kw">if</span> (dato &lt; minV) minV = dato;
+        <span class="c-kw">if</span> (dato &gt; maxV) maxV = dato;
+        suma += dato;
+    }
+    prom = suma / n;       <span class="c-com">// escribe en la variable de main a través del alias</span>
+}</pre></div>
+  </div>
+
+  <div class="caja-nota">
+    <div class="cn-label">📌 Convención: documentar roles de parámetros</div>
+    <p>En funciones con parámetros mixtos, añadir <code>/*in*/</code> o <code>/*out*/</code> junto al prototipo hace el contrato de la función auto-documentado. El lector sabe de un vistazo qué parámetros son datos de entrada y cuáles son resultados de salida, sin tener que leer el cuerpo de la función.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- 9.7 ─────────────────────────────────────────────────── -->
+<section class="seccion" id="s97">
+  <span class="seccion-num">9.7</span>
+  <h2>Ejercicios de Aplicación</h2>
+
+  <div class="ejercicios-section">
+    <div class="ejercicios-titulo">✏️ Actividades de Aplicación</div>
+
+    <div class="ejercicio-item">
+      <div class="ej-num">1</div>
+      <div class="ej-badge comp">Comprensión</div>
+      <div class="ej-enunciado"><strong>Predecir la salida sin ejecutar.</strong> Indica qué imprime cada fragmento y explica por qué: (a) <code>void f(int x){x=99;} int a=5; f(a); cout&lt;&lt;a;</code> — (b) <code>void g(int&amp; x){x=99;} int a=5; g(a); cout&lt;&lt;a;</code> — (c) <code>void h(const int&amp; x){x=99;} int a=5; h(a); cout&lt;&lt;a;</code>. ¿Cuál de los tres genera error de compilación? ¿Por qué razón exacta?</div>
+    </div>
+
+    <div class="ejercicio-item">
+      <div class="ej-num">2</div>
+      <div class="ej-badge aplic">Aplicación</div>
+      <div class="ej-enunciado"><strong>convertirMoneda.</strong> Implementa <code>void convertirMoneda(double usd, double&amp; eur, double&amp; gbp, double&amp; jpy)</code> con tasas fijas EUR=0.92, GBP=0.79, JPY=150.5. En <code>main</code> valida con <code>do-while</code> que usd&gt;0, llama la función y muestra los tres resultados. Justifica por qué <code>usd</code> va por valor y los otros tres por referencia.</div>
+    </div>
+
+    <div class="ejercicio-item">
+      <div class="ej-num">3</div>
+      <div class="ej-badge aplic">Aplicación</div>
+      <div class="ej-enunciado"><strong>ordenarTres.</strong> Escribe <code>void ordenarTres(double&amp; a, double&amp; b, double&amp; c)</code> que deje los tres valores en orden ascendente reutilizando <code>intercambiar(double&amp;, double&amp;)</code>. Prueba con (3,1,2), (5,5,1) y (10,10,10). Muestra los valores antes y después de cada llamada para verificar.</div>
+    </div>
+
+    <div class="ejercicio-item">
+      <div class="ej-num">4</div>
+      <div class="ej-badge aplic">Aplicación</div>
+      <div class="ej-enunciado"><strong>leerRango — validador reutilizable con <code>const string&amp;</code>.</strong> Escribe <code>double leerRango(const string&amp; msg, double minVal, double maxVal)</code> que muestra <code>msg</code>, lee con <code>do-while</code> hasta que el valor esté en [minVal, maxVal] y lo retorna. Úsala en al menos tres contextos distintos: nota (0–10), edad (1–120), temperatura (−50–150). Explica por qué <code>msg</code> usa <code>const string&amp;</code>.</div>
+    </div>
+
+    <div class="ejercicio-item">
+      <div class="ej-num">5</div>
+      <div class="ej-badge integ">Integrador + IA</div>
+      <div class="ej-enunciado"><strong>Auditar código de la IA.</strong> Pide a la IA una función que calcule suma, promedio, mínimo y máximo de N números. Analiza: ¿usó valor o referencia para los resultados? ¿Y para N? ¿Hay <code>const&amp;</code> donde corresponde? Corrige cualquier error de decisión y documenta cada parámetro con <code>/*in*/</code> o <code>/*out*/</code> y una línea de justificación.</div>
+    </div>
+  </div>
+
+  <div class="evaluativa">
+    <div class="evaluativa-titulo">Actividad Presencial Evaluativa — Capítulo 9</div>
+    <div class="evaluativa-sub">Sesión 9 · Tiempo: 45 min · Sin acceso a IA ni a internet</div>
+    <div class="evaluativa-enunciado">Sistema de notas con tres funciones de firmas exactas: <code>void ingresarNotas(double&amp; n1, double&amp; n2, double&amp; n3)</code> que valide cada nota con <code>do-while</code> en [0,10]; <code>void calcularResultados(double n1, double n2, double n3, double&amp; prom, bool&amp; aprobado)</code> donde promedio ≥ 7 aprueba; y <code>void mostrarReporte(const string&amp; nombre, double prom, bool aprobado)</code> que imprime el resultado con formato. El <code>main</code> coordina las tres llamadas en orden.</div>
+    <ul class="evaluativa-criterios">
+      <li>Prototipos correctos declarados antes de <code>main</code>.</li>
+      <li>Tipo de paso correcto en cada parámetro: valor, referencia o <code>const&amp;</code>.</li>
+      <li>Validación con <code>do-while</code> en <code>ingresarNotas</code>.</li>
+      <li>Tabla de traza con dos casos completos: uno aprobado (p.ej. 8, 9, 7) y uno reprobado (p.ej. 5, 6, 4).</li>
+      <li><code>main()</code> no realiza cálculos directos: solo llama funciones y declara variables.</li>
+    </ul>
+  </div>
+
+  <div class="puente">
+    <div class="puente-titulo">🌉 Funciones que se Llaman a Sí Mismas</div>
+    <div class="puente-sub">Preparación para Cap. 10</div>
+    <div class="puente-texto">Ya dominas cómo los datos fluyen entre funciones mediante valor y referencia, y cómo el computador crea y destruye variables locales en cada llamada. En el Cap. 10 descubrirás cómo ese mismo mecanismo —la <strong>pila de ejecución</strong>— hace posible la <strong>recursión</strong>: funciones que se resuelven definiéndose en términos de sí mismas para atacar problemas que se dividen naturalmente en versiones más pequeñas del mismo problema.</div>
+  </div>
+</section>
+
+</main>
+<div class="nav-caps">
+  <a href="practica_08.html" class="nav-cap-btn">
+    <span class="ncb-arrow">←</span>
+    <div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Práctica 8 — Calculadora Modular</span></div>
+  </a>
+  <a href="practica_09.html" class="nav-cap-btn sig">
+    <span class="ncb-arrow">→</span>
+    <div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Sesión Práctica 9</span></div>
+  </a>
+</div>
+<footer class="pie"><span>Cap. 9 — Paso por Valor y Referencia · Unidad III · ESPAM MFL</span><span>espam.edu.ec</span></footer>
+</body></html>
