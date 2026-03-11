@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Práctica 6 — while y do-while | ESPAM MFL</title>
+<title>Práctica 11 — Arreglos Unidimensionales | ESPAM MFL</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
 :root{--verde:#005846;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
@@ -174,7 +174,7 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
           <li><a href="capitulo_05.html" class="nav-item"><span class="nav-num">05</span> Estructuras Repetitivas I</a></li>
           <li><a href="practica_05.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 5</a></li>
           <li><a href="capitulo_06.html" class="nav-item"><span class="nav-num">06</span> Estructuras Repetitivas II</a></li>
-          <li><a href="practica_06.html" class="nav-item practica activo"><span class="nav-num">↳</span> Sesión Práctica 6</a></li>
+          <li><a href="practica_06.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 6</a></li>
           <li><a href="capitulo_07.html" class="nav-item"><span class="nav-num">07</span> Integración de Estructuras</a></li>
           <li><a href="practica_07.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 7</a></li>
         </ul>
@@ -190,7 +190,7 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
           <li><a href="capitulo_10.html" class="nav-item"><span class="nav-num">10</span> Pila y Modularidad</a></li>
           <li><a href="practica_10.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 10</a></li>
           <li><a href="capitulo_11.html" class="nav-item"><span class="nav-num">11</span> Aplicaciones Funcionales</a></li>
-          <li><a href="practica_11.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 11</a></li>
+          <li><a href="practica_11.html" class="nav-item practica activo"><span class="nav-num">↳</span> Sesión Práctica 11</a></li>
         </ul>
       </div>
 
@@ -219,22 +219,22 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
 
   </nav>
 <section class="page-header-prac">
-  <div class="ph-num">P6</div>
+  <div class="ph-num">P11</div>
   <div class="ph-inner">
-    <div class="ph-badge-prac">🔬 Unidad II · Sesión Práctica 6</div>
-    <h1 class="ph-titulo">Sistema de Registro de Notas con Validación</h1>
-    <p class="ph-subtitulo">while · do-while · validación de entrada · menú interactivo · estadísticas acumuladas</p>
+    <div class="ph-badge-prac">🔬 Unidad IV · Sesión Práctica 11</div>
+    <h1 class="ph-titulo">Sistema de Gestión de Notas — Curso ESPAM</h1>
+    <p class="ph-subtitulo">arreglos unidimensionales · funciones con <code>const double[]</code> · estadísticas · burbuja · búsqueda lineal</p>
     <div class="ph-meta">
       <div class="ph-meta-item"><span class="ph-meta-label">Duración</span><span class="ph-meta-valor">180 min (3h)</span></div>
       <div class="ph-meta-item"><span class="ph-meta-label">Modalidad</span><span class="ph-meta-valor">Individual → Parejas</span></div>
-      <div class="ph-meta-item"><span class="ph-meta-label">Entregable</span><span class="ph-meta-valor">Código + bitácora</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-valor">Entregable: .cpp + trazas + bitácora</span></div>
     </div>
   </div>
 </section>
 <nav class="fases-nav">
-  <a class="fase-chip" href="#f1">F1 · Modelado</a>
-  <a class="fase-chip" href="#f2">F2 · PSeInt</a>
-  <a class="fase-chip" href="#f3">F3 · C++ Individual</a>
+  <a class="fase-chip" href="#f1">F1 · Diseño</a>
+  <a class="fase-chip" href="#f2">F2 · Pseudocódigo</a>
+  <a class="fase-chip" href="#f3">F3 · C++</a>
   <a class="fase-chip" href="#f4">F4 · Extensión</a>
   <a class="fase-chip" href="#f5">F5 · Análisis IA</a>
   <a class="fase-chip" href="#f6">F6 · Bitácora</a>
@@ -243,216 +243,301 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
 
 <div class="ra-box">
   <div class="ra-label">Objetivo de la Sesión</div>
-  <div class="ra-texto">El estudiante <strong>construye un sistema real de registro de notas</strong> usando <code>while</code> para acumulación y <code>do-while</code> para validación, combinando ambos ciclos con <code>switch</code> y estructuras selectivas en un menú interactivo completo.</div>
+  <div class="ra-texto">El estudiante <strong>construye un sistema modular de gestión de notas</strong> que almacena las calificaciones de 10 estudiantes en un arreglo, calcula estadísticas (mín, máx, promedio, aprobados), ordena con burbuja, y permite búsqueda por nota. Cada operación es una función independiente con la firma correcta (<code>const double[]</code> para lectura, <code>double[]</code> para modificación).</div>
 </div>
 
 <div class="problema-box">
-  <span class="pb-label">🏫 Contexto del Problema</span>
-  <div class="pb-enunciado">El departamento académico de ESPAM MFL necesita un sistema para registrar y analizar notas de estudiantes. El sistema debe: mostrar un menú principal con <code>do-while</code>, registrar notas de una materia con <code>while</code> hasta centinela, validar que cada nota esté en [0, 10] con un <code>do-while</code> interno, y calcular estadísticas al finalizar. Un registro incompleto (0 estudiantes) debe mostrar un mensaje apropiado.</div>
+  <span class="pb-label">🎓 Contexto del Problema</span>
+  <div class="pb-enunciado">La cátedra de Introducción a la Programación de ESPAM MFL necesita un sistema de consola para procesar las notas del primer parcial de 10 estudiantes. El sistema debe: <strong>1)</strong> ingresar notas con validación [0–10] <strong>2)</strong> calcular estadísticas completas <strong>3)</strong> listar aprobados y reprobados <strong>4)</strong> mostrar el ranking ordenado de mayor a menor <strong>5)</strong> buscar si una nota específica existe en la lista.</div>
 </div>
 
+<!-- F1 -->
 <section class="fase" id="f1">
   <div class="fase-header">
     <div class="fase-num">F1</div>
-    <div><div class="fase-titulo">Modelado en Papel</div><div class="fase-tiempo">0 – 20 min · SIN computadora</div></div>
+    <div>
+      <div class="fase-titulo">Diseño de Funciones en Papel</div>
+      <div class="fase-tiempo">0 – 20 min · SIN computadora</div>
+    </div>
   </div>
-  <p>Antes de abrir el IDE, diseña el algoritmo completo en papel.</p>
   <div class="actividades">
     <div class="actividad">
       <div class="act-num">1</div>
-      <div><div class="act-titulo">Diagrama de flujo del menú principal</div>
-      <div class="act-desc">Dibuja el diagrama del menú con opciones: (1) Registrar notas de una materia, (2) Ver reporte global, (3) Salir. El menú usa <code>do-while</code>. Para la opción 1, dibuja el ciclo interno de ingreso de notas con centinela (-1 para terminar) y el validador de rango.</div></div>
+      <div>
+        <div class="act-titulo">Tabla de funciones del sistema</div>
+        <div class="act-desc">Diseña la firma completa de cada función: nombre · parámetros (con tipo de paso) · tipo de retorno · responsabilidad. Las funciones mínimas: <code>ingresar</code>, <code>calcularProm</code>, <code>calcularMin</code>, <code>calcularMax</code>, <code>contarAprobados</code>, <code>mostrarLista</code>, <code>ordenarDesc</code>, <code>buscarNota</code>. Para cada parámetro <code>arr[]</code> decide si necesita <code>const</code> o no y justifica.</div>
+      </div>
     </div>
     <div class="actividad">
       <div class="act-num">2</div>
-      <div><div class="act-titulo">Tabla de variables</div>
-      <div class="act-desc">Identifica todas las variables necesarias: ¿qué acumula? ¿qué compara? ¿cuáles son temporales y cuáles persistentes entre menús? Anota tipo de dato, nombre propuesto y valor inicial.</div></div>
+      <div>
+        <div class="act-titulo">Traza de burbuja en papel</div>
+        <div class="act-desc">Aplica el algoritmo burbuja sobre el arreglo ejemplo [6, 9, 5, 8, 7]. Dibuja el estado completo después de cada pasada. ¿Cuántas pasadas necesita? ¿La versión descendente solo cambia el signo de la comparación? Verifica con la pasada 1: [6,9,5,8,7] → [6,5,8,7,9].</div>
+      </div>
     </div>
     <div class="actividad">
       <div class="act-num">3</div>
-      <div><div class="act-titulo">Simular con datos de prueba</div>
-      <div class="act-desc">Traza manualmente con notas: 8.5, 6.0, 9.5, -1 (centinela). Calcula a mano: total acumulado, cantidad, promedio, nota mínima y máxima. Estos serán tus valores esperados para verificar el programa.</div></div>
+      <div>
+        <div class="act-titulo">Casos de prueba definidos de antemano</div>
+        <div class="act-desc">Define un arreglo de 10 notas con valores conocidos: [8.5, 6.0, 9.2, 10.0, 5.5, 7.8, 4.0, 8.0, 7.0, 6.5]. Calcula a mano: promedio, mínimo, máximo, cantidad de aprobados (≥7). Estos son tus valores de contrato para F3.</div>
+      </div>
     </div>
   </div>
 </section>
 
 <hr>
 
+<!-- F2 -->
 <section class="fase" id="f2">
   <div class="fase-header">
     <div class="fase-num">F2</div>
-    <div><div class="fase-titulo">Pseudocódigo en PSeInt</div><div class="fase-tiempo">20 – 55 min</div></div>
+    <div>
+      <div class="fase-titulo">Pseudocódigo en PSeInt</div>
+      <div class="fase-tiempo">20 – 55 min</div>
+    </div>
   </div>
-  <p>Escribe el pseudocódigo completo en PSeInt y verifica que ejecute correctamente antes de pasar a C++.</p>
+
   <div class="pseudocodigo">
-    <div class="pseudo-label">PSeInt · Sistema de Registro de Notas</div>
-    <div class="pseudo-body"><span class="p-kw">Definir</span> opcion, cantidad <span class="p-kw">Como</span> Entero
-<span class="p-kw">Definir</span> nota, suma, minNota, maxNota <span class="p-kw">Como</span> Real
-suma &lt;- 0; cantidad &lt;- 0
-
-<span class="p-kw">Repetir</span>
-    Escribir <span class="p-str">"=== SISTEMA DE NOTAS ==="</span>
-    Escribir <span class="p-str">"1. Registrar notas de una materia"</span>
-    Escribir <span class="p-str">"2. Ver reporte global"</span>
-    Escribir <span class="p-str">"3. Salir"</span>
-    Leer opcion
-
-    <span class="p-kw">Segun</span> opcion <span class="p-kw">Hacer</span>
-        1:
-            Escribir <span class="p-str">"Ingrese notas (-1 para terminar):"</span>
-            <span class="p-kw">Repetir</span>         <span class="c-com">// validar cada nota</span>
-                Leer nota
-                <span class="p-kw">Si</span> nota &lt; 0 <span class="p-kw">Y</span> nota &lt;&gt; -1 <span class="p-kw">Entonces</span>
-                    Escribir <span class="p-str">"Nota inválida"</span>
-                <span class="p-kw">FinSi</span>
-            <span class="p-kw">Hasta Que</span> nota &gt;= 0 <span class="p-kw">O</span> nota = -1
-
-            <span class="p-kw">Mientras</span> nota &lt;&gt; -1 <span class="p-kw">Hacer</span>
-                suma &lt;- suma + nota
-                cantidad &lt;- cantidad + 1
-                <span class="p-kw">Si</span> cantidad = 1 <span class="p-kw">Entonces</span>
-                    minNota &lt;- nota; maxNota &lt;- nota
-                <span class="p-kw">SiNo</span>
-                    <span class="p-kw">Si</span> nota &lt; minNota <span class="p-kw">Entonces</span> minNota &lt;- nota <span class="p-kw">FinSi</span>
-                    <span class="p-kw">Si</span> nota &gt; maxNota <span class="p-kw">Entonces</span> maxNota &lt;- nota <span class="p-kw">FinSi</span>
-                <span class="p-kw">FinSi</span>
-                <span class="p-kw">Repetir</span>; Leer nota; <span class="p-kw">Hasta Que</span> nota &gt;= 0 <span class="p-kw">O</span> nota = -1
-            <span class="p-kw">FinMientras</span>
-        2:
-            <span class="p-kw">Si</span> cantidad &gt; 0 <span class="p-kw">Entonces</span>
-                Escribir <span class="p-str">"Promedio: "</span>, suma/cantidad
-                Escribir <span class="p-str">"Mínima: "</span>, minNota, <span class="p-str">" Máxima: "</span>, maxNota
-            <span class="p-kw">SiNo</span>
-                Escribir <span class="p-str">"Sin registros aún."</span>
+    <div class="pseudo-label">PSeInt · ingreso con validación + estadísticas</div>
+    <div class="pseudo-body"><span class="p-kw">SubProceso</span> ingresar(notas, n)
+    <span class="p-kw">Para</span> i &lt;- 0 <span class="p-kw">Hasta</span> n-1 <span class="p-kw">Hacer</span>
+        <span class="p-kw">Repetir</span>
+            Escribir <span class="p-str">"Nota estudiante [", i+1, "]: "</span>
+            Leer notas[i]
+            <span class="p-kw">Si</span> notas[i] &lt; 0 O notas[i] &gt; 10 <span class="p-kw">Entonces</span>
+                Escribir <span class="p-str">"Error: nota debe estar entre 0 y 10"</span>
             <span class="p-kw">FinSi</span>
-        3:
-            Escribir <span class="p-str">"Hasta luego."</span>
-    <span class="p-kw">FinSegun</span>
-<span class="p-kw">Hasta Que</span> opcion = 3</div>
+        <span class="p-kw">Hasta Que</span> notas[i] &gt;= 0 Y notas[i] &lt;= 10
+    <span class="p-kw">FinPara</span>
+<span class="p-kw">FinSubProceso</span>
+
+<span class="p-kw">Funcion</span> prom &lt;- calcularProm(notas, n)
+    suma &lt;- 0
+    <span class="p-kw">Para</span> i &lt;- 0 <span class="p-kw">Hasta</span> n-1 <span class="p-kw">Hacer</span>
+        suma &lt;- suma + notas[i]
+    <span class="p-kw">FinPara</span>
+    prom &lt;- suma / n
+<span class="p-kw">FinFuncion</span></div>
   </div>
-  <div class="caja-nota">
-    <div class="cn-label">⚙️ Prueba en PSeInt antes de continuar</div>
-    <p>Verifica los 3 casos: (a) ingresar notas válidas y revisar el reporte, (b) intentar ingresar nota fuera de rango, (c) revisar reporte sin haber registrado notas. Todos deben funcionar correctamente.</p>
+
+  <div class="pseudocodigo">
+    <div class="pseudo-label">PSeInt · ordenamiento burbuja descendente</div>
+    <div class="pseudo-body"><span class="p-kw">SubProceso</span> ordenarDesc(notas, n)
+    <span class="p-kw">Para</span> i &lt;- 0 <span class="p-kw">Hasta</span> n-2 <span class="p-kw">Hacer</span>
+        hubo &lt;- Falso
+        <span class="p-kw">Para</span> j &lt;- 0 <span class="p-kw">Hasta</span> n-2-i <span class="p-kw">Hacer</span>
+            <span class="p-kw">Si</span> notas[j] &lt; notas[j+1] <span class="p-kw">Entonces</span>   <span class="c-com">// &lt; para descendente</span>
+                temp &lt;- notas[j]
+                notas[j] &lt;- notas[j+1]
+                notas[j+1] &lt;- temp
+                hubo &lt;- Verdadero
+            <span class="p-kw">FinSi</span>
+        <span class="p-kw">FinPara</span>
+        <span class="p-kw">Si</span> <span class="p-kw">No</span> hubo <span class="p-kw">Entonces</span>
+            <span class="p-kw">Interrumpir</span>
+        <span class="p-kw">FinSi</span>
+    <span class="p-kw">FinPara</span>
+<span class="p-kw">FinSubProceso</span></div>
   </div>
 </section>
 
 <hr>
 
+<!-- F3 -->
 <section class="fase" id="f3">
   <div class="fase-header">
     <div class="fase-num">F3</div>
-    <div><div class="fase-titulo">Implementación en C++ — Individual</div><div class="fase-tiempo">55 – 100 min</div></div>
+    <div>
+      <div class="fase-titulo">Implementación Completa en C++ — Individual</div>
+      <div class="fase-tiempo">55 – 105 min</div>
+    </div>
   </div>
-  <p>Traduce el pseudocódigo a C++. El código completo debe compilar sin errores y producir resultados idénticos a la simulación en papel (F1).</p>
+
   <div class="codigo-bloque">
-    <div class="codigo-header"><div style="display:flex;align-items:center;gap:8px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · Estructura base</span></div><span class="codigo-archivo">registro_notas.cpp</span></div>
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · Sistema de notas ESPAM — implementación completa</span>
+      </div>
+      <span class="codigo-archivo">sistema_notas.cpp</span>
+    </div>
     <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
 <span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
 <span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
 
+<span class="c-kw">const</span> <span class="c-tipo">int</span> N = <span class="c-num">10</span>;
+
+<span class="c-com">// ─── PROTOTIPOS ─────────────────────────────────────────────────</span>
+<span class="c-kw">void</span>   <span class="c-fn">ingresar</span>(<span class="c-tipo">double</span> notas[], <span class="c-tipo">int</span> n);
+<span class="c-tipo">double</span> <span class="c-fn">calcularProm</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> notas[], <span class="c-tipo">int</span> n);
+<span class="c-tipo">double</span> <span class="c-fn">calcularMin</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> notas[], <span class="c-tipo">int</span> n);
+<span class="c-tipo">double</span> <span class="c-fn">calcularMax</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> notas[], <span class="c-tipo">int</span> n);
+<span class="c-tipo">int</span>    <span class="c-fn">contarAprobados</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> notas[], <span class="c-tipo">int</span> n);
+<span class="c-kw">void</span>   <span class="c-fn">mostrarLista</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> notas[], <span class="c-tipo">int</span> n);
+<span class="c-kw">void</span>   <span class="c-fn">ordenarDesc</span>(<span class="c-tipo">double</span> notas[], <span class="c-tipo">int</span> n);
+<span class="c-tipo">int</span>    <span class="c-fn">buscarNota</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> notas[], <span class="c-tipo">int</span> n, <span class="c-tipo">double</span> obj);
+
 <span class="c-tipo">int</span> <span class="c-fn">main</span>() {
-    <span class="c-tipo">int</span>    opcion, cantidad = <span class="c-num">0</span>;
-    <span class="c-tipo">double</span> nota, suma = <span class="c-num">0</span>, minNota, maxNota;
+    <span class="c-tipo">double</span> notas[N];
+    <span class="c-fn">ingresar</span>(notas, N);
 
-    <span class="c-kw">do</span> {
-        <span class="c-com">// TODO: mostrar menú</span>
-        <span class="c-fn">cin</span> &gt;&gt; opcion;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"
+══════ REPORTE DE NOTAS ══════
+"</span>;
+    <span class="c-fn">mostrarLista</span>(notas, N);
+    <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>);
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Promedio : "</span> &lt;&lt; <span class="c-fn">calcularProm</span>(notas,N) &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Máxima   : "</span> &lt;&lt; <span class="c-fn">calcularMax</span>(notas,N)  &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Mínima   : "</span> &lt;&lt; <span class="c-fn">calcularMin</span>(notas,N)  &lt;&lt; endl;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Aprobados: "</span> &lt;&lt; <span class="c-fn">contarAprobados</span>(notas,N) &lt;&lt; <span class="c-str">"/"</span> &lt;&lt; N &lt;&lt; endl;
 
-        <span class="c-kw">switch</span>(opcion) {
-            <span class="c-kw">case</span> <span class="c-num">1</span>:
-                <span class="c-com">// TODO: leer notas con while y validar con do-while interno</span>
-                <span class="c-kw">break</span>;
-            <span class="c-kw">case</span> <span class="c-num">2</span>:
-                <span class="c-com">// TODO: mostrar reporte (verificar cantidad > 0)</span>
-                <span class="c-kw">break</span>;
-            <span class="c-kw">case</span> <span class="c-num">3</span>:
-                <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Hasta luego.\n"</span>;
-                <span class="c-kw">break</span>;
-            <span class="c-kw">default</span>:
-                <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Opción inválida.\n"</span>;
-        }
-    } <span class="c-kw">while</span> (opcion != <span class="c-num">3</span>);
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"
+── Ranking (mayor a menor) ──
+"</span>;
+    <span class="c-fn">ordenarDesc</span>(notas, N);
+    <span class="c-fn">mostrarLista</span>(notas, N);
 
+    <span class="c-tipo">double</span> buscar;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"
+Nota a buscar: "</span>; <span class="c-fn">cin</span> &gt;&gt; buscar;
+    <span class="c-tipo">int</span> pos = <span class="c-fn">buscarNota</span>(notas, N, buscar);
+    <span class="c-kw">if</span> (pos != <span class="c-num">-1</span>)
+        <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Encontrada en posición "</span> &lt;&lt; pos+<span class="c-num">1</span> &lt;&lt; <span class="c-str">" del ranking
+"</span>;
+    <span class="c-kw">else</span>
+        <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Nota no encontrada
+"</span>;
     <span class="c-kw">return</span> <span class="c-num">0</span>;
+}
+
+<span class="c-kw">void</span> <span class="c-fn">ingresar</span>(<span class="c-tipo">double</span> notas[], <span class="c-tipo">int</span> n) {
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">0</span>; i &lt; n; i++) {
+        <span class="c-kw">do</span> {
+            <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  Nota estudiante ["</span> &lt;&lt; i+<span class="c-num">1</span> &lt;&lt; <span class="c-str">"]: "</span>;
+            <span class="c-fn">cin</span>  &gt;&gt; notas[i];
+        } <span class="c-kw">while</span> (notas[i] &lt; <span class="c-num">0</span> || notas[i] &gt; <span class="c-num">10</span>);
+    }
+}
+
+<span class="c-tipo">double</span> <span class="c-fn">calcularProm</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> notas[], <span class="c-tipo">int</span> n) {
+    <span class="c-tipo">double</span> s=<span class="c-num">0</span>; <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;n;i++) s+=notas[i]; <span class="c-kw">return</span> s/n;
+}
+<span class="c-tipo">double</span> <span class="c-fn">calcularMin</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> notas[], <span class="c-tipo">int</span> n) {
+    <span class="c-tipo">double</span> m=notas[<span class="c-num">0</span>]; <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">1</span>;i&lt;n;i++) <span class="c-kw">if</span>(notas[i]&lt;m) m=notas[i]; <span class="c-kw">return</span> m;
+}
+<span class="c-tipo">double</span> <span class="c-fn">calcularMax</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> notas[], <span class="c-tipo">int</span> n) {
+    <span class="c-tipo">double</span> m=notas[<span class="c-num">0</span>]; <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">1</span>;i&lt;n;i++) <span class="c-kw">if</span>(notas[i]&gt;m) m=notas[i]; <span class="c-kw">return</span> m;
+}
+<span class="c-tipo">int</span> <span class="c-fn">contarAprobados</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> notas[], <span class="c-tipo">int</span> n) {
+    <span class="c-tipo">int</span> c=<span class="c-num">0</span>; <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;n;i++) <span class="c-kw">if</span>(notas[i]&gt;=<span class="c-num">7</span>) c++; <span class="c-kw">return</span> c;
+}
+<span class="c-kw">void</span> <span class="c-fn">mostrarLista</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> notas[], <span class="c-tipo">int</span> n) {
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;n;i++)
+        <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"  ["</span>&lt;&lt;setw(<span class="c-num">2</span>)&lt;&lt;i+<span class="c-num">1</span>&lt;&lt;<span class="c-str">"] "</span>&lt;&lt;fixed&lt;&lt;setprecision(<span class="c-num">1</span>)&lt;&lt;notas[i]&lt;&lt;(notas[i]&gt;=<span class="c-num">7</span>?<span class="c-str">" ✓"</span>:<span class="c-str">" ✗"</span>)&lt;&lt;<span class="c-str">"
+"</span>;
+}
+<span class="c-kw">void</span> <span class="c-fn">ordenarDesc</span>(<span class="c-tipo">double</span> notas[], <span class="c-tipo">int</span> n) {
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;n-<span class="c-num">1</span>;i++) {
+        <span class="c-tipo">bool</span> h=<span class="c-kw">false</span>;
+        <span class="c-kw">for</span>(<span class="c-tipo">int</span> j=<span class="c-num">0</span>;j&lt;n-<span class="c-num">1</span>-i;j++)
+            <span class="c-kw">if</span>(notas[j]&lt;notas[j+<span class="c-num">1</span>]){<span class="c-tipo">double</span> t=notas[j];notas[j]=notas[j+<span class="c-num">1</span>];notas[j+<span class="c-num">1</span>]=t;h=<span class="c-kw">true</span>;}
+        <span class="c-kw">if</span>(!h) <span class="c-kw">break</span>;
+    }
+}
+<span class="c-tipo">int</span> <span class="c-fn">buscarNota</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> notas[], <span class="c-tipo">int</span> n, <span class="c-tipo">double</span> obj) {
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;n;i++) <span class="c-kw">if</span>(notas[i]==obj) <span class="c-kw">return</span> i;
+    <span class="c-kw">return</span> <span class="c-num">-1</span>;
 }</pre></div>
-  </div>
-  <div class="caja-adv">
-    <div class="ca-label">📋 Lista de verificación antes de entregar</div>
-    <p>☐ El menú se muestra con <code>do-while</code>. ☐ Las notas se leen con <code>while(nota != -1)</code>. ☐ Cada nota se valida con <code>do-while</code> interno. ☐ El reporte maneja el caso <code>cantidad == 0</code>. ☐ Los resultados coinciden con la simulación del F1.</p>
   </div>
 </section>
 
 <hr>
 
+<!-- F4 -->
 <section class="fase" id="f4">
   <div class="fase-header">
     <div class="fase-num">F4</div>
-    <div><div class="fase-titulo">Extensión en Parejas</div><div class="fase-tiempo">100 – 135 min</div></div>
+    <div>
+      <div class="fase-titulo">Extensión en Parejas</div>
+      <div class="fase-tiempo">105 – 140 min</div>
+    </div>
   </div>
-  <p>Intercambia tu código con un compañero. Revísalo, comprende su lógica y luego <strong>entre los dos</strong> implementen las siguientes mejoras:</p>
   <div class="actividades">
     <div class="actividad">
       <div class="act-num">A</div>
-      <div><div class="act-titulo">Clasificación de notas</div>
-      <div class="act-desc">Al mostrar el reporte, contar cuántas notas son: sobresaliente (≥9), satisfactorio (7–8.9), básico (5–6.9), insuficiente (&lt;5). Mostrar conteo y porcentaje de cada categoría.</div></div>
+      <div>
+        <div class="act-titulo">Histograma en consola</div>
+        <div class="act-desc">Agrega la función <code>void histograma(const double notas[], int n)</code> que imprime una barra de asteriscos proporcional a cada nota: <code>* * * * * * * * (8.5)</code>. La longitud de la barra es <code>(int)notas[i]</code> asteriscos. El estudiante con la nota más alta tiene la barra más larga. Llama a la función desde <code>main()</code> justo después de mostrar el reporte de estadísticas.</div>
+      </div>
     </div>
     <div class="actividad">
       <div class="act-num">B</div>
-      <div><div class="act-titulo">Opción para reiniciar registro</div>
-      <div class="act-desc">Agregar opción 4 al menú: "Nuevo registro" que reinicie suma, cantidad, minNota y maxNota. Pedir confirmación con <code>do-while</code>: "¿Está seguro? (s/n)". Validar que solo se acepte 's' o 'n'.</div></div>
+      <div>
+        <div class="act-titulo">Distribución de notas</div>
+        <div class="act-desc">Implementa <code>void distribucion(const double notas[], int n)</code> que cuenta cuántas notas caen en cada rango: [0–4.9] Reprobado · [5.0–6.9] Regular · [7.0–8.9] Bueno · [9.0–10] Excelente. Muestra el conteo y el porcentaje de cada categoría. Usa cuatro contadores locales en la función.</div>
+      </div>
     </div>
   </div>
 </section>
 
 <hr>
 
+<!-- F5 -->
 <section class="fase" id="f5">
   <div class="fase-header">
     <div class="fase-num">F5</div>
-    <div><div class="fase-titulo">Análisis Crítico con IA — Documentado</div><div class="fase-tiempo">135 – 160 min</div></div>
+    <div>
+      <div class="fase-titulo">Análisis Crítico con IA</div>
+      <div class="fase-tiempo">140 – 163 min</div>
+    </div>
   </div>
   <div class="caja-ia">
-    <div class="ci-label">🤖 Protocolo de Análisis IA · Sesión 6</div>
-    <p><strong>Pregunta a la IA:</strong> "Reescribe el ciclo principal de este sistema usando <code>while(true)</code> y <code>break</code> en lugar de <code>do-while</code>." Luego responde por escrito: (1) ¿Qué cambió estructuralmente? (2) ¿El comportamiento es exactamente igual? (3) ¿Qué versión te parece más legible y por qué? (4) ¿En qué situaciones <code>while(true)</code> sería preferible? Firma tu análisis.</p>
-  </div>
-  <div class="caja-nota">
-    <div class="cn-label">📌 Regla de uso de IA en esta práctica</div>
-    <p>Puedes consultar a la IA para entender errores de compilación o conceptos. No puedes pedirle que escriba el código completo de las fases F3 o F4. Todo código entregado debe ser tuyo y debes poder explicar cada línea.</p>
+    <div class="ci-label">🤖 Protocolo de Análisis IA · Sesión 11</div>
+    <p>Muestra a la IA tu función <code>ingresar</code> y pregúntale: <em>"¿Puedes optimizar esta función?"</em>. Probablemente sugiera usar <code>vector&lt;double&gt;</code> en lugar de arreglo plano. Responde: <strong>(1)</strong> ¿Qué ventajas tiene <code>vector</code> sobre arreglo plano? <strong>(2)</strong> ¿Por qué en este curso usamos arreglos planos primero? <strong>(3)</strong> ¿La IA usó <code>const</code> correctamente en las funciones de solo lectura? <strong>(4)</strong> ¿Pasó el tamaño como parámetro o usó otro mecanismo? Documenta el análisis comparativo.</p>
   </div>
 </section>
 
 <hr>
 
+<!-- F6 -->
 <section class="fase" id="f6">
   <div class="fase-header">
     <div class="fase-num">F6</div>
-    <div><div class="fase-titulo">Bitácora y Rúbrica de Autoevaluación</div><div class="fase-tiempo">160 – 180 min</div></div>
+    <div>
+      <div class="fase-titulo">Bitácora y Rúbrica</div>
+      <div class="fase-tiempo">163 – 180 min</div>
+    </div>
   </div>
   <div class="bitacora">
-    <div class="bitacora-campo"><label>Nombre / Fecha</label><div class="linea-campo"></div></div>
-    <div class="bitacora-campo"><label>¿Qué fue lo más difícil?</label><div class="linea-campo"></div></div>
-    <div class="bitacora-campo"><label>¿Qué diferencia encontraste entre while y do-while?</label><div class="linea-campo"></div></div>
-    <div class="bitacora-campo"><label>Error más frecuente hoy</label><div class="linea-campo"></div></div>
-    <div class="bitacora-campo"><label>¿Cuándo usarías do-while en un proyecto real?</label><div class="linea-campo"></div></div>
-    <div class="bitacora-campo"><label>Conclusión del análisis IA</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>Nombre completo / Fecha / NRC</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>¿Cuántas funciones usaron const double[] y por qué no todas lo usan?</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>¿Qué diferencia observaste entre burbuja ascendente y descendente?</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>¿Cuántas pasadas necesitó el burbuja para tus 10 notas del F1? ¿Coincidió la traza del F3?</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>Resultado del análisis IA: ¿vector vs arreglo — cuándo usar cada uno?</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>Conclusión: qué aprendiste sobre el diseño modular con arreglos</label><div class="linea-campo"></div></div>
   </div>
   <table class="rubrica">
     <thead><tr><th>Criterio</th><th>Logrado ✓</th><th>Parcial △</th><th>No logrado ✗</th><th>Pts</th></tr></thead>
     <tbody>
-      <tr><td>F1: Diagrama + tabla de variables completa</td><td>El diagrama muestra ambos ciclos</td><td>Diagrama incompleto</td><td>No realizado</td><td>/15</td></tr>
-      <tr><td>F2: Pseudocódigo PSeInt ejecuta correctamente</td><td>Tres casos de prueba pasan</td><td>Al menos uno falla</td><td>No entregado</td><td>/20</td></tr>
-      <tr><td>F3: Código C++ compila y produce resultados correctos</td><td>Coincide con simulación F1</td><td>Compila con advertencias</td><td>No compila</td><td>/30</td></tr>
-      <tr><td>F4: Extensión implementada y funcional</td><td>Ambas extensiones</td><td>Solo una extensión</td><td>No realizado</td><td>/20</td></tr>
-      <tr><td>F5: Análisis IA documentado con criterio</td><td>Responde las 4 preguntas</td><td>Responde 2-3</td><td>Copia sin análisis</td><td>/15</td></tr>
+      <tr><td>F1: Tabla de funciones + traza burbuja + casos de prueba calculados</td><td>Todas las firmas con tipo de paso justificado; traza correcta</td><td>1-2 firmas incorrectas o traza incompleta</td><td>No presentado</td><td>/15</td></tr>
+      <tr><td>F2: Pseudocódigo en PSeInt — ingreso y burbuja correctos</td><td>Produce resultados del F1</td><td>Un error corregible</td><td>No entregado</td><td>/15</td></tr>
+      <tr><td>F3: C++ compila, 8 funciones correctas, const correcto, casos de prueba pasan</td><td>Todos los valores del F1 coinciden; const en funciones de lectura</td><td>1-2 funciones incorrectas</td><td>No compila</td><td>/40</td></tr>
+      <tr><td>F4: Histograma y distribución funcionales</td><td>Ambas funciones muestran salida correcta</td><td>Solo una extensión</td><td>No realizado</td><td>/15</td></tr>
+      <tr><td>F5 + F6: Análisis IA + bitácora completa</td><td>4 preguntas razonadas; bitácora firmada y completa</td><td>Análisis superficial</td><td>No entregado</td><td>/15</td></tr>
     </tbody>
     <tfoot><tr><td colspan="4">TOTAL</td><td>/100</td></tr></tfoot>
   </table>
 </section>
-
 </main>
 <div class="nav-caps">
-  <a href="capitulo_06.html" class="nav-cap-btn"><span class="ncb-arrow">←</span><div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Capítulo 6 — while/do-while</span></div></a>
-  <a href="capitulo_07.html" class="nav-cap-btn sig"><span class="ncb-arrow">→</span><div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Cap. 7 — Integración</span></div></a>
+  <a href="capitulo_11.html" class="nav-cap-btn">
+    <span class="ncb-arrow">←</span>
+    <div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Capítulo 11 — Arreglos Unidimensionales</span></div>
+  </a>
+  <a href="capitulo_12.html" class="nav-cap-btn sig">
+    <span class="ncb-arrow">→</span>
+    <div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Cap. 12 — Matrices</span></div>
+  </a>
 </div>
-<footer class="pie"><span>Práctica 6 — while y do-while · Unidad II · ESPAM MFL</span><span>espam.edu.ec</span></footer>
+<footer class="pie"><span>Práctica 11 — Arreglos Unidimensionales · Unidad IV · ESPAM MFL</span><span>espam.edu.ec</span></footer>
 </body></html>

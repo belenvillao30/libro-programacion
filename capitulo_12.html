@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cap. 12 &mdash; Matrices (Arreglos 2D) | ESPAM MFL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{--verde:#005846;--verde-medio:#007a5e;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fondo);font-size:16px;line-height:1.7;overflow-x:hidden;}
+/* TOPBAR */
+.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--verde);display:flex;align-items:center;padding:0 24px;gap:14px;z-index:1000;border-bottom:3px solid var(--verde-claro);}
+.topbar-logo{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--verde-claro);}
+.topbar-sep{width:1px;height:20px;background:rgba(255,255,255,.2);}
+.topbar-titulo{font-size:12px;color:rgba(255,255,255,.65);}
+.topbar-right{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;}
+/* NAV */
+.nav-menu{background:var(--verde);border-bottom:2px solid rgba(203,219,42,.3);margin-top:50px;}
+.nav-toggle{width:100%;background:transparent;color:white;border:none;padding:11px 24px;text-align:left;cursor:pointer;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;}
+.nav-toggle:hover{background:rgba(255,255,255,.04);}
+.nav-toggle-arrow{color:var(--verde-claro);font-size:12px;}
+.nav-body{display:none;padding:18px 24px 22px;}
+.nav-body.abierto{display:flex;flex-wrap:wrap;gap:28px;}
+.nav-grupo{min-width:170px;}
+.nav-grupo-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:7px;display:block;padding-bottom:5px;border-bottom:1px solid rgba(203,219,42,.2);}
+.nav-items{list-style:none;}
+.nav-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12px;color:rgba(255,255,255,.72);text-decoration:none;transition:color .15s;}
+.nav-item:hover{color:var(--verde-claro);}
+.nav-item.activo{color:var(--verde-claro);font-weight:700;}
+.nav-item.activo .nav-num{color:var(--verde-claro);}
+.nav-item.practica{color:rgba(8,184,157,.85);font-style:italic;}
+.nav-item.practica:hover{color:var(--turquesa);}
+.nav-item.practica .nav-num{color:rgba(8,184,157,.45);}
+.nav-item.prox{color:rgba(255,255,255,.28);pointer-events:none;}
+.nav-num{font-family:'Space Mono',monospace;font-size:9px;min-width:20px;flex-shrink:0;color:rgba(255,255,255,.28);}
+/* PAGE HEADER */
+.page-header{background:var(--verde);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--verde-claro);}
+.page-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(203,219,42,.07) 1px,transparent 1px);background-size:28px 28px;}
+.ph-num{position:absolute;right:48px;top:0;font-size:240px;font-weight:900;color:rgba(255,255,255,.04);line-height:1;font-family:'Space Mono',monospace;}
+.ph-inner{position:relative;z-index:1;}
+.ph-badge{display:inline-block;background:rgba(203,219,42,.15);border:1px solid rgba(203,219,42,.35);color:var(--verde-claro);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+.ph-titulo{font-size:36px;font-weight:900;line-height:1.1;color:white;margin-bottom:8px;}
+.ph-subtitulo{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:28px;}
+.ph-meta{display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;}
+.ph-meta-item{display:flex;flex-direction:column;gap:3px;}
+.ph-meta-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.ph-meta-valor{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;}
+/* ANCLAS */
+.anclas{background:white;border-bottom:1px solid var(--borde);padding:12px 64px;display:flex;gap:6px;flex-wrap:wrap;}
+.ancla{font-family:'Space Mono',monospace;font-size:9.5px;color:var(--verde-medio);text-decoration:none;padding:4px 10px;border:1px solid var(--borde);border-radius:4px;transition:all .15s;}
+.ancla:hover{background:var(--verde);color:var(--verde-claro);border-color:var(--verde);}
+/* BODY */
+.body-wrap{max-width:960px;margin:0 auto;padding:56px 64px 0;}
+.seccion{margin-bottom:52px;scroll-margin-top:120px;}
+.seccion-num{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:4px;display:block;}
+h2{font-size:24px;font-weight:800;color:var(--verde);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid rgba(0,88,70,.12);}
+h3{font-size:16px;font-weight:700;color:var(--verde);margin:28px 0 10px;}
+p{margin-bottom:14px;color:var(--texto-suave);font-size:15px;}
+hr{border:none;border-top:1px solid var(--borde);margin:48px 0;}
+code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70,.07);padding:1px 6px;border-radius:3px;color:var(--verde);}
+/* RA BOX */
+.ra-box{background:rgba(0,88,70,.06);border:1px solid rgba(0,88,70,.15);border-left:4px solid var(--verde);border-radius:0 10px 10px 0;padding:18px 22px;margin-bottom:40px;}
+.ra-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:8px;}
+.ra-texto{font-size:14px;color:var(--texto);line-height:1.65;}
+/* DEF FORMAL */
+.def-formal{background:var(--codigo-bg);border-radius:10px;padding:22px 26px;margin:20px 0;border-left:4px solid var(--verde-claro);}
+.def-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:10px;}
+.def-formal p{color:rgba(255,255,255,.82);font-size:14.5px;line-height:1.75;margin:0;}
+.def-formal em{color:var(--verde-claro);font-style:normal;font-weight:700;}
+/* DIAGRAMA FLUJO */
+.diagrama{background:white;border:1px solid var(--borde);border-radius:12px;padding:24px;margin:20px 0;display:flex;flex-direction:column;align-items:center;gap:0;}
+.df-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:20px;align-self:flex-start;}
+.df-terminal{background:var(--verde);color:white;padding:8px 28px;border-radius:20px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;}
+.df-proceso{background:var(--fondo-alt);border:2px solid var(--borde);padding:10px 24px;font-family:'Space Mono',monospace;font-size:12px;color:var(--texto);min-width:180px;text-align:center;}
+.df-decision{background:rgba(203,219,42,.12);border:2px solid var(--verde-claro);padding:10px 20px;transform:skewX(-8deg);font-family:'Space Mono',monospace;font-size:12px;color:var(--verde);font-weight:700;min-width:200px;text-align:center;}
+.df-decision span{display:inline-block;transform:skewX(8deg);}
+.df-flecha{width:2px;height:24px;background:var(--borde);position:relative;}
+.df-flecha::after{content:'▼';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--verde-medio);}
+.df-rama{display:flex;gap:32px;align-items:flex-start;margin:8px 0;}
+.df-rama-item{display:flex;flex-direction:column;align-items:center;gap:0;}
+.df-rama-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--verde-medio);margin-bottom:6px;}
+.df-accion{background:rgba(8,184,157,.08);border:1.5px solid var(--turquesa);padding:9px 18px;border-radius:6px;font-family:'Space Mono',monospace;font-size:11.5px;color:var(--verde);min-width:130px;text-align:center;}
+/* TABLA VERDAD */
+.tabla-verdad{border-collapse:collapse;margin:18px auto;font-size:13px;font-family:'Space Mono',monospace;}
+.tabla-verdad thead tr{background:var(--verde);}
+.tabla-verdad thead th{padding:9px 18px;color:white;font-size:11px;text-align:center;}
+.tabla-verdad tbody tr:nth-child(even){background:rgba(0,88,70,.04);}
+.tabla-verdad tbody td{padding:8px 18px;border:1px solid var(--borde);text-align:center;color:var(--texto-suave);}
+.tv-v{color:var(--turquesa);font-weight:700;}
+.tv-f{color:#c0392b;font-weight:700;}
+/* CÓDIGO */
+.codigo-bloque{background:var(--codigo-bg);border-radius:10px;overflow:hidden;margin:18px 0;}
+.codigo-header{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);}
+.codigo-dots{display:flex;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
+.codigo-lang{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.3);}
+.codigo-archivo{font-family:'Space Mono',monospace;font-size:10px;color:var(--turquesa);}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+.c-inc{color:#c792ea;}.c-str{color:#a8d8b0;}.c-kw{color:var(--verde-claro);}.c-ns{color:var(--turquesa);}.c-tipo{color:#82aaff;}.c-fn{color:var(--turquesa);}.c-num{color:#f78c6c;}.c-com{color:rgba(255,255,255,.3);font-style:italic;}.c-const{color:#ffcb6b;}
+/* COMPARAR */
+.comparar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0;}
+.comp-bloque{border-radius:10px;overflow:hidden;}
+.comp-label{padding:8px 16px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.comp-bloque.if-bloque .comp-label{background:rgba(0,88,70,.12);color:var(--verde);}
+.comp-bloque.sw-bloque .comp-label{background:rgba(8,184,157,.1);color:var(--turquesa);}
+.comp-bloque pre{font-family:'Space Mono',monospace;font-size:12px;line-height:1.75;padding:16px 18px;overflow-x:auto;}
+.comp-bloque.if-bloque pre{background:rgba(0,88,70,.03);color:#0a3a28;border:1px solid rgba(0,88,70,.12);}
+.comp-bloque.sw-bloque pre{background:rgba(8,184,157,.03);color:#0a3a38;border:1px solid rgba(8,184,157,.15);}
+/* TABLA OP */
+.tabla-est{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;}
+.tabla-est thead tr{background:var(--verde);}
+.tabla-est thead th{padding:10px 15px;text-align:left;font-size:12px;font-weight:700;color:white;}
+.tabla-est tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-est tbody tr:hover{background:rgba(0,88,70,.06);}
+.tabla-est tbody td{padding:9px 15px;border-bottom:1px solid var(--borde);color:var(--texto-suave);vertical-align:top;}
+.tabla-est tbody td:first-child{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--verde);text-align:center;width:80px;}
+/* PSEUDOCÓDIGO */
+.pseudocodigo{background:var(--codigo-bg);border-radius:10px;margin:18px 0;overflow:hidden;}
+.pseudo-label{background:rgba(255,255,255,.05);padding:8px 18px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);border-bottom:1px solid rgba(255,255,255,.08);}
+.pseudo-code{padding:20px 24px;font-family:'Space Mono',monospace;font-size:13px;line-height:1.9;color:rgba(255,255,255,.85);}
+.p-kw{color:var(--verde-claro);font-weight:700;}
+.p-str{color:#a8d8b0;}
+.p-ind1{display:block;padding-left:24px;}
+.p-ind2{display:block;padding-left:48px;}
+.p-blank{display:block;height:8px;}
+/* TABLA SIM */
+.tabla-sim{width:100%;border-collapse:collapse;margin:18px 0;font-family:'Space Mono',monospace;font-size:12px;}
+.tabla-sim thead tr{background:var(--verde);}
+.tabla-sim thead th{padding:9px 12px;color:white;font-size:10px;text-align:center;letter-spacing:.5px;}
+.tabla-sim tbody tr{border-bottom:1px solid var(--borde);}
+.tabla-sim tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-sim tbody td{padding:8px 12px;text-align:center;color:var(--texto-suave);}
+.tabla-sim td.res{background:rgba(203,219,42,.15);color:var(--verde);font-weight:700;}
+/* CAJAS */
+.caja-nota{background:rgba(0,88,70,.05);border-left:4px solid var(--verde);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-nota .cn-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:6px;display:block;}
+.caja-nota p{margin:0;font-size:14px;color:var(--texto);}
+.caja-adv{background:rgba(203,219,42,.08);border-left:4px solid var(--verde-claro);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-adv .ca-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7a8a10;margin-bottom:6px;display:block;}
+.caja-adv p{margin:0;font-size:14px;color:#4a540a;}
+.caja-ia{background:#0d1e18;border-radius:10px;padding:20px 24px;margin:20px 0;border-left:4px solid var(--turquesa);}
+.caja-ia .ci-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:9px;display:block;}
+.caja-ia p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin:0;}
+.caja-ia p strong{color:var(--verde-claro);}
+/* EJERCICIOS */
+.ejercicios-section{background:white;border:1px solid var(--borde);border-radius:12px;overflow:hidden;margin:20px 0;}
+.ejercicios-titulo{background:var(--verde);color:white;padding:12px 20px;font-size:13px;font-weight:700;}
+.ejercicio-item{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid var(--borde);}
+.ejercicio-item:last-child{border-bottom:none;}
+.ej-num{min-width:28px;height:28px;background:var(--fondo-alt);border:1px solid var(--borde);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);flex-shrink:0;}
+.ej-badge{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:3px;flex-shrink:0;margin-top:4px;}
+.ej-badge.comp{background:rgba(0,88,70,.08);color:var(--verde);}
+.ej-badge.aplic{background:rgba(8,184,157,.1);color:var(--turquesa);}
+.ej-badge.integ{background:rgba(203,219,42,.12);color:#7a8a10;}
+.ej-enunciado{font-size:13.5px;color:var(--texto-suave);line-height:1.6;}
+/* EVALUATIVA + PUENTE */
+.evaluativa{background:rgba(0,88,70,.04);border:2px solid rgba(0,88,70,.15);border-radius:12px;padding:24px 28px;margin-top:36px;}
+.evaluativa-titulo{font-size:15px;font-weight:800;color:var(--verde);margin-bottom:3px;}
+.evaluativa-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;}
+.evaluativa-enunciado{font-size:14px;color:var(--texto-suave);line-height:1.7;margin-bottom:14px;}
+.evaluativa-criterios{margin:0;padding-left:18px;}
+.evaluativa-criterios li{font-size:13px;color:var(--texto-suave);margin-bottom:5px;}
+.puente{background:var(--codigo-bg);border-radius:12px;padding:24px 28px;margin-top:28px;border-left:4px solid var(--turquesa);}
+.puente-titulo{font-size:15px;font-weight:800;color:white;margin-bottom:3px;}
+.puente-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+.puente-texto{font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;}
+.puente-texto strong{color:var(--verde-claro);}
+/* NAV CAPS + PIE */
+.nav-caps{display:flex;justify-content:space-between;align-items:center;padding:20px 64px;background:var(--fondo-alt);border-top:1px solid var(--borde);margin-top:48px;flex-wrap:wrap;gap:12px;}
+.nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 18px;border:1.5px solid rgba(0,88,70,.2);border-radius:8px;background:white;max-width:280px;transition:all .2s;}
+.nav-cap-btn:hover{border-color:var(--verde);}
+.nav-cap-btn.sig{flex-direction:row-reverse;text-align:right;}
+.ncb-arrow{font-size:16px;color:var(--verde);}
+.ncb-label{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,88,70,.45);margin-bottom:2px;display:block;}
+.ncb-titulo{font-size:13px;font-weight:700;color:var(--verde);}
+.pie{background:var(--verde);color:rgba(255,255,255,.35);padding:14px 64px;font-family:'Space Mono',monospace;font-size:9px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:1px;}
+.pie span:first-child{color:rgba(255,255,255,.55);}
+@media(max-width:768px){
+  .page-header,.body-wrap,.nav-caps,.pie,.anclas{padding-left:24px;padding-right:24px;}
+  .ph-titulo{font-size:26px;}
+  .comparar{grid-template-columns:1fr;}
+  .df-rama{flex-direction:column;align-items:center;}
+}
+
+/* ── Componentes adicionales Cap 09-11 ── */
+.def-formal{background:var(--codigo-bg);border-radius:10px;padding:22px 26px;margin:20px 0;border-left:4px solid var(--verde-claro);}
+.def-formal p{color:rgba(255,255,255,.82);font-size:14.5px;line-height:1.75;margin:0;}
+.def-formal em{color:var(--verde-claro);font-style:normal;font-weight:700;}
+.def-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:8px;display:block;}
+.comparar{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;}
+.comp-bloque{background:var(--codigo-bg);border-radius:8px;overflow:hidden;}
+.comp-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;display:block;}
+.comp-label.bien{background:rgba(8,184,157,.15);color:var(--turquesa);}
+.comp-label.malo{background:rgba(203,219,42,.1);color:#9aaa15;}
+.comp-bloque pre{padding:14px 16px;font-family:'Space Mono',monospace;font-size:11.5px;line-height:1.8;color:rgba(255,255,255,.82);margin:0;overflow-x:auto;}
+@media(max-width:640px){.comparar{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-logo">ESPAM MFL</div><div class="topbar-sep"></div><div class="topbar-titulo">Introducción a la Programación</div><div class="topbar-right">CARRERA DE COMPUTACIÓN</div></header>
+<nav class="nav-menu"><button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">☰ &nbsp; Contenidos del libro <span class="nav-toggle-arrow">▼</span></button><div class="nav-body"></div></nav>
+<section class="page-header">
+  <div class="ph-num">12</div>
+  <div class="ph-inner">
+    <div class="ph-badge">📘 Unidad IV · Capítulo 12</div>
+    <h1 class="ph-titulo">Matrices — Arreglos Bidimensionales</h1>
+    <p class="ph-subtitulo">Tablas de datos · bucles anidados · paso a funciones · suma · transpuesta · diagonales</p>
+    <div class="ph-meta">
+      <div class="ph-meta-item"><span class="ph-meta-label">Horas presenciales</span><span class="ph-meta-valor">3 ACD + 2 PECD</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Horas autónomas</span><span class="ph-meta-valor">3 AA + 1 PEND</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-valor">R.A. — D</span></div>
+    </div>
+  </div>
+</section>
+<nav class="anclas">
+  <a class="ancla" href="#s121">12.1 Estructura 2D</a>
+  <a class="ancla" href="#s122">12.2 Declaración</a>
+  <a class="ancla" href="#s123">12.3 Recorrido</a>
+  <a class="ancla" href="#s124">12.4 Paso a funciones</a>
+  <a class="ancla" href="#s125">12.5 Suma y transpuesta</a>
+  <a class="ancla" href="#s126">12.6 Diagonales</a>
+  <a class="ancla" href="#s127">12.7 Ejercicios</a>
+</nav>
+<main class="body-wrap">
+
+<div class="ra-box">
+  <div class="ra-label">Resultado de Aprendizaje — Capítulo 12</div>
+  <div class="ra-texto">El estudiante <strong>declara, inicializa y procesa matrices (arreglos 2D) en C++</strong>, usa bucles <code>for</code> anidados para recorrer filas y columnas, pasa matrices a funciones con la sintaxis correcta (columnas fijas), e implementa operaciones matriciales fundamentales: suma, transpuesta, traza y diagnóstico de propiedades especiales.</div>
+</div>
+
+<!-- 12.1 -->
+<section class="seccion" id="s121">
+  <span class="seccion-num">12.1</span>
+  <h2>Estructura Bidimensional — Filas y Columnas</h2>
+  <p>Una <strong>matriz</strong> es un arreglo de <em>filas × columnas</em>: cada elemento se identifica con dos índices <code>mat[fila][columna]</code>. Modela naturalmente tablas, imágenes de píxeles, tableros de juego, y datos como notas por asignatura o inventarios por sucursal.</p>
+
+  <div class="def-formal">
+    <span class="def-label">Modelo mental: hoja de cálculo</span>
+    <p>El primer índice es la <em>fila</em> (el estudiante) y el segundo es la <em>columna</em> (la asignatura). <em>mat[2][1]</em> es la nota del tercer estudiante en la segunda asignatura. En C++ las filas se almacenan <em>consecutivamente</em> en memoria (<em>row-major order</em>): primero toda la fila 0, luego la fila 1, etc.</p>
+  </div>
+
+  <h3>Visualización — matriz 3×4</h3>
+  <table class="tabla-sim">
+    <thead><tr><th></th><th>Col 0</th><th>Col 1</th><th>Col 2</th><th>Col 3</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Fila 0</strong></td><td class="res">mat[0][0]</td><td>mat[0][1]</td><td>mat[0][2]</td><td>mat[0][3]</td></tr>
+      <tr><td><strong>Fila 1</strong></td><td>mat[1][0]</td><td class="res">mat[1][1]</td><td>mat[1][2]</td><td>mat[1][3]</td></tr>
+      <tr><td><strong>Fila 2</strong></td><td>mat[2][0]</td><td>mat[2][1]</td><td class="res">mat[2][2]</td><td>mat[2][3]</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr>
+
+<!-- 12.2 -->
+<section class="seccion" id="s122">
+  <span class="seccion-num">12.2</span>
+  <h2>Declaración e Inicialización</h2>
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · formas de declarar e inicializar matrices</span>
+      </div>
+      <span class="codigo-archivo">declaracion_matriz.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-kw">const</span> <span class="c-tipo">int</span> FILAS = <span class="c-num">3</span>, COLS = <span class="c-num">4</span>;
+
+<span class="c-com">// ① Inicialización literal — clara y verificable</span>
+<span class="c-tipo">int</span> mat[FILAS][COLS] = {
+    {<span class="c-num">1</span>, <span class="c-num">2</span>, <span class="c-num">3</span>, <span class="c-num">4</span>},
+    {<span class="c-num">5</span>, <span class="c-num">6</span>, <span class="c-num">7</span>, <span class="c-num">8</span>},
+    {<span class="c-num">9</span>, <span class="c-num">10</span>, <span class="c-num">11</span>, <span class="c-num">12</span>}
+};
+
+<span class="c-com">// ② Todo en cero — {} vacío</span>
+<span class="c-tipo">double</span> notas[<span class="c-num">5</span>][<span class="c-num">3</span>] = {};   <span class="c-com">// 5 estudiantes x 3 asignaturas</span>
+
+<span class="c-com">// ③ Ingreso interactivo con bucles anidados</span>
+<span class="c-kw">for</span> (<span class="c-tipo">int</span> i=<span class="c-num">0</span>; i&lt;FILAS; i++)
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> j=<span class="c-num">0</span>; j&lt;COLS; j++) {
+        <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Elemento ["</span>&lt;&lt;i&lt;&lt;<span class="c-str">"]["</span>&lt;&lt;j&lt;&lt;<span class="c-str">"]: "</span>;
+        <span class="c-fn">cin</span>  &gt;&gt; mat[i][j];
+    }</pre></div>
+  </div>
+</section>
+
+<hr>
+
+<!-- 12.3 -->
+<section class="seccion" id="s123">
+  <span class="seccion-num">12.3</span>
+  <h2>Recorrido con Bucles <code>for</code> Anidados</h2>
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · mostrar tabla, suma total, promedio por fila</span>
+      </div>
+      <span class="codigo-archivo">recorrido_matriz.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-kw">const</span> <span class="c-tipo">int</span> F=<span class="c-num">3</span>, C=<span class="c-num">4</span>;
+<span class="c-tipo">int</span> mat[F][C] = { {<span class="c-num">1</span>,<span class="c-num">2</span>,<span class="c-num">3</span>,<span class="c-num">4</span>},{<span class="c-num">5</span>,<span class="c-num">6</span>,<span class="c-num">7</span>,<span class="c-num">8</span>},{<span class="c-num">9</span>,<span class="c-num">10</span>,<span class="c-num">11</span>,<span class="c-num">12</span>} };
+
+<span class="c-com">// Mostrar como tabla formateada</span>
+<span class="c-kw">for</span> (<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;F;i++) {
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> j=<span class="c-num">0</span>;j&lt;C;j++) <span class="c-fn">cout</span>&lt;&lt;setw(<span class="c-num">5</span>)&lt;&lt;mat[i][j];
+    <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"
+"</span>;
+}
+
+<span class="c-com">// Suma total — recorre todos los elementos</span>
+<span class="c-tipo">int</span> total=<span class="c-num">0</span>;
+<span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;F;i++)
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> j=<span class="c-num">0</span>;j&lt;C;j++) total+=mat[i][j];
+<span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Suma total: "</span>&lt;&lt;total&lt;&lt;endl;   <span class="c-com">// 78</span>
+
+<span class="c-com">// Promedio por fila (promedio por estudiante)</span>
+<span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;F;i++) {
+    <span class="c-tipo">double</span> s=<span class="c-num">0</span>;
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> j=<span class="c-num">0</span>;j&lt;C;j++) s+=mat[i][j];
+    <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Prom fila "</span>&lt;&lt;i&lt;&lt;<span class="c-str">": "</span>&lt;&lt;fixed&lt;&lt;setprecision(<span class="c-num">1</span>)&lt;&lt;s/C&lt;&lt;<span class="c-str">"
+"</span>;
+}</pre></div>
+  </div>
+</section>
+
+<hr>
+
+<!-- 12.4 -->
+<section class="seccion" id="s124">
+  <span class="seccion-num">12.4</span>
+  <h2>Paso de Matrices a Funciones — Columnas Constantes</h2>
+  <p>Al pasar una matriz a una función, el número de <strong>columnas debe ser constante</strong> conocido en compilación. C++ necesita saber las columnas para calcular la dirección de cada elemento.</p>
+
+  <div class="comparar">
+    <div class="comp-bloque">
+      <span class="comp-label bien">Correcto — columnas fijas</span>
+      <pre><span class="c-kw">const</span> <span class="c-tipo">int</span> COLS = <span class="c-num">4</span>;
+<span class="c-kw">void</span> <span class="c-fn">mostrar</span>(<span class="c-kw">const</span> <span class="c-tipo">int</span> m[][COLS],
+             <span class="c-tipo">int</span> filas) {
+  <span class="c-com">// COLS conocido al compilar ✓</span>
+}</pre>
+    </div>
+    <div class="comp-bloque">
+      <span class="comp-label malo">Error — ambas dimensiones variables</span>
+      <pre><span class="c-com">// No compila en C++ clásico:</span>
+<span class="c-kw">void</span> <span class="c-fn">mostrar</span>(<span class="c-tipo">int</span> m[][], <span class="c-tipo">int</span> f, <span class="c-tipo">int</span> c) {
+  <span class="c-com">// El compilador no puede</span>
+  <span class="c-com">// calcular la dirección de m[i][j]</span>
+}</pre>
+    </div>
+  </div>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · funciones con firma correcta</span>
+      </div>
+      <span class="codigo-archivo">funciones_matriz.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-kw">const</span> <span class="c-tipo">int</span> COLS = <span class="c-num">4</span>;
+
+<span class="c-kw">void</span> <span class="c-fn">mostrarMatriz</span>(<span class="c-kw">const</span> <span class="c-tipo">int</span> m[][COLS], <span class="c-tipo">int</span> filas) {
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;filas;i++) {
+        <span class="c-kw">for</span>(<span class="c-tipo">int</span> j=<span class="c-num">0</span>;j&lt;COLS;j++) <span class="c-fn">cout</span>&lt;&lt;setw(<span class="c-num">5</span>)&lt;&lt;m[i][j];
+        <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"
+"</span>;
+    }
+}
+
+<span class="c-tipo">int</span> <span class="c-fn">sumaTotal</span>(<span class="c-kw">const</span> <span class="c-tipo">int</span> m[][COLS], <span class="c-tipo">int</span> filas) {
+    <span class="c-tipo">int</span> s=<span class="c-num">0</span>;
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;filas;i++)
+        <span class="c-kw">for</span>(<span class="c-tipo">int</span> j=<span class="c-num">0</span>;j&lt;COLS;j++) s+=m[i][j];
+    <span class="c-kw">return</span> s;
+}</pre></div>
+  </div>
+</section>
+
+<hr>
+
+<!-- 12.5 -->
+<section class="seccion" id="s125">
+  <span class="seccion-num">12.5</span>
+  <h2>Suma de Matrices y Transpuesta</h2>
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · suma elemento a elemento + transposición</span>
+      </div>
+      <span class="codigo-archivo">operaciones_matriz.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-kw">const</span> <span class="c-tipo">int</span> N = <span class="c-num">3</span>;
+
+<span class="c-com">// Suma: C[i][j] = A[i][j] + B[i][j]</span>
+<span class="c-kw">void</span> <span class="c-fn">sumarMatrices</span>(<span class="c-kw">const</span> <span class="c-tipo">int</span> A[][N], <span class="c-kw">const</span> <span class="c-tipo">int</span> B[][N],
+                   <span class="c-tipo">int</span> C[][N], <span class="c-tipo">int</span> n) {
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;n;i++)
+        <span class="c-kw">for</span>(<span class="c-tipo">int</span> j=<span class="c-num">0</span>;j&lt;n;j++)
+            C[i][j] = A[i][j] + B[i][j];
+}
+
+<span class="c-com">// Transpuesta: T[j][i] = A[i][j]  (intercambiar índices)</span>
+<span class="c-kw">void</span> <span class="c-fn">transponerMatriz</span>(<span class="c-kw">const</span> <span class="c-tipo">int</span> A[][N], <span class="c-tipo">int</span> T[][N], <span class="c-tipo">int</span> n) {
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;n;i++)
+        <span class="c-kw">for</span>(<span class="c-tipo">int</span> j=<span class="c-num">0</span>;j&lt;n;j++)
+            T[j][i] = A[i][j];
+}</pre></div>
+  </div>
+  <h3>Traza visual de la transpuesta 3×3</h3>
+  <table class="tabla-sim">
+    <thead><tr><th>Original A</th><th>→</th><th>Transpuesta T</th></tr></thead>
+    <tbody>
+      <tr><td>1  2  3</td><td rowspan="3" style="font-size:22px;text-align:center">⟹</td><td>1  4  7</td></tr>
+      <tr><td>4  5  6</td><td>2  5  8</td></tr>
+      <tr><td>7  8  9</td><td>3  6  9</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr>
+
+<!-- 12.6 -->
+<section class="seccion" id="s126">
+  <span class="seccion-num">12.6</span>
+  <h2>Diagonales y Traza de una Matriz Cuadrada</h2>
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · traza y diagonal secundaria</span>
+      </div>
+      <span class="codigo-archivo">diagonales.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-kw">const</span> <span class="c-tipo">int</span> N=<span class="c-num">3</span>;
+
+<span class="c-com">// Traza = suma diagonal principal m[i][i]</span>
+<span class="c-tipo">int</span> <span class="c-fn">traza</span>(<span class="c-kw">const</span> <span class="c-tipo">int</span> m[][N], <span class="c-tipo">int</span> n) {
+    <span class="c-tipo">int</span> s=<span class="c-num">0</span>;
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;n;i++) s+=m[i][i];
+    <span class="c-kw">return</span> s;
+}
+<span class="c-com">// Diagonal secundaria: m[i][n-1-i]</span>
+<span class="c-tipo">int</span> <span class="c-fn">trazaSecundaria</span>(<span class="c-kw">const</span> <span class="c-tipo">int</span> m[][N], <span class="c-tipo">int</span> n) {
+    <span class="c-tipo">int</span> s=<span class="c-num">0</span>;
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;n;i++) s+=m[i][n-<span class="c-num">1</span>-i];
+    <span class="c-kw">return</span> s;
+}
+<span class="c-com">// Simetría: m[i][j] == m[j][i] para todo i,j</span>
+<span class="c-tipo">bool</span> <span class="c-fn">esSimétrica</span>(<span class="c-kw">const</span> <span class="c-tipo">int</span> m[][N], <span class="c-tipo">int</span> n) {
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;n;i++)
+        <span class="c-kw">for</span>(<span class="c-tipo">int</span> j=i+<span class="c-num">1</span>;j&lt;n;j++)
+            <span class="c-kw">if</span>(m[i][j]!=m[j][i]) <span class="c-kw">return</span> <span class="c-kw">false</span>;
+    <span class="c-kw">return</span> <span class="c-kw">true</span>;
+}</pre></div>
+  </div>
+  <div class="caja-ia">
+    <div class="ci-label">🤖 IA y las matrices</div>
+    <p>La IA frecuentemente propone <code>vector&lt;vector&lt;int&gt;&gt;</code> para matrices, eliminando la restricción de columnas fijas. Esta solución moderna es más flexible pero tiene mayor costo de acceso en caché. Usamos arreglos 2D clásicos primero para entender la mecánica de memoria contigua; ese conocimiento hace que la transición a <code>vector</code> sea natural y bien comprendida.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- 12.7 -->
+<section class="seccion" id="s127">
+  <span class="seccion-num">12.7</span>
+  <h2>Ejercicios de Aplicación</h2>
+  <div class="ejercicios-section">
+    <div class="ejercicios-titulo">✏️ Actividades de Aplicación</div>
+    <div class="ejercicio-item">
+      <div class="ej-num">1</div>
+      <div class="ej-badge comp">Comprensión</div>
+      <div class="ej-enunciado"><strong>Índices a mano.</strong> Dada la matriz: int A[3][3] con valores 1–9 por filas, calcula sin ejecutar: A[1][2], A[2][0], la traza, la diagonal secundaria. Dibuja la matriz con sus índices y verifica.</div>
+    </div>
+    <div class="ejercicio-item">
+      <div class="ej-num">2</div>
+      <div class="ej-badge aplic">Aplicación</div>
+      <div class="ej-enunciado"><strong>promediosPorFila.</strong> Para una matriz 4 estudiantes × 3 asignaturas, implementa <code>void promediosPorFila(const double m[][3], int filas, double prom[])</code> que llena el arreglo <code>prom</code> con el promedio de cada fila. Luego usa tu función <code>indiceMax</code> del Cap. 11 para encontrar el mejor estudiante.</div>
+    </div>
+    <div class="ejercicio-item">
+      <div class="ej-num">3</div>
+      <div class="ej-badge aplic">Aplicación</div>
+      <div class="ej-enunciado"><strong>Multiplicación matricial.</strong> Implementa la multiplicación C = A × B para matrices 3×3: <code>C[i][j] = suma(A[i][k] * B[k][j])</code> para k=0..2. Requiere tres bucles anidados. Verifica: cualquier matriz × identidad = la misma matriz.</div>
+    </div>
+    <div class="ejercicio-item">
+      <div class="ej-num">4</div>
+      <div class="ej-badge aplic">Aplicación</div>
+      <div class="ej-enunciado"><strong>Rellenar espiral.</strong> Rellena una matriz N×N con los números 1..N² en orden espiral (de afuera hacia adentro: derecha, abajo, izquierda, arriba). Imprímela formateada. Prueba con N=3: el resultado debe ser 1 2 3 / 8 9 4 / 7 6 5.</div>
+    </div>
+    <div class="ejercicio-item">
+      <div class="ej-num">5</div>
+      <div class="ej-badge integ">Integrador + IA</div>
+      <div class="ej-enunciado"><strong>Tabla de notas 5×4 con IA.</strong> Diseña un sistema completo con 5 estudiantes y 4 asignaturas. Pide a la IA la función más compleja (ej. ordenar filas por promedio). Analiza: ¿la IA usó columnas constantes? ¿Usó <code>const</code> correctamente? Documenta y corrige si es necesario.</div>
+    </div>
+  </div>
+
+  <div class="evaluativa">
+    <div class="evaluativa-titulo">Actividad Presencial Evaluativa — Capítulo 12</div>
+    <div class="evaluativa-sub">Sesión 12 · Tiempo: 45 min · Sin acceso a IA ni a internet</div>
+    <div class="evaluativa-enunciado">Sistema de notas: matriz 3 estudiantes × 4 asignaturas. Implementa: <code>void ingresarNotas(double m[][4], int f)</code> con validación [0–10]; <code>void calcularPromedios(const double m[][4], int f, double prom[])</code>; <code>int estudianteMejor(const double prom[], int n)</code>; <code>double promedioGeneral(const double prom[], int n)</code>; y <code>void mostrarReporte(const double m[][4], int f, const double prom[])</code>. <code>main()</code> coordina todas las llamadas.</div>
+    <ul class="evaluativa-criterios">
+      <li>Firma correcta con columnas constantes ([][4]) y <code>const</code> en funciones de lectura.</li>
+      <li>Validación de notas en [0,10] con <code>do-while</code>.</li>
+      <li>Tabla de traza: cálculo del promedio del estudiante 1.</li>
+      <li>Reporte formateado con mejor estudiante destacado.</li>
+      <li><code>main()</code> sin cálculos directos.</li>
+    </ul>
+  </div>
+
+  <div class="puente">
+    <div class="puente-titulo">🌉 Ordenar y Buscar con Eficiencia</div>
+    <div class="puente-sub">Preparación para Cap. 13</div>
+    <div class="puente-texto">El burbuja ordena en O(n²) — aceptable para n pequeño, lento para cientos de datos. En el Cap. 13 aprenderás la <strong>búsqueda binaria</strong> que encuentra en O(log n) y algoritmos de ordenamiento más eficientes: selección e inserción. También verás cómo medir y comparar el costo computacional de distintos algoritmos.</div>
+  </div>
+</section>
+</main><div class="nav-caps">
+  <a href="practica_11.html" class="nav-cap-btn">
+    <span class="ncb-arrow">←</span>
+    <div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Práctica 11 — Sistema de Notas</span></div>
+  </a>
+  <a href="practica_12.html" class="nav-cap-btn sig">
+    <span class="ncb-arrow">→</span>
+    <div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Sesión Práctica 12</span></div>
+  </a>
+</div>
+<footer class="pie"><span>Cap. 12 — Matrices · Unidad IV · ESPAM MFL</span><span>espam.edu.ec</span></footer>
+</body></html>

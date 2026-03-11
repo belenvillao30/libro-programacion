@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Anexos y Recursos | Introducción a la Programación — ESPAM MFL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{--verde:#005846;--verde-medio:#007a5e;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fondo);font-size:16px;line-height:1.7;overflow-x:hidden;}
+/* TOPBAR */
+.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--verde);display:flex;align-items:center;padding:0 24px;gap:14px;z-index:1000;border-bottom:3px solid var(--verde-claro);}
+.topbar-logo{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--verde-claro);}
+.topbar-sep{width:1px;height:20px;background:rgba(255,255,255,.2);}
+.topbar-titulo{font-size:12px;color:rgba(255,255,255,.65);}
+.topbar-right{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;}
+/* NAV */
+.nav-menu{background:var(--verde);border-bottom:2px solid rgba(203,219,42,.3);margin-top:50px;}
+.nav-toggle{width:100%;background:transparent;color:white;border:none;padding:11px 24px;text-align:left;cursor:pointer;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;}
+.nav-toggle:hover{background:rgba(255,255,255,.04);}
+.nav-toggle-arrow{color:var(--verde-claro);font-size:12px;}
+.nav-body{display:none;padding:18px 24px 22px;}
+.nav-body.abierto{display:flex;flex-wrap:wrap;gap:28px;}
+.nav-grupo{min-width:170px;}
+.nav-grupo-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:7px;display:block;padding-bottom:5px;border-bottom:1px solid rgba(203,219,42,.2);}
+.nav-items{list-style:none;}
+.nav-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12px;color:rgba(255,255,255,.72);text-decoration:none;transition:color .15s;}
+.nav-item:hover{color:var(--verde-claro);}
+.nav-item.activo{color:var(--verde-claro);font-weight:700;}
+.nav-item.activo .nav-num{color:var(--verde-claro);}
+.nav-item.practica{color:rgba(8,184,157,.85);font-style:italic;}
+.nav-item.practica:hover{color:var(--turquesa);}
+.nav-item.practica .nav-num{color:rgba(8,184,157,.45);}
+.nav-item.prox{color:rgba(255,255,255,.28);pointer-events:none;}
+.nav-num{font-family:'Space Mono',monospace;font-size:9px;min-width:20px;flex-shrink:0;color:rgba(255,255,255,.28);}
+/* PAGE HEADER */
+.page-header{background:var(--verde);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--verde-claro);}
+.page-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(203,219,42,.07) 1px,transparent 1px);background-size:28px 28px;}
+.ph-num{position:absolute;right:48px;top:0;font-size:240px;font-weight:900;color:rgba(255,255,255,.04);line-height:1;font-family:'Space Mono',monospace;}
+.ph-inner{position:relative;z-index:1;}
+.ph-badge{display:inline-block;background:rgba(203,219,42,.15);border:1px solid rgba(203,219,42,.35);color:var(--verde-claro);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+.ph-titulo{font-size:36px;font-weight:900;line-height:1.1;color:white;margin-bottom:8px;}
+.ph-subtitulo{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:28px;}
+.ph-meta{display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;}
+.ph-meta-item{display:flex;flex-direction:column;gap:3px;}
+.ph-meta-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.ph-meta-valor{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;}
+/* ANCLAS */
+.anclas{background:white;border-bottom:1px solid var(--borde);padding:12px 64px;display:flex;gap:6px;flex-wrap:wrap;}
+.ancla{font-family:'Space Mono',monospace;font-size:9.5px;color:var(--verde-medio);text-decoration:none;padding:4px 10px;border:1px solid var(--borde);border-radius:4px;transition:all .15s;}
+.ancla:hover{background:var(--verde);color:var(--verde-claro);border-color:var(--verde);}
+/* BODY */
+.body-wrap{max-width:960px;margin:0 auto;padding:56px 64px 0;}
+.seccion{margin-bottom:52px;scroll-margin-top:120px;}
+.seccion-num{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:4px;display:block;}
+h2{font-size:24px;font-weight:800;color:var(--verde);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid rgba(0,88,70,.12);}
+h3{font-size:16px;font-weight:700;color:var(--verde);margin:28px 0 10px;}
+p{margin-bottom:14px;color:var(--texto-suave);font-size:15px;}
+hr{border:none;border-top:1px solid var(--borde);margin:48px 0;}
+code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70,.07);padding:1px 6px;border-radius:3px;color:var(--verde);}
+/* RA BOX */
+.ra-box{background:rgba(0,88,70,.06);border:1px solid rgba(0,88,70,.15);border-left:4px solid var(--verde);border-radius:0 10px 10px 0;padding:18px 22px;margin-bottom:40px;}
+.ra-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:8px;}
+.ra-texto{font-size:14px;color:var(--texto);line-height:1.65;}
+/* DEF FORMAL */
+.def-formal{background:var(--codigo-bg);border-radius:10px;padding:22px 26px;margin:20px 0;border-left:4px solid var(--verde-claro);}
+.def-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:10px;}
+.def-formal p{color:rgba(255,255,255,.82);font-size:14.5px;line-height:1.75;margin:0;}
+.def-formal em{color:var(--verde-claro);font-style:normal;font-weight:700;}
+/* DIAGRAMA FLUJO */
+.diagrama{background:white;border:1px solid var(--borde);border-radius:12px;padding:24px;margin:20px 0;display:flex;flex-direction:column;align-items:center;gap:0;}
+.df-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:20px;align-self:flex-start;}
+.df-terminal{background:var(--verde);color:white;padding:8px 28px;border-radius:20px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;}
+.df-proceso{background:var(--fondo-alt);border:2px solid var(--borde);padding:10px 24px;font-family:'Space Mono',monospace;font-size:12px;color:var(--texto);min-width:180px;text-align:center;}
+.df-decision{background:rgba(203,219,42,.12);border:2px solid var(--verde-claro);padding:10px 20px;transform:skewX(-8deg);font-family:'Space Mono',monospace;font-size:12px;color:var(--verde);font-weight:700;min-width:200px;text-align:center;}
+.df-decision span{display:inline-block;transform:skewX(8deg);}
+.df-flecha{width:2px;height:24px;background:var(--borde);position:relative;}
+.df-flecha::after{content:'▼';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--verde-medio);}
+.df-rama{display:flex;gap:32px;align-items:flex-start;margin:8px 0;}
+.df-rama-item{display:flex;flex-direction:column;align-items:center;gap:0;}
+.df-rama-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--verde-medio);margin-bottom:6px;}
+.df-accion{background:rgba(8,184,157,.08);border:1.5px solid var(--turquesa);padding:9px 18px;border-radius:6px;font-family:'Space Mono',monospace;font-size:11.5px;color:var(--verde);min-width:130px;text-align:center;}
+/* TABLA VERDAD */
+.tabla-verdad{border-collapse:collapse;margin:18px auto;font-size:13px;font-family:'Space Mono',monospace;}
+.tabla-verdad thead tr{background:var(--verde);}
+.tabla-verdad thead th{padding:9px 18px;color:white;font-size:11px;text-align:center;}
+.tabla-verdad tbody tr:nth-child(even){background:rgba(0,88,70,.04);}
+.tabla-verdad tbody td{padding:8px 18px;border:1px solid var(--borde);text-align:center;color:var(--texto-suave);}
+.tv-v{color:var(--turquesa);font-weight:700;}
+.tv-f{color:#c0392b;font-weight:700;}
+/* CÓDIGO */
+.codigo-bloque{background:var(--codigo-bg);border-radius:10px;overflow:hidden;margin:18px 0;}
+.codigo-header{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);}
+.codigo-dots{display:flex;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
+.codigo-lang{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.3);}
+.codigo-archivo{font-family:'Space Mono',monospace;font-size:10px;color:var(--turquesa);}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+.c-inc{color:#c792ea;}.c-str{color:#a8d8b0;}.c-kw{color:var(--verde-claro);}.c-ns{color:var(--turquesa);}.c-tipo{color:#82aaff;}.c-fn{color:var(--turquesa);}.c-num{color:#f78c6c;}.c-com{color:rgba(255,255,255,.3);font-style:italic;}.c-const{color:#ffcb6b;}
+/* COMPARAR */
+.comparar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0;}
+.comp-bloque{border-radius:10px;overflow:hidden;}
+.comp-label{padding:8px 16px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.comp-bloque.if-bloque .comp-label{background:rgba(0,88,70,.12);color:var(--verde);}
+.comp-bloque.sw-bloque .comp-label{background:rgba(8,184,157,.1);color:var(--turquesa);}
+.comp-bloque pre{font-family:'Space Mono',monospace;font-size:12px;line-height:1.75;padding:16px 18px;overflow-x:auto;}
+.comp-bloque.if-bloque pre{background:rgba(0,88,70,.03);color:#0a3a28;border:1px solid rgba(0,88,70,.12);}
+.comp-bloque.sw-bloque pre{background:rgba(8,184,157,.03);color:#0a3a38;border:1px solid rgba(8,184,157,.15);}
+/* TABLA OP */
+.tabla-est{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;}
+.tabla-est thead tr{background:var(--verde);}
+.tabla-est thead th{padding:10px 15px;text-align:left;font-size:12px;font-weight:700;color:white;}
+.tabla-est tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-est tbody tr:hover{background:rgba(0,88,70,.06);}
+.tabla-est tbody td{padding:9px 15px;border-bottom:1px solid var(--borde);color:var(--texto-suave);vertical-align:top;}
+.tabla-est tbody td:first-child{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--verde);text-align:center;width:80px;}
+/* PSEUDOCÓDIGO */
+.pseudocodigo{background:var(--codigo-bg);border-radius:10px;margin:18px 0;overflow:hidden;}
+.pseudo-label{background:rgba(255,255,255,.05);padding:8px 18px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);border-bottom:1px solid rgba(255,255,255,.08);}
+.pseudo-code{padding:20px 24px;font-family:'Space Mono',monospace;font-size:13px;line-height:1.9;color:rgba(255,255,255,.85);}
+.p-kw{color:var(--verde-claro);font-weight:700;}
+.p-str{color:#a8d8b0;}
+.p-ind1{display:block;padding-left:24px;}
+.p-ind2{display:block;padding-left:48px;}
+.p-blank{display:block;height:8px;}
+/* TABLA SIM */
+.tabla-sim{width:100%;border-collapse:collapse;margin:18px 0;font-family:'Space Mono',monospace;font-size:12px;}
+.tabla-sim thead tr{background:var(--verde);}
+.tabla-sim thead th{padding:9px 12px;color:white;font-size:10px;text-align:center;letter-spacing:.5px;}
+.tabla-sim tbody tr{border-bottom:1px solid var(--borde);}
+.tabla-sim tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-sim tbody td{padding:8px 12px;text-align:center;color:var(--texto-suave);}
+.tabla-sim td.res{background:rgba(203,219,42,.15);color:var(--verde);font-weight:700;}
+/* CAJAS */
+.caja-nota{background:rgba(0,88,70,.05);border-left:4px solid var(--verde);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-nota .cn-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:6px;display:block;}
+.caja-nota p{margin:0;font-size:14px;color:var(--texto);}
+.caja-adv{background:rgba(203,219,42,.08);border-left:4px solid var(--verde-claro);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-adv .ca-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7a8a10;margin-bottom:6px;display:block;}
+.caja-adv p{margin:0;font-size:14px;color:#4a540a;}
+.caja-ia{background:#0d1e18;border-radius:10px;padding:20px 24px;margin:20px 0;border-left:4px solid var(--turquesa);}
+.caja-ia .ci-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:9px;display:block;}
+.caja-ia p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin:0;}
+.caja-ia p strong{color:var(--verde-claro);}
+/* EJERCICIOS */
+.ejercicios-section{background:white;border:1px solid var(--borde);border-radius:12px;overflow:hidden;margin:20px 0;}
+.ejercicios-titulo{background:var(--verde);color:white;padding:12px 20px;font-size:13px;font-weight:700;}
+.ejercicio-item{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid var(--borde);}
+.ejercicio-item:last-child{border-bottom:none;}
+.ej-num{min-width:28px;height:28px;background:var(--fondo-alt);border:1px solid var(--borde);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);flex-shrink:0;}
+.ej-badge{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:3px;flex-shrink:0;margin-top:4px;}
+.ej-badge.comp{background:rgba(0,88,70,.08);color:var(--verde);}
+.ej-badge.aplic{background:rgba(8,184,157,.1);color:var(--turquesa);}
+.ej-badge.integ{background:rgba(203,219,42,.12);color:#7a8a10;}
+.ej-enunciado{font-size:13.5px;color:var(--texto-suave);line-height:1.6;}
+/* EVALUATIVA + PUENTE */
+.evaluativa{background:rgba(0,88,70,.04);border:2px solid rgba(0,88,70,.15);border-radius:12px;padding:24px 28px;margin-top:36px;}
+.evaluativa-titulo{font-size:15px;font-weight:800;color:var(--verde);margin-bottom:3px;}
+.evaluativa-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;}
+.evaluativa-enunciado{font-size:14px;color:var(--texto-suave);line-height:1.7;margin-bottom:14px;}
+.evaluativa-criterios{margin:0;padding-left:18px;}
+.evaluativa-criterios li{font-size:13px;color:var(--texto-suave);margin-bottom:5px;}
+.puente{background:var(--codigo-bg);border-radius:12px;padding:24px 28px;margin-top:28px;border-left:4px solid var(--turquesa);}
+.puente-titulo{font-size:15px;font-weight:800;color:white;margin-bottom:3px;}
+.puente-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+.puente-texto{font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;}
+.puente-texto strong{color:var(--verde-claro);}
+/* NAV CAPS + PIE */
+.nav-caps{display:flex;justify-content:space-between;align-items:center;padding:20px 64px;background:var(--fondo-alt);border-top:1px solid var(--borde);margin-top:48px;flex-wrap:wrap;gap:12px;}
+.nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 18px;border:1.5px solid rgba(0,88,70,.2);border-radius:8px;background:white;max-width:280px;transition:all .2s;}
+.nav-cap-btn:hover{border-color:var(--verde);}
+.nav-cap-btn.sig{flex-direction:row-reverse;text-align:right;}
+.ncb-arrow{font-size:16px;color:var(--verde);}
+.ncb-label{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,88,70,.45);margin-bottom:2px;display:block;}
+.ncb-titulo{font-size:13px;font-weight:700;color:var(--verde);}
+.pie{background:var(--verde);color:rgba(255,255,255,.35);padding:14px 64px;font-family:'Space Mono',monospace;font-size:9px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:1px;}
+.pie span:first-child{color:rgba(255,255,255,.55);}
+@media(max-width:768px){
+  .page-header,.body-wrap,.nav-caps,.pie,.anclas{padding-left:24px;padding-right:24px;}
+  .ph-titulo{font-size:26px;}
+  .comparar{grid-template-columns:1fr;}
+  .df-rama{flex-direction:column;align-items:center;}
+}
+
+/* ── Componentes adicionales Cap 09-11 ── */
+.def-formal{background:var(--codigo-bg);border-radius:10px;padding:22px 26px;margin:20px 0;border-left:4px solid var(--verde-claro);}
+.def-formal p{color:rgba(255,255,255,.82);font-size:14.5px;line-height:1.75;margin:0;}
+.def-formal em{color:var(--verde-claro);font-style:normal;font-weight:700;}
+.def-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:8px;display:block;}
+.comparar{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;}
+.comp-bloque{background:var(--codigo-bg);border-radius:8px;overflow:hidden;}
+.comp-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;display:block;}
+.comp-label.bien{background:rgba(8,184,157,.15);color:var(--turquesa);}
+.comp-label.malo{background:rgba(203,219,42,.1);color:#9aaa15;}
+.comp-bloque pre{padding:14px 16px;font-family:'Space Mono',monospace;font-size:11.5px;line-height:1.8;color:rgba(255,255,255,.82);margin:0;overflow-x:auto;}
+@media(max-width:640px){.comparar{grid-template-columns:1fr;}}
+
+/* ── Componentes específicos de Anexos ── */
+.anexo-seccion{margin:0 0 48px 0;}
+.cheat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:16px;margin:20px 0;}
+.cheat-card{background:var(--codigo-bg);border-radius:10px;overflow:hidden;}
+.cheat-card-titulo{font-family:"Space Mono",monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:10px 16px;background:rgba(8,184,157,.12);color:var(--turquesa);display:block;}
+.cheat-card pre{padding:14px 16px;font-family:"Space Mono",monospace;font-size:11px;line-height:1.9;color:rgba(255,255,255,.82);margin:0;overflow-x:auto;}
+.glosario-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px;margin:20px 0;}
+.glosario-item{background:var(--card-bg);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:16px 18px;}
+.glosario-term{font-family:"Space Mono",monospace;font-size:12px;font-weight:700;color:var(--verde-claro);margin-bottom:6px;}
+.glosario-def{font-size:13.5px;color:rgba(255,255,255,.78);line-height:1.6;}
+.herramientas-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin:20px 0;}
+.herramienta-card{background:var(--card-bg);border:1px solid rgba(255,255,255,.07);border-radius:10px;padding:22px 20px;}
+.herramienta-icon{font-size:32px;margin-bottom:10px;}
+.herramienta-nombre{font-weight:700;font-size:15px;color:var(--verde-claro);margin-bottom:4px;}
+.herramienta-desc{font-size:13px;color:rgba(255,255,255,.7);margin-bottom:12px;line-height:1.5;}
+.herramienta-url{font-family:"Space Mono",monospace;font-size:10px;color:var(--turquesa);word-break:break-all;}
+.rubrica-general{width:100%;border-collapse:collapse;margin:20px 0;font-size:13px;}
+.rubrica-general th{background:rgba(0,88,70,.6);color:var(--verde-claro);padding:10px 14px;text-align:left;font-family:"Space Mono",monospace;font-size:10px;letter-spacing:1px;text-transform:uppercase;}
+.rubrica-general td{padding:10px 14px;border-bottom:1px solid rgba(255,255,255,.06);vertical-align:top;color:rgba(255,255,255,.82);}
+.rubrica-general tr:nth-child(even) td{background:rgba(255,255,255,.025);}
+.rubrica-general tfoot td{background:rgba(203,219,42,.08);color:var(--verde-claro);font-weight:700;font-family:"Space Mono",monospace;font-size:11px;}
+.biblio-item{background:var(--card-bg);border:1px solid rgba(255,255,255,.07);border-radius:8px;padding:18px 20px;margin:10px 0;}
+.biblio-titulo{font-weight:700;font-size:14px;color:rgba(255,255,255,.9);margin-bottom:4px;}
+.biblio-meta{font-size:12.5px;color:rgba(255,255,255,.55);font-style:italic;margin-bottom:6px;}
+.biblio-url{font-family:"Space Mono",monospace;font-size:10.5px;color:var(--turquesa);}
+.unidad-badge{display:inline-block;background:rgba(0,88,70,.4);border:1px solid var(--verde-oscuro);border-radius:4px;font-family:"Space Mono",monospace;font-size:9px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--verde-claro);padding:3px 10px;margin-bottom:16px;}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-logo">ESPAM MFL</div><div class="topbar-sep"></div>
+  <div class="topbar-titulo">Introducción a la Programación</div>
+  <div class="topbar-right">CARRERA DE COMPUTACIÓN</div>
+</header>
+<nav class="nav-menu">
+  <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">
+    ☰ &nbsp; Contenidos del libro <span class="nav-toggle-arrow">▼</span>
+  </button>
+      <div class="nav-body">
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Inicio</span>
+        <ul class="nav-items">
+          <li><a href="index.html" class="nav-item"><span class="nav-num">◉</span> Portada</a></li>
+          <li><a href="preliminares.html" class="nav-item"><span class="nav-num">—</span> Preliminares</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad I — Fundamentos</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_01.html" class="nav-item"><span class="nav-num">01</span> Pensamiento Algorítmico</a></li>
+          <li><a href="practica_01.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 1</a></li>
+          <li><a href="capitulo_02.html" class="nav-item"><span class="nav-num">02</span> Tipos de Datos y Variables</a></li>
+          <li><a href="practica_02.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 2</a></li>
+          <li><a href="capitulo_03.html" class="nav-item"><span class="nav-num">03</span> Depuración y Buenas Prácticas</a></li>
+          <li><a href="practica_03.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 3</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad II — Control</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_04.html" class="nav-item"><span class="nav-num">04</span> Estructuras Selectivas</a></li>
+          <li><a href="practica_04.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 4</a></li>
+          <li><a href="capitulo_05.html" class="nav-item"><span class="nav-num">05</span> Estructuras Repetitivas I</a></li>
+          <li><a href="practica_05.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 5</a></li>
+          <li><a href="capitulo_06.html" class="nav-item"><span class="nav-num">06</span> Estructuras Repetitivas II</a></li>
+          <li><a href="practica_06.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 6</a></li>
+          <li><a href="capitulo_07.html" class="nav-item"><span class="nav-num">07</span> Integración de Estructuras</a></li>
+          <li><a href="practica_07.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 7</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad III — Funciones</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_08.html" class="nav-item"><span class="nav-num">08</span> Funciones en C++</a></li>
+          <li><a href="practica_08.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 8</a></li>
+          <li><a href="capitulo_09.html" class="nav-item"><span class="nav-num">09</span> Paso por Valor y Referencia</a></li>
+          <li><a href="practica_09.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 9</a></li>
+          <li><a href="capitulo_10.html" class="nav-item"><span class="nav-num">10</span> Pila y Modularidad</a></li>
+          <li><a href="practica_10.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 10</a></li>
+          <li><a href="capitulo_11.html" class="nav-item"><span class="nav-num">11</span> Aplicaciones Funcionales</a></li>
+          <li><a href="practica_11.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 11</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad IV — Arreglos</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_12.html" class="nav-item"><span class="nav-num">12</span> Arreglos Unidimensionales</a></li>
+          <li><a href="practica_12.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 12</a></li>
+          <li><a href="capitulo_13.html" class="nav-item"><span class="nav-num">13</span> Búsqueda y Ordenamiento</a></li>
+          <li><a href="practica_13.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 13</a></li>
+          <li><a href="capitulo_14.html" class="nav-item"><span class="nav-num">14</span> Arreglos Bidimensionales</a></li>
+          <li><a href="practica_14.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 14</a></li>
+          <li><a href="capitulo_15.html" class="nav-item"><span class="nav-num">15</span> Proyecto Integrador Final</a></li>
+          <li><a href="practica_15.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 15</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Recursos</span>
+        <ul class="nav-items">
+          <li><a href="anexos.html" class="nav-item activo"><span class="nav-num">—</span> Anexos y Rúbricas</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+  </nav>
+
+<section class="page-header">
+  <div class="ph-num">✦</div>
+  <div class="ph-inner">
+    <div class="ph-badge">📎 Recursos del Curso</div>
+    <h1 class="ph-titulo">Anexos y Recursos</h1>
+    <p class="ph-subtitulo">Guía de instalación · Cheat sheet C++ · Glosario · Rúbricas · Bibliografía</p>
+    <div class="ph-meta">
+      <div class="ph-meta-item"><span class="ph-meta-label">Docente</span><span class="ph-meta-valor">María Belén Villao Loor</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Carrera</span><span class="ph-meta-valor">Computación — ESPAM MFL</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Período</span><span class="ph-meta-valor">2025 – 2026</span></div>
+    </div>
+  </div>
+</section>
+
+<nav class="anclas">
+  <a class="ancla" href="#a1">Instalación</a>
+  <a class="ancla" href="#a2">Cheat Sheet C++</a>
+  <a class="ancla" href="#a3">Glosario</a>
+  <a class="ancla" href="#a4">Rúbricas Generales</a>
+  <a class="ancla" href="#a5">Bibliografía</a>
+</nav>
+
+<main class="body-wrap">
+
+<!-- ══════════════════════════════════════════════════════════
+     A.1  GUÍA DE INSTALACIÓN DE HERRAMIENTAS
+══════════════════════════════════════════════════════════ -->
+<section class="seccion anexo-seccion" id="a1">
+  <span class="seccion-num">A.1</span>
+  <h2>Guía de Instalación de Herramientas</h2>
+  <p>Todas las herramientas usadas en el curso son gratuitas y de código abierto. Instálalas en el orden indicado para evitar conflictos de configuración.</p>
+
+  <div class="herramientas-grid">
+
+    <div class="herramienta-card">
+      <div class="herramienta-icon">⚙️</div>
+      <div class="herramienta-nombre">MinGW-w64 (compilador g++)</div>
+      <div class="herramienta-desc">Compilador GCC para Windows que permite ejecutar programas C++ desde la terminal. Es el compilador oficial del curso.</div>
+      <div class="herramienta-url">winlibs.com → descargar UCRT runtime, x86_64</div>
+    </div>
+
+    <div class="herramienta-card">
+      <div class="herramienta-icon">📝</div>
+      <div class="herramienta-nombre">Visual Studio Code</div>
+      <div class="herramienta-desc">Editor de código ligero con resaltado de sintaxis, terminal integrada y extensiones para C++. Extensión recomendada: C/C++ de Microsoft.</div>
+      <div class="herramienta-url">code.visualstudio.com → Download for Windows</div>
+    </div>
+
+    <div class="herramienta-card">
+      <div class="herramienta-icon">🔷</div>
+      <div class="herramienta-nombre">PSeInt</div>
+      <div class="herramienta-desc">Entorno para escribir y ejecutar pseudocódigo en español. Usado en las fases F2 de todas las prácticas para diseñar algoritmos antes de codificar en C++.</div>
+      <div class="herramienta-url">pseint.sourceforge.net → Descargar</div>
+    </div>
+
+    <div class="herramienta-card">
+      <div class="herramienta-icon">🐱</div>
+      <div class="herramienta-nombre">Scratch 3</div>
+      <div class="herramienta-desc">Entorno visual de programación por bloques. Usado en la Unidad I para introducir conceptos de secuencia, condición y repetición sin sintaxis formal.</div>
+      <div class="herramienta-url">scratch.mit.edu → Crear (no requiere instalación)</div>
+    </div>
+
+    <div class="herramienta-card">
+      <div class="herramienta-icon">🌐</div>
+      <div class="herramienta-nombre">Compilador online (respaldo)</div>
+      <div class="herramienta-desc">Para situaciones sin acceso a la instalación local. Soporta C++ estándar con entrada de datos.</div>
+      <div class="herramienta-url">onlinegdb.com/online_c++_compiler</div>
+    </div>
+
+    <div class="herramienta-card">
+      <div class="herramienta-icon">🤖</div>
+      <div class="herramienta-nombre">Claude / ChatGPT (IA asistida)</div>
+      <div class="herramienta-desc">Herramientas de IA para análisis crítico en la Fase 5 de cada práctica. Su uso requiere documentación y análisis propio. Ver protocolo en cada práctica.</div>
+      <div class="herramienta-url">claude.ai · chatgpt.com</div>
+    </div>
+
+  </div>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">Terminal Windows (CMD o PowerShell) · Verificar instalación</span>
+      </div>
+    </div>
+    <div class="codigo-body"><pre><span class="c-com"># 1. Verificar que g++ está instalado y en el PATH</span>
+g++ --version
+<span class="c-com"># Salida esperada: g++ (MinGW-W64...) 13.x.x</span>
+
+<span class="c-com"># 2. Compilar y ejecutar tu primer programa</span>
+g++ -Wall -Wextra -std=c++17 -o hola hola.cpp
+./hola
+
+<span class="c-com"># 3. Compilar con depuración (para encontrar errores)</span>
+g++ -Wall -Wextra -std=c++17 -g -o programa programa.cpp
+
+<span class="c-com"># 4. Verificar versión de PSeInt (desde su interfaz gráfica)</span>
+<span class="c-com"># Menú Ayuda → Acerca de PSeInt</span></pre></div>
+  </div>
+
+  <div class="caja-nota">
+    <div class="cn-label">📌 Configuración recomendada de VS Code para C++</div>
+    <p>Instala la extensión <strong>C/C++ de Microsoft</strong>. Abre la paleta de comandos (Ctrl+Shift+P), busca <em>C/C++: Edit Configurations</em> y establece el compilador en la ruta de <code>g++.exe</code> de tu instalación MinGW. Activa <em>IntelliSense</em> para autocompletado y detección de errores en tiempo real. Para ejecutar con un atajo, configura una tarea de compilación en <code>.vscode/tasks.json</code>.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════
+     A.2  CHEAT SHEET C++
+══════════════════════════════════════════════════════════ -->
+<section class="seccion anexo-seccion" id="a2">
+  <span class="seccion-num">A.2</span>
+  <h2>Cheat Sheet — Referencia Rápida de C++</h2>
+  <p>Resumen de sintaxis esencial del curso. Úsalo como referencia rápida durante las prácticas y evaluaciones donde se permita material de apoyo.</p>
+
+  <div class="cheat-grid">
+
+    <div class="cheat-card">
+      <span class="cheat-card-titulo">Estructura básica de un programa</span>
+      <pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;string&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-com">// código aquí</span>
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre>
+    </div>
+
+    <div class="cheat-card">
+      <span class="cheat-card-titulo">Tipos de datos y declaración</span>
+      <pre><span class="c-tipo">int</span>    n = <span class="c-num">42</span>;          <span class="c-com">// entero</span>
+<span class="c-tipo">double</span> x = <span class="c-num">3.14</span>;        <span class="c-com">// decimal</span>
+<span class="c-tipo">bool</span>   ok = <span class="c-kw">true</span>;      <span class="c-com">// lógico</span>
+<span class="c-tipo">char</span>   c = <span class="c-str">'A'</span>;        <span class="c-com">// carácter</span>
+<span class="c-tipo">string</span> s = <span class="c-str">"hola"</span>;     <span class="c-com">// cadena</span>
+
+<span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>);
+<span class="c-fn">cin</span>  &gt;&gt; n;
+getline(<span class="c-fn">cin</span>, s);      <span class="c-com">// cadena con espacios</span></pre>
+    </div>
+
+    <div class="cheat-card">
+      <span class="cheat-card-titulo">Estructuras selectivas</span>
+      <pre><span class="c-kw">if</span> (cond) { ... }
+<span class="c-kw">else if</span> (cond2) { ... }
+<span class="c-kw">else</span> { ... }
+
+<span class="c-kw">switch</span> (n) {
+    <span class="c-kw">case</span> <span class="c-num">1</span>: ...; <span class="c-kw">break</span>;
+    <span class="c-kw">case</span> <span class="c-num">2</span>: ...; <span class="c-kw">break</span>;
+    <span class="c-kw">default</span>: ...;
+}
+
+<span class="c-com">// Ternario</span>
+<span class="c-tipo">int</span> max = (a&gt;b) ? a : b;</pre>
+    </div>
+
+    <div class="cheat-card">
+      <span class="cheat-card-titulo">Estructuras repetitivas</span>
+      <pre><span class="c-kw">for</span> (<span class="c-tipo">int</span> i=<span class="c-num">0</span>; i&lt;n; i++) { ... }
+
+<span class="c-kw">while</span> (condicion) { ... }
+
+<span class="c-kw">do</span> {
+    ...
+} <span class="c-kw">while</span> (condicion);
+
+<span class="c-kw">break</span>;    <span class="c-com">// salir del bucle</span>
+<span class="c-kw">continue</span>; <span class="c-com">// siguiente iteración</span></pre>
+    </div>
+
+    <div class="cheat-card">
+      <span class="cheat-card-titulo">Funciones</span>
+      <pre><span class="c-com">// Prototipo</span>
+<span class="c-tipo">double</span> <span class="c-fn">suma</span>(<span class="c-tipo">double</span> a, <span class="c-tipo">double</span> b);
+
+<span class="c-com">// Por valor · por referencia · const&amp;</span>
+<span class="c-kw">void</span> <span class="c-fn">f</span>(<span class="c-tipo">int</span> x,          <span class="c-com">// copia</span>
+        <span class="c-tipo">int</span>&amp; y,         <span class="c-com">// alias (modifica)</span>
+        <span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; s); <span class="c-com">// solo lectura</span>
+
+<span class="c-com">// Recursión</span>
+<span class="c-tipo">int</span> <span class="c-fn">fact</span>(<span class="c-tipo">int</span> n) {
+    <span class="c-kw">if</span> (n==<span class="c-num">0</span>) <span class="c-kw">return</span> <span class="c-num">1</span>;
+    <span class="c-kw">return</span> n * <span class="c-fn">fact</span>(n-<span class="c-num">1</span>);
+}</pre>
+    </div>
+
+    <div class="cheat-card">
+      <span class="cheat-card-titulo">Arreglos y matrices</span>
+      <pre><span class="c-tipo">int</span> v[<span class="c-num">10</span>];                  <span class="c-com">// arreglo</span>
+<span class="c-tipo">int</span> m[<span class="c-num">3</span>][<span class="c-num">4</span>];               <span class="c-com">// matriz 3×4</span>
+
+<span class="c-com">// Recorrer arreglo</span>
+<span class="c-kw">for</span> (<span class="c-tipo">int</span> i=<span class="c-num">0</span>; i&lt;<span class="c-num">10</span>; i++)
+    v[i] = i * <span class="c-num">2</span>;
+
+<span class="c-com">// Pasar arreglo a función</span>
+<span class="c-kw">void</span> <span class="c-fn">f</span>(<span class="c-tipo">int</span> arr[], <span class="c-tipo">int</span> n);
+<span class="c-kw">void</span> <span class="c-fn">g</span>(<span class="c-tipo">int</span> m[][<span class="c-num">4</span>], <span class="c-tipo">int</span> fil);</pre>
+    </div>
+
+    <div class="cheat-card">
+      <span class="cheat-card-titulo">Cadenas (string)</span>
+      <pre">s.length()     <span class="c-com">// longitud</span>
+s.substr(i, n) <span class="c-com">// subcadena</span>
+s.find("hola") <span class="c-com">// posición</span>
+s.at(i)        <span class="c-com">// carácter en i</span>
+s + " mundo"   <span class="c-com">// concatenar</span>
+s == "abc"     <span class="c-com">// comparar</span>
+toupper(c)     <span class="c-com">// mayúscula</span>
+tolower(c)     <span class="c-com">// minúscula</span>
+isdigit(c)     <span class="c-com">// es dígito?</span>
+isalpha(c)     <span class="c-com">// es letra?</span></pre>
+    </div>
+
+    <div class="cheat-card">
+      <span class="cheat-card-titulo">Formato de salida (iomanip)</span>
+      <pre><span class="c-fn">cout</span> &lt;&lt; fixed
+     &lt;&lt; setprecision(<span class="c-num">2</span>)  <span class="c-com">// 2 decimales</span>
+     &lt;&lt; setw(<span class="c-num">10</span>)         <span class="c-com">// ancho campo</span>
+     &lt;&lt; left              <span class="c-com">// alinear izq</span>
+     &lt;&lt; right             <span class="c-com">// alinear der</span>
+     &lt;&lt; setfill(<span class="c-str">'0'</span>)     <span class="c-com">// relleno</span>
+     &lt;&lt; <span class="c-num">3.14159</span>;        <span class="c-com">// → 3.14</span>
+
+to_string(<span class="c-num">42</span>)  <span class="c-com">// int → string</span>
+stoi(<span class="c-str">"42"</span>)    <span class="c-com">// string → int</span>
+stod(<span class="c-str">"3.14"</span>)  <span class="c-com">// string → double</span></pre>
+    </div>
+
+    <div class="cheat-card">
+      <span class="cheat-card-titulo">Búsqueda y ordenamiento</span>
+      <pre"><span class="c-com">// Búsqueda lineal</span>
+<span class="c-kw">for</span> (<span class="c-tipo">int</span> i=<span class="c-num">0</span>; i&lt;n; i++)
+    <span class="c-kw">if</span> (v[i]==x) <span class="c-kw">return</span> i;
+
+<span class="c-com">// Búsqueda binaria (arreglo ordenado)</span>
+<span class="c-tipo">int</span> ini=<span class="c-num">0</span>, fin=n-<span class="c-num">1</span>;
+<span class="c-kw">while</span>(ini&lt;=fin) {
+    <span class="c-tipo">int</span> mid=(ini+fin)/<span class="c-num">2</span>;
+    <span class="c-kw">if</span>(v[mid]==x) <span class="c-kw">return</span> mid;
+    <span class="c-kw">if</span>(v[mid]&lt;x)  ini=mid+<span class="c-num">1</span>;
+    <span class="c-kw">else</span>          fin=mid-<span class="c-num">1</span>;
+}
+
+<span class="c-com">// Burbuja</span>
+<span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;n-<span class="c-num">1</span>;i++)
+ <span class="c-kw">for</span>(<span class="c-tipo">int</span> j=<span class="c-num">0</span>;j&lt;n-i-<span class="c-num">1</span>;j++)
+  <span class="c-kw">if</span>(v[j]&gt;v[j+<span class="c-num">1</span>]) swap(v[j],v[j+<span class="c-num">1</span>]);</pre>
+    </div>
+
+  </div>
+
+  <div class="caja-nota">
+    <div class="cn-label">📌 Operadores frecuentes</div>
+    <p>Aritméticos: <code>+ - * / %</code> — Relacionales: <code>== != &lt; &gt; &lt;= &gt;=</code> — Lógicos: <code>&amp;&amp; || !</code> — Asignación: <code>= += -= *= /= %=</code> — Incremento: <code>++ --</code> — Módulo: <code>a % b</code> da el residuo de la división entera. División entera: <code>7 / 2 = 3</code> (ambos operandos enteros). Para decimales: <code>7.0 / 2 = 3.5</code>.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════
+     A.3  GLOSARIO
+══════════════════════════════════════════════════════════ -->
+<section class="seccion anexo-seccion" id="a3">
+  <span class="seccion-num">A.3</span>
+  <h2>Glosario de Términos del Curso</h2>
+
+  <div class="unidad-badge">Unidad I — Fundamentos</div>
+  <div class="glosario-grid">
+    <div class="glosario-item"><div class="glosario-term">Algoritmo</div><div class="glosario-def">Secuencia finita, ordenada y sin ambigüedades de instrucciones que resuelve un problema o realiza una tarea.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Variable</div><div class="glosario-def">Espacio con nombre en memoria que almacena un valor modificable durante la ejecución del programa.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Constante</div><div class="glosario-def">Valor que no cambia durante la ejecución. En C++ se declara con <code>const</code>.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Tipo de dato</div><div class="glosario-def">Clasificación que determina qué valores puede almacenar una variable y qué operaciones se pueden realizar: <code>int</code>, <code>double</code>, <code>bool</code>, <code>char</code>, <code>string</code>.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Pseudocódigo</div><div class="glosario-def">Representación de un algoritmo en lenguaje cercano al natural, con estructuras formales de control, sin depender de la sintaxis de un lenguaje específico.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Compilador</div><div class="glosario-def">Programa que traduce el código fuente (C++) a código máquina ejecutable. En el curso usamos <code>g++</code>.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Depuración</div><div class="glosario-def">Proceso de identificar y corregir errores en un programa. Incluye errores de sintaxis (compilación) y errores de lógica (ejecución).</div></div>
+    <div class="glosario-item"><div class="glosario-term">Error de sintaxis</div><div class="glosario-def">Violación de las reglas gramaticales del lenguaje. El compilador lo detecta y el programa no compila.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Error de lógica</div><div class="glosario-def">El programa compila y ejecuta, pero produce resultados incorrectos. Es el error más difícil de detectar.</div></div>
+  </div>
+
+  <div class="unidad-badge" style="margin-top:24px">Unidad II — Control</div>
+  <div class="glosario-grid">
+    <div class="glosario-item"><div class="glosario-term">Estructura selectiva</div><div class="glosario-def">Instrucción que ejecuta un bloque de código dependiendo de una condición. En C++: <code>if-else</code>, <code>switch</code>.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Estructura repetitiva</div><div class="glosario-def">Instrucción que repite un bloque de código mientras se cumpla una condición. En C++: <code>for</code>, <code>while</code>, <code>do-while</code>.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Condición</div><div class="glosario-def">Expresión que se evalúa como verdadera (<code>true</code>) o falsa (<code>false</code>). Controla el flujo de <code>if</code> y bucles.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Iteración</div><div class="glosario-def">Cada ejecución individual del cuerpo de un bucle. Un bucle de 10 iteraciones ejecuta su cuerpo 10 veces.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Bucle infinito</div><div class="glosario-def">Bucle cuya condición de salida nunca se cumple. Generalmente es un error de lógica, salvo en casos intencionales de espera.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Acumulador</div><div class="glosario-def">Variable que suma valores sucesivos en un bucle. Se inicializa en 0 antes del bucle. Ejemplo: <code>suma += v[i]</code>.</div></div>
+  </div>
+
+  <div class="unidad-badge" style="margin-top:24px">Unidad III — Funciones</div>
+  <div class="glosario-grid">
+    <div class="glosario-item"><div class="glosario-term">Función</div><div class="glosario-def">Bloque de código con nombre que realiza una tarea específica, puede recibir parámetros y devolver un valor.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Prototipo</div><div class="glosario-def">Declaración anticipada de la firma de una función (tipo de retorno, nombre, parámetros) antes de su implementación.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Paso por valor</div><div class="glosario-def">La función recibe una copia del argumento. Las modificaciones no afectan la variable original del llamador.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Paso por referencia (&amp;)</div><div class="glosario-def">La función recibe un alias directo de la variable original. Las modificaciones sí afectan la variable del llamador.</div></div>
+    <div class="glosario-item"><div class="glosario-term">const&amp;</div><div class="glosario-def">Referencia de solo lectura. Evita copiar objetos grandes y garantiza que el original no sea modificado. Ideal para <code>string</code> de entrada.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Recursión</div><div class="glosario-def">Técnica donde una función se llama a sí misma con argumentos que se acercan al caso base. Requiere caso base y caso recursivo.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Pila de ejecución</div><div class="glosario-def">Estructura de memoria LIFO donde se apilan los marcos de cada llamada a función activa. El desbordamiento ocurre si es demasiado profunda.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Caso base</div><div class="glosario-def">Condición en una función recursiva que detiene la recursión y devuelve un valor conocido sin hacer otra llamada.</div></div>
+  </div>
+
+  <div class="unidad-badge" style="margin-top:24px">Unidad IV — Arreglos</div>
+  <div class="glosario-grid">
+    <div class="glosario-item"><div class="glosario-term">Arreglo</div><div class="glosario-def">Colección de elementos del mismo tipo almacenados en posiciones contiguas de memoria, accedidos por un índice que empieza en 0.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Índice</div><div class="glosario-def">Número entero que indica la posición de un elemento en un arreglo. El primer elemento tiene índice 0, el último n−1.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Arreglos paralelos</div><div class="glosario-def">Varios arreglos donde el mismo índice i contiene datos relacionados del mismo "registro". El índice actúa como clave.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Matriz</div><div class="glosario-def">Arreglo bidimensional de filas y columnas. Se accede con dos índices: <code>m[fila][columna]</code>.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Búsqueda lineal</div><div class="glosario-def">Recorre el arreglo elemento por elemento hasta encontrar el buscado. Costo O(n). No requiere orden previo.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Búsqueda binaria</div><div class="glosario-def">Divide el arreglo ordenado a la mitad en cada paso. Costo O(log n). Requiere que el arreglo esté ordenado.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Ordenamiento burbuja</div><div class="glosario-def">Compara pares adyacentes e intercambia si están fuera de orden. Costo O(n²). Simple pero ineficiente para n grandes.</div></div>
+    <div class="glosario-item"><div class="glosario-term">Eliminación lógica</div><div class="glosario-def">Marcar un registro como inactivo con un arreglo <code>bool activo[]</code> sin borrar físicamente los datos. Preserva la consistencia del arreglo.</div></div>
+  </div>
+</section>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════
+     A.4  RÚBRICAS GENERALES
+══════════════════════════════════════════════════════════ -->
+<section class="seccion anexo-seccion" id="a4">
+  <span class="seccion-num">A.4</span>
+  <h2>Rúbricas Generales de Evaluación</h2>
+  <p>Las siguientes rúbricas aplican a todas las evaluaciones del curso. Cada sesión práctica incluye además una rúbrica específica en su Fase 6.</p>
+
+  <h3>Rúbrica de Código C++ — Evaluaciones Presenciales</h3>
+  <table class="rubrica-general">
+    <thead>
+      <tr>
+        <th>Criterio</th>
+        <th>Excelente (100%)</th>
+        <th>Satisfactorio (75%)</th>
+        <th>En desarrollo (50%)</th>
+        <th>No logrado (0%)</th>
+        <th>Peso</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Compilación</strong></td>
+        <td>Compila sin errores ni warnings con <code>-Wall -Wextra</code></td>
+        <td>Compila con 1-2 warnings menores</td>
+        <td>Compila con modificaciones menores del evaluador</td>
+        <td>No compila</td>
+        <td>20%</td>
+      </tr>
+      <tr>
+        <td><strong>Corrección lógica</strong></td>
+        <td>Todos los casos de prueba producen el resultado esperado</td>
+        <td>Al menos 75% de los casos correctos</td>
+        <td>Al menos 50% de los casos correctos</td>
+        <td>Menos del 50% correcto</td>
+        <td>35%</td>
+      </tr>
+      <tr>
+        <td><strong>Estructura y estilo</strong></td>
+        <td>Funciones con nombres descriptivos, comentarios en prototipos, indentación consistente, sin código repetido</td>
+        <td>Buena estructura con 1-2 inconsistencias menores</td>
+        <td>Código funcional pero sin estructura modular clara</td>
+        <td>Todo en main, sin funciones, sin comentarios</td>
+        <td>20%</td>
+      </tr>
+      <tr>
+        <td><strong>Tipo de paso de parámetros</strong></td>
+        <td>Valor, referencia y <code>const&amp;</code> correctamente elegidos y justificables oralmente</td>
+        <td>1-2 parámetros con tipo de paso incorrecto</td>
+        <td>Tipo de paso incorrecto en más de la mitad</td>
+        <td>Todo por valor o todo por referencia sin criterio</td>
+        <td>15%</td>
+      </tr>
+      <tr>
+        <td><strong>Validación de entrada</strong></td>
+        <td>Toda entrada del usuario validada con <code>do-while</code>, mensaje de error claro</td>
+        <td>Al menos la mitad de las entradas validadas</td>
+        <td>Validación presente pero incompleta</td>
+        <td>Sin validación alguna</td>
+        <td>10%</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr><td colspan="5">TOTAL</td><td>100%</td></tr>
+    </tfoot>
+  </table>
+
+  <h3 style="margin-top:32px">Rúbrica de Uso Crítico de IA — Fase 5 de cada práctica</h3>
+  <table class="rubrica-general">
+    <thead>
+      <tr>
+        <th>Criterio</th>
+        <th>Logrado ✓</th>
+        <th>Parcial △</th>
+        <th>No logrado ✗</th>
+        <th>Pts</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Prompt documentado: copia exacta de lo que se le pidió a la IA</td>
+        <td>Prompt completo y específico</td>
+        <td>Prompt vago o incompleto</td>
+        <td>Sin documentación del prompt</td>
+        <td>/3</td>
+      </tr>
+      <tr>
+        <td>Análisis de la respuesta: identificar aciertos y errores del código generado</td>
+        <td>Mínimo 2 aciertos y 2 errores identificados con evidencia</td>
+        <td>Solo aciertos o solo errores</td>
+        <td>Sin análisis</td>
+        <td>/4</td>
+      </tr>
+      <tr>
+        <td>Corrección documentada: cómo se modificó o reemplazó el código de la IA</td>
+        <td>Versión original y versión corregida side by side con explicación</td>
+        <td>Corrección mencionada pero sin mostrar diferencias</td>
+        <td>Sin corrección</td>
+        <td>/3</td>
+      </tr>
+    </tbody>
+    <tfoot>
+      <tr><td colspan="3">TOTAL Fase 5</td><td>/10</td></tr>
+    </tfoot>
+  </table>
+
+  <div class="caja-nota">
+    <div class="cn-label">📌 Política de integridad académica y uso de IA</div>
+    <p>El uso de inteligencia artificial en el curso es <strong>permitido y documentado</strong>, nunca oculto. El código generado por IA que se entregue sin análisis crítico se considera plagio académico. La documentación del protocolo de IA en la Fase 5 de cada práctica es evidencia de aprendizaje auténtico. En las evaluaciones presenciales calificadas, el uso de IA está explícitamente prohibido salvo indicación del docente.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- ══════════════════════════════════════════════════════════
+     A.5  BIBLIOGRAFÍA
+══════════════════════════════════════════════════════════ -->
+<section class="seccion anexo-seccion" id="a5">
+  <span class="seccion-num">A.5</span>
+  <h2>Bibliografía y Recursos de Referencia</h2>
+
+  <h3>Libros de texto</h3>
+
+  <div class="biblio-item">
+    <div class="biblio-titulo">Deitel, P. J. &amp; Deitel, H. M. — C++ How to Program (10.ª ed.)</div>
+    <div class="biblio-meta">Pearson Education, 2017. ISBN 978-0134448237</div>
+    <div class="biblio-url">Referencia principal del curso · disponible en biblioteca ESPAM MFL</div>
+  </div>
+
+  <div class="biblio-item">
+    <div class="biblio-titulo">Stroustrup, B. — Programming: Principles and Practice Using C++ (2.ª ed.)</div>
+    <div class="biblio-meta">Addison-Wesley, 2014. ISBN 978-0321992789</div>
+    <div class="biblio-url">Autor del lenguaje C++ · referencia para conceptos avanzados</div>
+  </div>
+
+  <div class="biblio-item">
+    <div class="biblio-titulo">Joyanes Aguilar, L. — Fundamentos de Programación: Algoritmos, Estructuras de Datos y Objetos (5.ª ed.)</div>
+    <div class="biblio-meta">McGraw-Hill, 2018. ISBN 978-8448193416</div>
+    <div class="biblio-url">Referencia en español · enfoque en algoritmos y pseudocódigo</div>
+  </div>
+
+  <div class="biblio-item">
+    <div class="biblio-titulo">Cairo Battistutti, O. — Metodología de la Programación: Algoritmos, Diagramas de Flujo y Programas (3.ª ed.)</div>
+    <div class="biblio-meta">Alfaomega, 2013. ISBN 978-9701511916</div>
+    <div class="biblio-url">Enfoque latinoamericano en metodología y diseño de algoritmos</div>
+  </div>
+
+  <h3 style="margin-top:28px">Recursos en línea</h3>
+
+  <div class="biblio-item">
+    <div class="biblio-titulo">cppreference.com — Referencia completa del estándar C++</div>
+    <div class="biblio-meta">Documentación técnica actualizada de todas las funciones, tipos y bibliotecas estándar</div>
+    <div class="biblio-url">cppreference.com/w/cpp</div>
+  </div>
+
+  <div class="biblio-item">
+    <div class="biblio-titulo">learncpp.com — Tutorial completo de C++ en inglés</div>
+    <div class="biblio-meta">Tutorial gratuito y actualizado que cubre desde variables hasta programación orientada a objetos</div>
+    <div class="biblio-url">learncpp.com</div>
+  </div>
+
+  <div class="biblio-item">
+    <div class="biblio-titulo">PSeInt — Documentación oficial y foro de ayuda</div>
+    <div class="biblio-meta">Referencia de pseudocódigo, ejemplos y comunidad hispanohablante de apoyo</div>
+    <div class="biblio-url">pseint.sourceforge.net/index.php?page=documentacion</div>
+  </div>
+
+  <div class="biblio-item">
+    <div class="biblio-titulo">Compiler Explorer (godbolt.org) — Ver código ensamblador generado</div>
+    <div class="biblio-meta">Herramienta avanzada para entender cómo el compilador transforma el código. Útil para comparar optimizaciones.</div>
+    <div class="biblio-url">godbolt.org</div>
+  </div>
+
+  <div class="caja-ia">
+    <div class="ci-label">🤖 Política de citación de IA en trabajos académicos</div>
+    <p>Cuando uses inteligencia artificial en un trabajo o práctica, debes citarla como herramienta: <em>"Análisis asistido por Claude (Anthropic, 2025) / ChatGPT (OpenAI, 2025). Prompt utilizado: [texto del prompt]. Respuesta analizada y modificada por el autor."</em> La IA es una herramienta de apoyo, no un autor. El estudiante es el único responsable del contenido que entrega.</p>
+  </div>
+</section>
+
+</main>
+
+<div class="nav-caps">
+  <a href="practica_15.html" class="nav-cap-btn">
+    <span class="ncb-arrow">←</span>
+    <div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Práctica 15 — Proyecto Final</span></div>
+  </a>
+  <a href="index.html" class="nav-cap-btn sig">
+    <span class="ncb-arrow">🏠</span>
+    <div><span class="ncb-label">Volver al</span><span class="ncb-titulo">Inicio del libro</span></div>
+  </a>
+</div>
+
+<footer class="pie"><span>Anexos y Recursos · Introducción a la Programación · ESPAM MFL</span><span>espam.edu.ec</span></footer>
+</body>
+</html>

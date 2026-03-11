@@ -1,0 +1,886 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cap. 15 — Proyecto Integrador | ESPAM MFL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{--verde:#005846;--verde-medio:#007a5e;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fondo);font-size:16px;line-height:1.7;overflow-x:hidden;}
+/* TOPBAR */
+.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--verde);display:flex;align-items:center;padding:0 24px;gap:14px;z-index:1000;border-bottom:3px solid var(--verde-claro);}
+.topbar-logo{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--verde-claro);}
+.topbar-sep{width:1px;height:20px;background:rgba(255,255,255,.2);}
+.topbar-titulo{font-size:12px;color:rgba(255,255,255,.65);}
+.topbar-right{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;}
+/* NAV */
+.nav-menu{background:var(--verde);border-bottom:2px solid rgba(203,219,42,.3);margin-top:50px;}
+.nav-toggle{width:100%;background:transparent;color:white;border:none;padding:11px 24px;text-align:left;cursor:pointer;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;}
+.nav-toggle:hover{background:rgba(255,255,255,.04);}
+.nav-toggle-arrow{color:var(--verde-claro);font-size:12px;}
+.nav-body{display:none;padding:18px 24px 22px;}
+.nav-body.abierto{display:flex;flex-wrap:wrap;gap:28px;}
+.nav-grupo{min-width:170px;}
+.nav-grupo-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:7px;display:block;padding-bottom:5px;border-bottom:1px solid rgba(203,219,42,.2);}
+.nav-items{list-style:none;}
+.nav-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12px;color:rgba(255,255,255,.72);text-decoration:none;transition:color .15s;}
+.nav-item:hover{color:var(--verde-claro);}
+.nav-item.activo{color:var(--verde-claro);font-weight:700;}
+.nav-item.activo .nav-num{color:var(--verde-claro);}
+.nav-item.practica{color:rgba(8,184,157,.85);font-style:italic;}
+.nav-item.practica:hover{color:var(--turquesa);}
+.nav-item.practica .nav-num{color:rgba(8,184,157,.45);}
+.nav-item.prox{color:rgba(255,255,255,.28);pointer-events:none;}
+.nav-num{font-family:'Space Mono',monospace;font-size:9px;min-width:20px;flex-shrink:0;color:rgba(255,255,255,.28);}
+/* PAGE HEADER */
+.page-header{background:var(--verde);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--verde-claro);}
+.page-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(203,219,42,.07) 1px,transparent 1px);background-size:28px 28px;}
+.ph-num{position:absolute;right:48px;top:0;font-size:240px;font-weight:900;color:rgba(255,255,255,.04);line-height:1;font-family:'Space Mono',monospace;}
+.ph-inner{position:relative;z-index:1;}
+.ph-badge{display:inline-block;background:rgba(203,219,42,.15);border:1px solid rgba(203,219,42,.35);color:var(--verde-claro);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+.ph-titulo{font-size:36px;font-weight:900;line-height:1.1;color:white;margin-bottom:8px;}
+.ph-subtitulo{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:28px;}
+.ph-meta{display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;}
+.ph-meta-item{display:flex;flex-direction:column;gap:3px;}
+.ph-meta-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.ph-meta-valor{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;}
+/* ANCLAS */
+.anclas{background:white;border-bottom:1px solid var(--borde);padding:12px 64px;display:flex;gap:6px;flex-wrap:wrap;}
+.ancla{font-family:'Space Mono',monospace;font-size:9.5px;color:var(--verde-medio);text-decoration:none;padding:4px 10px;border:1px solid var(--borde);border-radius:4px;transition:all .15s;}
+.ancla:hover{background:var(--verde);color:var(--verde-claro);border-color:var(--verde);}
+/* BODY */
+.body-wrap{max-width:960px;margin:0 auto;padding:56px 64px 0;}
+.seccion{margin-bottom:52px;scroll-margin-top:120px;}
+.seccion-num{font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:4px;display:block;}
+h2{font-size:24px;font-weight:800;color:var(--verde);margin-bottom:16px;padding-bottom:10px;border-bottom:2px solid rgba(0,88,70,.12);}
+h3{font-size:16px;font-weight:700;color:var(--verde);margin:28px 0 10px;}
+p{margin-bottom:14px;color:var(--texto-suave);font-size:15px;}
+hr{border:none;border-top:1px solid var(--borde);margin:48px 0;}
+code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70,.07);padding:1px 6px;border-radius:3px;color:var(--verde);}
+/* RA BOX */
+.ra-box{background:rgba(0,88,70,.06);border:1px solid rgba(0,88,70,.15);border-left:4px solid var(--verde);border-radius:0 10px 10px 0;padding:18px 22px;margin-bottom:40px;}
+.ra-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:8px;}
+.ra-texto{font-size:14px;color:var(--texto);line-height:1.65;}
+/* DEF FORMAL */
+.def-formal{background:var(--codigo-bg);border-radius:10px;padding:22px 26px;margin:20px 0;border-left:4px solid var(--verde-claro);}
+.def-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:10px;}
+.def-formal p{color:rgba(255,255,255,.82);font-size:14.5px;line-height:1.75;margin:0;}
+.def-formal em{color:var(--verde-claro);font-style:normal;font-weight:700;}
+/* DIAGRAMA FLUJO */
+.diagrama{background:white;border:1px solid var(--borde);border-radius:12px;padding:24px;margin:20px 0;display:flex;flex-direction:column;align-items:center;gap:0;}
+.df-label{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:20px;align-self:flex-start;}
+.df-terminal{background:var(--verde);color:white;padding:8px 28px;border-radius:20px;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;}
+.df-proceso{background:var(--fondo-alt);border:2px solid var(--borde);padding:10px 24px;font-family:'Space Mono',monospace;font-size:12px;color:var(--texto);min-width:180px;text-align:center;}
+.df-decision{background:rgba(203,219,42,.12);border:2px solid var(--verde-claro);padding:10px 20px;transform:skewX(-8deg);font-family:'Space Mono',monospace;font-size:12px;color:var(--verde);font-weight:700;min-width:200px;text-align:center;}
+.df-decision span{display:inline-block;transform:skewX(8deg);}
+.df-flecha{width:2px;height:24px;background:var(--borde);position:relative;}
+.df-flecha::after{content:'▼';position:absolute;bottom:-8px;left:50%;transform:translateX(-50%);font-size:10px;color:var(--verde-medio);}
+.df-rama{display:flex;gap:32px;align-items:flex-start;margin:8px 0;}
+.df-rama-item{display:flex;flex-direction:column;align-items:center;gap:0;}
+.df-rama-label{font-family:'Space Mono',monospace;font-size:9px;color:var(--verde-medio);margin-bottom:6px;}
+.df-accion{background:rgba(8,184,157,.08);border:1.5px solid var(--turquesa);padding:9px 18px;border-radius:6px;font-family:'Space Mono',monospace;font-size:11.5px;color:var(--verde);min-width:130px;text-align:center;}
+/* TABLA VERDAD */
+.tabla-verdad{border-collapse:collapse;margin:18px auto;font-size:13px;font-family:'Space Mono',monospace;}
+.tabla-verdad thead tr{background:var(--verde);}
+.tabla-verdad thead th{padding:9px 18px;color:white;font-size:11px;text-align:center;}
+.tabla-verdad tbody tr:nth-child(even){background:rgba(0,88,70,.04);}
+.tabla-verdad tbody td{padding:8px 18px;border:1px solid var(--borde);text-align:center;color:var(--texto-suave);}
+.tv-v{color:var(--turquesa);font-weight:700;}
+.tv-f{color:#c0392b;font-weight:700;}
+/* CÓDIGO */
+.codigo-bloque{background:var(--codigo-bg);border-radius:10px;overflow:hidden;margin:18px 0;}
+.codigo-header{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);}
+.codigo-dots{display:flex;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
+.codigo-lang{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.3);}
+.codigo-archivo{font-family:'Space Mono',monospace;font-size:10px;color:var(--turquesa);}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+.c-inc{color:#c792ea;}.c-str{color:#a8d8b0;}.c-kw{color:var(--verde-claro);}.c-ns{color:var(--turquesa);}.c-tipo{color:#82aaff;}.c-fn{color:var(--turquesa);}.c-num{color:#f78c6c;}.c-com{color:rgba(255,255,255,.3);font-style:italic;}.c-const{color:#ffcb6b;}
+/* COMPARAR */
+.comparar{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0;}
+.comp-bloque{border-radius:10px;overflow:hidden;}
+.comp-label{padding:8px 16px;font-family:'Space Mono',monospace;font-size:9px;font-weight:700;letter-spacing:2px;text-transform:uppercase;}
+.comp-bloque.if-bloque .comp-label{background:rgba(0,88,70,.12);color:var(--verde);}
+.comp-bloque.sw-bloque .comp-label{background:rgba(8,184,157,.1);color:var(--turquesa);}
+.comp-bloque pre{font-family:'Space Mono',monospace;font-size:12px;line-height:1.75;padding:16px 18px;overflow-x:auto;}
+.comp-bloque.if-bloque pre{background:rgba(0,88,70,.03);color:#0a3a28;border:1px solid rgba(0,88,70,.12);}
+.comp-bloque.sw-bloque pre{background:rgba(8,184,157,.03);color:#0a3a38;border:1px solid rgba(8,184,157,.15);}
+/* TABLA OP */
+.tabla-est{width:100%;border-collapse:collapse;margin:18px 0;font-size:13.5px;}
+.tabla-est thead tr{background:var(--verde);}
+.tabla-est thead th{padding:10px 15px;text-align:left;font-size:12px;font-weight:700;color:white;}
+.tabla-est tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-est tbody tr:hover{background:rgba(0,88,70,.06);}
+.tabla-est tbody td{padding:9px 15px;border-bottom:1px solid var(--borde);color:var(--texto-suave);vertical-align:top;}
+.tabla-est tbody td:first-child{font-family:'Space Mono',monospace;font-size:13px;font-weight:700;color:var(--verde);text-align:center;width:80px;}
+/* PSEUDOCÓDIGO */
+.pseudocodigo{background:var(--codigo-bg);border-radius:10px;margin:18px 0;overflow:hidden;}
+.pseudo-label{background:rgba(255,255,255,.05);padding:8px 18px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);border-bottom:1px solid rgba(255,255,255,.08);}
+.pseudo-code{padding:20px 24px;font-family:'Space Mono',monospace;font-size:13px;line-height:1.9;color:rgba(255,255,255,.85);}
+.p-kw{color:var(--verde-claro);font-weight:700;}
+.p-str{color:#a8d8b0;}
+.p-ind1{display:block;padding-left:24px;}
+.p-ind2{display:block;padding-left:48px;}
+.p-blank{display:block;height:8px;}
+/* TABLA SIM */
+.tabla-sim{width:100%;border-collapse:collapse;margin:18px 0;font-family:'Space Mono',monospace;font-size:12px;}
+.tabla-sim thead tr{background:var(--verde);}
+.tabla-sim thead th{padding:9px 12px;color:white;font-size:10px;text-align:center;letter-spacing:.5px;}
+.tabla-sim tbody tr{border-bottom:1px solid var(--borde);}
+.tabla-sim tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.tabla-sim tbody td{padding:8px 12px;text-align:center;color:var(--texto-suave);}
+.tabla-sim td.res{background:rgba(203,219,42,.15);color:var(--verde);font-weight:700;}
+/* CAJAS */
+.caja-nota{background:rgba(0,88,70,.05);border-left:4px solid var(--verde);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-nota .cn-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:6px;display:block;}
+.caja-nota p{margin:0;font-size:14px;color:var(--texto);}
+.caja-adv{background:rgba(203,219,42,.08);border-left:4px solid var(--verde-claro);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-adv .ca-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7a8a10;margin-bottom:6px;display:block;}
+.caja-adv p{margin:0;font-size:14px;color:#4a540a;}
+.caja-ia{background:#0d1e18;border-radius:10px;padding:20px 24px;margin:20px 0;border-left:4px solid var(--turquesa);}
+.caja-ia .ci-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:9px;display:block;}
+.caja-ia p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin:0;}
+.caja-ia p strong{color:var(--verde-claro);}
+/* EJERCICIOS */
+.ejercicios-section{background:white;border:1px solid var(--borde);border-radius:12px;overflow:hidden;margin:20px 0;}
+.ejercicios-titulo{background:var(--verde);color:white;padding:12px 20px;font-size:13px;font-weight:700;}
+.ejercicio-item{display:flex;align-items:flex-start;gap:14px;padding:16px 20px;border-bottom:1px solid var(--borde);}
+.ejercicio-item:last-child{border-bottom:none;}
+.ej-num{min-width:28px;height:28px;background:var(--fondo-alt);border:1px solid var(--borde);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);flex-shrink:0;}
+.ej-badge{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:3px;flex-shrink:0;margin-top:4px;}
+.ej-badge.comp{background:rgba(0,88,70,.08);color:var(--verde);}
+.ej-badge.aplic{background:rgba(8,184,157,.1);color:var(--turquesa);}
+.ej-badge.integ{background:rgba(203,219,42,.12);color:#7a8a10;}
+.ej-enunciado{font-size:13.5px;color:var(--texto-suave);line-height:1.6;}
+/* EVALUATIVA + PUENTE */
+.evaluativa{background:rgba(0,88,70,.04);border:2px solid rgba(0,88,70,.15);border-radius:12px;padding:24px 28px;margin-top:36px;}
+.evaluativa-titulo{font-size:15px;font-weight:800;color:var(--verde);margin-bottom:3px;}
+.evaluativa-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:14px;}
+.evaluativa-enunciado{font-size:14px;color:var(--texto-suave);line-height:1.7;margin-bottom:14px;}
+.evaluativa-criterios{margin:0;padding-left:18px;}
+.evaluativa-criterios li{font-size:13px;color:var(--texto-suave);margin-bottom:5px;}
+.puente{background:var(--codigo-bg);border-radius:12px;padding:24px 28px;margin-top:28px;border-left:4px solid var(--turquesa);}
+.puente-titulo{font-size:15px;font-weight:800;color:white;margin-bottom:3px;}
+.puente-sub{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:12px;}
+.puente-texto{font-size:14px;color:rgba(255,255,255,.7);line-height:1.7;}
+.puente-texto strong{color:var(--verde-claro);}
+/* NAV CAPS + PIE */
+.nav-caps{display:flex;justify-content:space-between;align-items:center;padding:20px 64px;background:var(--fondo-alt);border-top:1px solid var(--borde);margin-top:48px;flex-wrap:wrap;gap:12px;}
+.nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 18px;border:1.5px solid rgba(0,88,70,.2);border-radius:8px;background:white;max-width:280px;transition:all .2s;}
+.nav-cap-btn:hover{border-color:var(--verde);}
+.nav-cap-btn.sig{flex-direction:row-reverse;text-align:right;}
+.ncb-arrow{font-size:16px;color:var(--verde);}
+.ncb-label{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,88,70,.45);margin-bottom:2px;display:block;}
+.ncb-titulo{font-size:13px;font-weight:700;color:var(--verde);}
+.pie{background:var(--verde);color:rgba(255,255,255,.35);padding:14px 64px;font-family:'Space Mono',monospace;font-size:9px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:1px;}
+.pie span:first-child{color:rgba(255,255,255,.55);}
+@media(max-width:768px){
+  .page-header,.body-wrap,.nav-caps,.pie,.anclas{padding-left:24px;padding-right:24px;}
+  .ph-titulo{font-size:26px;}
+  .comparar{grid-template-columns:1fr;}
+  .df-rama{flex-direction:column;align-items:center;}
+}
+
+/* ── Componentes adicionales Cap 09-11 ── */
+.def-formal{background:var(--codigo-bg);border-radius:10px;padding:22px 26px;margin:20px 0;border-left:4px solid var(--verde-claro);}
+.def-formal p{color:rgba(255,255,255,.82);font-size:14.5px;line-height:1.75;margin:0;}
+.def-formal em{color:var(--verde-claro);font-style:normal;font-weight:700;}
+.def-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:8px;display:block;}
+.comparar{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:20px 0;}
+.comp-bloque{background:var(--codigo-bg);border-radius:8px;overflow:hidden;}
+.comp-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:8px 14px;display:block;}
+.comp-label.bien{background:rgba(8,184,157,.15);color:var(--turquesa);}
+.comp-label.malo{background:rgba(203,219,42,.1);color:#9aaa15;}
+.comp-bloque pre{padding:14px 16px;font-family:'Space Mono',monospace;font-size:11.5px;line-height:1.8;color:rgba(255,255,255,.82);margin:0;overflow-x:auto;}
+@media(max-width:640px){.comparar{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header class="topbar">
+  <div class="topbar-logo">ESPAM MFL</div><div class="topbar-sep"></div>
+  <div class="topbar-titulo">Introducción a la Programación</div>
+  <div class="topbar-right">CARRERA DE COMPUTACIÓN</div>
+</header>
+<nav class="nav-menu">
+  <button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">
+    ☰ &nbsp; Contenidos del libro <span class="nav-toggle-arrow">▼</span>
+  </button>
+      <div class="nav-body">
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Inicio</span>
+        <ul class="nav-items">
+          <li><a href="index.html" class="nav-item"><span class="nav-num">◉</span> Portada</a></li>
+          <li><a href="preliminares.html" class="nav-item"><span class="nav-num">—</span> Preliminares</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad I — Fundamentos</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_01.html" class="nav-item"><span class="nav-num">01</span> Pensamiento Algorítmico</a></li>
+          <li><a href="practica_01.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 1</a></li>
+          <li><a href="capitulo_02.html" class="nav-item"><span class="nav-num">02</span> Tipos de Datos y Variables</a></li>
+          <li><a href="practica_02.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 2</a></li>
+          <li><a href="capitulo_03.html" class="nav-item"><span class="nav-num">03</span> Depuración y Buenas Prácticas</a></li>
+          <li><a href="practica_03.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 3</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad II — Control</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_04.html" class="nav-item"><span class="nav-num">04</span> Estructuras Selectivas</a></li>
+          <li><a href="practica_04.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 4</a></li>
+          <li><a href="capitulo_05.html" class="nav-item"><span class="nav-num">05</span> Estructuras Repetitivas I</a></li>
+          <li><a href="practica_05.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 5</a></li>
+          <li><a href="capitulo_06.html" class="nav-item"><span class="nav-num">06</span> Estructuras Repetitivas II</a></li>
+          <li><a href="practica_06.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 6</a></li>
+          <li><a href="capitulo_07.html" class="nav-item"><span class="nav-num">07</span> Integración de Estructuras</a></li>
+          <li><a href="practica_07.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 7</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad III — Funciones</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_08.html" class="nav-item"><span class="nav-num">08</span> Funciones en C++</a></li>
+          <li><a href="practica_08.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 8</a></li>
+          <li><a href="capitulo_09.html" class="nav-item"><span class="nav-num">09</span> Paso por Valor y Referencia</a></li>
+          <li><a href="practica_09.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 9</a></li>
+          <li><a href="capitulo_10.html" class="nav-item"><span class="nav-num">10</span> Pila y Modularidad</a></li>
+          <li><a href="practica_10.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 10</a></li>
+          <li><a href="capitulo_11.html" class="nav-item"><span class="nav-num">11</span> Aplicaciones Funcionales</a></li>
+          <li><a href="practica_11.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 11</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Unidad IV — Arreglos</span>
+        <ul class="nav-items">
+          <li><a href="capitulo_12.html" class="nav-item"><span class="nav-num">12</span> Arreglos Unidimensionales</a></li>
+          <li><a href="practica_12.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 12</a></li>
+          <li><a href="capitulo_13.html" class="nav-item"><span class="nav-num">13</span> Búsqueda y Ordenamiento</a></li>
+          <li><a href="practica_13.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 13</a></li>
+          <li><a href="capitulo_14.html" class="nav-item"><span class="nav-num">14</span> Arreglos Bidimensionales</a></li>
+          <li><a href="practica_14.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 14</a></li>
+          <li><a href="capitulo_15.html" class="nav-item activo"><span class="nav-num">15</span> Proyecto Integrador Final</a></li>
+          <li><a href="practica_15.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 15</a></li>
+        </ul>
+      </div>
+
+      <div class="nav-grupo">
+        <span class="nav-grupo-label">Recursos</span>
+        <ul class="nav-items">
+          <li><a href="anexos.html" class="nav-item"><span class="nav-num">—</span> Anexos y Rúbricas</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+  </nav>
+<section class="page-header">
+  <div class="ph-num">15</div>
+  <div class="ph-inner">
+    <div class="ph-badge">📗 Unidad IV · Capítulo 15 — Cierre de Curso</div>
+    <h1 class="ph-titulo">Proyecto Integrador</h1>
+    <p class="ph-subtitulo">Consolidación de funciones · arreglos · matrices · cadenas · ordenamiento · recursión en un sistema real</p>
+    <div class="ph-meta">
+      <div class="ph-meta-item"><span class="ph-meta-label">Horas presenciales</span><span class="ph-meta-valor">4 ACD + 4 PECD</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Horas autónomas</span><span class="ph-meta-valor">4 AA + 2 PEND</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Resultado</span><span class="ph-meta-valor">R.A. — D · Integrador</span></div>
+    </div>
+  </div>
+</section>
+<nav class="anclas">
+  <a class="ancla" href="#s151">15.1 Visión del proyecto</a>
+  <a class="ancla" href="#s152">15.2 Arquitectura modular</a>
+  <a class="ancla" href="#s153">15.3 Módulo Estudiantes</a>
+  <a class="ancla" href="#s154">15.4 Módulo Notas</a>
+  <a class="ancla" href="#s155">15.5 Módulo Reportes</a>
+  <a class="ancla" href="#s156">15.6 Integración y menú</a>
+  <a class="ancla" href="#s157">15.7 Estrategia IA</a>
+  <a class="ancla" href="#s158">15.8 Ejercicios finales</a>
+</nav>
+<main class="body-wrap">
+
+<div class="ra-box">
+  <div class="ra-label">Resultado de Aprendizaje — Capítulo 15 (Integrador)</div>
+  <div class="ra-texto">El estudiante <strong>diseña, implementa y documenta un sistema de software modular en C++</strong> que integra todos los conceptos del curso: funciones con paso por valor y referencia, arreglos unidimensionales y matrices, ordenamiento, búsqueda binaria, procesamiento de cadenas y uso crítico de IA como herramienta asistida. El sistema resuelve un problema real del contexto educativo de ESPAM MFL.</div>
+</div>
+
+<!-- 15.1 ─────────────────────────────────────────────────── -->
+<section class="seccion" id="s151">
+  <span class="seccion-num">15.1</span>
+  <h2>Visión del Proyecto — ¿Qué Construiremos?</h2>
+  <p>A lo largo del curso aprendiste las piezas fundamentales de la programación: algoritmos, variables, estructuras de control, funciones, arreglos y cadenas. El capítulo 15 es el momento de <strong>ensamblar todas esas piezas en un sistema coherente</strong> que resuelva un problema real. No es un ejercicio más: es el producto final de tu aprendizaje.</p>
+
+  <div class="def-formal">
+    <span class="def-label">Sistema de Gestión Académica — ESPAM MFL</span>
+    <p>Un sistema de consola en C++ que permite registrar hasta <em>30 estudiantes</em>, gestionar sus <em>4 notas</em> por materia, calcular promedios, clasificar el rendimiento, ordenar por nota o nombre, buscar por cédula y generar reportes estadísticos. Cada módulo es un conjunto de funciones cohesivas que <em>no usa variables globales</em>.</p>
+  </div>
+
+  <h3>Mapa de funcionalidades del sistema</h3>
+  <table class="tabla-est">
+    <thead><tr><th>Módulo</th><th>Funcionalidades</th><th>Conceptos del curso</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Estudiantes</strong></td><td>Registrar, buscar por cédula, listar, eliminar lógico</td><td>Arreglos paralelos, strings, búsqueda lineal/binaria</td></tr>
+      <tr><td><strong>Notas</strong></td><td>Ingresar 4 notas, calcular promedio, clasificar (A/B/C/D/F)</td><td>Arreglos 2D, funciones, paso por referencia</td></tr>
+      <tr><td><strong>Ordenamiento</strong></td><td>Ordenar por promedio descendente o por nombre A-Z</td><td>Burbuja/selección con arreglos paralelos</td></tr>
+      <tr><td><strong>Reportes</strong></td><td>Top 3, promedio general, % aprobados, histograma ASCII</td><td>Recorrido de arreglos, estadísticas, cadenas</td></tr>
+      <tr><td><strong>Menú</strong></td><td>Menú principal con do-while + switch, submenús por módulo</td><td>Estructuras de control anidadas</td></tr>
+    </tbody>
+  </table>
+
+  <div class="caja-nota">
+    <div class="cn-label">📌 Principio rector: main() solo orquesta</div>
+    <p>El <code>main()</code> del proyecto integrador no realiza ningún cálculo directo. Solo declara las estructuras de datos, muestra el menú y llama funciones. Todo el procesamiento vive en funciones con nombres descriptivos. Este principio —que has practicado desde el Cap. 8— es la base del software profesional modular.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- 15.2 ─────────────────────────────────────────────────── -->
+<section class="seccion" id="s152">
+  <span class="seccion-num">15.2</span>
+  <h2>Arquitectura Modular — Diseño Antes de Codificar</h2>
+  <p>Un sistema de 300+ líneas se vuelve inmanejable sin diseño previo. La arquitectura define las <strong>estructuras de datos</strong> y los <strong>contratos de funciones</strong> antes de escribir una sola línea de implementación.</p>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · Estructuras de datos globales del sistema (arreglos paralelos)</span>
+      </div>
+      <span class="codigo-archivo">gestion_academica.cpp — sección de datos</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;string&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;algorithm&gt;</span>   <span class="c-com">// para sort y transform</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-kw">const</span> <span class="c-tipo">int</span> MAX_EST = <span class="c-num">30</span>;    <span class="c-com">// capacidad máxima</span>
+<span class="c-kw">const</span> <span class="c-tipo">int</span> NUM_NOTAS = <span class="c-num">4</span>;   <span class="c-com">// notas por estudiante</span>
+
+<span class="c-com">// ─── ARREGLOS PARALELOS ──────────────────────────────────────────</span>
+<span class="c-com">// Índice i conecta todos los datos del mismo estudiante</span>
+<span class="c-tipo">string</span>  cedulas [MAX_EST];            <span class="c-com">// cédula única — clave de búsqueda</span>
+<span class="c-tipo">string</span>  nombres [MAX_EST];            <span class="c-com">// nombre completo</span>
+<span class="c-tipo">double</span>  notas   [MAX_EST][NUM_NOTAS]; <span class="c-com">// matriz: estudiante × nota</span>
+<span class="c-tipo">double</span>  promedios[MAX_EST];           <span class="c-com">// calculado automáticamente</span>
+<span class="c-tipo">bool</span>    activo  [MAX_EST];            <span class="c-com">// eliminación lógica</span>
+<span class="c-tipo">int</span>     totalEst = <span class="c-num">0</span>;               <span class="c-com">// estudiantes registrados</span></pre></div>
+  </div>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · Catálogo completo de prototipos — el contrato del sistema</span>
+      </div>
+      <span class="codigo-archivo">prototipos</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-com">// ─── MÓDULO MENÚ ─────────────────────────────────────────────────</span>
+<span class="c-kw">void</span> <span class="c-fn">mostrarMenuPrincipal</span>();
+<span class="c-kw">void</span> <span class="c-fn">mostrarMenuReportes</span>();
+
+<span class="c-com">// ─── MÓDULO ESTUDIANTES ───────────────────────────────────────────</span>
+<span class="c-tipo">bool</span> <span class="c-fn">registrarEstudiante</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; cedula, <span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; nombre);
+<span class="c-tipo">int</span>  <span class="c-fn">buscarPorCedula</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; cedula);       <span class="c-com">// retorna índice o -1</span>
+<span class="c-kw">void</span> <span class="c-fn">listarEstudiantes</span>();
+<span class="c-tipo">bool</span> <span class="c-fn">eliminarEstudiante</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; cedula);    <span class="c-com">// eliminación lógica</span>
+
+<span class="c-com">// ─── MÓDULO NOTAS ─────────────────────────────────────────────────</span>
+<span class="c-tipo">bool</span>   <span class="c-fn">ingresarNotas</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; cedula);
+<span class="c-tipo">double</span> <span class="c-fn">calcularPromedio</span>(<span class="c-tipo">int</span> idx);              <span class="c-com">// por índice</span>
+<span class="c-tipo">string</span> <span class="c-fn">clasificarRendimiento</span>(<span class="c-tipo">double</span> prom);       <span class="c-com">// A/B/C/D/F</span>
+<span class="c-kw">void</span>   <span class="c-fn">recalcularTodosPromedios</span>();
+
+<span class="c-com">// ─── MÓDULO ORDENAMIENTO ──────────────────────────────────────────</span>
+<span class="c-kw">void</span> <span class="c-fn">ordenarPorPromedio</span>();   <span class="c-com">// burbuja descendente</span>
+<span class="c-kw">void</span> <span class="c-fn">ordenarPorNombre</span>();     <span class="c-com">// selección A-Z</span>
+<span class="c-kw">void</span> <span class="c-fn">intercambiarEstudiantes</span>(<span class="c-tipo">int</span> i, <span class="c-tipo">int</span> j);  <span class="c-com">// swaps arreglos paralelos</span>
+
+<span class="c-com">// ─── MÓDULO REPORTES ──────────────────────────────────────────────</span>
+<span class="c-kw">void</span> <span class="c-fn">reporteEstadistico</span>();   <span class="c-com">// promedio general, min, max, % aprobados</span>
+<span class="c-kw">void</span> <span class="c-fn">reporteTop3</span>();         <span class="c-com">// los tres mejores promedios</span>
+<span class="c-kw">void</span> <span class="c-fn">histogramaRendimiento</span>(); <span class="c-com">// barras ASCII por categoría A/B/C/D/F</span>
+<span class="c-kw">void</span> <span class="c-fn">fichaEstudiante</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; cedula); <span class="c-com">// detalle individual</span>
+
+<span class="c-com">// ─── UTILITARIOS ──────────────────────────────────────────────────</span>
+<span class="c-tipo">double</span> <span class="c-fn">leerNota</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; msg);          <span class="c-com">// valida [0,10]</span>
+<span class="c-tipo">string</span> <span class="c-fn">leerCedula</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; msg);         <span class="c-com">// valida 10 dígitos</span>
+<span class="c-tipo">bool</span>   <span class="c-fn">cedulaValida</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; ced);      <span class="c-com">// exactamente 10 dígitos</span>
+<span class="c-kw">void</span>   <span class="c-fn">separador</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; titulo);      <span class="c-com">// línea decorativa con título</span></pre></div>
+  </div>
+
+  <div class="caja-nota">
+    <div class="cn-label">📌 Por qué arreglos paralelos y no struct</div>
+    <p>Un <code>struct Estudiante</code> sería más elegante en C++ moderno, pero requiere conocimiento que no forma parte del currículo de este curso. Los arreglos paralelos son una solución completamente válida y demuestran el mismo principio: <em>todos los datos del índice i pertenecen al mismo estudiante</em>. El convenio debe ser explícito en comentarios.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- 15.3 ─────────────────────────────────────────────────── -->
+<section class="seccion" id="s153">
+  <span class="seccion-num">15.3</span>
+  <h2>Módulo Estudiantes — Registro, Búsqueda y Eliminación</h2>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · Módulo completo de gestión de estudiantes</span>
+      </div>
+      <span class="codigo-archivo">modulo_estudiantes.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-com">// ── Validar cédula: exactamente 10 caracteres numéricos ──────────</span>
+<span class="c-tipo">bool</span> <span class="c-fn">cedulaValida</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; ced) {
+    <span class="c-kw">if</span> (ced.length() != <span class="c-num">10</span>) <span class="c-kw">return</span> <span class="c-kw">false</span>;
+    <span class="c-kw">for</span> (<span class="c-tipo">char</span> c : ced)
+        <span class="c-kw">if</span> (!isdigit(c)) <span class="c-kw">return</span> <span class="c-kw">false</span>;
+    <span class="c-kw">return</span> <span class="c-kw">true</span>;
+}
+
+<span class="c-tipo">string</span> <span class="c-fn">leerCedula</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; msg) {
+    <span class="c-tipo">string</span> ced;
+    <span class="c-kw">do</span> {
+        <span class="c-fn">cout</span> &lt;&lt; msg; <span class="c-fn">cin</span> &gt;&gt; ced;
+        <span class="c-kw">if</span> (!<span class="c-fn">cedulaValida</span>(ced))
+            <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  ✗ Cédula inválida (10 dígitos).
+"</span>;
+    } <span class="c-kw">while</span> (!<span class="c-fn">cedulaValida</span>(ced));
+    <span class="c-kw">return</span> ced;
+}
+
+<span class="c-com">// ── Búsqueda lineal por cédula entre activos ─────────────────────</span>
+<span class="c-tipo">int</span> <span class="c-fn">buscarPorCedula</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; cedula) {
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">0</span>; i &lt; totalEst; i++)
+        <span class="c-kw">if</span> (activo[i] &amp;&amp; cedulas[i] == cedula) <span class="c-kw">return</span> i;
+    <span class="c-kw">return</span> -<span class="c-num">1</span>;   <span class="c-com">// no encontrado</span>
+}
+
+<span class="c-com">// ── Registrar nuevo estudiante ────────────────────────────────────</span>
+<span class="c-tipo">bool</span> <span class="c-fn">registrarEstudiante</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; cedula, <span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; nombre) {
+    <span class="c-kw">if</span> (totalEst &gt;= MAX_EST) {
+        <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  ✗ Sistema lleno (máximo "</span> &lt;&lt; MAX_EST &lt;&lt; <span class="c-str">" estudiantes).
+"</span>;
+        <span class="c-kw">return</span> <span class="c-kw">false</span>;
+    }
+    <span class="c-kw">if</span> (<span class="c-fn">buscarPorCedula</span>(cedula) != -<span class="c-num">1</span>) {
+        <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  ✗ Cédula ya registrada.
+"</span>;
+        <span class="c-kw">return</span> <span class="c-kw">false</span>;
+    }
+    cedulas  [totalEst] = cedula;
+    nombres  [totalEst] = nombre;
+    promedios[totalEst] = <span class="c-num">0.0</span>;
+    activo   [totalEst] = <span class="c-kw">true</span>;
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> j = <span class="c-num">0</span>; j &lt; NUM_NOTAS; j++) notas[totalEst][j] = <span class="c-num">0.0</span>;
+    totalEst++;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  ✔ Estudiante registrado correctamente.
+"</span>;
+    <span class="c-kw">return</span> <span class="c-kw">true</span>;
+}
+
+<span class="c-com">// ── Listar todos los activos ──────────────────────────────────────</span>
+<span class="c-kw">void</span> <span class="c-fn">listarEstudiantes</span>() {
+    <span class="c-fn">separador</span>(<span class="c-str">"LISTADO DE ESTUDIANTES"</span>);
+    <span class="c-tipo">int</span> count = <span class="c-num">0</span>;
+    <span class="c-fn">cout</span> &lt;&lt; left &lt;&lt; setw(<span class="c-num">4</span>) &lt;&lt; <span class="c-str">"#"</span>
+         &lt;&lt; setw(<span class="c-num">12</span>) &lt;&lt; <span class="c-str">"Cédula"</span>
+         &lt;&lt; setw(<span class="c-num">28</span>) &lt;&lt; <span class="c-str">"Nombre"</span>
+         &lt;&lt; setw(<span class="c-num">8</span>)  &lt;&lt; <span class="c-str">"Prom"</span>
+         &lt;&lt; <span class="c-str">"Estado
+"</span>;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-tipo">string</span>(<span class="c-num">60</span>, <span class="c-str">'-'</span>) &lt;&lt; <span class="c-str">"
+"</span>;
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">0</span>; i &lt; totalEst; i++) {
+        <span class="c-kw">if</span> (!activo[i]) <span class="c-kw">continue</span>;
+        count++;
+        <span class="c-fn">cout</span> &lt;&lt; left
+             &lt;&lt; setw(<span class="c-num">4</span>)  &lt;&lt; count
+             &lt;&lt; setw(<span class="c-num">12</span>) &lt;&lt; cedulas[i]
+             &lt;&lt; setw(<span class="c-num">28</span>) &lt;&lt; nombres[i]
+             &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>)
+             &lt;&lt; setw(<span class="c-num">8</span>)  &lt;&lt; promedios[i]
+             &lt;&lt; <span class="c-fn">clasificarRendimiento</span>(promedios[i]) &lt;&lt; <span class="c-str">"
+"</span>;
+    }
+    <span class="c-kw">if</span> (count == <span class="c-num">0</span>) <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  (sin registros)
+"</span>;
+    <span class="c-kw">else</span> <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"
+Total activos: "</span> &lt;&lt; count &lt;&lt; <span class="c-str">"
+"</span>;
+}
+
+<span class="c-com">// ── Eliminación lógica (no borra datos, marca inactivo) ──────────</span>
+<span class="c-tipo">bool</span> <span class="c-fn">eliminarEstudiante</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; cedula) {
+    <span class="c-tipo">int</span> idx = <span class="c-fn">buscarPorCedula</span>(cedula);
+    <span class="c-kw">if</span> (idx == -<span class="c-num">1</span>) { <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  ✗ Cédula no encontrada.
+"</span>; <span class="c-kw">return</span> <span class="c-kw">false</span>; }
+    activo[idx] = <span class="c-kw">false</span>;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  ✔ Estudiante "</span> &lt;&lt; nombres[idx] &lt;&lt; <span class="c-str">" eliminado del sistema.
+"</span>;
+    <span class="c-kw">return</span> <span class="c-kw">true</span>;
+}</pre></div>
+  </div>
+</section>
+
+<hr>
+
+<!-- 15.4 ─────────────────────────────────────────────────── -->
+<section class="seccion" id="s154">
+  <span class="seccion-num">15.4</span>
+  <h2>Módulo Notas — Ingreso, Cálculo y Clasificación</h2>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · Módulo de notas — validación, promedio y clasificación</span>
+      </div>
+      <span class="codigo-archivo">modulo_notas.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-tipo">double</span> <span class="c-fn">leerNota</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; msg) {
+    <span class="c-tipo">double</span> n;
+    <span class="c-kw">do</span> {
+        <span class="c-fn">cout</span> &lt;&lt; msg; <span class="c-fn">cin</span> &gt;&gt; n;
+        <span class="c-kw">if</span> (n &lt; <span class="c-num">0</span> || n &gt; <span class="c-num">10</span>)
+            <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  ✗ Nota fuera de rango [0, 10].
+"</span>;
+    } <span class="c-kw">while</span> (n &lt; <span class="c-num">0</span> || n &gt; <span class="c-num">10</span>);
+    <span class="c-kw">return</span> n;
+}
+
+<span class="c-tipo">bool</span> <span class="c-fn">ingresarNotas</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; cedula) {
+    <span class="c-tipo">int</span> idx = <span class="c-fn">buscarPorCedula</span>(cedula);
+    <span class="c-kw">if</span> (idx == -<span class="c-num">1</span>) {
+        <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  ✗ Estudiante no encontrado.
+"</span>;
+        <span class="c-kw">return</span> <span class="c-kw">false</span>;
+    }
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  Ingresando notas para: "</span> &lt;&lt; nombres[idx] &lt;&lt; <span class="c-str">"
+"</span>;
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> j = <span class="c-num">0</span>; j &lt; NUM_NOTAS; j++) {
+        <span class="c-tipo">string</span> msg = <span class="c-str">"  Nota "</span> + to_string(j+<span class="c-num">1</span>) + <span class="c-str">" [0-10]: "</span>;
+        notas[idx][j] = <span class="c-fn">leerNota</span>(msg);
+    }
+    promedios[idx] = <span class="c-fn">calcularPromedio</span>(idx);
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  ✔ Promedio calculado: "</span>
+         &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>) &lt;&lt; promedios[idx] &lt;&lt; <span class="c-str">"  → "</span>
+         &lt;&lt; <span class="c-fn">clasificarRendimiento</span>(promedios[idx]) &lt;&lt; <span class="c-str">"
+"</span>;
+    <span class="c-kw">return</span> <span class="c-kw">true</span>;
+}
+
+<span class="c-tipo">double</span> <span class="c-fn">calcularPromedio</span>(<span class="c-tipo">int</span> idx) {
+    <span class="c-tipo">double</span> suma = <span class="c-num">0</span>;
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> j = <span class="c-num">0</span>; j &lt; NUM_NOTAS; j++) suma += notas[idx][j];
+    <span class="c-kw">return</span> suma / NUM_NOTAS;
+}
+
+<span class="c-tipo">string</span> <span class="c-fn">clasificarRendimiento</span>(<span class="c-tipo">double</span> prom) {
+    <span class="c-kw">if</span>      (prom &gt;= <span class="c-num">9.0</span>) <span class="c-kw">return</span> <span class="c-str">"A  (Sobresaliente)"</span>;
+    <span class="c-kw">else if</span> (prom &gt;= <span class="c-num">8.0</span>) <span class="c-kw">return</span> <span class="c-str">"B  (Muy Bueno)"</span>;
+    <span class="c-kw">else if</span> (prom &gt;= <span class="c-num">7.0</span>) <span class="c-kw">return</span> <span class="c-str">"C  (Bueno)"</span>;
+    <span class="c-kw">else if</span> (prom &gt;= <span class="c-num">5.0</span>) <span class="c-kw">return</span> <span class="c-str">"D  (Deficiente)"</span>;
+    <span class="c-kw">else</span>                   <span class="c-kw">return</span> <span class="c-str">"F  (Reprobado)"</span>;
+}
+
+<span class="c-kw">void</span> <span class="c-fn">recalcularTodosPromedios</span>() {
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">0</span>; i &lt; totalEst; i++)
+        <span class="c-kw">if</span> (activo[i]) promedios[i] = <span class="c-fn">calcularPromedio</span>(i);
+}</pre></div>
+  </div>
+</section>
+
+<hr>
+
+<!-- 15.5 ─────────────────────────────────────────────────── -->
+<section class="seccion" id="s155">
+  <span class="seccion-num">15.5</span>
+  <h2>Módulo Reportes — Estadísticas y Visualización ASCII</h2>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · Módulo de reportes — estadístico, top 3 e histograma</span>
+      </div>
+      <span class="codigo-archivo">modulo_reportes.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-kw">void</span> <span class="c-fn">reporteEstadistico</span>() {
+    <span class="c-fn">separador</span>(<span class="c-str">"REPORTE ESTADÍSTICO"</span>);
+    <span class="c-tipo">int</span>    activos = <span class="c-num">0</span>, aprobados = <span class="c-num">0</span>;
+    <span class="c-tipo">double</span> suma = <span class="c-num">0</span>, minP = <span class="c-num">10</span>, maxP = <span class="c-num">0</span>;
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">0</span>; i &lt; totalEst; i++) {
+        <span class="c-kw">if</span> (!activo[i]) <span class="c-kw">continue</span>;
+        activos++;
+        suma += promedios[i];
+        <span class="c-kw">if</span> (promedios[i] &lt; minP) minP = promedios[i];
+        <span class="c-kw">if</span> (promedios[i] &gt; maxP) maxP = promedios[i];
+        <span class="c-kw">if</span> (promedios[i] &gt;= <span class="c-num">7.0</span>) aprobados++;
+    }
+    <span class="c-kw">if</span> (activos == <span class="c-num">0</span>) { <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  (sin datos)
+"</span>; <span class="c-kw">return</span>; }
+    <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>)
+         &lt;&lt; <span class="c-str">"  Estudiantes activos : "</span> &lt;&lt; activos    &lt;&lt; <span class="c-str">"
+"</span>
+         &lt;&lt; <span class="c-str">"  Promedio general    : "</span> &lt;&lt; suma/activos &lt;&lt; <span class="c-str">"
+"</span>
+         &lt;&lt; <span class="c-str">"  Nota mínima         : "</span> &lt;&lt; minP         &lt;&lt; <span class="c-str">"
+"</span>
+         &lt;&lt; <span class="c-str">"  Nota máxima         : "</span> &lt;&lt; maxP         &lt;&lt; <span class="c-str">"
+"</span>
+         &lt;&lt; <span class="c-str">"  Aprobados (≥7)      : "</span> &lt;&lt; aprobados
+         &lt;&lt; <span class="c-str">"  ("</span> &lt;&lt; setprecision(<span class="c-num">1</span>) &lt;&lt; (<span class="c-num">100.0</span>*aprobados/activos) &lt;&lt; <span class="c-str">"%)
+"</span>;
+}
+
+<span class="c-kw">void</span> <span class="c-fn">reporteTop3</span>() {
+    <span class="c-fn">separador</span>(<span class="c-str">"TOP 3 ESTUDIANTES"</span>);
+    <span class="c-com">// Ordenar copia temporal sin tocar el arreglo original</span>
+    <span class="c-tipo">int</span> indices[MAX_EST], n = <span class="c-num">0</span>;
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">0</span>; i &lt; totalEst; i++) <span class="c-kw">if</span> (activo[i]) indices[n++] = i;
+    <span class="c-com">// Burbuja sobre índices</span>
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">0</span>; i &lt; n-<span class="c-num">1</span>; i++)
+        <span class="c-kw">for</span> (<span class="c-tipo">int</span> j = <span class="c-num">0</span>; j &lt; n-i-<span class="c-num">1</span>; j++)
+            <span class="c-kw">if</span> (promedios[indices[j]] &lt; promedios[indices[j+<span class="c-num">1</span>]])
+                swap(indices[j], indices[j+<span class="c-num">1</span>]);
+    <span class="c-tipo">int</span> mostrar = min(n, <span class="c-num">3</span>);
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> k = <span class="c-num">0</span>; k &lt; mostrar; k++) {
+        <span class="c-tipo">int</span> i = indices[k];
+        <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  "</span> &lt;&lt; (k+<span class="c-num">1</span>) &lt;&lt; <span class="c-str">". "</span> &lt;&lt; left &lt;&lt; setw(<span class="c-num">28</span>) &lt;&lt; nombres[i]
+             &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>) &lt;&lt; promedios[i] &lt;&lt; <span class="c-str">"  "</span>
+             &lt;&lt; <span class="c-fn">clasificarRendimiento</span>(promedios[i]) &lt;&lt; <span class="c-str">"
+"</span>;
+    }
+}
+
+<span class="c-kw">void</span> <span class="c-fn">histogramaRendimiento</span>() {
+    <span class="c-fn">separador</span>(<span class="c-str">"HISTOGRAMA DE RENDIMIENTO"</span>);
+    <span class="c-tipo">int</span> cA=<span class="c-num">0</span>, cB=<span class="c-num">0</span>, cC=<span class="c-num">0</span>, cD=<span class="c-num">0</span>, cF=<span class="c-num">0</span>;
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">0</span>; i &lt; totalEst; i++) {
+        <span class="c-kw">if</span> (!activo[i]) <span class="c-kw">continue</span>;
+        <span class="c-tipo">double</span> p = promedios[i];
+        <span class="c-kw">if</span>      (p &gt;= <span class="c-num">9</span>) cA++;
+        <span class="c-kw">else if</span> (p &gt;= <span class="c-num">8</span>) cB++;
+        <span class="c-kw">else if</span> (p &gt;= <span class="c-num">7</span>) cC++;
+        <span class="c-kw">else if</span> (p &gt;= <span class="c-num">5</span>) cD++;
+        <span class="c-kw">else</span>            cF++;
+    }
+    <span class="c-kw">auto</span> barra = [](<span class="c-tipo">int</span> n){ <span class="c-kw">return</span> <span class="c-tipo">string</span>(n, <span class="c-str">'█'</span>); };
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  A (≥9.0): "</span> &lt;&lt; barra(cA) &lt;&lt; <span class="c-str">" ("</span> &lt;&lt; cA &lt;&lt; <span class="c-str">")
+"</span>
+         &lt;&lt; <span class="c-str">"  B (≥8.0): "</span> &lt;&lt; barra(cB) &lt;&lt; <span class="c-str">" ("</span> &lt;&lt; cB &lt;&lt; <span class="c-str">")
+"</span>
+         &lt;&lt; <span class="c-str">"  C (≥7.0): "</span> &lt;&lt; barra(cC) &lt;&lt; <span class="c-str">" ("</span> &lt;&lt; cC &lt;&lt; <span class="c-str">")
+"</span>
+         &lt;&lt; <span class="c-str">"  D (≥5.0): "</span> &lt;&lt; barra(cD) &lt;&lt; <span class="c-str">" ("</span> &lt;&lt; cD &lt;&lt; <span class="c-str">")
+"</span>
+         &lt;&lt; <span class="c-str">"  F (&lt;5.0): "</span> &lt;&lt; barra(cF) &lt;&lt; <span class="c-str">" ("</span> &lt;&lt; cF &lt;&lt; <span class="c-str">")
+"</span>;
+}</pre></div>
+  </div>
+</section>
+
+<hr>
+
+<!-- 15.6 ─────────────────────────────────────────────────── -->
+<section class="seccion" id="s156">
+  <span class="seccion-num">15.6</span>
+  <h2>Integración — Módulo de Ordenamiento y Menú Principal</h2>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · Ordenamiento de arreglos paralelos + menú principal</span>
+      </div>
+      <span class="codigo-archivo">modulo_ordenamiento_main.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-com">// ── Intercambiar TODOS los arreglos paralelos en posición i y j ──</span>
+<span class="c-kw">void</span> <span class="c-fn">intercambiarEstudiantes</span>(<span class="c-tipo">int</span> i, <span class="c-tipo">int</span> j) {
+    swap(cedulas[i],   cedulas[j]);
+    swap(nombres[i],   nombres[j]);
+    swap(promedios[i], promedios[j]);
+    swap(activo[i],    activo[j]);
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> k = <span class="c-num">0</span>; k &lt; NUM_NOTAS; k++) swap(notas[i][k], notas[j][k]);
+}
+
+<span class="c-com">// ── Ordenar por promedio descendente (burbuja) ───────────────────</span>
+<span class="c-kw">void</span> <span class="c-fn">ordenarPorPromedio</span>() {
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">0</span>; i &lt; totalEst - <span class="c-num">1</span>; i++)
+        <span class="c-kw">for</span> (<span class="c-tipo">int</span> j = <span class="c-num">0</span>; j &lt; totalEst - i - <span class="c-num">1</span>; j++)
+            <span class="c-kw">if</span> (promedios[j] &lt; promedios[j+<span class="c-num">1</span>])
+                <span class="c-fn">intercambiarEstudiantes</span>(j, j+<span class="c-num">1</span>);
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  ✔ Ordenado por promedio descendente.
+"</span>;
+}
+
+<span class="c-com">// ── Ordenar por nombre A-Z (selección) ──────────────────────────</span>
+<span class="c-kw">void</span> <span class="c-fn">ordenarPorNombre</span>() {
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">0</span>; i &lt; totalEst - <span class="c-num">1</span>; i++) {
+        <span class="c-tipo">int</span> minIdx = i;
+        <span class="c-kw">for</span> (<span class="c-tipo">int</span> j = i+<span class="c-num">1</span>; j &lt; totalEst; j++)
+            <span class="c-kw">if</span> (nombres[j] &lt; nombres[minIdx]) minIdx = j;
+        <span class="c-kw">if</span> (minIdx != i) <span class="c-fn">intercambiarEstudiantes</span>(i, minIdx);
+    }
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  ✔ Ordenado por nombre A-Z.
+"</span>;
+}
+
+<span class="c-com">// ── Menú principal ────────────────────────────────────────────────</span>
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-com">// Inicializar arreglo activo</span>
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">0</span>; i &lt; MAX_EST; i++) activo[i] = <span class="c-kw">false</span>;
+
+    <span class="c-tipo">int</span> opcion;
+    <span class="c-kw">do</span> {
+        <span class="c-fn">mostrarMenuPrincipal</span>();
+        <span class="c-fn">cin</span> &gt;&gt; opcion;
+        <span class="c-kw">switch</span> (opcion) {
+            <span class="c-kw">case</span> <span class="c-num">1</span>: { <span class="c-com">// Registrar</span>
+                <span class="c-tipo">string</span> ced = <span class="c-fn">leerCedula</span>(<span class="c-str">"  Cédula: "</span>);
+                <span class="c-fn">cin</span>.ignore();
+                <span class="c-tipo">string</span> nom;
+                <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  Nombre completo: "</span>;
+                getline(<span class="c-fn">cin</span>, nom);
+                <span class="c-fn">registrarEstudiante</span>(ced, nom); <span class="c-kw">break</span>; }
+            <span class="c-kw">case</span> <span class="c-num">2</span>: { <span class="c-fn">ingresarNotas</span>(<span class="c-fn">leerCedula</span>(<span class="c-str">"  Cédula: "</span>)); <span class="c-kw">break</span>; }
+            <span class="c-kw">case</span> <span class="c-num">3</span>: <span class="c-fn">listarEstudiantes</span>(); <span class="c-kw">break</span>;
+            <span class="c-kw">case</span> <span class="c-num">4</span>: <span class="c-fn">fichaEstudiante</span>(<span class="c-fn">leerCedula</span>(<span class="c-str">"  Cédula: "</span>)); <span class="c-kw">break</span>;
+            <span class="c-kw">case</span> <span class="c-num">5</span>: <span class="c-fn">eliminarEstudiante</span>(<span class="c-fn">leerCedula</span>(<span class="c-str">"  Cédula: "</span>)); <span class="c-kw">break</span>;
+            <span class="c-kw">case</span> <span class="c-num">6</span>: <span class="c-fn">ordenarPorPromedio</span>(); <span class="c-kw">break</span>;
+            <span class="c-kw">case</span> <span class="c-num">7</span>: <span class="c-fn">ordenarPorNombre</span>(); <span class="c-kw">break</span>;
+            <span class="c-kw">case</span> <span class="c-num">8</span>: { <span class="c-com">// Sub-menú reportes</span>
+                <span class="c-tipo">int</span> r;
+                <span class="c-kw">do</span> {
+                    <span class="c-fn">mostrarMenuReportes</span>();
+                    <span class="c-fn">cin</span> &gt;&gt; r;
+                    <span class="c-kw">if</span>      (r==<span class="c-num">1</span>) <span class="c-fn">reporteEstadistico</span>();
+                    <span class="c-kw">else if</span> (r==<span class="c-num">2</span>) <span class="c-fn">reporteTop3</span>();
+                    <span class="c-kw">else if</span> (r==<span class="c-num">3</span>) <span class="c-fn">histogramaRendimiento</span>();
+                } <span class="c-kw">while</span> (r != <span class="c-num">4</span>);
+                <span class="c-kw">break</span>; }
+            <span class="c-kw">case</span> <span class="c-num">9</span>: <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Sistema cerrado. ¡Hasta pronto!
+"</span>; <span class="c-kw">break</span>;
+            <span class="c-kw">default</span>: <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"  ✗ Opción inválida.
+"</span>;
+        }
+    } <span class="c-kw">while</span> (opcion != <span class="c-num">9</span>);
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+  </div>
+
+  <div class="caja-adv">
+    <div class="ca-label">⚠️ Arreglos paralelos: la consistencia es tu responsabilidad</div>
+    <p>Cada vez que muevas o elimines un estudiante, debes mover <em>todos</em> los arreglos paralelos en la misma operación. La función <code>intercambiarEstudiantes(i, j)</code> encapsula esta responsabilidad para que no puedas olvidar ningún arreglo. Es un patrón de diseño: agrupar operaciones que deben ir siempre juntas en una sola función.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- 15.7 ─────────────────────────────────────────────────── -->
+<section class="seccion" id="s157">
+  <span class="seccion-num">15.7</span>
+  <h2>Estrategia de Uso de IA en el Proyecto Integrador</h2>
+
+  <div class="caja-ia">
+    <div class="ci-label">🤖 Cómo usar la IA en un proyecto de 300+ líneas — protocolo profesional</div>
+    <p>Un proyecto integrador es el escenario donde la IA puede ayudar genuinamente y donde también puede hacerte fallar si la usas mal. Protocolo recomendado en tres pasos: <strong>(1) Diseño propio:</strong> escribe tú los prototipos y la arquitectura de módulos antes de consultar a la IA. Si empiezas por la IA, obtienes código que no entiendes y no puedes defender. <strong>(2) IA para funciones acotadas:</strong> pide a la IA que implemente una función específica con firma exacta que tú especifiques. Nunca pidas "el sistema completo". <strong>(3) Revisión y prueba obligatoria:</strong> toda función generada por IA debe pasar por tus casos de prueba manuales y ser explicable por ti línea a línea. Si no puedes explicarla, no la entregues.</p>
+  </div>
+
+  <table class="tabla-est">
+    <thead><tr><th>Solicitud a la IA</th><th>Calidad</th><th>Razón</th></tr></thead>
+    <tbody>
+      <tr><td>"Implementa <code>bool cedulaValida(const string&amp; ced)</code> que verifica 10 dígitos numéricos"</td><td class="res">✅ Excelente</td><td>Firma y comportamiento completamente especificados</td></tr>
+      <tr><td>"Genera el reporte estadístico usando mis arreglos globales nombres[], promedios[], activo[], totalEst"</td><td class="acc">⚠️ Usar con cuidado</td><td>Puede funcionar, pero debes verificar cada cálculo</td></tr>
+      <tr><td>"Escribe el sistema de gestión académica completo"</td><td style="color:#e74c3c;font-weight:700">❌ Evitar</td><td>No aprenderás, no podrás defenderlo, la IA puede hacer suposiciones incorrectas</td></tr>
+      <tr><td>"¿Por qué mi función <code>intercambiarEstudiantes</code> no mueve las notas?"</td><td class="res">✅ Excelente</td><td>Depuración asistida — aprendes del error</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr>
+
+<!-- 15.8 ─────────────────────────────────────────────────── -->
+<section class="seccion" id="s158">
+  <span class="seccion-num">15.8</span>
+  <h2>Ejercicios Finales del Curso</h2>
+
+  <div class="ejercicios-section">
+    <div class="ejercicios-titulo">✏️ Actividades de Consolidación — Cierre de Curso</div>
+
+    <div class="ejercicio-item">
+      <div class="ej-num">1</div>
+      <div class="ej-badge comp">Comprensión</div>
+      <div class="ej-enunciado"><strong>Mapa conceptual del sistema.</strong> Sin ver el código, dibuja un diagrama con los 5 módulos del sistema, sus funciones principales y las conexiones entre ellos (qué función llama a cuál). Identifica en qué función de cada módulo se usa paso por valor, por referencia y por <code>const&amp;</code>. ¿Qué funciones del módulo Reportes podrían haberse implementado recursivamente?</div>
+    </div>
+
+    <div class="ejercicio-item">
+      <div class="ej-num">2</div>
+      <div class="ej-badge aplic">Aplicación</div>
+      <div class="ej-enunciado"><strong>fichaEstudiante.</strong> Implementa <code>void fichaEstudiante(const string&amp; cedula)</code> que muestra: nombre, cédula, las 4 notas con su número, el promedio y la clasificación. Añade una barra de progreso ASCII que represente el promedio visualmente: por cada unidad entera del promedio, imprime un bloque █ (máximo 10). Ejemplo: promedio 7.5 → ███████░░░</div>
+    </div>
+
+    <div class="ejercicio-item">
+      <div class="ej-num">3</div>
+      <div class="ej-badge aplic">Aplicación</div>
+      <div class="ej-enunciado"><strong>separador.</strong> Implementa <code>void separador(const string&amp; titulo)</code> que imprime una línea decorativa centrada de 60 caracteres. Ejemplo para "REPORTE": <code>════════════════ REPORTE ════════════════</code>. Usa las funciones de <code>string</code> aprendidas en el Cap. 14. ¿Por qué <code>titulo</code> debe ser <code>const string&amp;</code> y no <code>string</code>?</div>
+    </div>
+
+    <div class="ejercicio-item">
+      <div class="ej-num">4</div>
+      <div class="ej-badge aplic">Aplicación</div>
+      <div class="ej-enunciado"><strong>Búsqueda binaria por cédula.</strong> Implementa <code>int buscarBinarioCedula(const string&amp; cedula)</code> que funcione después de ordenar el arreglo por cédula. Compara con <code>buscarPorCedula</code> (lineal): ¿cuántas comparaciones hace cada una para encontrar la cédula número 25 de 30? ¿Vale la pena mantener el arreglo ordenado por cédula en todo momento?</div>
+    </div>
+
+    <div class="ejercicio-item">
+      <div class="ej-num">5</div>
+      <div class="ej-badge integ">Integrador Final</div>
+      <div class="ej-enunciado"><strong>Extensión: segundo período.</strong> El sistema actual gestiona un período académico. Amplíalo para manejar dos períodos: agrega una segunda matriz de notas <code>notas2[MAX_EST][NUM_NOTAS]</code> y un arreglo <code>promedios2[MAX_EST]</code>. Modifica el menú para que el usuario seleccione el período activo antes de ingresar notas. Añade en el reporte estadístico la comparación de promedios entre períodos. Documenta todas las decisiones de diseño en un bloque de comentarios al inicio del archivo.</div>
+    </div>
+  </div>
+
+  <div class="evaluativa">
+    <div class="evaluativa-titulo">Actividad Evaluativa Final — Proyecto Integrador</div>
+    <div class="evaluativa-sub">Sesión 15 · Tiempo: 3 sesiones (180 min c/u) · Trabajo individual con revisión oral</div>
+    <div class="evaluativa-enunciado">Implementar el Sistema de Gestión Académica completo según las especificaciones del capítulo. El sistema debe compilar sin errores ni warnings, gestionar correctamente los arreglos paralelos, aplicar el tipo de paso correcto en cada función, incluir validación de todas las entradas del usuario, y generar los cuatro reportes (estadístico, top 3, histograma y ficha individual). La revisión oral evalúa la comprensión de cada decisión de diseño.</div>
+    <ul class="evaluativa-criterios">
+      <li>Compilación limpia: cero errores, cero warnings con flags <code>-Wall -Wextra</code>.</li>
+      <li>Arquitectura modular: mínimo 15 funciones con nombres descriptivos; <code>main()</code> sin cálculos directos.</li>
+      <li>Tipo de paso correcto en cada parámetro: valor, referencia o <code>const&amp;</code> justificados.</li>
+      <li>Cuatro módulos funcionando: Estudiantes, Notas, Ordenamiento, Reportes.</li>
+      <li>Casos de prueba documentados con al menos 5 estudiantes de datos reales.</li>
+      <li>Revisión oral: explicar 3 funciones elegidas al azar por el docente línea a línea.</li>
+    </ul>
+  </div>
+
+  <div class="puente">
+    <div class="puente-titulo">🎓 Has llegado al final del curso</div>
+    <div class="puente-sub">Fundamentos Algorítmicos y Modelado Computacional — ESPAM MFL</div>
+    <div class="puente-texto">Iniciaste este curso con la pregunta "¿qué es un algoritmo?" y llegas a él construyendo un sistema de software funcional con múltiples módulos, validación de datos, ordenamiento, búsqueda y reportes. Los conceptos que dominaste —variables, estructuras de control, funciones, arreglos, cadenas, recursión, paso por valor y referencia— son los fundamentos sobre los que se construye toda la programación profesional. En los cursos siguientes descubrirás estructuras de datos dinámicas (listas enlazadas, árboles), orientación a objetos, bases de datos y algoritmos de mayor complejidad. Estarás preparado porque entiendes los cimientos.</div>
+  </div>
+</section>
+
+</main>
+<div class="nav-caps">
+  <a href="practica_14.html" class="nav-cap-btn">
+    <span class="ncb-arrow">←</span>
+    <div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Práctica 14 — Procesamiento de Texto</span></div>
+  </a>
+  <a href="practica_15.html" class="nav-cap-btn sig">
+    <span class="ncb-arrow">→</span>
+    <div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Práctica 15 — Proyecto Final</span></div>
+  </a>
+</div>
+<footer class="pie"><span>Cap. 15 — Proyecto Integrador · Unidad IV · ESPAM MFL</span><span>espam.edu.ec</span></footer>
+</body></html>

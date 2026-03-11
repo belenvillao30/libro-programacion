@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Práctica 6 — while y do-while | ESPAM MFL</title>
+<title>Práctica 14 — Procesamiento de Texto | ESPAM MFL</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
 :root{--verde:#005846;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
@@ -174,7 +174,7 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
           <li><a href="capitulo_05.html" class="nav-item"><span class="nav-num">05</span> Estructuras Repetitivas I</a></li>
           <li><a href="practica_05.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 5</a></li>
           <li><a href="capitulo_06.html" class="nav-item"><span class="nav-num">06</span> Estructuras Repetitivas II</a></li>
-          <li><a href="practica_06.html" class="nav-item practica activo"><span class="nav-num">↳</span> Sesión Práctica 6</a></li>
+          <li><a href="practica_06.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 6</a></li>
           <li><a href="capitulo_07.html" class="nav-item"><span class="nav-num">07</span> Integración de Estructuras</a></li>
           <li><a href="practica_07.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 7</a></li>
         </ul>
@@ -202,7 +202,7 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
           <li><a href="capitulo_13.html" class="nav-item"><span class="nav-num">13</span> Búsqueda y Ordenamiento</a></li>
           <li><a href="practica_13.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 13</a></li>
           <li><a href="capitulo_14.html" class="nav-item"><span class="nav-num">14</span> Arreglos Bidimensionales</a></li>
-          <li><a href="practica_14.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 14</a></li>
+          <li><a href="practica_14.html" class="nav-item practica activo"><span class="nav-num">↳</span> Sesión Práctica 14</a></li>
           <li><a href="capitulo_15.html" class="nav-item"><span class="nav-num">15</span> Proyecto Integrador Final</a></li>
           <li><a href="practica_15.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 15</a></li>
         </ul>
@@ -219,21 +219,21 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
 
   </nav>
 <section class="page-header-prac">
-  <div class="ph-num">P6</div>
+  <div class="ph-num">P14</div>
   <div class="ph-inner">
-    <div class="ph-badge-prac">🔬 Unidad II · Sesión Práctica 6</div>
-    <h1 class="ph-titulo">Sistema de Registro de Notas con Validación</h1>
-    <p class="ph-subtitulo">while · do-while · validación de entrada · menú interactivo · estadísticas acumuladas</p>
+    <div class="ph-badge-prac">🔬 Unidad IV · Sesión Práctica 14</div>
+    <h1 class="ph-titulo">Analizador de Texto — Estadísticas y Validación</h1>
+    <p class="ph-subtitulo">string · cctype · conteo de caracteres · palíndromo · validación de cédula · formateo de nombres · estadísticas</p>
     <div class="ph-meta">
       <div class="ph-meta-item"><span class="ph-meta-label">Duración</span><span class="ph-meta-valor">180 min (3h)</span></div>
       <div class="ph-meta-item"><span class="ph-meta-label">Modalidad</span><span class="ph-meta-valor">Individual → Parejas</span></div>
-      <div class="ph-meta-item"><span class="ph-meta-label">Entregable</span><span class="ph-meta-valor">Código + bitácora</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-valor">Entregable</span><span class="ph-meta-valor">Código .cpp + tabla de pruebas + bitácora</span></div>
     </div>
   </div>
 </section>
 <nav class="fases-nav">
-  <a class="fase-chip" href="#f1">F1 · Modelado</a>
-  <a class="fase-chip" href="#f2">F2 · PSeInt</a>
+  <a class="fase-chip" href="#f1">F1 · Diseño</a>
+  <a class="fase-chip" href="#f2">F2 · Pseudocódigo</a>
   <a class="fase-chip" href="#f3">F3 · C++ Individual</a>
   <a class="fase-chip" href="#f4">F4 · Extensión</a>
   <a class="fase-chip" href="#f5">F5 · Análisis IA</a>
@@ -243,35 +243,43 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
 
 <div class="ra-box">
   <div class="ra-label">Objetivo de la Sesión</div>
-  <div class="ra-texto">El estudiante <strong>construye un sistema real de registro de notas</strong> usando <code>while</code> para acumulación y <code>do-while</code> para validación, combinando ambos ciclos con <code>switch</code> y estructuras selectivas en un menú interactivo completo.</div>
+  <div class="ra-texto">El estudiante <strong>construye un analizador de texto modular</strong> con menú que incluye conteo de categorías de caracteres, detección de palíndromos ignorando mayúsculas y espacios, validación de cédula ecuatoriana, formateo de nombres propios y cifrado César simple. Cada operación es una función con <code>const string&amp;</code> para entradas de solo lectura.</div>
 </div>
 
 <div class="problema-box">
-  <span class="pb-label">🏫 Contexto del Problema</span>
-  <div class="pb-enunciado">El departamento académico de ESPAM MFL necesita un sistema para registrar y analizar notas de estudiantes. El sistema debe: mostrar un menú principal con <code>do-while</code>, registrar notas de una materia con <code>while</code> hasta centinela, validar que cada nota esté en [0, 10] con un <code>do-while</code> interno, y calcular estadísticas al finalizar. Un registro incompleto (0 estudiantes) debe mostrar un mensaje apropiado.</div>
+  <span class="pb-label">🔤 Contexto del Problema</span>
+  <div class="pb-enunciado">El laboratorio de Lingüística Computacional de ESPAM MFL desarrolla herramientas de procesamiento de texto en español. Sistema con menú <code>do-while</code>: <strong>1)</strong> Estadísticas de texto (letras, dígitos, espacios, otros, porcentajes) — <strong>2)</strong> Verificar palíndromo (ignorando mayúsculas, espacios y signos) — <strong>3)</strong> Validar cédula ecuatoriana (10 dígitos, provincia 01-24) — <strong>4)</strong> Formatear nombre propio (primera letra de cada palabra en mayúscula) — <strong>5)</strong> Cifrar texto con César — <strong>6)</strong> Salir.</div>
 </div>
 
 <section class="fase" id="f1">
   <div class="fase-header">
     <div class="fase-num">F1</div>
-    <div><div class="fase-titulo">Modelado en Papel</div><div class="fase-tiempo">0 – 20 min · SIN computadora</div></div>
+    <div>
+      <div class="fase-titulo">Diseño en Papel — Casos de Prueba y Lógica</div>
+      <div class="fase-tiempo">0 – 20 min · SIN computadora</div>
+    </div>
   </div>
-  <p>Antes de abrir el IDE, diseña el algoritmo completo en papel.</p>
   <div class="actividades">
     <div class="actividad">
       <div class="act-num">1</div>
-      <div><div class="act-titulo">Diagrama de flujo del menú principal</div>
-      <div class="act-desc">Dibuja el diagrama del menú con opciones: (1) Registrar notas de una materia, (2) Ver reporte global, (3) Salir. El menú usa <code>do-while</code>. Para la opción 1, dibuja el ciclo interno de ingreso de notas con centinela (-1 para terminar) y el validador de rango.</div></div>
+      <div>
+        <div class="act-titulo">Casos de prueba para cada función</div>
+        <div class="act-desc">Diseña en papel al menos 3 casos válidos y 2 inválidos para cada función. Para la cédula: cédulas válidas e inválidas con razón explícita. Para palíndromo: "radar" (sí), "Anita lava la tina" (sí, con espacios), "hello" (no). Para formateo: " juan CARLOS " → "Juan Carlos". Estos casos serán tu lista de verificación en F3.</div>
+      </div>
     </div>
     <div class="actividad">
       <div class="act-num">2</div>
-      <div><div class="act-titulo">Tabla de variables</div>
-      <div class="act-desc">Identifica todas las variables necesarias: ¿qué acumula? ¿qué compara? ¿cuáles son temporales y cuáles persistentes entre menús? Anota tipo de dato, nombre propuesto y valor inicial.</div></div>
+      <div>
+        <div class="act-titulo">Lógica del cifrado César</div>
+        <div class="act-desc">El cifrado César desplaza cada letra N posiciones en el alfabeto. Escribe en papel: "ESPAM" con desplazamiento 3 → "HSDPQ". Responde: ¿qué ocurre cuando llegas a 'Z'? ¿Cómo manejas el desbordamiento? ¿Cómo cifras solo letras y dejas los demás caracteres sin cambio?</div>
+      </div>
     </div>
     <div class="actividad">
       <div class="act-num">3</div>
-      <div><div class="act-titulo">Simular con datos de prueba</div>
-      <div class="act-desc">Traza manualmente con notas: 8.5, 6.0, 9.5, -1 (centinela). Calcula a mano: total acumulado, cantidad, promedio, nota mínima y máxima. Estos serán tus valores esperados para verificar el programa.</div></div>
+      <div>
+        <div class="act-titulo">Firmas con const string&amp;</div>
+        <div class="act-desc">Diseña la firma de cada función. Decide para cada parámetro: ¿la función modifica el string o solo lo lee? Si solo lo lee → <code>const string&amp;</code>. Si necesita una copia modificable → <code>string</code> por valor. Justifica explícitamente cada decisión en tu hoja de diseño.</div>
+      </div>
     </div>
   </div>
 </section>
@@ -281,58 +289,41 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
 <section class="fase" id="f2">
   <div class="fase-header">
     <div class="fase-num">F2</div>
-    <div><div class="fase-titulo">Pseudocódigo en PSeInt</div><div class="fase-tiempo">20 – 55 min</div></div>
+    <div>
+      <div class="fase-titulo">Pseudocódigo en PSeInt</div>
+      <div class="fase-tiempo">20 – 55 min</div>
+    </div>
   </div>
-  <p>Escribe el pseudocódigo completo en PSeInt y verifica que ejecute correctamente antes de pasar a C++.</p>
   <div class="pseudocodigo">
-    <div class="pseudo-label">PSeInt · Sistema de Registro de Notas</div>
-    <div class="pseudo-body"><span class="p-kw">Definir</span> opcion, cantidad <span class="p-kw">Como</span> Entero
-<span class="p-kw">Definir</span> nota, suma, minNota, maxNota <span class="p-kw">Como</span> Real
-suma &lt;- 0; cantidad &lt;- 0
-
-<span class="p-kw">Repetir</span>
-    Escribir <span class="p-str">"=== SISTEMA DE NOTAS ==="</span>
-    Escribir <span class="p-str">"1. Registrar notas de una materia"</span>
-    Escribir <span class="p-str">"2. Ver reporte global"</span>
-    Escribir <span class="p-str">"3. Salir"</span>
-    Leer opcion
-
-    <span class="p-kw">Segun</span> opcion <span class="p-kw">Hacer</span>
-        1:
-            Escribir <span class="p-str">"Ingrese notas (-1 para terminar):"</span>
-            <span class="p-kw">Repetir</span>         <span class="c-com">// validar cada nota</span>
-                Leer nota
-                <span class="p-kw">Si</span> nota &lt; 0 <span class="p-kw">Y</span> nota &lt;&gt; -1 <span class="p-kw">Entonces</span>
-                    Escribir <span class="p-str">"Nota inválida"</span>
-                <span class="p-kw">FinSi</span>
-            <span class="p-kw">Hasta Que</span> nota &gt;= 0 <span class="p-kw">O</span> nota = -1
-
-            <span class="p-kw">Mientras</span> nota &lt;&gt; -1 <span class="p-kw">Hacer</span>
-                suma &lt;- suma + nota
-                cantidad &lt;- cantidad + 1
-                <span class="p-kw">Si</span> cantidad = 1 <span class="p-kw">Entonces</span>
-                    minNota &lt;- nota; maxNota &lt;- nota
-                <span class="p-kw">SiNo</span>
-                    <span class="p-kw">Si</span> nota &lt; minNota <span class="p-kw">Entonces</span> minNota &lt;- nota <span class="p-kw">FinSi</span>
-                    <span class="p-kw">Si</span> nota &gt; maxNota <span class="p-kw">Entonces</span> maxNota &lt;- nota <span class="p-kw">FinSi</span>
-                <span class="p-kw">FinSi</span>
-                <span class="p-kw">Repetir</span>; Leer nota; <span class="p-kw">Hasta Que</span> nota &gt;= 0 <span class="p-kw">O</span> nota = -1
-            <span class="p-kw">FinMientras</span>
-        2:
-            <span class="p-kw">Si</span> cantidad &gt; 0 <span class="p-kw">Entonces</span>
-                Escribir <span class="p-str">"Promedio: "</span>, suma/cantidad
-                Escribir <span class="p-str">"Mínima: "</span>, minNota, <span class="p-str">" Máxima: "</span>, maxNota
-            <span class="p-kw">SiNo</span>
-                Escribir <span class="p-str">"Sin registros aún."</span>
-            <span class="p-kw">FinSi</span>
-        3:
-            Escribir <span class="p-str">"Hasta luego."</span>
-    <span class="p-kw">FinSegun</span>
-<span class="p-kw">Hasta Que</span> opcion = 3</div>
+    <div class="pseudo-label">PSeInt · estadísticas de texto</div>
+    <div class="pseudo-body"><span class="p-kw">Funcion</span> estadisticas(s)
+    letras &lt;- 0; digitos &lt;- 0; espacios &lt;- 0; otros &lt;- 0
+    <span class="p-kw">Para</span> i &lt;- 0 <span class="p-kw">Hasta</span> Longitud(s)-1 <span class="p-kw">Hacer</span>
+        c &lt;- s[i]
+        <span class="p-kw">Si</span> esLetra(c) <span class="p-kw">Entonces</span> letras  &lt;- letras  + 1
+        <span class="p-kw">SiNo Si</span> esDigito(c) <span class="p-kw">Entonces</span> digitos &lt;- digitos + 1
+        <span class="p-kw">SiNo Si</span> esEspacio(c) <span class="p-kw">Entonces</span> espacios &lt;- espacios + 1
+        <span class="p-kw">SiNo</span> otros &lt;- otros + 1
+        <span class="p-kw">FinSi</span>
+    <span class="p-kw">FinPara</span>
+    Escribir "Letras:", letras, " Dígitos:", digitos, " Espacios:", espacios
+<span class="p-kw">FinFuncion</span></div>
   </div>
-  <div class="caja-nota">
-    <div class="cn-label">⚙️ Prueba en PSeInt antes de continuar</div>
-    <p>Verifica los 3 casos: (a) ingresar notas válidas y revisar el reporte, (b) intentar ingresar nota fuera de rango, (c) revisar reporte sin haber registrado notas. Todos deben funcionar correctamente.</p>
+  <div class="pseudocodigo">
+    <div class="pseudo-label">PSeInt · cifrado César</div>
+    <div class="pseudo-body"><span class="p-kw">Funcion</span> resultado &lt;- cifrarCesar(s, despl)
+    resultado &lt;- ""
+    <span class="p-kw">Para</span> i &lt;- 0 <span class="p-kw">Hasta</span> Longitud(s)-1 <span class="p-kw">Hacer</span>
+        c &lt;- s[i]
+        <span class="p-kw">Si</span> esMayuscula(c) <span class="p-kw">Entonces</span>
+            resultado &lt;- resultado + char(('A' + (c - 'A' + despl) MOD 26))
+        <span class="p-kw">SiNo Si</span> esMinuscula(c) <span class="p-kw">Entonces</span>
+            resultado &lt;- resultado + char(('a' + (c - 'a' + despl) MOD 26))
+        <span class="p-kw">SiNo</span>
+            resultado &lt;- resultado + c   <span class="c-com">// no es letra → sin cambio</span>
+        <span class="p-kw">FinSi</span>
+    <span class="p-kw">FinPara</span>
+<span class="p-kw">FinFuncion</span></div>
   </div>
 </section>
 
@@ -341,44 +332,116 @@ suma &lt;- 0; cantidad &lt;- 0
 <section class="fase" id="f3">
   <div class="fase-header">
     <div class="fase-num">F3</div>
-    <div><div class="fase-titulo">Implementación en C++ — Individual</div><div class="fase-tiempo">55 – 100 min</div></div>
+    <div>
+      <div class="fase-titulo">Implementación Completa en C++ — Individual</div>
+      <div class="fase-tiempo">55 – 105 min</div>
+    </div>
   </div>
-  <p>Traduce el pseudocódigo a C++. El código completo debe compilar sin errores y producir resultados idénticos a la simulación en papel (F1).</p>
   <div class="codigo-bloque">
-    <div class="codigo-header"><div style="display:flex;align-items:center;gap:8px"><div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div><span class="codigo-lang">C++ · Estructura base</span></div><span class="codigo-archivo">registro_notas.cpp</span></div>
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · Analizador de Texto — implementación completa</span>
+      </div>
+      <span class="codigo-archivo">analizador_texto.cpp</span>
+    </div>
     <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
-<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;string&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;cctype&gt;</span>
 <span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
 
+<span class="c-kw">void</span>   <span class="c-fn">estadisticasTexto</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; s);
+<span class="c-tipo">bool</span>   <span class="c-fn">esPalindromo</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; s);
+<span class="c-tipo">bool</span>   <span class="c-fn">validarCedula</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; c);
+<span class="c-tipo">string</span> <span class="c-fn">formatearNombre</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; s);
+<span class="c-tipo">string</span> <span class="c-fn">cifrarCesar</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; s, <span class="c-tipo">int</span> d);
+
 <span class="c-tipo">int</span> <span class="c-fn">main</span>() {
-    <span class="c-tipo">int</span>    opcion, cantidad = <span class="c-num">0</span>;
-    <span class="c-tipo">double</span> nota, suma = <span class="c-num">0</span>, minNota, maxNota;
-
+    <span class="c-tipo">int</span> op; <span class="c-tipo">string</span> texto;
     <span class="c-kw">do</span> {
-        <span class="c-com">// TODO: mostrar menú</span>
-        <span class="c-fn">cin</span> &gt;&gt; opcion;
-
-        <span class="c-kw">switch</span>(opcion) {
-            <span class="c-kw">case</span> <span class="c-num">1</span>:
-                <span class="c-com">// TODO: leer notas con while y validar con do-while interno</span>
-                <span class="c-kw">break</span>;
-            <span class="c-kw">case</span> <span class="c-num">2</span>:
-                <span class="c-com">// TODO: mostrar reporte (verificar cantidad > 0)</span>
-                <span class="c-kw">break</span>;
-            <span class="c-kw">case</span> <span class="c-num">3</span>:
-                <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Hasta luego.\n"</span>;
-                <span class="c-kw">break</span>;
-            <span class="c-kw">default</span>:
-                <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Opción inválida.\n"</span>;
+        <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"
+1.Estadísticas 2.Palíndromo 3.Cédula 4.Nombre 5.César 6.Salir
+Opción: "</span>;
+        <span class="c-fn">cin</span>&gt;&gt;op; <span class="c-fn">cin</span>.ignore();
+        <span class="c-kw">if</span>(op&lt;<span class="c-num">1</span>||op&gt;<span class="c-num">6</span>){<span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Inválido.
+"</span>;<span class="c-kw">continue</span>;}
+        <span class="c-kw">if</span>(op!=<span class="c-num">6</span>){ <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Texto: "</span>; getline(cin,texto); }
+        <span class="c-kw">switch</span>(op) {
+            <span class="c-kw">case</span> <span class="c-num">1</span>: <span class="c-fn">estadisticasTexto</span>(texto); <span class="c-kw">break</span>;
+            <span class="c-kw">case</span> <span class="c-num">2</span>: <span class="c-fn">cout</span>&lt;&lt;(esPalindromo(texto)?<span class="c-str">"✓ ES palíndromo
+"</span>:<span class="c-str">"✗ NO es palíndromo
+"</span>); <span class="c-kw">break</span>;
+            <span class="c-kw">case</span> <span class="c-num">3</span>: <span class="c-fn">cout</span>&lt;&lt;(validarCedula(texto)?<span class="c-str">"✓ Cédula válida
+"</span>:<span class="c-str">"✗ Cédula inválida
+"</span>); <span class="c-kw">break</span>;
+            <span class="c-kw">case</span> <span class="c-num">4</span>: <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Formateado: "</span>&lt;&lt;formatearNombre(texto)&lt;&lt;<span class="c-str">"
+"</span>; <span class="c-kw">break</span>;
+            <span class="c-kw">case</span> <span class="c-num">5</span>: {
+                <span class="c-tipo">int</span> d;
+                <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Desplazamiento (1-25): "</span>; <span class="c-fn">cin</span>&gt;&gt;d; <span class="c-fn">cin</span>.ignore();
+                <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Cifrado: "</span>&lt;&lt;cifrarCesar(texto,d)&lt;&lt;<span class="c-str">"
+"</span>;
+                <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Descifrado: "</span>&lt;&lt;cifrarCesar(cifrarCesar(texto,d),<span class="c-num">26</span>-d)&lt;&lt;<span class="c-str">"
+"</span>; <span class="c-kw">break</span>; }
+            <span class="c-kw">case</span> <span class="c-num">6</span>: <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Hasta luego.
+"</span>; <span class="c-kw">break</span>;
         }
-    } <span class="c-kw">while</span> (opcion != <span class="c-num">3</span>);
-
+    }<span class="c-kw">while</span>(op!=<span class="c-num">6</span>);
     <span class="c-kw">return</span> <span class="c-num">0</span>;
+}
+
+<span class="c-kw">void</span> <span class="c-fn">estadisticasTexto</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; s) {
+    <span class="c-tipo">int</span> letras=<span class="c-num">0</span>, digitos=<span class="c-num">0</span>, espacios=<span class="c-num">0</span>, otros=<span class="c-num">0</span>;
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;(<span class="c-tipo">int</span>)s.length();i++) {
+        <span class="c-kw">if</span>(<span class="c-fn">isalpha</span>(s[i]))      letras++;
+        <span class="c-kw">else if</span>(<span class="c-fn">isdigit</span>(s[i])) digitos++;
+        <span class="c-kw">else if</span>(<span class="c-fn">isspace</span>(s[i])) espacios++;
+        <span class="c-kw">else</span>                   otros++;
+    }
+    <span class="c-tipo">int</span> total=s.length();
+    <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"  Total:"</span>&lt;&lt;total&lt;&lt;<span class="c-str">" | Letras:"</span>&lt;&lt;letras
+        &lt;&lt;<span class="c-str">" | Dígitos:"</span>&lt;&lt;digitos&lt;&lt;<span class="c-str">" | Espacios:"</span>&lt;&lt;espacios
+        &lt;&lt;<span class="c-str">" | Otros:"</span>&lt;&lt;otros&lt;&lt;<span class="c-str">"
+"</span>;
+}
+
+<span class="c-tipo">bool</span> <span class="c-fn">esPalindromo</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; s) {
+    <span class="c-tipo">string</span> limpia;
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;(<span class="c-tipo">int</span>)s.length();i++)
+        <span class="c-kw">if</span>(<span class="c-fn">isalpha</span>(s[i])) limpia+= <span class="c-fn">tolower</span>(s[i]);
+    <span class="c-tipo">int</span> ini=<span class="c-num">0</span>, fin=(<span class="c-tipo">int</span>)limpia.length()-<span class="c-num">1</span>;
+    <span class="c-kw">while</span>(ini&lt;fin) <span class="c-kw">if</span>(limpia[ini++]!=limpia[fin--]) <span class="c-kw">return</span> <span class="c-kw">false</span>;
+    <span class="c-kw">return</span> <span class="c-kw">true</span>;
+}
+
+<span class="c-tipo">bool</span> <span class="c-fn">validarCedula</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; c) {
+    <span class="c-kw">if</span>((<span class="c-tipo">int</span>)c.length()!=<span class="c-num">10</span>) <span class="c-kw">return</span> <span class="c-kw">false</span>;
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;<span class="c-num">10</span>;i++) <span class="c-kw">if</span>(!<span class="c-fn">isdigit</span>(c[i])) <span class="c-kw">return</span> <span class="c-kw">false</span>;
+    <span class="c-tipo">int</span> prov = (c[<span class="c-num">0</span>]-'<span class="c-num">0</span>')*<span class="c-num">10</span> + (c[<span class="c-num">1</span>]-'<span class="c-num">0</span>');
+    <span class="c-kw">return</span> prov &gt;= <span class="c-num">1</span> &amp;&amp; prov &lt;= <span class="c-num">24</span>;
+}
+
+<span class="c-tipo">string</span> <span class="c-fn">formatearNombre</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; s) {
+    <span class="c-tipo">string</span> res;
+    <span class="c-tipo">bool</span> nuevaPal = <span class="c-kw">true</span>;
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;(<span class="c-tipo">int</span>)s.length();i++) {
+        <span class="c-kw">if</span>(<span class="c-fn">isspace</span>(s[i])) { nuevaPal=<span class="c-kw">true</span>; res+=s[i]; }
+        <span class="c-kw">else if</span>(nuevaPal) { res+=<span class="c-fn">toupper</span>(s[i]); nuevaPal=<span class="c-kw">false</span>; }
+        <span class="c-kw">else</span> res+=<span class="c-fn">tolower</span>(s[i]);
+    }
+    <span class="c-kw">return</span> res;
+}
+
+<span class="c-tipo">string</span> <span class="c-fn">cifrarCesar</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; s, <span class="c-tipo">int</span> d) {
+    <span class="c-tipo">string</span> res;
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;(<span class="c-tipo">int</span>)s.length();i++) {
+        <span class="c-tipo">char</span> c=s[i];
+        <span class="c-kw">if</span>(<span class="c-fn">isupper</span>(c))      res+= (<span class="c-tipo">char</span>)('A'+(c-'A'+d)%<span class="c-num">26</span>);
+        <span class="c-kw">else if</span>(<span class="c-fn">islower</span>(c)) res+= (<span class="c-tipo">char</span>)('a'+(c-'a'+d)%<span class="c-num">26</span>);
+        <span class="c-kw">else</span>                res+= c;
+    }
+    <span class="c-kw">return</span> res;
 }</pre></div>
-  </div>
-  <div class="caja-adv">
-    <div class="ca-label">📋 Lista de verificación antes de entregar</div>
-    <p>☐ El menú se muestra con <code>do-while</code>. ☐ Las notas se leen con <code>while(nota != -1)</code>. ☐ Cada nota se valida con <code>do-while</code> interno. ☐ El reporte maneja el caso <code>cantidad == 0</code>. ☐ Los resultados coinciden con la simulación del F1.</p>
   </div>
 </section>
 
@@ -387,19 +450,25 @@ suma &lt;- 0; cantidad &lt;- 0
 <section class="fase" id="f4">
   <div class="fase-header">
     <div class="fase-num">F4</div>
-    <div><div class="fase-titulo">Extensión en Parejas</div><div class="fase-tiempo">100 – 135 min</div></div>
+    <div>
+      <div class="fase-titulo">Extensión en Parejas</div>
+      <div class="fase-tiempo">105 – 140 min</div>
+    </div>
   </div>
-  <p>Intercambia tu código con un compañero. Revísalo, comprende su lógica y luego <strong>entre los dos</strong> implementen las siguientes mejoras:</p>
   <div class="actividades">
     <div class="actividad">
       <div class="act-num">A</div>
-      <div><div class="act-titulo">Clasificación de notas</div>
-      <div class="act-desc">Al mostrar el reporte, contar cuántas notas son: sobresaliente (≥9), satisfactorio (7–8.9), básico (5–6.9), insuficiente (&lt;5). Mostrar conteo y porcentaje de cada categoría.</div></div>
+      <div>
+        <div class="act-titulo">Frecuencia de letras</div>
+        <div class="act-desc">Agrega la opción 7: <code>void frecuenciaLetras(const string&amp; s)</code> que use un arreglo <code>int freq[26]</code> para contar cuántas veces aparece cada letra (sin distinguir mayúsculas). Muestra solo las letras con frecuencia &gt; 0, ordenadas de mayor a menor frecuencia. ¿Cómo calculas el índice del arreglo a partir del carácter?</div>
+      </div>
     </div>
     <div class="actividad">
       <div class="act-num">B</div>
-      <div><div class="act-titulo">Opción para reiniciar registro</div>
-      <div class="act-desc">Agregar opción 4 al menú: "Nuevo registro" que reinicie suma, cantidad, minNota y maxNota. Pedir confirmación con <code>do-while</code>: "¿Está seguro? (s/n)". Validar que solo se acepte 's' o 'n'.</div></div>
+      <div>
+        <div class="act-titulo">Contar palabras y longitud promedio</div>
+        <div class="act-desc">Agrega <code>void analizarPalabras(const string&amp; s)</code> que cuente el número de palabras (separadas por espacios), la longitud de la palabra más larga y la longitud promedio de todas las palabras. Prueba con "El veloz murciélago hindú comía feliz cardillo y kiwi".</div>
+      </div>
     </div>
   </div>
 </section>
@@ -409,15 +478,14 @@ suma &lt;- 0; cantidad &lt;- 0
 <section class="fase" id="f5">
   <div class="fase-header">
     <div class="fase-num">F5</div>
-    <div><div class="fase-titulo">Análisis Crítico con IA — Documentado</div><div class="fase-tiempo">135 – 160 min</div></div>
+    <div>
+      <div class="fase-titulo">Análisis Crítico con IA</div>
+      <div class="fase-tiempo">140 – 163 min</div>
+    </div>
   </div>
   <div class="caja-ia">
-    <div class="ci-label">🤖 Protocolo de Análisis IA · Sesión 6</div>
-    <p><strong>Pregunta a la IA:</strong> "Reescribe el ciclo principal de este sistema usando <code>while(true)</code> y <code>break</code> en lugar de <code>do-while</code>." Luego responde por escrito: (1) ¿Qué cambió estructuralmente? (2) ¿El comportamiento es exactamente igual? (3) ¿Qué versión te parece más legible y por qué? (4) ¿En qué situaciones <code>while(true)</code> sería preferible? Firma tu análisis.</p>
-  </div>
-  <div class="caja-nota">
-    <div class="cn-label">📌 Regla de uso de IA en esta práctica</div>
-    <p>Puedes consultar a la IA para entender errores de compilación o conceptos. No puedes pedirle que escriba el código completo de las fases F3 o F4. Todo código entregado debe ser tuyo y debes poder explicar cada línea.</p>
+    <div class="ci-label">🤖 Protocolo de Análisis IA · Sesión 14</div>
+    <p>Muestra tu función <code>validarCedula</code> a la IA y pídele que la mejore con el algoritmo oficial de validación del dígito verificador de la cédula ecuatoriana. Documenta: <strong>(A)</strong> ¿Qué pasos adicionales agrega el dígito verificador? ¿Entiendes la lógica de módulo 10? <strong>(B)</strong> ¿La validación por provincia ya descarta la mayoría de entradas inválidas antes de llegar al dígito verificador? <strong>(C)</strong> Prueba 5 cédulas reales válidas y 3 inventadas. ¿La función detecta correctamente todas? <strong>(D)</strong> ¿Qué dificultad tendría implementar esto sin conocer el algoritmo previo?</p>
   </div>
 </section>
 
@@ -426,24 +494,29 @@ suma &lt;- 0; cantidad &lt;- 0
 <section class="fase" id="f6">
   <div class="fase-header">
     <div class="fase-num">F6</div>
-    <div><div class="fase-titulo">Bitácora y Rúbrica de Autoevaluación</div><div class="fase-tiempo">160 – 180 min</div></div>
+    <div>
+      <div class="fase-titulo">Bitácora y Rúbrica de Autoevaluación</div>
+      <div class="fase-tiempo">163 – 180 min</div>
+    </div>
   </div>
   <div class="bitacora">
-    <div class="bitacora-campo"><label>Nombre / Fecha</label><div class="linea-campo"></div></div>
-    <div class="bitacora-campo"><label>¿Qué fue lo más difícil?</label><div class="linea-campo"></div></div>
-    <div class="bitacora-campo"><label>¿Qué diferencia encontraste entre while y do-while?</label><div class="linea-campo"></div></div>
-    <div class="bitacora-campo"><label>Error más frecuente hoy</label><div class="linea-campo"></div></div>
-    <div class="bitacora-campo"><label>¿Cuándo usarías do-while en un proyecto real?</label><div class="linea-campo"></div></div>
-    <div class="bitacora-campo"><label>Conclusión del análisis IA</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>Nombre completo / Fecha / NRC</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>¿Por qué se usa const string&amp; para las entradas de solo lectura en todas las funciones?</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>Explica con un ejemplo por qué el cifrado César con d=26-d descifra correctamente</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>¿Qué función de cctype usarías para verificar que una contraseña tiene al menos un símbolo especial?</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>¿Qué limitaciones tiene tu validación de cédula (sin dígito verificador)? ¿Qué porcentaje de cédulas inválidas puede pasar la validación parcial?</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>Conclusión del análisis IA sobre el algoritmo de dígito verificador</label><div class="linea-campo"></div></div>
   </div>
   <table class="rubrica">
-    <thead><tr><th>Criterio</th><th>Logrado ✓</th><th>Parcial △</th><th>No logrado ✗</th><th>Pts</th></tr></thead>
+    <thead>
+      <tr><th>Criterio</th><th>Logrado ✓</th><th>Parcial △</th><th>No logrado ✗</th><th>Pts</th></tr>
+    </thead>
     <tbody>
-      <tr><td>F1: Diagrama + tabla de variables completa</td><td>El diagrama muestra ambos ciclos</td><td>Diagrama incompleto</td><td>No realizado</td><td>/15</td></tr>
-      <tr><td>F2: Pseudocódigo PSeInt ejecuta correctamente</td><td>Tres casos de prueba pasan</td><td>Al menos uno falla</td><td>No entregado</td><td>/20</td></tr>
-      <tr><td>F3: Código C++ compila y produce resultados correctos</td><td>Coincide con simulación F1</td><td>Compila con advertencias</td><td>No compila</td><td>/30</td></tr>
-      <tr><td>F4: Extensión implementada y funcional</td><td>Ambas extensiones</td><td>Solo una extensión</td><td>No realizado</td><td>/20</td></tr>
-      <tr><td>F5: Análisis IA documentado con criterio</td><td>Responde las 4 preguntas</td><td>Responde 2-3</td><td>Copia sin análisis</td><td>/15</td></tr>
+      <tr><td>F1: Casos de prueba (3 válidos + 2 inválidos por función) + lógica César + firmas con const</td><td>Casos completos; lógica de desbordamiento explicada; const correcto en firmas</td><td>Falta un juego de casos o const sin justificar</td><td>No presentado</td><td>/15</td></tr>
+      <tr><td>F2: Pseudocódigo de estadísticas y cifrado César en PSeInt</td><td>Ambos producen resultados correctos para los casos del F1</td><td>Un módulo con error menor</td><td>No entregado</td><td>/15</td></tr>
+      <tr><td>F3: C++ compila, 5 funciones correctas, const string&amp; correcto, cifrado y descifrado funcionan</td><td>Todos los casos de prueba del F1 pasan; descifrado produce texto original</td><td>Una función con resultado incorrecto</td><td>No compila</td><td>/40</td></tr>
+      <tr><td>F4: Frecuencia de letras + análisis de palabras funcionales</td><td>Frecuencia correcta y ordenada; conteo de palabras y longitud promedio correctos</td><td>Solo una extensión implementada</td><td>No realizado</td><td>/15</td></tr>
+      <tr><td>F5 + F6: Análisis IA dígito verificador + bitácora completa</td><td>Algoritmo entendido y documentado; 5 pruebas con cédulas reales; bitácora 6 campos</td><td>Análisis parcial sin pruebas</td><td>No entregado</td><td>/15</td></tr>
     </tbody>
     <tfoot><tr><td colspan="4">TOTAL</td><td>/100</td></tr></tfoot>
   </table>
@@ -451,8 +524,14 @@ suma &lt;- 0; cantidad &lt;- 0
 
 </main>
 <div class="nav-caps">
-  <a href="capitulo_06.html" class="nav-cap-btn"><span class="ncb-arrow">←</span><div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Capítulo 6 — while/do-while</span></div></a>
-  <a href="capitulo_07.html" class="nav-cap-btn sig"><span class="ncb-arrow">→</span><div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Cap. 7 — Integración</span></div></a>
+  <a href="capitulo_14.html" class="nav-cap-btn">
+    <span class="ncb-arrow">←</span>
+    <div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Capítulo 14 — Cadenas y Texto</span></div>
+  </a>
+  <a href="capitulo_15.html" class="nav-cap-btn sig">
+    <span class="ncb-arrow">→</span>
+    <div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Cap. 15 — Proyecto Integrador</span></div>
+  </a>
 </div>
-<footer class="pie"><span>Práctica 6 — while y do-while · Unidad II · ESPAM MFL</span><span>espam.edu.ec</span></footer>
+<footer class="pie"><span>Práctica 14 — Analizador de Texto · Unidad IV · ESPAM MFL</span><span>espam.edu.ec</span></footer>
 </body></html>

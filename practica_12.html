@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Práctica 12 — Matrices | ESPAM MFL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{--verde:#005846;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fondo);font-size:16px;line-height:1.7;overflow-x:hidden;}
+.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--verde);display:flex;align-items:center;padding:0 24px;gap:14px;z-index:1000;border-bottom:3px solid var(--verde-claro);}
+.topbar-logo{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--verde-claro);}
+.topbar-sep{width:1px;height:20px;background:rgba(255,255,255,.2);}
+.topbar-titulo{font-size:12px;color:rgba(255,255,255,.65);}
+.topbar-right{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;}
+.nav-menu{background:var(--verde);border-bottom:2px solid rgba(203,219,42,.3);margin-top:50px;}
+.nav-toggle{width:100%;background:transparent;color:white;border:none;padding:11px 24px;text-align:left;cursor:pointer;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;}
+.nav-toggle:hover{background:rgba(255,255,255,.04);}
+.nav-toggle-arrow{color:var(--verde-claro);font-size:12px;}
+.nav-body{display:none;padding:18px 24px 22px;}
+.nav-body.abierto{display:flex;flex-wrap:wrap;gap:28px;}
+.nav-grupo{min-width:170px;}
+.nav-grupo-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:7px;display:block;padding-bottom:5px;border-bottom:1px solid rgba(203,219,42,.2);}
+.nav-items{list-style:none;}
+.nav-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12px;color:rgba(255,255,255,.72);text-decoration:none;transition:color .15s;}
+.nav-item:hover{color:var(--verde-claro);}
+.nav-item.activo{color:var(--turquesa);font-weight:700;}
+.nav-item.practica{color:rgba(8,184,157,.85);font-style:italic;}
+.nav-item.practica:hover{color:var(--turquesa);}
+.nav-item.prox{color:rgba(255,255,255,.28);pointer-events:none;}
+.nav-num{font-family:'Space Mono',monospace;font-size:9px;min-width:20px;flex-shrink:0;color:rgba(255,255,255,.28);}
+.nav-item.activo .nav-num{color:var(--turquesa);}
+.nav-item.practica .nav-num{color:rgba(8,184,157,.45);}
+.page-header{background:linear-gradient(135deg,#005846 0%,#067a65 100%);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--turquesa);}
+.page-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(8,184,157,.1) 1px,transparent 1px);background-size:28px 28px;}
+.ph-num{position:absolute;right:48px;top:0;font-size:200px;font-weight:900;color:rgba(255,255,255,.04);line-height:1;font-family:'Space Mono',monospace;}
+.ph-inner{position:relative;z-index:1;}
+.ph-badge{display:inline-block;background:rgba(8,184,157,.2);border:1px solid rgba(8,184,157,.4);color:var(--turquesa);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+.ph-titulo{font-size:36px;font-weight:900;line-height:1.1;color:white;margin-bottom:8px;}
+.ph-subtitulo{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:28px;}
+.ph-meta{display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;}
+.ph-meta-item{display:flex;flex-direction:column;gap:3px;}
+.ph-meta-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.ph-meta-valor{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;}
+.fases-nav{background:white;border-bottom:1px solid var(--borde);padding:12px 64px;display:flex;gap:6px;overflow-x:auto;}
+.fase-chip{font-family:'Space Mono',monospace;font-size:9px;color:var(--texto-suave);text-decoration:none;padding:5px 12px;border:1px solid var(--borde);border-radius:20px;white-space:nowrap;transition:all .15s;}
+.fase-chip:hover{background:var(--turquesa);color:white;border-color:var(--turquesa);}
+.body-wrap{max-width:960px;margin:0 auto;padding:56px 64px 0;}
+.fase{margin-bottom:48px;scroll-margin-top:120px;}
+.fase-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--borde);}
+.fase-num{min-width:44px;height:44px;background:var(--turquesa);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;flex-shrink:0;}
+.fase-titulo{font-size:20px;font-weight:800;color:var(--verde);line-height:1.2;}
+.fase-tiempo{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+h3{font-size:16px;font-weight:700;color:var(--verde);margin:24px 0 10px;}
+p{margin-bottom:14px;color:var(--texto-suave);font-size:15px;}
+hr{border:none;border-top:1px solid var(--borde);margin:40px 0;}
+code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70,.07);padding:1px 6px;border-radius:3px;color:var(--verde);}
+.problema-box{background:var(--verde);border-radius:12px;padding:24px 28px;margin:20px 0;border-left:5px solid var(--verde-claro);}
+.pb-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:10px;display:block;}
+.pb-enunciado{font-size:15px;color:white;line-height:1.75;}
+.pb-enunciado strong{color:var(--verde-claro);}
+.codigo-bloque{background:var(--codigo-bg);border-radius:10px;overflow:hidden;margin:16px 0;}
+.codigo-header{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);}
+.codigo-dots{display:flex;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
+.codigo-lang{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.3);}
+.codigo-archivo{font-family:'Space Mono',monospace;font-size:10px;color:var(--turquesa);}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+.c-kw{color:var(--verde-claro);}.c-str{color:#a8d8b0;}.c-ns{color:var(--turquesa);}.c-tipo{color:#82aaff;}.c-fn{color:var(--turquesa);}.c-num{color:#f78c6c;}.c-com{color:rgba(255,255,255,.3);font-style:italic;}.c-inc{color:#c792ea;}
+.tabla-papel{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;}
+.tabla-papel thead tr{background:var(--verde);}
+.tabla-papel thead th{padding:10px 14px;color:white;text-align:left;font-size:11px;font-family:'Space Mono',monospace;letter-spacing:.5px;}
+.tabla-papel tbody tr{border-bottom:1px solid var(--borde);}
+.tabla-papel tbody tr:nth-child(even){background:rgba(0,88,70,.025);}
+.tabla-papel tbody td{padding:12px 14px;color:var(--texto-suave);vertical-align:top;}
+.tabla-papel td.mono{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);}
+.espacio{height:26px;border-bottom:1px dashed rgba(0,88,70,.18) !important;}
+.actividades{display:flex;flex-direction:column;gap:12px;margin:20px 0;}
+.actividad{background:white;border:1px solid var(--borde);border-radius:10px;padding:18px 22px;display:flex;align-items:flex-start;gap:14px;}
+.act-num{min-width:30px;height:30px;border-radius:50%;background:var(--turquesa);color:white;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.act-titulo{font-size:14px;font-weight:700;color:var(--verde);margin-bottom:4px;}
+.act-desc{font-size:13.5px;color:var(--texto-suave);line-height:1.6;}
+.caja-ia{background:#0d1e18;border-radius:10px;padding:20px 24px;margin:20px 0;border-left:4px solid var(--turquesa);}
+.caja-ia .ci-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:9px;display:block;}
+.caja-ia p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin:0;}
+.caja-ia p strong{color:var(--verde-claro);}
+.caja-nota{background:rgba(0,88,70,.05);border-left:4px solid var(--verde);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-nota .cn-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:6px;display:block;}
+.caja-nota p{margin:0;font-size:14px;color:var(--texto);}
+.pseudocodigo{background:var(--codigo-bg);border-radius:10px;margin:18px 0;overflow:hidden;}
+.pseudo-label{background:rgba(255,255,255,.05);padding:8px 18px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);border-bottom:1px solid rgba(255,255,255,.08);}
+.pseudo-body{padding:20px 24px;font-family:'Space Mono',monospace;font-size:13px;line-height:1.9;color:rgba(255,255,255,.85);}
+.p-kw{color:var(--verde-claro);font-weight:700;}
+.p-str{color:#a8d8b0;}
+.rubrica{width:100%;border-collapse:collapse;margin:18px 0;font-size:12.5px;}
+.rubrica thead tr{background:var(--verde);}
+.rubrica thead th{padding:10px 14px;color:white;text-align:left;font-size:11px;}
+.rubrica tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.rubrica tbody td{padding:9px 14px;border-bottom:1px solid var(--borde);color:var(--texto-suave);vertical-align:top;}
+.rubrica tbody td:first-child{font-weight:700;color:var(--verde);font-size:12px;}
+.rubrica tfoot td{padding:10px 14px;font-weight:700;color:var(--verde);background:rgba(0,88,70,.05);}
+.bitacora{border:2px dashed rgba(0,88,70,.2);border-radius:10px;padding:22px;background:white;margin:18px 0;}
+.bitacora-campo{display:flex;gap:12px;border-bottom:1px solid var(--borde);padding:9px 0;align-items:center;}
+.bitacora-campo:last-child{border-bottom:none;}
+.bitacora-campo label{min-width:220px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);flex-shrink:0;}
+.linea-campo{flex:1;border-bottom:1px solid rgba(0,88,70,.12);min-height:22px;}
+.nav-caps{display:flex;justify-content:space-between;align-items:center;padding:20px 64px;background:var(--fondo-alt);border-top:1px solid var(--borde);margin-top:48px;flex-wrap:wrap;gap:12px;}
+.nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 18px;border:1.5px solid rgba(0,88,70,.2);border-radius:8px;background:white;max-width:280px;transition:all .2s;}
+.nav-cap-btn:hover{border-color:var(--verde);}
+.nav-cap-btn.sig{flex-direction:row-reverse;text-align:right;}
+.ncb-arrow{font-size:16px;color:var(--verde);}
+.ncb-label{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,88,70,.45);margin-bottom:2px;display:block;}
+.ncb-titulo{font-size:13px;font-weight:700;color:var(--verde);}
+.pie{background:var(--verde);color:rgba(255,255,255,.35);padding:14px 64px;font-family:'Space Mono',monospace;font-size:9px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:1px;}
+.pie span:first-child{color:rgba(255,255,255,.55);}
+@media(max-width:768px){.page-header,.body-wrap,.nav-caps,.pie,.fases-nav{padding-left:24px;padding-right:24px;}.ph-titulo{font-size:26px;}}
+
+/* ── Aliases para sesiones prácticas 06+ ── */
+.page-header-prac{background:linear-gradient(135deg,#005846 0%,#067a65 100%);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--turquesa);}
+.page-header-prac::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(8,184,157,.1) 1px,transparent 1px);background-size:28px 28px;}
+.ph-badge-prac{display:inline-block;background:rgba(8,184,157,.2);border:1px solid rgba(8,184,157,.4);color:var(--turquesa);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+@media(max-width:768px){.page-header-prac{padding-left:24px;padding-right:24px;}}
+
+/* ── Componentes de capítulos usados en prácticas ── */
+.ra-box{background:rgba(0,88,70,.06);border:1px solid rgba(0,88,70,.15);border-left:4px solid var(--verde);border-radius:0 10px 10px 0;padding:18px 22px;margin-bottom:40px;}
+.ra-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:8px;}
+.ra-texto{font-size:14px;color:var(--texto);line-height:1.65;}
+.caja-adv{background:rgba(203,219,42,.08);border-left:4px solid var(--verde-claro);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-adv .ca-label,.ca-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7a8a10;margin-bottom:6px;display:block;}
+.caja-adv p{margin:0;font-size:14px;color:#4a540a;}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-logo">ESPAM MFL</div><div class="topbar-sep"></div><div class="topbar-titulo">Introducción a la Programación</div><div class="topbar-right">CARRERA DE COMPUTACIÓN</div></header>
+<nav class="nav-menu"><button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">☰ &nbsp; Contenidos del libro <span class="nav-toggle-arrow">▼</span></button><div class="nav-body"></div></nav>
+<section class="page-header-prac">
+  <div class="ph-num">P12</div>
+  <div class="ph-inner">
+    <div class="ph-badge-prac">🔬 Unidad IV · Sesión Práctica 12</div>
+    <h1 class="ph-titulo">Sistema de Notas por Asignatura — Matriz Estudiantes × Materias</h1>
+    <p class="ph-subtitulo">arreglos 2D · bucles anidados · columnas constantes · promedio por fila y columna · mejor estudiante y materia más difícil</p>
+    <div class="ph-meta">
+      <div class="ph-meta-item"><span class="ph-meta-label">Duración</span><span class="ph-meta-valor">180 min (3h)</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Modalidad</span><span class="ph-meta-valor">Individual → Parejas</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-valor">Entregable: .cpp + trazas + bitácora</span></div>
+    </div>
+  </div>
+</section>
+<nav class="fases-nav">
+  <a class="fase-chip" href="#f1">F1 · Diseño</a>
+  <a class="fase-chip" href="#f2">F2 · Pseudocódigo</a>
+  <a class="fase-chip" href="#f3">F3 · C++</a>
+  <a class="fase-chip" href="#f4">F4 · Extensión</a>
+  <a class="fase-chip" href="#f5">F5 · Análisis IA</a>
+  <a class="fase-chip" href="#f6">F6 · Bitácora</a>
+</nav>
+<main class="body-wrap">
+
+<div class="ra-box">
+  <div class="ra-label">Objetivo de la Sesión</div>
+  <div class="ra-texto">El estudiante <strong>implementa un sistema de registro de notas con una matriz</strong> de 5 estudiantes × 4 asignaturas, calcula promedios por estudiante (filas) y por asignatura (columnas), identifica el mejor estudiante y la materia con mayor dificultad, e imprime un reporte tabular alineado con formato profesional.</div>
+</div>
+
+<div class="problema-box">
+  <span class="pb-label">🎓 Contexto del Problema</span>
+  <div class="pb-enunciado">La coordinación académica de ESPAM MFL necesita procesar las notas del primer parcial de 5 estudiantes en 4 asignaturas: Programación, Matemáticas, Física e Inglés. El sistema debe: <strong>1)</strong> ingresar notas con validación [0–10] <strong>2)</strong> calcular promedio por estudiante <strong>3)</strong> calcular promedio por asignatura <strong>4)</strong> identificar el mejor estudiante y la asignatura más baja <strong>5)</strong> generar un reporte matricial completo.</div>
+</div>
+
+<!-- F1 -->
+<section class="fase" id="f1">
+  <div class="fase-header">
+    <div class="fase-num">F1</div>
+    <div>
+      <div class="fase-titulo">Diseño en Papel — Estructura y Trazas</div>
+      <div class="fase-tiempo">0 – 20 min · SIN computadora</div>
+    </div>
+  </div>
+  <div class="actividades">
+    <div class="actividad">
+      <div class="act-num">1</div>
+      <div>
+        <div class="act-titulo">Dibuja la estructura de datos</div>
+        <div class="act-desc">Dibuja la matriz de 5×4 con etiquetas de filas (Estudiante 1..5) y columnas (Prog, Mate, Fís, Ing). Rellénala con valores de ejemplo que conozcas de antemano. Calcula a mano: promedio de cada estudiante, promedio de cada asignatura. Identifica quién tiene el promedio más alto y cuál asignatura tiene el promedio más bajo.</div>
+      </div>
+    </div>
+    <div class="actividad">
+      <div class="act-num">2</div>
+      <div>
+        <div class="act-titulo">Firma de cada función</div>
+        <div class="act-desc">Diseña la firma de las 5 funciones del sistema: ingresar, promediosPorFila, promediosPorColumna, mostrarReporte, indiceMin. Para cada parámetro de arreglo/matriz decide si necesita <code>const</code>. Recuerda: las columnas deben ser constantes ([][4]) en las firmas.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- F2 -->
+<section class="fase" id="f2">
+  <div class="fase-header">
+    <div class="fase-num">F2</div>
+    <div>
+      <div class="fase-titulo">Pseudocódigo en PSeInt</div>
+      <div class="fase-tiempo">20 – 55 min</div>
+    </div>
+  </div>
+
+  <div class="pseudocodigo">
+    <div class="pseudo-label">PSeInt · ingreso con validación + promedio por fila</div>
+    <div class="pseudo-body"><span class="p-kw">SubProceso</span> ingresar(notas, filas, cols)
+    <span class="p-kw">Para</span> i &lt;- 0 <span class="p-kw">Hasta</span> filas-1 <span class="p-kw">Hacer</span>
+        <span class="p-kw">Para</span> j &lt;- 0 <span class="p-kw">Hasta</span> cols-1 <span class="p-kw">Hacer</span>
+            <span class="p-kw">Repetir</span>
+                Escribir <span class="p-str">"Nota est[", i+1, "] asig[", j+1, "]: "</span>
+                Leer notas[i][j]
+            <span class="p-kw">Hasta Que</span> notas[i][j] &gt;= 0 Y notas[i][j] &lt;= 10
+        <span class="p-kw">FinPara</span>
+    <span class="p-kw">FinPara</span>
+<span class="p-kw">FinSubProceso</span>
+
+<span class="p-kw">SubProceso</span> promediosPorFila(notas, filas, cols, promedios)
+    <span class="p-kw">Para</span> i &lt;- 0 <span class="p-kw">Hasta</span> filas-1 <span class="p-kw">Hacer</span>
+        suma &lt;- 0
+        <span class="p-kw">Para</span> j &lt;- 0 <span class="p-kw">Hasta</span> cols-1 <span class="p-kw">Hacer</span>
+            suma &lt;- suma + notas[i][j]
+        <span class="p-kw">FinPara</span>
+        promedios[i] &lt;- suma / cols
+    <span class="p-kw">FinPara</span>
+<span class="p-kw">FinSubProceso</span></div>
+  </div>
+</section>
+
+<hr>
+
+<!-- F3 -->
+<section class="fase" id="f3">
+  <div class="fase-header">
+    <div class="fase-num">F3</div>
+    <div>
+      <div class="fase-titulo">Implementación en C++ — Individual</div>
+      <div class="fase-tiempo">55 – 105 min</div>
+    </div>
+  </div>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · sistema de notas por asignatura — implementación completa</span>
+      </div>
+      <span class="codigo-archivo">notas_asignaturas.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;string&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-kw">const</span> <span class="c-tipo">int</span> FILAS=<span class="c-num">5</span>, COLS=<span class="c-num">4</span>;
+<span class="c-kw">const</span> <span class="c-tipo">string</span> ASIGS[COLS] = {<span class="c-str">"Progr"</span>,<span class="c-str">"Matem"</span>,<span class="c-str">"Fisica"</span>,<span class="c-str">"Ingles"</span>};
+
+<span class="c-kw">void</span> <span class="c-fn">ingresar</span>(<span class="c-tipo">double</span> m[][COLS], <span class="c-tipo">int</span> f);
+<span class="c-kw">void</span> <span class="c-fn">promediosPorFila</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> m[][COLS], <span class="c-tipo">int</span> f, <span class="c-tipo">double</span> pf[]);
+<span class="c-kw">void</span> <span class="c-fn">promediosPorCol</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> m[][COLS], <span class="c-tipo">int</span> f, <span class="c-tipo">double</span> pc[]);
+<span class="c-tipo">int</span>  <span class="c-fn">indiceMax</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> arr[], <span class="c-tipo">int</span> n);
+<span class="c-tipo">int</span>  <span class="c-fn">indiceMin</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> arr[], <span class="c-tipo">int</span> n);
+<span class="c-kw">void</span> <span class="c-fn">mostrarReporte</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> m[][COLS], <span class="c-tipo">int</span> f,
+                   <span class="c-kw">const</span> <span class="c-tipo">double</span> pf[], <span class="c-kw">const</span> <span class="c-tipo">double</span> pc[]);
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">double</span> notas[FILAS][COLS];
+    <span class="c-tipo">double</span> promFila[FILAS], promCol[COLS];
+    <span class="c-fn">ingresar</span>(notas, FILAS);
+    <span class="c-fn">promediosPorFila</span>(notas, FILAS, promFila);
+    <span class="c-fn">promediosPorCol</span>(notas, FILAS, promCol);
+    <span class="c-fn">mostrarReporte</span>(notas, FILAS, promFila, promCol);
+    <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"
+Mejor estudiante : E"</span>&lt;&lt;<span class="c-fn">indiceMax</span>(promFila,FILAS)+<span class="c-num">1</span>&lt;&lt;<span class="c-str">"
+"</span>;
+    <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Materia más baja : "</span>&lt;&lt;ASIGS[<span class="c-fn">indiceMin</span>(promCol,COLS)]&lt;&lt;<span class="c-str">"
+"</span>;
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}
+
+<span class="c-kw">void</span> <span class="c-fn">ingresar</span>(<span class="c-tipo">double</span> m[][COLS], <span class="c-tipo">int</span> f) {
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;f;i++)
+        <span class="c-kw">for</span>(<span class="c-tipo">int</span> j=<span class="c-num">0</span>;j&lt;COLS;j++) {
+            <span class="c-kw">do</span> {
+                <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"  E"</span>&lt;&lt;i+<span class="c-num">1</span>&lt;&lt;<span class="c-str">" "</span>&lt;&lt;ASIGS[j]&lt;&lt;<span class="c-str">": "</span>;
+                <span class="c-fn">cin</span>&gt;&gt;m[i][j];
+            } <span class="c-kw">while</span>(m[i][j]&lt;<span class="c-num">0</span>||m[i][j]&gt;<span class="c-num">10</span>);
+        }
+}
+<span class="c-kw">void</span> <span class="c-fn">promediosPorFila</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> m[][COLS],<span class="c-tipo">int</span> f,<span class="c-tipo">double</span> pf[]) {
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;f;i++){<span class="c-tipo">double</span> s=<span class="c-num">0</span>;<span class="c-kw">for</span>(<span class="c-tipo">int</span> j=<span class="c-num">0</span>;j&lt;COLS;j++)s+=m[i][j];pf[i]=s/COLS;}
+}
+<span class="c-kw">void</span> <span class="c-fn">promediosPorCol</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> m[][COLS],<span class="c-tipo">int</span> f,<span class="c-tipo">double</span> pc[]) {
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> j=<span class="c-num">0</span>;j&lt;COLS;j++){<span class="c-tipo">double</span> s=<span class="c-num">0</span>;<span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;f;i++)s+=m[i][j];pc[j]=s/f;}
+}
+<span class="c-tipo">int</span> <span class="c-fn">indiceMax</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> a[],<span class="c-tipo">int</span> n){<span class="c-tipo">int</span> m=<span class="c-num">0</span>;<span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">1</span>;i&lt;n;i++)<span class="c-kw">if</span>(a[i]&gt;a[m])m=i;<span class="c-kw">return</span> m;}
+<span class="c-tipo">int</span> <span class="c-fn">indiceMin</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> a[],<span class="c-tipo">int</span> n){<span class="c-tipo">int</span> m=<span class="c-num">0</span>;<span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">1</span>;i&lt;n;i++)<span class="c-kw">if</span>(a[i]&lt;a[m])m=i;<span class="c-kw">return</span> m;}
+<span class="c-kw">void</span> <span class="c-fn">mostrarReporte</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span> m[][COLS],<span class="c-tipo">int</span> f,
+                   <span class="c-kw">const</span> <span class="c-tipo">double</span> pf[],<span class="c-kw">const</span> <span class="c-tipo">double</span> pc[]) {
+    <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"
+       "</span>;
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> j=<span class="c-num">0</span>;j&lt;COLS;j++) <span class="c-fn">cout</span>&lt;&lt;setw(<span class="c-num">8</span>)&lt;&lt;ASIGS[j];
+    <span class="c-fn">cout</span>&lt;&lt;setw(<span class="c-num">9</span>)&lt;&lt;<span class="c-str">"Prom
+"</span>;
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;f;i++){
+        <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"  E"</span>&lt;&lt;i+<span class="c-num">1</span>&lt;&lt;<span class="c-str">"  "</span>;
+        <span class="c-kw">for</span>(<span class="c-tipo">int</span> j=<span class="c-num">0</span>;j&lt;COLS;j++)
+            <span class="c-fn">cout</span>&lt;&lt;fixed&lt;&lt;setprecision(<span class="c-num">1</span>)&lt;&lt;setw(<span class="c-num">8</span>)&lt;&lt;m[i][j];
+        <span class="c-fn">cout</span>&lt;&lt;setw(<span class="c-num">9</span>)&lt;&lt;pf[i]&lt;&lt;<span class="c-str">"
+"</span>;
+    }
+    <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"  Prom  "</span>;
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> j=<span class="c-num">0</span>;j&lt;COLS;j++) <span class="c-fn">cout</span>&lt;&lt;setw(<span class="c-num">8</span>)&lt;&lt;pc[j];
+    <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"
+"</span>;
+}</pre></div>
+  </div>
+</section>
+
+<hr>
+
+<!-- F4 -->
+<section class="fase" id="f4">
+  <div class="fase-header">
+    <div class="fase-num">F4</div>
+    <div>
+      <div class="fase-titulo">Extensión en Parejas</div>
+      <div class="fase-tiempo">105 – 140 min</div>
+    </div>
+  </div>
+  <div class="actividades">
+    <div class="actividad">
+      <div class="act-num">A</div>
+      <div>
+        <div class="act-titulo">Ordenar estudiantes por promedio</div>
+        <div class="act-desc">Implementa <code>void ordenarPorPromedio(double m[][4], double pf[], int f)</code> que reordena las <em>filas completas</em> de la matriz junto con el arreglo de promedios, dejando el ranking de mayor a menor. Usar burbuja intercambiando filas completas cuando <code>pf[j] &lt; pf[j+1]</code>. Al intercambiar fila, intercambia también el promedio correspondiente. Muestra el ranking final.</div>
+      </div>
+    </div>
+    <div class="actividad">
+      <div class="act-num">B</div>
+      <div>
+        <div class="act-titulo">Mapa de calor de semáforo</div>
+        <div class="act-desc">Implementa <code>void mapaCalor(const double m[][4], int f)</code> que imprime la nota con un símbolo de color en lugar del número: ✗ si &lt;7, △ si 7–8.9, ✓ si ≥9. Así el coordinador puede ver de un vistazo qué celdas de la tabla son problemáticas. Llama a esta función desde <code>main()</code> junto con la visualización numérica.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- F5 -->
+<section class="fase" id="f5">
+  <div class="fase-header">
+    <div class="fase-num">F5</div>
+    <div>
+      <div class="fase-titulo">Análisis Crítico con IA</div>
+      <div class="fase-tiempo">140 – 163 min</div>
+    </div>
+  </div>
+  <div class="caja-ia">
+    <div class="ci-label">🤖 Protocolo de Análisis IA · Sesión 12</div>
+    <p>Pide a la IA que reimplemente tu función <code>mostrarReporte</code> usando <code>vector&lt;vector&lt;double&gt;&gt;</code> en lugar de arreglo 2D clásico. Responde: <strong>(1)</strong> ¿La firma cambió? ¿Ya no necesita columnas constantes? <strong>(2)</strong> ¿El código resultante es más largo o más corto? <strong>(3)</strong> ¿Qué encabezado adicional se necesita? <strong>(4)</strong> ¿En qué situaciones el arreglo 2D clásico sería la mejor opción frente a <code>vector</code>? Documenta con fragmentos de código comparativos.</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- F6 -->
+<section class="fase" id="f6">
+  <div class="fase-header">
+    <div class="fase-num">F6</div>
+    <div>
+      <div class="fase-titulo">Bitácora y Rúbrica</div>
+      <div class="fase-tiempo">163 – 180 min</div>
+    </div>
+  </div>
+  <div class="bitacora">
+    <div class="bitacora-campo"><label>Nombre completo / Fecha / NRC</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>¿Por qué las columnas deben ser constantes en la firma de la función?</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>¿Cuántas funciones de tu entrega usan const double m[][4] y por qué?</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>Diferencia entre recorrer por filas (procesar por estudiante) vs. por columnas (por asignatura)</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>Resultado de la extensión B — ¿para qué sirve un mapa de calor en la vida real?</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>Conclusión del análisis vector vs arreglo 2D clásico</label><div class="linea-campo"></div></div>
+  </div>
+  <table class="rubrica">
+    <thead><tr><th>Criterio</th><th>Logrado ✓</th><th>Parcial △</th><th>No logrado ✗</th><th>Pts</th></tr></thead>
+    <tbody>
+      <tr><td>F1: Diagrama de la matriz + firmas correctas + cálculos manuales</td><td>Firmas con columnas constantes y const correctamente decidido</td><td>1-2 firmas incorrectas</td><td>No presentado</td><td>/15</td></tr>
+      <tr><td>F2: Pseudocódigo de ingreso y promediosPorFila en PSeInt</td><td>Produce los valores manuales del F1</td><td>Un error corregible</td><td>No entregado</td><td>/15</td></tr>
+      <tr><td>F3: C++ compila, 6 funciones correctas, reporte alineado</td><td>Reporte muestra tabla correcta con promedios por fila y columna</td><td>1 función incorrecta</td><td>No compila</td><td>/40</td></tr>
+      <tr><td>F4: Ranking por promedio + mapa de calor funcionales</td><td>Ranking correcto; mapa de calor con tres símbolos correctos</td><td>Solo una extensión</td><td>No realizado</td><td>/15</td></tr>
+      <tr><td>F5 + F6: Análisis IA + bitácora completa</td><td>4 preguntas con fragmentos de código; bitácora firmada</td><td>Análisis sin código</td><td>No entregado</td><td>/15</td></tr>
+    </tbody>
+    <tfoot><tr><td colspan="4">TOTAL</td><td>/100</td></tr></tfoot>
+  </table>
+</section>
+</main><div class="nav-caps">
+  <a href="capitulo_12.html" class="nav-cap-btn">
+    <span class="ncb-arrow">←</span>
+    <div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Capítulo 12 — Matrices</span></div>
+  </a>
+  <a href="capitulo_13.html" class="nav-cap-btn sig">
+    <span class="ncb-arrow">→</span>
+    <div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Cap. 13 — Búsqueda y Ordenamiento</span></div>
+  </a>
+</div>
+<footer class="pie"><span>Práctica 12 — Matrices · Unidad IV · ESPAM MFL</span><span>espam.edu.ec</span></footer>
+</body></html>

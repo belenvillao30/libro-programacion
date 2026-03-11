@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Práctica 13 — Búsqueda y Ordenamiento | ESPAM MFL</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
+:root{--verde:#005846;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+html{scroll-behavior:smooth;}
+body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fondo);font-size:16px;line-height:1.7;overflow-x:hidden;}
+.topbar{position:fixed;top:0;left:0;right:0;height:50px;background:var(--verde);display:flex;align-items:center;padding:0 24px;gap:14px;z-index:1000;border-bottom:3px solid var(--verde-claro);}
+.topbar-logo{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;color:var(--verde-claro);}
+.topbar-sep{width:1px;height:20px;background:rgba(255,255,255,.2);}
+.topbar-titulo{font-size:12px;color:rgba(255,255,255,.65);}
+.topbar-right{margin-left:auto;font-family:'Space Mono',monospace;font-size:9px;color:rgba(255,255,255,.3);letter-spacing:1.5px;}
+.nav-menu{background:var(--verde);border-bottom:2px solid rgba(203,219,42,.3);margin-top:50px;}
+.nav-toggle{width:100%;background:transparent;color:white;border:none;padding:11px 24px;text-align:left;cursor:pointer;font-family:'Space Mono',monospace;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;display:flex;justify-content:space-between;align-items:center;}
+.nav-toggle:hover{background:rgba(255,255,255,.04);}
+.nav-toggle-arrow{color:var(--verde-claro);font-size:12px;}
+.nav-body{display:none;padding:18px 24px 22px;}
+.nav-body.abierto{display:flex;flex-wrap:wrap;gap:28px;}
+.nav-grupo{min-width:170px;}
+.nav-grupo-label{font-family:'Space Mono',monospace;font-size:8px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:7px;display:block;padding-bottom:5px;border-bottom:1px solid rgba(203,219,42,.2);}
+.nav-items{list-style:none;}
+.nav-item{display:flex;align-items:center;gap:7px;padding:4px 0;font-size:12px;color:rgba(255,255,255,.72);text-decoration:none;transition:color .15s;}
+.nav-item:hover{color:var(--verde-claro);}
+.nav-item.activo{color:var(--turquesa);font-weight:700;}
+.nav-item.practica{color:rgba(8,184,157,.85);font-style:italic;}
+.nav-item.practica:hover{color:var(--turquesa);}
+.nav-item.prox{color:rgba(255,255,255,.28);pointer-events:none;}
+.nav-num{font-family:'Space Mono',monospace;font-size:9px;min-width:20px;flex-shrink:0;color:rgba(255,255,255,.28);}
+.nav-item.activo .nav-num{color:var(--turquesa);}
+.nav-item.practica .nav-num{color:rgba(8,184,157,.45);}
+.page-header{background:linear-gradient(135deg,#005846 0%,#067a65 100%);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--turquesa);}
+.page-header::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(8,184,157,.1) 1px,transparent 1px);background-size:28px 28px;}
+.ph-num{position:absolute;right:48px;top:0;font-size:200px;font-weight:900;color:rgba(255,255,255,.04);line-height:1;font-family:'Space Mono',monospace;}
+.ph-inner{position:relative;z-index:1;}
+.ph-badge{display:inline-block;background:rgba(8,184,157,.2);border:1px solid rgba(8,184,157,.4);color:var(--turquesa);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+.ph-titulo{font-size:36px;font-weight:900;line-height:1.1;color:white;margin-bottom:8px;}
+.ph-subtitulo{font-size:15px;color:rgba(255,255,255,.55);margin-bottom:28px;}
+.ph-meta{display:flex;gap:32px;flex-wrap:wrap;border-top:1px solid rgba(255,255,255,.1);padding-top:20px;}
+.ph-meta-item{display:flex;flex-direction:column;gap:3px;}
+.ph-meta-label{font-family:'Space Mono',monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.3);}
+.ph-meta-valor{font-size:13px;color:rgba(255,255,255,.85);font-weight:600;}
+.fases-nav{background:white;border-bottom:1px solid var(--borde);padding:12px 64px;display:flex;gap:6px;overflow-x:auto;}
+.fase-chip{font-family:'Space Mono',monospace;font-size:9px;color:var(--texto-suave);text-decoration:none;padding:5px 12px;border:1px solid var(--borde);border-radius:20px;white-space:nowrap;transition:all .15s;}
+.fase-chip:hover{background:var(--turquesa);color:white;border-color:var(--turquesa);}
+.body-wrap{max-width:960px;margin:0 auto;padding:56px 64px 0;}
+.fase{margin-bottom:48px;scroll-margin-top:120px;}
+.fase-header{display:flex;align-items:center;gap:16px;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--borde);}
+.fase-num{min-width:44px;height:44px;background:var(--turquesa);color:white;border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'Space Mono',monospace;font-size:13px;font-weight:700;flex-shrink:0;}
+.fase-titulo{font-size:20px;font-weight:800;color:var(--verde);line-height:1.2;}
+.fase-tiempo{font-family:'Space Mono',monospace;font-size:9px;color:var(--turquesa);letter-spacing:1.5px;text-transform:uppercase;margin-top:2px;}
+h3{font-size:16px;font-weight:700;color:var(--verde);margin:24px 0 10px;}
+p{margin-bottom:14px;color:var(--texto-suave);font-size:15px;}
+hr{border:none;border-top:1px solid var(--borde);margin:40px 0;}
+code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70,.07);padding:1px 6px;border-radius:3px;color:var(--verde);}
+.problema-box{background:var(--verde);border-radius:12px;padding:24px 28px;margin:20px 0;border-left:5px solid var(--verde-claro);}
+.pb-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:10px;display:block;}
+.pb-enunciado{font-size:15px;color:white;line-height:1.75;}
+.pb-enunciado strong{color:var(--verde-claro);}
+.codigo-bloque{background:var(--codigo-bg);border-radius:10px;overflow:hidden;margin:16px 0;}
+.codigo-header{display:flex;justify-content:space-between;align-items:center;padding:9px 16px;background:rgba(255,255,255,.05);border-bottom:1px solid rgba(255,255,255,.08);}
+.codigo-dots{display:flex;gap:6px;}
+.dot{width:10px;height:10px;border-radius:50%;}
+.dot-r{background:#ff5f57;}.dot-y{background:#febc2e;}.dot-g{background:#28c840;}
+.codigo-lang{font-family:'Space Mono',monospace;font-size:9px;letter-spacing:1.5px;color:rgba(255,255,255,.3);}
+.codigo-archivo{font-family:'Space Mono',monospace;font-size:10px;color:var(--turquesa);}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+.c-kw{color:var(--verde-claro);}.c-str{color:#a8d8b0;}.c-ns{color:var(--turquesa);}.c-tipo{color:#82aaff;}.c-fn{color:var(--turquesa);}.c-num{color:#f78c6c;}.c-com{color:rgba(255,255,255,.3);font-style:italic;}.c-inc{color:#c792ea;}
+.tabla-papel{width:100%;border-collapse:collapse;margin:16px 0;font-size:13px;}
+.tabla-papel thead tr{background:var(--verde);}
+.tabla-papel thead th{padding:10px 14px;color:white;text-align:left;font-size:11px;font-family:'Space Mono',monospace;letter-spacing:.5px;}
+.tabla-papel tbody tr{border-bottom:1px solid var(--borde);}
+.tabla-papel tbody tr:nth-child(even){background:rgba(0,88,70,.025);}
+.tabla-papel tbody td{padding:12px 14px;color:var(--texto-suave);vertical-align:top;}
+.tabla-papel td.mono{font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);}
+.espacio{height:26px;border-bottom:1px dashed rgba(0,88,70,.18) !important;}
+.actividades{display:flex;flex-direction:column;gap:12px;margin:20px 0;}
+.actividad{background:white;border:1px solid var(--borde);border-radius:10px;padding:18px 22px;display:flex;align-items:flex-start;gap:14px;}
+.act-num{min-width:30px;height:30px;border-radius:50%;background:var(--turquesa);color:white;font-family:'Space Mono',monospace;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.act-titulo{font-size:14px;font-weight:700;color:var(--verde);margin-bottom:4px;}
+.act-desc{font-size:13.5px;color:var(--texto-suave);line-height:1.6;}
+.caja-ia{background:#0d1e18;border-radius:10px;padding:20px 24px;margin:20px 0;border-left:4px solid var(--turquesa);}
+.caja-ia .ci-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:9px;display:block;}
+.caja-ia p{font-size:14px;color:rgba(255,255,255,.75);line-height:1.7;margin:0;}
+.caja-ia p strong{color:var(--verde-claro);}
+.caja-nota{background:rgba(0,88,70,.05);border-left:4px solid var(--verde);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-nota .cn-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:6px;display:block;}
+.caja-nota p{margin:0;font-size:14px;color:var(--texto);}
+.pseudocodigo{background:var(--codigo-bg);border-radius:10px;margin:18px 0;overflow:hidden;}
+.pseudo-label{background:rgba(255,255,255,.05);padding:8px 18px;font-family:'Space Mono',monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);border-bottom:1px solid rgba(255,255,255,.08);}
+.pseudo-body{padding:20px 24px;font-family:'Space Mono',monospace;font-size:13px;line-height:1.9;color:rgba(255,255,255,.85);}
+.p-kw{color:var(--verde-claro);font-weight:700;}
+.p-str{color:#a8d8b0;}
+.rubrica{width:100%;border-collapse:collapse;margin:18px 0;font-size:12.5px;}
+.rubrica thead tr{background:var(--verde);}
+.rubrica thead th{padding:10px 14px;color:white;text-align:left;font-size:11px;}
+.rubrica tbody tr:nth-child(even){background:rgba(0,88,70,.03);}
+.rubrica tbody td{padding:9px 14px;border-bottom:1px solid var(--borde);color:var(--texto-suave);vertical-align:top;}
+.rubrica tbody td:first-child{font-weight:700;color:var(--verde);font-size:12px;}
+.rubrica tfoot td{padding:10px 14px;font-weight:700;color:var(--verde);background:rgba(0,88,70,.05);}
+.bitacora{border:2px dashed rgba(0,88,70,.2);border-radius:10px;padding:22px;background:white;margin:18px 0;}
+.bitacora-campo{display:flex;gap:12px;border-bottom:1px solid var(--borde);padding:9px 0;align-items:center;}
+.bitacora-campo:last-child{border-bottom:none;}
+.bitacora-campo label{min-width:220px;font-family:'Space Mono',monospace;font-size:11px;font-weight:700;color:var(--verde);flex-shrink:0;}
+.linea-campo{flex:1;border-bottom:1px solid rgba(0,88,70,.12);min-height:22px;}
+.nav-caps{display:flex;justify-content:space-between;align-items:center;padding:20px 64px;background:var(--fondo-alt);border-top:1px solid var(--borde);margin-top:48px;flex-wrap:wrap;gap:12px;}
+.nav-cap-btn{display:flex;align-items:center;gap:12px;text-decoration:none;padding:12px 18px;border:1.5px solid rgba(0,88,70,.2);border-radius:8px;background:white;max-width:280px;transition:all .2s;}
+.nav-cap-btn:hover{border-color:var(--verde);}
+.nav-cap-btn.sig{flex-direction:row-reverse;text-align:right;}
+.ncb-arrow{font-size:16px;color:var(--verde);}
+.ncb-label{font-family:'Space Mono',monospace;font-size:8.5px;letter-spacing:2px;text-transform:uppercase;color:rgba(0,88,70,.45);margin-bottom:2px;display:block;}
+.ncb-titulo{font-size:13px;font-weight:700;color:var(--verde);}
+.pie{background:var(--verde);color:rgba(255,255,255,.35);padding:14px 64px;font-family:'Space Mono',monospace;font-size:9px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px;letter-spacing:1px;}
+.pie span:first-child{color:rgba(255,255,255,.55);}
+@media(max-width:768px){.page-header,.body-wrap,.nav-caps,.pie,.fases-nav{padding-left:24px;padding-right:24px;}.ph-titulo{font-size:26px;}}
+
+/* ── Aliases para sesiones prácticas 06+ ── */
+.page-header-prac{background:linear-gradient(135deg,#005846 0%,#067a65 100%);padding:52px 64px 44px;position:relative;overflow:hidden;border-bottom:4px solid var(--turquesa);}
+.page-header-prac::before{content:'';position:absolute;inset:0;background-image:radial-gradient(circle,rgba(8,184,157,.1) 1px,transparent 1px);background-size:28px 28px;}
+.ph-badge-prac{display:inline-block;background:rgba(8,184,157,.2);border:1px solid rgba(8,184,157,.4);color:var(--turquesa);font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;padding:4px 12px;border-radius:2px;margin-bottom:16px;}
+@media(max-width:768px){.page-header-prac{padding-left:24px;padding-right:24px;}}
+
+/* ── Componentes de capítulos usados en prácticas ── */
+.ra-box{background:rgba(0,88,70,.06);border:1px solid rgba(0,88,70,.15);border-left:4px solid var(--verde);border-radius:0 10px 10px 0;padding:18px 22px;margin-bottom:40px;}
+.ra-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde);margin-bottom:8px;}
+.ra-texto{font-size:14px;color:var(--texto);line-height:1.65;}
+.caja-adv{background:rgba(203,219,42,.08);border-left:4px solid var(--verde-claro);border-radius:0 8px 8px 0;padding:16px 20px;margin:18px 0;}
+.caja-adv .ca-label,.ca-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:#7a8a10;margin-bottom:6px;display:block;}
+.caja-adv p{margin:0;font-size:14px;color:#4a540a;}
+.codigo-body pre{padding:20px 24px;font-family:'Space Mono',monospace;font-size:12.5px;line-height:1.9;color:rgba(255,255,255,.85);overflow-x:auto;}
+</style>
+</head>
+<body>
+<header class="topbar"><div class="topbar-logo">ESPAM MFL</div><div class="topbar-sep"></div><div class="topbar-titulo">Introducción a la Programación</div><div class="topbar-right">CARRERA DE COMPUTACIÓN</div></header>
+<nav class="nav-menu"><button class="nav-toggle" onclick="this.nextElementSibling.classList.toggle('abierto');this.querySelector('.nav-toggle-arrow').textContent=this.nextElementSibling.classList.contains('abierto')?'▲':'▼'">☰ &nbsp; Contenidos del libro <span class="nav-toggle-arrow">▼</span></button><div class="nav-body"></div></nav>
+<section class="page-header-prac">
+  <div class="ph-num">P13</div>
+  <div class="ph-inner">
+    <div class="ph-badge-prac">🔬 Unidad IV · Sesión Práctica 13</div>
+    <h1 class="ph-titulo">Directorio Telefónico con Búsqueda y Ordenamiento</h1>
+    <p class="ph-subtitulo">inserción · búsqueda binaria · arreglos paralelos · ordenamiento de strings · conteo de comparaciones</p>
+    <div class="ph-meta">
+      <div class="ph-meta-item"><span class="ph-meta-label">Duración</span><span class="ph-meta-valor">180 min (3h)</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Modalidad</span><span class="ph-meta-valor">Individual → Parejas</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-valor">Entregable: .cpp + trazas + bitácora</span></div>
+    </div>
+  </div>
+</section>
+<nav class="fases-nav">
+  <a class="fase-chip" href="#f1">F1 · Trazas</a>
+  <a class="fase-chip" href="#f2">F2 · Pseudocódigo</a>
+  <a class="fase-chip" href="#f3">F3 · C++</a>
+  <a class="fase-chip" href="#f4">F4 · Extensión</a>
+  <a class="fase-chip" href="#f5">F5 · Análisis IA</a>
+  <a class="fase-chip" href="#f6">F6 · Bitácora</a>
+</nav>
+<main class="body-wrap">
+
+<div class="ra-box">
+  <div class="ra-label">Objetivo de la Sesión</div>
+  <div class="ra-texto">El estudiante <strong>implementa un directorio telefónico completo</strong> con dos arreglos paralelos (nombres y teléfonos), ordena por nombre usando inserción (manteniendo sincronía), y realiza búsqueda binaria para encontrar el teléfono de un contacto en O(log n). Cuenta y compara el número de comparaciones de búsqueda lineal vs binaria.</div>
+</div>
+
+<div class="problema-box">
+  <span class="pb-label">📞 Contexto del Problema</span>
+  <div class="pb-enunciado">La Carrera de Computación de ESPAM MFL necesita un directorio de 12 contactos. Cada contacto tiene nombre y teléfono. El sistema debe: <strong>1)</strong> ingresar los 12 contactos <strong>2)</strong> ordenarlos alfabéticamente por nombre (inserción con arreglos paralelos) <strong>3)</strong> mostrar el directorio ordenado <strong>4)</strong> permitir buscar por nombre con búsqueda binaria <strong>5)</strong> comparar visualmente cuántas comparaciones usaría la búsqueda lineal.</div>
+</div>
+
+<!-- F1 -->
+<section class="fase" id="f1">
+  <div class="fase-header">
+    <div class="fase-num">F1</div>
+    <div>
+      <div class="fase-titulo">Trazas en Papel — Inserción y Binaria</div>
+      <div class="fase-tiempo">0 – 25 min · SIN computadora</div>
+    </div>
+  </div>
+  <div class="actividades">
+    <div class="actividad">
+      <div class="act-num">1</div>
+      <div>
+        <div class="act-titulo">Traza de inserción sobre 6 nombres</div>
+        <div class="act-desc">Aplica el algoritmo de inserción sobre: ["Pedro","Ana","Julio","Belen","Carlos","Maria"]. Dibuja el estado del arreglo después de procesar cada elemento nuevo. ¿En qué paso se produce la mayor cantidad de desplazamientos? Nota: en C++ los strings se comparan lexicográficamente con &lt;, lo que equivale a orden alfabético para nombres sin acentos.</div>
+      </div>
+    </div>
+    <div class="actividad">
+      <div class="act-num">2</div>
+      <div>
+        <div class="act-titulo">Traza de búsqueda binaria</div>
+        <div class="act-desc">Sobre el arreglo ya ordenado del punto anterior, aplica búsqueda binaria buscando "Carlos". Dibuja cada iteración con izq, der, mid y arr[mid]. ¿Cuántas comparaciones necesitó? ¿Cuántas hubiera necesitado la búsqueda lineal?</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- F2 -->
+<section class="fase" id="f2">
+  <div class="fase-header">
+    <div class="fase-num">F2</div>
+    <div>
+      <div class="fase-titulo">Pseudocódigo en PSeInt</div>
+      <div class="fase-tiempo">25 – 55 min</div>
+    </div>
+  </div>
+
+  <div class="pseudocodigo">
+    <div class="pseudo-label">PSeInt · inserción con arreglos paralelos sincronizados</div>
+    <div class="pseudo-body"><span class="p-kw">SubProceso</span> insercionParalelo(nombres, tels, n)
+    <span class="p-kw">Para</span> i &lt;- 1 <span class="p-kw">Hasta</span> n-1 <span class="p-kw">Hacer</span>
+        claveNombre &lt;- nombres[i]
+        claveTel    &lt;- tels[i]
+        j &lt;- i - 1
+        <span class="p-kw">Mientras</span> j &gt;= 0 Y nombres[j] &gt; claveNombre <span class="p-kw">Hacer</span>
+            nombres[j+1] &lt;- nombres[j]    <span class="c-com">// desplazar nombre</span>
+            tels[j+1]    &lt;- tels[j]        <span class="c-com">// desplazar teléfono en sincronía</span>
+            j &lt;- j - 1
+        <span class="p-kw">FinMientras</span>
+        nombres[j+1] &lt;- claveNombre
+        tels[j+1]    &lt;- claveTel
+    <span class="p-kw">FinPara</span>
+<span class="p-kw">FinSubProceso</span></div>
+  </div>
+
+  <div class="pseudocodigo">
+    <div class="pseudo-label">PSeInt · búsqueda binaria de string</div>
+    <div class="pseudo-body"><span class="p-kw">Funcion</span> idx &lt;- buscarBinario(nombres, n, objetivo)
+    izq &lt;- 0
+    der &lt;- n - 1
+    idx &lt;- -1
+    <span class="p-kw">Mientras</span> izq &lt;= der <span class="p-kw">Hacer</span>
+        mid &lt;- (izq + der) / 2
+        <span class="p-kw">Si</span> nombres[mid] = objetivo <span class="p-kw">Entonces</span>
+            idx &lt;- mid
+            <span class="p-kw">Interrumpir</span>
+        <span class="p-kw">SiNo Si</span> nombres[mid] &lt; objetivo <span class="p-kw">Entonces</span>
+            izq &lt;- mid + 1
+        <span class="p-kw">SiNo</span>
+            der &lt;- mid - 1
+        <span class="p-kw">FinSi</span>
+    <span class="p-kw">FinMientras</span>
+<span class="p-kw">FinFuncion</span></div>
+  </div>
+</section>
+
+<hr>
+
+<!-- F3 -->
+<section class="fase" id="f3">
+  <div class="fase-header">
+    <div class="fase-num">F3</div>
+    <div>
+      <div class="fase-titulo">Implementación en C++ — Individual</div>
+      <div class="fase-tiempo">55 – 105 min</div>
+    </div>
+  </div>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · Directorio ESPAM — implementación completa</span>
+      </div>
+      <span class="codigo-archivo">directorio.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;string&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+<span class="c-kw">const</span> <span class="c-tipo">int</span> N = <span class="c-num">12</span>;
+
+<span class="c-kw">void</span> <span class="c-fn">ingresar</span>(<span class="c-tipo">string</span> nom[], <span class="c-tipo">string</span> tel[], <span class="c-tipo">int</span> n);
+<span class="c-kw">void</span> <span class="c-fn">insercionParalelo</span>(<span class="c-tipo">string</span> nom[], <span class="c-tipo">string</span> tel[], <span class="c-tipo">int</span> n);
+<span class="c-tipo">int</span>  <span class="c-fn">buscarBinario</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span> nom[], <span class="c-tipo">int</span> n, <span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; obj);
+<span class="c-kw">void</span> <span class="c-fn">mostrarDirectorio</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span> nom[], <span class="c-kw">const</span> <span class="c-tipo">string</span> tel[], <span class="c-tipo">int</span> n);
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">string</span> nombres[N], telefonos[N];
+    <span class="c-fn">ingresar</span>(nombres, telefonos, N);
+    <span class="c-fn">insercionParalelo</span>(nombres, telefonos, N);
+
+    <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"
+─── DIRECTORIO ORDENADO ───
+"</span>;
+    <span class="c-fn">mostrarDirectorio</span>(nombres, telefonos, N);
+
+    <span class="c-tipo">string</span> buscar;
+    <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"
+Nombre a buscar: "</span>; <span class="c-fn">getline</span>(<span class="c-fn">cin</span>&gt;&gt;ws, buscar);
+    <span class="c-tipo">int</span> idx = <span class="c-fn">buscarBinario</span>(nombres, N, buscar);
+    <span class="c-kw">if</span>(idx!=-<span class="c-num">1</span>)
+        <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Teléfono: "</span>&lt;&lt;telefonos[idx]&lt;&lt;<span class="c-str">"
+"</span>;
+    <span class="c-kw">else</span>
+        <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"Contacto no encontrado.
+"</span>;
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}
+
+<span class="c-kw">void</span> <span class="c-fn">ingresar</span>(<span class="c-tipo">string</span> nom[], <span class="c-tipo">string</span> tel[], <span class="c-tipo">int</span> n) {
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;n;i++) {
+        <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"  Nombre ["</span>&lt;&lt;i+<span class="c-num">1</span>&lt;&lt;<span class="c-str">"]: "</span>; <span class="c-fn">getline</span>(<span class="c-fn">cin</span>&gt;&gt;ws, nom[i]);
+        <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"  Teléfono: "</span>;      <span class="c-fn">getline</span>(<span class="c-fn">cin</span>, tel[i]);
+    }
+}
+<span class="c-kw">void</span> <span class="c-fn">insercionParalelo</span>(<span class="c-tipo">string</span> nom[], <span class="c-tipo">string</span> tel[], <span class="c-tipo">int</span> n) {
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">1</span>;i&lt;n;i++) {
+        <span class="c-tipo">string</span> kN=nom[i], kT=tel[i];
+        <span class="c-tipo">int</span> j=i-<span class="c-num">1</span>;
+        <span class="c-kw">while</span>(j&gt;=<span class="c-num">0</span>&amp;&amp;nom[j]&gt;kN){nom[j+<span class="c-num">1</span>]=nom[j];tel[j+<span class="c-num">1</span>]=tel[j];j--;}
+        nom[j+<span class="c-num">1</span>]=kN; tel[j+<span class="c-num">1</span>]=kT;
+    }
+}
+<span class="c-tipo">int</span> <span class="c-fn">buscarBinario</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span> nom[],<span class="c-tipo">int</span> n,<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; obj) {
+    <span class="c-tipo">int</span> izq=<span class="c-num">0</span>,der=n-<span class="c-num">1</span>;
+    <span class="c-kw">while</span>(izq&lt;=der){
+        <span class="c-tipo">int</span> m=(izq+der)/<span class="c-num">2</span>;
+        <span class="c-kw">if</span>(nom[m]==obj)<span class="c-kw">return</span> m;
+        <span class="c-kw">else if</span>(nom[m]&lt;obj) izq=m+<span class="c-num">1</span>;
+        <span class="c-kw">else</span> der=m-<span class="c-num">1</span>;
+    }
+    <span class="c-kw">return</span> -<span class="c-num">1</span>;
+}
+<span class="c-kw">void</span> <span class="c-fn">mostrarDirectorio</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span> nom[],<span class="c-kw">const</span> <span class="c-tipo">string</span> tel[],<span class="c-tipo">int</span> n) {
+    <span class="c-kw">for</span>(<span class="c-tipo">int</span> i=<span class="c-num">0</span>;i&lt;n;i++)
+        <span class="c-fn">cout</span>&lt;&lt;<span class="c-str">"  "</span>&lt;&lt;setw(<span class="c-num">20</span>)&lt;&lt;left&lt;&lt;nom[i]&lt;&lt;<span class="c-str">" "</span>&lt;&lt;tel[i]&lt;&lt;<span class="c-str">"
+"</span>;
+}</pre></div>
+  </div>
+</section>
+
+<hr>
+
+<!-- F4 -->
+<section class="fase" id="f4">
+  <div class="fase-header">
+    <div class="fase-num">F4</div>
+    <div>
+      <div class="fase-titulo">Extensión en Parejas</div>
+      <div class="fase-tiempo">105 – 140 min</div>
+    </div>
+  </div>
+  <div class="actividades">
+    <div class="actividad">
+      <div class="act-num">A</div>
+      <div>
+        <div class="act-titulo">Contador de comparaciones</div>
+        <div class="act-desc">Agrega un parámetro <code>int&amp; comparaciones</code> a ambas funciones de búsqueda (lineal y binaria). Incrementa el contador en cada comparación del while/for. Después de la búsqueda imprime: "Lineal: N comp · Binaria: M comp". Prueba con un nombre en el inicio, en el medio y al final del directorio. ¿La diferencia es más pronunciada en algún caso?</div>
+      </div>
+    </div>
+    <div class="actividad">
+      <div class="act-num">B</div>
+      <div>
+        <div class="act-titulo">Eliminar y agregar contactos</div>
+        <div class="act-desc">Implementa <code>bool eliminarContacto(string nom[], string tel[], int&amp; n, const string&amp; objetivo)</code> que busca el contacto (binaria), lo elimina compactando el arreglo, y reduce n en 1. Luego <code>void agregarContacto(string nom[], string tel[], int&amp; n, const string&amp; nNom, const string&amp; nTel)</code> que inserta en la posición correcta para mantener el orden. Prueba con eliminar un contacto y luego añadir uno nuevo.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<hr>
+
+<!-- F5 -->
+<section class="fase" id="f5">
+  <div class="fase-header">
+    <div class="fase-num">F5</div>
+    <div>
+      <div class="fase-titulo">Análisis Crítico con IA</div>
+      <div class="fase-tiempo">140 – 163 min</div>
+    </div>
+  </div>
+  <div class="caja-ia">
+    <div class="ci-label">🤖 Protocolo de Análisis IA · Sesión 13</div>
+    <p>Pide a la IA que reimplemente el directorio usando <code>std::sort</code> con un comparador personalizado y <code>std::binary_search</code> o <code>std::lower_bound</code>. Responde: <strong>(1)</strong> ¿El código es más corto? ¿Qué complejidad garantiza <code>std::sort</code>? <strong>(2)</strong> ¿<code>std::binary_search</code> retorna el índice o solo un bool? ¿Cómo se obtiene el índice? <strong>(3)</strong> ¿Qué ocurre con el arreglo de teléfonos paralelo si ordenamos solo el de nombres con <code>std::sort</code>? <strong>(4)</strong> ¿Cuándo tiene sentido mantener arreglos paralelos vs. usar un <code>struct</code>?</p>
+  </div>
+</section>
+
+<hr>
+
+<!-- F6 -->
+<section class="fase" id="f6">
+  <div class="fase-header">
+    <div class="fase-num">F6</div>
+    <div>
+      <div class="fase-titulo">Bitácora y Rúbrica</div>
+      <div class="fase-tiempo">163 – 180 min</div>
+    </div>
+  </div>
+  <div class="bitacora">
+    <div class="bitacora-campo"><label>Nombre completo / Fecha / NRC</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>¿Por qué la búsqueda binaria falla si el arreglo no está ordenado?</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>¿Cuántas comparaciones usó la binaria vs la lineal en tu directorio de 12 contactos?</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>¿Qué riesgo tiene mantener dos arreglos paralelos? ¿Cómo lo mitiga tu implementación?</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>Resultado del análisis IA: ventajas de std::sort + lower_bound vs implementación manual</label><div class="linea-campo"></div></div>
+    <div class="bitacora-campo"><label>Conclusión: ¿cuándo usar struct en lugar de arreglos paralelos?</label><div class="linea-campo"></div></div>
+  </div>
+  <table class="rubrica">
+    <thead><tr><th>Criterio</th><th>Logrado ✓</th><th>Parcial △</th><th>No logrado ✗</th><th>Pts</th></tr></thead>
+    <tbody>
+      <tr><td>F1: Trazas de inserción (6 nombres) y binaria en papel, con conteo de comparaciones</td><td>Trazas completas y correctas para ambos algoritmos</td><td>Una traza incompleta o con error menor</td><td>No presentado</td><td>/15</td></tr>
+      <tr><td>F2: Pseudocódigo de inserción paralela y búsqueda binaria en PSeInt</td><td>Produce el directorio ordenado y encuentra correctamente</td><td>Un error corregible</td><td>No entregado</td><td>/15</td></tr>
+      <tr><td>F3: C++ compila, directorio ordenado correcto, búsqueda binaria funcional</td><td>Directorio ordenado; búsqueda encuentra y retorna teléfono correcto</td><td>Ordenamiento o búsqueda incorrectos</td><td>No compila</td><td>/40</td></tr>
+      <tr><td>F4: Contador de comparaciones + eliminar/agregar funcionales</td><td>Contador correcto; eliminar y agregar mantienen el orden</td><td>Solo una extensión</td><td>No realizado</td><td>/15</td></tr>
+      <tr><td>F5 + F6: Análisis IA + bitácora completa</td><td>4 preguntas razonadas con código; bitácora firmada</td><td>Sin fragmentos de código</td><td>No entregado</td><td>/15</td></tr>
+    </tbody>
+    <tfoot><tr><td colspan="4">TOTAL</td><td>/100</td></tr></tfoot>
+  </table>
+</section>
+</main><div class="nav-caps">
+  <a href="capitulo_13.html" class="nav-cap-btn">
+    <span class="ncb-arrow">←</span>
+    <div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Capítulo 13 — Búsqueda y Ordenamiento</span></div>
+  </a>
+  <a href="capitulo_14.html" class="nav-cap-btn sig">
+    <span class="ncb-arrow">→</span>
+    <div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Cap. 14 — Cadenas de Texto</span></div>
+  </a>
+</div>
+<footer class="pie"><span>Práctica 13 — Búsqueda y Ordenamiento · Unidad IV · ESPAM MFL</span><span>espam.edu.ec</span></footer>
+</body></html>

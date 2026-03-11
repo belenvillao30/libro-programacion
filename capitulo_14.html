@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Cap. 9 — Paso por Valor y por Referencia | ESPAM MFL</title>
+<title>Cap. 14 — Cadenas y Procesamiento de Texto | ESPAM MFL</title>
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Work+Sans:wght@300;400;500;600;700;800;900&family=Space+Mono:wght@400;700&display=swap');
 :root{--verde:#005846;--verde-medio:#007a5e;--verde-claro:#cbdb2a;--turquesa:#08b89d;--fondo:#F8F8F2;--fondo-alt:#edeee8;--texto:#1a1f1c;--texto-suave:#4a5550;--borde:rgba(0,88,70,.13);--codigo-bg:#0d1e18;}
@@ -250,7 +250,7 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
         <ul class="nav-items">
           <li><a href="capitulo_08.html" class="nav-item"><span class="nav-num">08</span> Funciones en C++</a></li>
           <li><a href="practica_08.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 8</a></li>
-          <li><a href="capitulo_09.html" class="nav-item activo"><span class="nav-num">09</span> Paso por Valor y Referencia</a></li>
+          <li><a href="capitulo_09.html" class="nav-item"><span class="nav-num">09</span> Paso por Valor y Referencia</a></li>
           <li><a href="practica_09.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 9</a></li>
           <li><a href="capitulo_10.html" class="nav-item"><span class="nav-num">10</span> Pila y Modularidad</a></li>
           <li><a href="practica_10.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 10</a></li>
@@ -266,7 +266,7 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
           <li><a href="practica_12.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 12</a></li>
           <li><a href="capitulo_13.html" class="nav-item"><span class="nav-num">13</span> Búsqueda y Ordenamiento</a></li>
           <li><a href="practica_13.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 13</a></li>
-          <li><a href="capitulo_14.html" class="nav-item"><span class="nav-num">14</span> Arreglos Bidimensionales</a></li>
+          <li><a href="capitulo_14.html" class="nav-item activo"><span class="nav-num">14</span> Arreglos Bidimensionales</a></li>
           <li><a href="practica_14.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 14</a></li>
           <li><a href="capitulo_15.html" class="nav-item"><span class="nav-num">15</span> Proyecto Integrador Final</a></li>
           <li><a href="practica_15.html" class="nav-item practica"><span class="nav-num">↳</span> Sesión Práctica 15</a></li>
@@ -284,306 +284,260 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
 
   </nav>
 <section class="page-header">
-  <div class="ph-num">9</div>
+  <div class="ph-num">14</div>
   <div class="ph-inner">
-    <div class="ph-badge">📗 Unidad III · Capítulo 9</div>
-    <h1 class="ph-titulo">Paso por Valor y por Referencia</h1>
-    <p class="ph-subtitulo">Copias vs. alias · operador <code style="color:var(--verde-claro);font-size:26px">&amp;</code> · <code style="color:var(--verde-claro);font-size:24px">const&amp;</code> · devolver múltiples resultados</p>
+    <div class="ph-badge">📗 Unidad IV · Capítulo 14</div>
+    <h1 class="ph-titulo">Cadenas y Procesamiento de Texto</h1>
+    <p class="ph-subtitulo"><code>string</code> en C++ · operaciones fundamentales · funciones de la STL · procesamiento carácter a carácter · validación</p>
     <div class="ph-meta">
       <div class="ph-meta-item"><span class="ph-meta-label">Horas presenciales</span><span class="ph-meta-valor">3 ACD + 2 PECD</span></div>
       <div class="ph-meta-item"><span class="ph-meta-label">Horas autónomas</span><span class="ph-meta-valor">3 AA + 1 PEND</span></div>
-      <div class="ph-meta-item"><span class="ph-meta-label">Resultado</span><span class="ph-meta-valor">R.A. — C</span></div>
+      <div class="ph-meta-item"><span class="ph-meta-label">Resultado</span><span class="ph-meta-valor">R.A. — D</span></div>
     </div>
   </div>
 </section>
 <nav class="anclas">
-  <a class="ancla" href="#s91">9.1 El problema</a>
-  <a class="ancla" href="#s92">9.2 Paso por valor</a>
-  <a class="ancla" href="#s93">9.3 Paso por referencia</a>
-  <a class="ancla" href="#s94">9.4 Comparativa</a>
-  <a class="ancla" href="#s95">9.5 const&amp;</a>
-  <a class="ancla" href="#s96">9.6 Múltiples retornos</a>
-  <a class="ancla" href="#s97">9.7 Ejercicios</a>
+  <a class="ancla" href="#s141">14.1 El tipo string</a>
+  <a class="ancla" href="#s142">14.2 Operaciones básicas</a>
+  <a class="ancla" href="#s143">14.3 Funciones STL</a>
+  <a class="ancla" href="#s144">14.4 Procesamiento por carácter</a>
+  <a class="ancla" href="#s145">14.5 Validación de texto</a>
+  <a class="ancla" href="#s146">14.6 Ejercicios</a>
 </nav>
 <main class="body-wrap">
 
 <div class="ra-box">
-  <div class="ra-label">Resultado de Aprendizaje — Capítulo 9</div>
-  <div class="ra-texto">El estudiante <strong>distingue y aplica correctamente el paso por valor y el paso por referencia</strong> en funciones C++, usa <code>const&amp;</code> para pasar datos de solo lectura de forma eficiente, y emplea parámetros por referencia para devolver múltiples resultados desde una función sin usar variables globales.</div>
+  <div class="ra-label">Resultado de Aprendizaje — Capítulo 14</div>
+  <div class="ra-texto">El estudiante <strong>utiliza el tipo <code>string</code> de C++ y sus funciones principales</strong> para almacenar, manipular y validar texto: operaciones de concatenación, comparación, búsqueda de subcadenas, extracción de fragmentos y procesamiento carácter a carácter con <code>cctype</code>, aplicándolo en la construcción de funciones de validación reutilizables.</div>
 </div>
 
-<!-- 9.1 ─────────────────────────────────────────────────── -->
-<section class="seccion" id="s91">
-  <span class="seccion-num">9.1</span>
-  <h2>El Problema: Modificar la Variable Original</h2>
-  <p>Hasta ahora todas nuestras funciones recibían <em>copias</em> de los datos. Pero a veces necesitamos que la función <strong>modifique directamente</strong> la variable del llamador, no una copia. El intercambio de dos variables es el ejemplo clásico: parece que funciona, pero sin referencia no cambia nada fuera de la función.</p>
-
-  <div class="codigo-bloque">
-    <div class="codigo-header">
-      <div style="display:flex;align-items:center;gap:8px">
-        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-        <span class="codigo-lang">C++ · intento fallido — intercambio sin referencia</span>
-      </div>
-      <span class="codigo-archivo">swap_falla.cpp</span>
-    </div>
-    <div class="codigo-body"><pre><span class="c-kw">void</span> <span class="c-fn">intercambiar</span>(<span class="c-tipo">int</span> a, <span class="c-tipo">int</span> b) {   <span class="c-com">// a y b son COPIAS locales</span>
-    <span class="c-tipo">int</span> temp = a;
-    a = b;
-    b = temp;
-    <span class="c-com">// los cambios mueren aquí: x e y en main quedan intactos</span>
-}
-
-<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
-    <span class="c-tipo">int</span> x = <span class="c-num">5</span>, y = <span class="c-num">10</span>;
-    <span class="c-fn">intercambiar</span>(x, y);
-    <span class="c-fn">cout</span> &lt;&lt; x &lt;&lt; <span class="c-str">" "</span> &lt;&lt; y;   <span class="c-com">// imprime: 5 10  ← ¡no cambió nada!</span>
-    <span class="c-kw">return</span> <span class="c-num">0</span>;
-}</pre></div>
-  </div>
-
-  <div class="caja-adv">
-    <div class="ca-label">⚠️ El engaño del paso por valor</div>
-    <p>La función parece intercambiar, pero trabaja con copias locales. Al terminar la función esas copias se destruyen y <code>x</code> e <code>y</code> en <code>main</code> quedan intactos. La solución: pasar por <strong>referencia</strong> con el operador <code>&amp;</code>, que convierte el parámetro en un alias del original.</p>
-  </div>
-</section>
-
-<hr>
-
-<!-- 9.2 ─────────────────────────────────────────────────── -->
-<section class="seccion" id="s92">
-  <span class="seccion-num">9.2</span>
-  <h2>Paso por Valor — Trabaja con una Copia</h2>
-  <p>Es el comportamiento predeterminado en C++. La función recibe una <strong>copia independiente</strong> del argumento. Cualquier modificación dentro de la función <em>no afecta</em> a la variable original. Ideal cuando la función solo necesita leer el dato sin modificarlo.</p>
+<section class="seccion" id="s141">
+  <span class="seccion-num">14.1</span>
+  <h2>El Tipo <code>string</code> en C++</h2>
+  <p>En C++ el tipo <code>string</code> (de la biblioteca <code>&lt;string&gt;</code>) es un arreglo de caracteres dinámico con gestión automática de memoria. A diferencia del arreglo de caracteres de C (<code>char[]</code>), <code>string</code> sabe su propio tamaño, puede crecer automáticamente y provee métodos de manipulación seguros.</p>
 
   <div class="def-formal">
-    <span class="def-label">Cuándo usar paso por valor</span>
-    <p>Cuando la función <em>solo lee</em> el dato y <em>no debe modificarlo</em>. Para tipos simples (<em>int</em>, <em>double</em>, <em>bool</em>, <em>char</em>) el costo de copiar es despreciable. El compilador puede optimizarlo automáticamente con <em>copy elision</em>.</p>
+    <span class="def-label">string es internamente un arreglo de char</span>
+    <p>Cada carácter ocupa un byte y tiene un índice de 0 a <em>length()-1</em>. El último carácter lógico es <em>s[s.length()-1]</em>. La clase gestiona el terminador nulo interno de forma transparente. El tipo <em>size_t</em> retornado por <em>length()</em> es un entero sin signo: al compararlo con int puede haber advertencias del compilador.</p>
   </div>
 
   <div class="codigo-bloque">
     <div class="codigo-header">
       <div style="display:flex;align-items:center;gap:8px">
         <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-        <span class="codigo-lang">C++ · paso por valor — el original queda protegido</span>
+        <span class="codigo-lang">C++ · declaración, inicialización y acceso a caracteres</span>
       </div>
-      <span class="codigo-archivo">por_valor.cpp</span>
-    </div>
-    <div class="codigo-body"><pre><span class="c-tipo">double</span> <span class="c-fn">calcularIVA</span>(<span class="c-tipo">double</span> precio) {    <span class="c-com">// precio es copia independiente</span>
-    precio *= <span class="c-num">1.12</span>;     <span class="c-com">// modifica la copia, NO el original</span>
-    <span class="c-kw">return</span> precio;
-}
-
-<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
-    <span class="c-tipo">double</span> subtotal = <span class="c-num">100.0</span>;
-    <span class="c-tipo">double</span> total    = <span class="c-fn">calcularIVA</span>(subtotal);
-    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Subtotal: "</span> &lt;&lt; subtotal &lt;&lt; endl;   <span class="c-com">// 100.0 — sin cambios</span>
-    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Con IVA:  "</span> &lt;&lt; total    &lt;&lt; endl;   <span class="c-com">// 112.0</span>
-    <span class="c-kw">return</span> <span class="c-num">0</span>;
-}</pre></div>
-  </div>
-</section>
-
-<hr>
-
-<!-- 9.3 ─────────────────────────────────────────────────── -->
-<section class="seccion" id="s93">
-  <span class="seccion-num">9.3</span>
-  <h2>Paso por Referencia — Trabaja con el Original</h2>
-  <p>El operador <code>&amp;</code> en el parámetro convierte la variable en un <strong>alias</strong>: apunta a la misma posición de memoria que la variable original. Toda modificación dentro de la función afecta directamente al argumento del llamador.</p>
-
-  <div class="def-formal">
-    <span class="def-label">Sintaxis</span>
-    <p><em>tipo&amp;</em> nombre — el <em>&amp;</em> puede ir pegado al tipo (<em>int&amp; x</em>) o al nombre (<em>int &amp;x</em>); ambos son válidos en C++. Por convención académica se prefiere pegado al tipo.</p>
-  </div>
-
-  <div class="codigo-bloque">
-    <div class="codigo-header">
-      <div style="display:flex;align-items:center;gap:8px">
-        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-        <span class="codigo-lang">C++ · intercambio correcto con referencia</span>
-      </div>
-      <span class="codigo-archivo">swap_correcto.cpp</span>
+      <span class="codigo-archivo">string_basico.cpp</span>
     </div>
     <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;string&gt;</span>
 <span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
 
-<span class="c-kw">void</span> <span class="c-fn">intercambiar</span>(<span class="c-tipo">int</span>&amp; a, <span class="c-tipo">int</span>&amp; b) {    <span class="c-com">// &amp; = alias del original</span>
-    <span class="c-tipo">int</span> temp = a;
-    a = b;
-    b = temp;
-    <span class="c-com">// modifica directamente x e y en main</span>
-}
-
 <span class="c-tipo">int</span> <span class="c-fn">main</span>() {
-    <span class="c-tipo">int</span> x = <span class="c-num">5</span>, y = <span class="c-num">10</span>;
-    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Antes:   x="</span> &lt;&lt; x &lt;&lt; <span class="c-str">"  y="</span> &lt;&lt; y &lt;&lt; endl;   <span class="c-com">// 5  10</span>
-    <span class="c-fn">intercambiar</span>(x, y);
-    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Después: x="</span> &lt;&lt; x &lt;&lt; <span class="c-str">"  y="</span> &lt;&lt; y &lt;&lt; endl;   <span class="c-com">// 10  5</span>
+    <span class="c-tipo">string</span> nombre = <span class="c-str">"ESPAM MFL"</span>;
+
+    <span class="c-fn">cout</span> &lt;&lt; nombre.length()  &lt;&lt; endl;  <span class="c-com">// 9 — número de caracteres</span>
+    <span class="c-fn">cout</span> &lt;&lt; nombre[<span class="c-num">0</span>]        &lt;&lt; endl;  <span class="c-com">// E — primer carácter</span>
+    <span class="c-fn">cout</span> &lt;&lt; nombre.back()    &lt;&lt; endl;  <span class="c-com">// L — último carácter</span>
+    <span class="c-fn">cout</span> &lt;&lt; nombre.empty()   &lt;&lt; endl;  <span class="c-com">// 0 (false) — no está vacío</span>
+
+    <span class="c-com">// Recorrer carácter a carácter</span>
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">0</span>; i &lt; (<span class="c-tipo">int</span>)nombre.length(); i++)
+        <span class="c-fn">cout</span> &lt;&lt; nombre[i] &lt;&lt; <span class="c-str">" "</span>;   <span class="c-com">// E S P A M   M F L</span>
+    <span class="c-fn">cout</span> &lt;&lt; endl;
+
     <span class="c-kw">return</span> <span class="c-num">0</span>;
 }</pre></div>
-  </div>
-
-  <h3>Traza de memoria — paso a paso</h3>
-  <table class="tabla-sim">
-    <thead>
-      <tr><th>Momento</th><th>x (main)</th><th>y (main)</th><th>a (alias→x)</th><th>b (alias→y)</th><th>temp</th></tr>
-    </thead>
-    <tbody>
-      <tr><td>Antes de llamar</td><td>5</td><td>10</td><td>—</td><td>—</td><td>—</td></tr>
-      <tr><td>Entrar a intercambiar</td><td>5</td><td>10</td><td>5 ← mismo lugar</td><td>10 ← mismo lugar</td><td>—</td></tr>
-      <tr><td><code>temp = a</code></td><td>5</td><td>10</td><td>5</td><td>10</td><td>5</td></tr>
-      <tr><td><code>a = b</code></td><td class="acc">10</td><td>10</td><td>10</td><td>10</td><td>5</td></tr>
-      <tr><td><code>b = temp</code></td><td>10</td><td class="acc">5</td><td>10</td><td>5</td><td>5</td></tr>
-      <tr><td>Salir de la función</td><td class="res">10</td><td class="res">5</td><td>destruida</td><td>destruida</td><td>destruida</td></tr>
-    </tbody>
-  </table>
-
-  <div class="caja-nota">
-    <div class="cn-label">📌 Alias = misma dirección de memoria</div>
-    <p>El alias <code>a</code> no es una nueva variable: es otro nombre para la dirección de <code>x</code>. Escribir en <code>a</code> es literalmente escribir en <code>x</code>. Por eso el cambio persiste al salir de la función. No se copió ningún dato.</p>
   </div>
 </section>
 
 <hr>
 
-<!-- 9.4 ─────────────────────────────────────────────────── -->
-<section class="seccion" id="s94">
-  <span class="seccion-num">9.4</span>
-  <h2>Comparativa: Valor vs. Referencia</h2>
+<section class="seccion" id="s142">
+  <span class="seccion-num">14.2</span>
+  <h2>Operaciones Básicas con <code>string</code></h2>
 
   <table class="tabla-est">
-    <thead><tr><th>Aspecto</th><th>Paso por Valor</th><th>Paso por Referencia</th></tr></thead>
+    <thead><tr><th>Operación</th><th>Sintaxis</th><th>Ejemplo</th><th>Resultado</th></tr></thead>
     <tbody>
-      <tr><td>Sintaxis</td><td><code>void f(int x)</code></td><td><code>void f(int&amp; x)</code></td></tr>
-      <tr><td>¿Qué recibe la función?</td><td>Una copia independiente</td><td>Un alias al original (misma dirección)</td></tr>
-      <tr><td>¿Modifica el original?</td><td>No — protegido automáticamente</td><td>Sí — escritura directa en memoria</td></tr>
-      <tr><td>Costo de memoria</td><td>Copia el dato (mínimo para tipos simples)</td><td>Solo pasa la dirección (8 bytes en 64-bit)</td></tr>
-      <tr><td>Riesgo</td><td>Ninguno: el original es inaccesible</td><td>Modificar por error el original del llamador</td></tr>
-      <tr><td>Cuándo usarlo</td><td>Datos de entrada que no deben cambiar</td><td>Cuando la función debe modificar o devolver múltiples valores</td></tr>
+      <tr><td>Concatenar</td><td><code>s1 + s2</code> o <code>s1 += s2</code></td><td><code>"Hola" + " " + "mundo"</code></td><td><code>"Hola mundo"</code></td></tr>
+      <tr><td>Comparar</td><td><code>s1 == s2</code>, <code>s1 &lt; s2</code></td><td><code>"Ana" &lt; "Luis"</code></td><td><code>true</code> (A &lt; L en ASCII)</td></tr>
+      <tr><td>Longitud</td><td><code>s.length()</code> o <code>s.size()</code></td><td><code>"ESPAM".length()</code></td><td><code>5</code></td></tr>
+      <tr><td>Acceso seguro</td><td><code>s.at(i)</code></td><td><code>s.at(0)</code></td><td>Lanza excepción si i fuera de rango</td></tr>
+      <tr><td>Subcadena</td><td><code>s.substr(pos, len)</code></td><td><code>"ESPAM MFL".substr(0,5)</code></td><td><code>"ESPAM"</code></td></tr>
+      <tr><td>Buscar</td><td><code>s.find(sub)</code></td><td><code>"ESPAM MFL".find("MFL")</code></td><td><code>6</code> (índice inicio)</td></tr>
+      <tr><td>Reemplazar</td><td><code>s.replace(pos,len,nuevo)</code></td><td><code>s.replace(6,3,"MFL Manta")</code></td><td><code>"ESPAM MFL Manta"</code></td></tr>
+      <tr><td>Limpiar</td><td><code>s.clear()</code></td><td><code>s.clear()</code></td><td>Cadena vacía, length() = 0</td></tr>
     </tbody>
   </table>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · operaciones string en la práctica</span>
+      </div>
+      <span class="codigo-archivo">operaciones_string.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-tipo">string</span> s = <span class="c-str">"Programación en C++"</span>;
+
+<span class="c-com">// Buscar subcadena</span>
+<span class="c-tipo">size_t</span> pos = s.<span class="c-fn">find</span>(<span class="c-str">"C++"</span>);
+<span class="c-kw">if</span> (pos != string::npos)   <span class="c-com">// npos = "no encontrado"</span>
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"C++ en posición: "</span> &lt;&lt; pos &lt;&lt; endl;  <span class="c-com">// 16</span>
+
+<span class="c-com">// Extraer fragmento</span>
+<span class="c-tipo">string</span> lenguaje = s.<span class="c-fn">substr</span>(<span class="c-num">16</span>, <span class="c-num">3</span>);   <span class="c-com">// desde índice 16, 3 caracteres</span>
+<span class="c-fn">cout</span> &lt;&lt; lenguaje &lt;&lt; endl;            <span class="c-com">// C++</span>
+
+<span class="c-com">// Comparación lexicográfica</span>
+<span class="c-tipo">string</span> a = <span class="c-str">"banana"</span>, b = <span class="c-str">"manzana"</span>;
+<span class="c-fn">cout</span> &lt;&lt; (a &lt; b ? a : b) &lt;&lt; endl;    <span class="c-com">// banana (b &lt; m en ASCII)</span></pre></div>
+  </div>
+
+  <div class="caja-nota">
+    <div class="cn-label">📌 string::npos — valor centinela de find()</div>
+    <p><code>string::npos</code> es el valor máximo de <code>size_t</code> (~4 mil millones). Cuando <code>find()</code> no encuentra la subcadena retorna <code>string::npos</code>. Siempre verifica antes de usar el índice retornado, o causarás acceso fuera de límites.</p>
+  </div>
+</section>
+
+<hr>
+
+<section class="seccion" id="s143">
+  <span class="seccion-num">14.3</span>
+  <h2>Funciones de <code>&lt;cctype&gt;</code> — Clasificar Caracteres</h2>
+  <p>La biblioteca <code>&lt;cctype&gt;</code> provee funciones que clasifican caracteres individuales sin depender de tablas de código fijas. Son la base de toda función de validación de texto.</p>
+
+  <table class="tabla-est">
+    <thead><tr><th>Función</th><th>Retorna true si el carácter es...</th><th>Ejemplo</th></tr></thead>
+    <tbody>
+      <tr><td><code>isalpha(c)</code></td><td>Letra (a-z, A-Z)</td><td><code>isalpha('A') → true</code></td></tr>
+      <tr><td><code>isdigit(c)</code></td><td>Dígito (0-9)</td><td><code>isdigit('7') → true</code></td></tr>
+      <tr><td><code>isalnum(c)</code></td><td>Letra o dígito</td><td><code>isalnum('_') → false</code></td></tr>
+      <tr><td><code>isspace(c)</code></td><td>Espacio, tabulador, nueva línea</td><td><code>isspace(' ') → true</code></td></tr>
+      <tr><td><code>isupper(c)</code></td><td>Mayúscula</td><td><code>isupper('A') → true</code></td></tr>
+      <tr><td><code>islower(c)</code></td><td>Minúscula</td><td><code>islower('a') → true</code></td></tr>
+      <tr><td><code>toupper(c)</code></td><td>— (convierte a mayúscula)</td><td><code>toupper('a') → 'A'</code></td></tr>
+      <tr><td><code>tolower(c)</code></td><td>— (convierte a minúscula)</td><td><code>tolower('A') → 'a'</code></td></tr>
+    </tbody>
+  </table>
+</section>
+
+<hr>
+
+<section class="seccion" id="s144">
+  <span class="seccion-num">14.4</span>
+  <h2>Procesamiento Carácter a Carácter</h2>
+  <p>Las operaciones más potentes sobre cadenas recorren el string un carácter a la vez con un bucle <code>for</code> y aplican funciones de <code>&lt;cctype&gt;</code> a cada posición.</p>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · funciones de procesamiento de cadenas</span>
+      </div>
+      <span class="codigo-archivo">procesamiento_texto.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;string&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;cctype&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-com">// Convertir toda la cadena a mayúsculas</span>
+<span class="c-tipo">string</span> <span class="c-fn">aMayusculas</span>(<span class="c-tipo">string</span> s) {
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i=<span class="c-num">0</span>; i&lt;(<span class="c-tipo">int</span>)s.length(); i++)
+        s[i] = <span class="c-fn">toupper</span>(s[i]);
+    <span class="c-kw">return</span> s;
+}
+
+<span class="c-com">// Contar vocales en la cadena</span>
+<span class="c-tipo">int</span> <span class="c-fn">contarVocales</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; s) {
+    <span class="c-tipo">int</span> cnt = <span class="c-num">0</span>;
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i=<span class="c-num">0</span>; i&lt;(<span class="c-tipo">int</span>)s.length(); i++) {
+        <span class="c-tipo">char</span> c = <span class="c-fn">tolower</span>(s[i]);
+        <span class="c-kw">if</span> (c=='a'||c=='e'||c=='i'||c=='o'||c=='u') cnt++;
+    }
+    <span class="c-kw">return</span> cnt;
+}
+
+<span class="c-com">// Invertir la cadena</span>
+<span class="c-tipo">string</span> <span class="c-fn">invertir</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; s) {
+    <span class="c-tipo">string</span> inv = <span class="c-str">""</span>;
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i=(<span class="c-tipo">int</span>)s.length()-<span class="c-num">1</span>; i&gt;=<span class="c-num">0</span>; i--)
+        inv += s[i];
+    <span class="c-kw">return</span> inv;
+}
+
+<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
+    <span class="c-tipo">string</span> texto = <span class="c-str">"Hola Mundo"</span>;
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-fn">aMayusculas</span>(texto)  &lt;&lt; endl;  <span class="c-com">// HOLA MUNDO</span>
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-fn">contarVocales</span>(texto) &lt;&lt; endl;  <span class="c-com">// 4</span>
+    <span class="c-fn">cout</span> &lt;&lt; <span class="c-fn">invertir</span>(texto)      &lt;&lt; endl;  <span class="c-com">// odnuM aloH</span>
+    <span class="c-kw">return</span> <span class="c-num">0</span>;
+}</pre></div>
+  </div>
+</section>
+
+<hr>
+
+<section class="seccion" id="s145">
+  <span class="seccion-num">14.5</span>
+  <h2>Validación de Texto con Funciones Reutilizables</h2>
+  <p>La validación de entrada de texto es una de las aplicaciones más comunes del procesamiento de cadenas en sistemas reales: verificar que un campo solo contiene letras, que un código tiene el formato correcto, que una contraseña cumple requisitos mínimos de seguridad.</p>
+
+  <div class="codigo-bloque">
+    <div class="codigo-header">
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
+        <span class="codigo-lang">C++ · validadores reutilizables con const string&amp;</span>
+      </div>
+      <span class="codigo-archivo">validadores.cpp</span>
+    </div>
+    <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;string&gt;</span>
+<span class="c-inc">#include</span> <span class="c-str">&lt;cctype&gt;</span>
+<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
+
+<span class="c-com">// Solo letras y espacios (para nombres de personas)</span>
+<span class="c-tipo">bool</span> <span class="c-fn">soloLetras</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; s) {
+    <span class="c-kw">if</span> (s.empty()) <span class="c-kw">return</span> <span class="c-kw">false</span>;
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i=<span class="c-num">0</span>; i&lt;(<span class="c-tipo">int</span>)s.length(); i++)
+        <span class="c-kw">if</span> (!<span class="c-fn">isalpha</span>(s[i]) &amp;&amp; s[i] != ' ') <span class="c-kw">return</span> <span class="c-kw">false</span>;
+    <span class="c-kw">return</span> <span class="c-kw">true</span>;
+}
+
+<span class="c-com">// Contraseña: mínimo 8 caracteres, al menos 1 dígito y 1 mayúscula</span>
+<span class="c-tipo">bool</span> <span class="c-fn">esPasswordValida</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; pwd) {
+    <span class="c-kw">if</span> ((<span class="c-tipo">int</span>)pwd.length() &lt; <span class="c-num">8</span>) <span class="c-kw">return</span> <span class="c-kw">false</span>;
+    <span class="c-tipo">bool</span> tieneDigito=<span class="c-kw">false</span>, tieneMayus=<span class="c-kw">false</span>;
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i=<span class="c-num">0</span>; i&lt;(<span class="c-tipo">int</span>)pwd.length(); i++) {
+        <span class="c-kw">if</span> (<span class="c-fn">isdigit</span>(pwd[i]))  tieneDigito = <span class="c-kw">true</span>;
+        <span class="c-kw">if</span> (<span class="c-fn">isupper</span>(pwd[i]))  tieneMayus  = <span class="c-kw">true</span>;
+    }
+    <span class="c-kw">return</span> tieneDigito &amp;&amp; tieneMayus;
+}
+
+<span class="c-com">// Verificar palíndromo ignorando mayúsculas y espacios</span>
+<span class="c-tipo">bool</span> <span class="c-fn">esPalindromo</span>(<span class="c-tipo">string</span> s) {
+    <span class="c-tipo">string</span> limpia = <span class="c-str">""</span>;
+    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i=<span class="c-num">0</span>; i&lt;(<span class="c-tipo">int</span>)s.length(); i++)
+        <span class="c-kw">if</span> (<span class="c-fn">isalpha</span>(s[i])) limpia += <span class="c-fn">tolower</span>(s[i]);
+    <span class="c-tipo">int</span> ini=<span class="c-num">0</span>, fin=(<span class="c-tipo">int</span>)limpia.length()-<span class="c-num">1</span>;
+    <span class="c-kw">while</span> (ini&lt;fin)
+        <span class="c-kw">if</span> (limpia[ini++] != limpia[fin--]) <span class="c-kw">return</span> <span class="c-kw">false</span>;
+    <span class="c-kw">return</span> <span class="c-kw">true</span>;
+}<span class="c-com">  // "Anita lava la tina" → true</span></pre></div>
+  </div>
 
   <div class="caja-ia">
-    <div class="ci-label">🤖 IA y el paso por referencia</div>
-    <p>La IA frecuentemente genera funciones que reciben <em>todo</em> por referencia "por eficiencia". <strong>Esa práctica es incorrecta como regla general.</strong> Solo usa <code>&amp;</code> cuando la función <em>necesita modificar</em> el argumento o devolver múltiples valores. Para datos de entrada de solo lectura, usa <code>const&amp;</code> (§9.5) o paso por valor para tipos simples. Siempre revisa la elección de la IA y justifica cada parámetro.</p>
+    <div class="ci-label">🤖 IA y el procesamiento de strings</div>
+    <p>La IA suele proponer regex (<code>&lt;regex&gt;</code>) para validación de texto: es potente pero compleja para principiantes. Para esta asignatura, las validaciones con <code>cctype</code> son más pedagógicas porque hacen explícito el recorrido carácter a carácter. Usa la solución con regex de la IA para contrastar, pero asegúrate de entender y poder reescribir la versión manual.</p>
   </div>
 </section>
 
 <hr>
 
-<!-- 9.5 ─────────────────────────────────────────────────── -->
-<section class="seccion" id="s95">
-  <span class="seccion-num">9.5</span>
-  <h2>Parámetros <code>const&amp;</code> — Eficiencia sin Riesgo</h2>
-  <p>Para pasar objetos grandes (como <code>string</code>) que la función solo necesita leer, <code>const&amp;</code> combina lo mejor de ambos mundos: evita la copia (eficiencia de referencia) y garantiza que el original no puede ser modificado (seguridad de valor). El compilador genera error si intentas escribir en él.</p>
-
-  <div class="comparar">
-    <div class="comp-bloque">
-      <span class="comp-label malo">Sin const&amp; — ineficiente</span>
-      <pre><span class="c-kw">void</span> <span class="c-fn">mostrar</span>(<span class="c-tipo">string</span> nombre) {
-  <span class="c-com">// copia todo el string</span>
-  <span class="c-fn">cout</span> &lt;&lt; nombre;
-}</pre>
-    </div>
-    <div class="comp-bloque">
-      <span class="comp-label bien">Con const&amp; — eficiente y seguro</span>
-      <pre><span class="c-kw">void</span> <span class="c-fn">mostrar</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; nombre) {
-  <span class="c-com">// alias sin copia, protegido</span>
-  <span class="c-fn">cout</span> &lt;&lt; nombre;
-}</pre>
-    </div>
-  </div>
-
-  <div class="codigo-bloque">
-    <div class="codigo-header">
-      <div style="display:flex;align-items:center;gap:8px">
-        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-        <span class="codigo-lang">C++ · const&amp; en práctica — protección garantizada por el compilador</span>
-      </div>
-      <span class="codigo-archivo">const_ref.cpp</span>
-    </div>
-    <div class="codigo-body"><pre><span class="c-com">// Solo calcula — no necesita modificar precio</span>
-<span class="c-tipo">double</span> <span class="c-fn">calcularDescuento</span>(<span class="c-kw">const</span> <span class="c-tipo">double</span>&amp; precio, <span class="c-tipo">double</span> pct) {
-    <span class="c-kw">return</span> precio * pct / <span class="c-num">100.0</span>;
-    <span class="c-com">// precio = 0;  ← ERROR de compilación: violación de const</span>
-}
-
-<span class="c-com">// Reporte de bienvenida — string grande, solo lectura</span>
-<span class="c-kw">void</span> <span class="c-fn">imprimirBienvenida</span>(<span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; nombre, <span class="c-kw">const</span> <span class="c-tipo">string</span>&amp; carrera) {
-    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Bienvenido/a, "</span> &lt;&lt; nombre &lt;&lt; <span class="c-str">"\nCarrera: "</span> &lt;&lt; carrera &lt;&lt; endl;
-}</pre></div>
-  </div>
-
-  <table class="tabla-est">
-    <thead><tr><th>Tipo de parámetro</th><th>¿Copia?</th><th>¿Puede modificar original?</th><th>Mejor para</th></tr></thead>
-    <tbody>
-      <tr><td><code>int x</code></td><td>Sí</td><td>No</td><td>Tipos simples de entrada (int, double, bool, char)</td></tr>
-      <tr><td><code>int&amp; x</code></td><td>No</td><td>Sí</td><td>Cuando la función debe modificar el original o devolver múltiples valores</td></tr>
-      <tr><td><code>const int&amp; x</code></td><td>No</td><td>No — error de compilación</td><td>Objetos grandes de solo lectura (string, struct, vector)</td></tr>
-    </tbody>
-  </table>
-</section>
-
-<hr>
-
-<!-- 9.6 ─────────────────────────────────────────────────── -->
-<section class="seccion" id="s96">
-  <span class="seccion-num">9.6</span>
-  <h2>Devolver Múltiples Resultados con Referencias</h2>
-  <p>Una función en C++ solo puede retornar un valor con <code>return</code>. Cuando necesitamos varios resultados simultáneos, la solución clásica son los parámetros de <strong>salida por referencia</strong>: la función los escribe directamente en las variables del llamador.</p>
-
-  <div class="codigo-bloque">
-    <div class="codigo-header">
-      <div style="display:flex;align-items:center;gap:8px">
-        <div class="codigo-dots"><div class="dot dot-r"></div><div class="dot dot-y"></div><div class="dot dot-g"></div></div>
-        <span class="codigo-lang">C++ · calcularEstadisticas — tres valores de salida por referencia</span>
-      </div>
-      <span class="codigo-archivo">estadisticas_ref.cpp</span>
-    </div>
-    <div class="codigo-body"><pre><span class="c-inc">#include</span> <span class="c-str">&lt;iostream&gt;</span>
-<span class="c-inc">#include</span> <span class="c-str">&lt;iomanip&gt;</span>
-<span class="c-kw">using namespace</span> <span class="c-ns">std</span>;
-
-<span class="c-com">// n: ENTRADA por valor · minV, maxV, prom: SALIDA por &amp;</span>
-<span class="c-kw">void</span> <span class="c-fn">calcularEstadisticas</span>(<span class="c-tipo">int</span> n, <span class="c-tipo">double</span>&amp; minV, <span class="c-tipo">double</span>&amp; maxV, <span class="c-tipo">double</span>&amp; prom);
-
-<span class="c-tipo">int</span> <span class="c-fn">main</span>() {
-    <span class="c-tipo">int</span>    n = <span class="c-num">5</span>;
-    <span class="c-tipo">double</span> minimo, maximo, promedio;   <span class="c-com">// sin inicializar — la función las llena</span>
-    <span class="c-fn">calcularEstadisticas</span>(n, minimo, maximo, promedio);
-    <span class="c-fn">cout</span> &lt;&lt; fixed &lt;&lt; setprecision(<span class="c-num">2</span>)
-         &lt;&lt; <span class="c-str">"Mín: "</span> &lt;&lt; minimo &lt;&lt; <span class="c-str">"  Máx: "</span> &lt;&lt; maximo
-         &lt;&lt; <span class="c-str">"  Prom: "</span> &lt;&lt; promedio &lt;&lt; endl;
-    <span class="c-kw">return</span> <span class="c-num">0</span>;
-}
-
-<span class="c-kw">void</span> <span class="c-fn">calcularEstadisticas</span>(<span class="c-tipo">int</span> n, <span class="c-tipo">double</span>&amp; minV, <span class="c-tipo">double</span>&amp; maxV, <span class="c-tipo">double</span>&amp; prom) {
-    <span class="c-tipo">double</span> suma = <span class="c-num">0</span>, dato;
-    <span class="c-fn">cout</span> &lt;&lt; <span class="c-str">"Ingresa "</span> &lt;&lt; n &lt;&lt; <span class="c-str">" números:\n"</span>;
-    <span class="c-fn">cin</span>  &gt;&gt; dato;
-    minV = maxV = dato;    <span class="c-com">// primer dato inicializa min y max</span>
-    suma = dato;
-    <span class="c-kw">for</span> (<span class="c-tipo">int</span> i = <span class="c-num">1</span>; i &lt; n; i++) {
-        <span class="c-fn">cin</span> &gt;&gt; dato;
-        <span class="c-kw">if</span> (dato &lt; minV) minV = dato;
-        <span class="c-kw">if</span> (dato &gt; maxV) maxV = dato;
-        suma += dato;
-    }
-    prom = suma / n;       <span class="c-com">// escribe en la variable de main a través del alias</span>
-}</pre></div>
-  </div>
-
-  <div class="caja-nota">
-    <div class="cn-label">📌 Convención: documentar roles de parámetros</div>
-    <p>En funciones con parámetros mixtos, añadir <code>/*in*/</code> o <code>/*out*/</code> junto al prototipo hace el contrato de la función auto-documentado. El lector sabe de un vistazo qué parámetros son datos de entrada y cuáles son resultados de salida, sin tener que leer el cuerpo de la función.</p>
-  </div>
-</section>
-
-<hr>
-
-<!-- 9.7 ─────────────────────────────────────────────────── -->
-<section class="seccion" id="s97">
-  <span class="seccion-num">9.7</span>
+<section class="seccion" id="s146">
+  <span class="seccion-num">14.6</span>
   <h2>Ejercicios de Aplicación</h2>
 
   <div class="ejercicios-section">
@@ -592,64 +546,64 @@ code{font-family:'Space Mono',monospace;font-size:12.5px;background:rgba(0,88,70
     <div class="ejercicio-item">
       <div class="ej-num">1</div>
       <div class="ej-badge comp">Comprensión</div>
-      <div class="ej-enunciado"><strong>Predecir la salida sin ejecutar.</strong> Indica qué imprime cada fragmento y explica por qué: (a) <code>void f(int x){x=99;} int a=5; f(a); cout&lt;&lt;a;</code> — (b) <code>void g(int&amp; x){x=99;} int a=5; g(a); cout&lt;&lt;a;</code> — (c) <code>void h(const int&amp; x){x=99;} int a=5; h(a); cout&lt;&lt;a;</code>. ¿Cuál de los tres genera error de compilación? ¿Por qué razón exacta?</div>
+      <div class="ej-enunciado"><strong>Explorar operaciones.</strong> Escribe un programa que para la cadena <code>"Carrera de Computación ESPAM"</code>: (a) imprima su longitud, (b) el carácter en posición 11, (c) la subcadena del índice 12 hasta el final, (d) la posición de "ESPAM", (e) la versión en minúsculas completa. Explica qué retorna <code>find()</code> cuando la subcadena no existe.</div>
     </div>
 
     <div class="ejercicio-item">
       <div class="ej-num">2</div>
       <div class="ej-badge aplic">Aplicación</div>
-      <div class="ej-enunciado"><strong>convertirMoneda.</strong> Implementa <code>void convertirMoneda(double usd, double&amp; eur, double&amp; gbp, double&amp; jpy)</code> con tasas fijas EUR=0.92, GBP=0.79, JPY=150.5. En <code>main</code> valida con <code>do-while</code> que usd&gt;0, llama la función y muestra los tres resultados. Justifica por qué <code>usd</code> va por valor y los otros tres por referencia.</div>
+      <div class="ej-enunciado"><strong>Estadísticas de texto.</strong> Implementa <code>void estadisticasTexto(const string&amp; s)</code> que cuente e imprima: número de letras, número de dígitos, número de espacios, número de otros caracteres. Prueba con "ESPAM 2025 MFL!" y verifica manualmente que los conteos son correctos.</div>
     </div>
 
     <div class="ejercicio-item">
       <div class="ej-num">3</div>
       <div class="ej-badge aplic">Aplicación</div>
-      <div class="ej-enunciado"><strong>ordenarTres.</strong> Escribe <code>void ordenarTres(double&amp; a, double&amp; b, double&amp; c)</code> que deje los tres valores en orden ascendente reutilizando <code>intercambiar(double&amp;, double&amp;)</code>. Prueba con (3,1,2), (5,5,1) y (10,10,10). Muestra los valores antes y después de cada llamada para verificar.</div>
+      <div class="ej-enunciado"><strong>Validador de cédula ecuatoriana.</strong> Implementa <code>bool validarCedula(const string&amp; cedula)</code> que verifique: (1) exactamente 10 caracteres, (2) todos son dígitos, (3) los dos primeros dígitos representan una provincia válida (01 a 24). Prueba con "0930123456", "12345", "ab30123456", "2530123456".</div>
     </div>
 
     <div class="ejercicio-item">
       <div class="ej-num">4</div>
       <div class="ej-badge aplic">Aplicación</div>
-      <div class="ej-enunciado"><strong>leerRango — validador reutilizable con <code>const string&amp;</code>.</strong> Escribe <code>double leerRango(const string&amp; msg, double minVal, double maxVal)</code> que muestra <code>msg</code>, lee con <code>do-while</code> hasta que el valor esté en [minVal, maxVal] y lo retorna. Úsala en al menos tres contextos distintos: nota (0–10), edad (1–120), temperatura (−50–150). Explica por qué <code>msg</code> usa <code>const string&amp;</code>.</div>
+      <div class="ej-enunciado"><strong>Formatear nombre completo.</strong> Implementa <code>string formatearNombre(const string&amp; s)</code> que: (1) elimine espacios iniciales y finales, (2) convierta la primera letra de cada palabra a mayúscula y el resto a minúscula. Prueba con " juan CARLOS rodriguez ", "MARÍA elena", "pedro". Explica por qué usas <code>const string&amp;</code> para el parámetro de entrada pero retornas una nueva <code>string</code>.</div>
     </div>
 
     <div class="ejercicio-item">
       <div class="ej-num">5</div>
       <div class="ej-badge integ">Integrador + IA</div>
-      <div class="ej-enunciado"><strong>Auditar código de la IA.</strong> Pide a la IA una función que calcule suma, promedio, mínimo y máximo de N números. Analiza: ¿usó valor o referencia para los resultados? ¿Y para N? ¿Hay <code>const&amp;</code> donde corresponde? Corrige cualquier error de decisión y documenta cada parámetro con <code>/*in*/</code> o <code>/*out*/</code> y una línea de justificación.</div>
+      <div class="ej-enunciado"><strong>Comparar enfoque manual vs. STL.</strong> Pide a la IA la solución de los ejercicios 2 y 3 usando únicamente funciones de la STL (incluyendo algoritmos de <code>&lt;algorithm&gt;</code>). Compara: ¿es más corto? ¿Más fácil de leer? ¿Requiere conocimiento previo adicional? ¿Qué versión preferirías usar en producción y cuál en aprendizaje?</div>
     </div>
   </div>
 
   <div class="evaluativa">
-    <div class="evaluativa-titulo">Actividad Presencial Evaluativa — Capítulo 9</div>
-    <div class="evaluativa-sub">Sesión 9 · Tiempo: 45 min · Sin acceso a IA ni a internet</div>
-    <div class="evaluativa-enunciado">Sistema de notas con tres funciones de firmas exactas: <code>void ingresarNotas(double&amp; n1, double&amp; n2, double&amp; n3)</code> que valide cada nota con <code>do-while</code> en [0,10]; <code>void calcularResultados(double n1, double n2, double n3, double&amp; prom, bool&amp; aprobado)</code> donde promedio ≥ 7 aprueba; y <code>void mostrarReporte(const string&amp; nombre, double prom, bool aprobado)</code> que imprime el resultado con formato. El <code>main</code> coordina las tres llamadas en orden.</div>
+    <div class="evaluativa-titulo">Actividad Presencial Evaluativa — Capítulo 14</div>
+    <div class="evaluativa-sub">Sesión 14 · Tiempo: 45 min · Sin acceso a IA ni a internet</div>
+    <div class="evaluativa-enunciado">Sistema de registro de usuarios con validación de datos: función <code>string leerNombre()</code> que valide que el nombre ingresado tenga solo letras y espacios y longitud ≥ 3; función <code>string leerUsername()</code> que valide que el username tenga entre 4 y 12 caracteres, solo letras y dígitos, sin espacios; función <code>string generarCodigo(const string&amp; nombre, int id)</code> que retorne las 3 primeras letras del nombre en mayúsculas seguidas del id con 4 dígitos (p.ej. "ESP0042"). El <code>main()</code> llama las tres funciones y muestra los datos del usuario formateados.</div>
     <ul class="evaluativa-criterios">
-      <li>Prototipos correctos declarados antes de <code>main</code>.</li>
-      <li>Tipo de paso correcto en cada parámetro: valor, referencia o <code>const&amp;</code>.</li>
-      <li>Validación con <code>do-while</code> en <code>ingresarNotas</code>.</li>
-      <li>Tabla de traza con dos casos completos: uno aprobado (p.ej. 8, 9, 7) y uno reprobado (p.ej. 5, 6, 4).</li>
-      <li><code>main()</code> no realiza cálculos directos: solo llama funciones y declara variables.</li>
+      <li><code>soloLetras</code> usa <code>isalpha()</code> de <code>&lt;cctype&gt;</code>, no comparaciones de ASCII manuales.</li>
+      <li>La validación del username rechaza correctamente espacios y caracteres especiales.</li>
+      <li><code>generarCodigo</code> usa <code>substr()</code> y <code>toupper()</code>.</li>
+      <li>Tabla de prueba con al menos 3 nombres, 3 usernames válidos y 3 inválidos.</li>
+      <li><code>const string&amp;</code> correcto en parámetros de solo lectura.</li>
     </ul>
   </div>
 
   <div class="puente">
-    <div class="puente-titulo">🌉 Funciones que se Llaman a Sí Mismas</div>
-    <div class="puente-sub">Preparación para Cap. 10</div>
-    <div class="puente-texto">Ya dominas cómo los datos fluyen entre funciones mediante valor y referencia, y cómo el computador crea y destruye variables locales en cada llamada. En el Cap. 10 descubrirás cómo ese mismo mecanismo —la <strong>pila de ejecución</strong>— hace posible la <strong>recursión</strong>: funciones que se resuelven definiéndose en términos de sí mismas para atacar problemas que se dividen naturalmente en versiones más pequeñas del mismo problema.</div>
+    <div class="puente-titulo">🌉 Cierre de la Unidad — Integración de Conceptos</div>
+    <div class="puente-sub">Preparación para Cap. 15</div>
+    <div class="puente-texto">Con arreglos, matrices, búsqueda, ordenamiento y cadenas, tienes las herramientas fundamentales de la programación estructurada. El Cap. 15 integra todos estos conceptos en un <strong>proyecto final de complejidad real</strong>: un sistema completo que combina funciones, arreglos de structs, archivos de texto y procesamiento de datos, aplicando cada herramienta aprendida en su contexto más apropiado.</div>
   </div>
 </section>
 
 </main>
 <div class="nav-caps">
-  <a href="practica_08.html" class="nav-cap-btn">
+  <a href="practica_13.html" class="nav-cap-btn">
     <span class="ncb-arrow">←</span>
-    <div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Práctica 8 — Calculadora Modular</span></div>
+    <div><span class="ncb-label">Anterior</span><span class="ncb-titulo">Práctica 13 — Directorio Telefónico</span></div>
   </a>
-  <a href="practica_09.html" class="nav-cap-btn sig">
+  <a href="practica_14.html" class="nav-cap-btn sig">
     <span class="ncb-arrow">→</span>
-    <div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Sesión Práctica 9</span></div>
+    <div><span class="ncb-label">Siguiente</span><span class="ncb-titulo">Sesión Práctica 14</span></div>
   </a>
 </div>
-<footer class="pie"><span>Cap. 9 — Paso por Valor y Referencia · Unidad III · ESPAM MFL</span><span>espam.edu.ec</span></footer>
+<footer class="pie"><span>Cap. 14 — Cadenas y Procesamiento de Texto · Unidad IV · ESPAM MFL</span><span>espam.edu.ec</span></footer>
 </body></html>
