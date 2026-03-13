@@ -33,6 +33,22 @@ body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fond
 .nav-num{font-family:'Space Mono',monospace;font-size:9px;min-width:20px;flex-shrink:0;color:rgba(255,255,255,.28);}
 .nav-item.activo .nav-num{color:var(--verde-claro);}
 .nav-item.practica .nav-num{color:rgba(8,184,157,.45);}
+  /* ── VISOR PDF ──────────────────────────────────────────────── */
+.pdf-wrapper{margin:28px 0;}
+.pdf-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
+.pdf-label::before{content:'📄';}
+.pdf-titulo{font-size:15px;font-weight:600;color:var(--texto);margin-bottom:4px;}
+.pdf-desc{font-size:13px;color:var(--texto-suave);margin-bottom:12px;line-height:1.5;}
+.pdf-frame{width:100%;height:600px;border-radius:10px;overflow:hidden;box-shadow:0 4px 24px rgba(0,88,70,.15);border:1px solid var(--borde);}
+.pdf-frame iframe{width:100%;height:100%;border:0;}
+.pdf-acciones{display:flex;gap:10px;margin-top:10px;flex-wrap:wrap;}
+.pdf-btn{font-family:'Space Mono',monospace;font-size:10px;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:8px 16px;border-radius:6px;text-decoration:none;transition:all .15s;}
+.pdf-btn.primario{background:var(--verde);color:var(--verde-claro);}
+.pdf-btn.primario:hover{background:var(--verde-medio);}
+.pdf-btn.secundario{background:transparent;color:var(--verde);border:1px solid var(--verde);}
+.pdf-btn.secundario:hover{background:var(--verde);color:white;}
+.pdf-nota{font-size:12px;color:var(--texto-suave);margin-top:8px;font-style:italic;}
+@media(max-width:640px){.pdf-frame{height:400px;}.pdf-acciones{flex-direction:column;}}
   /* ── VIDEO YOUTUBE ──────────────────────────────────────────────── */
 .video-wrapper{margin:28px 0;}
 .video-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--turquesa);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
@@ -351,6 +367,34 @@ strong{color:var(--texto);}
       <div class="ci-label">🤖 Reflexión sobre IA</div>
       <p>Cuando le pides a una IA que resuelva un problema de programación, ella <strong>genera código, no un algoritmo razonado</strong>. Si no comprendes el algoritmo subyacente, no puedes verificar si la solución es correcta o eficiente. El algoritmo es la capa que debes dominar tú.</p>
     </div>
+    <!-- ── VISOR PDF ─────────────────────────────────────── -->
+<div class="pdf-wrapper">
+  <div class="pdf-label">Lectura complementaria</div>
+  <div class="pdf-titulo">Impacto de la IA en el aprendizaje de programación</div>
+  <div class="pdf-desc">
+    Villao Loor et al. — Revista Ciencia y Educación, 2025.
+    Estudio sobre el uso de inteligencia artificial en cursos universitarios de programación.
+  </div>
+  <div class="pdf-frame">
+    <iframe
+      src="https://cienciayeducacion.com/index.php/journal/article/download/zenodo.15056104/993/"
+      title="Visor PDF — Impacto de la IA en programación">
+    </iframe>
+  </div>
+  <div class="pdf-acciones">
+    <a class="pdf-btn primario"
+       href="https://cienciayeducacion.com/index.php/journal/article/download/zenodo.15056104/993/"
+       target="_blank">
+      ⬇ Descargar PDF
+    </a>
+    <a class="pdf-btn secundario"
+       href="https://cienciayeducacion.com/index.php/journal/article/view/zenodo.15056104"
+       target="_blank">
+      Ver artículo completo
+    </a>
+  </div>
+  <p class="pdf-nota">Si el visor no carga, usa el botón "Descargar PDF" para abrirlo en tu lector.</p>
+</div>
   </section>
 
   <hr>
