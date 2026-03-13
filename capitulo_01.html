@@ -33,6 +33,10 @@ body{font-family:'Work Sans',sans-serif;color:var(--texto);background:var(--fond
 .nav-num{font-family:'Space Mono',monospace;font-size:9px;min-width:20px;flex-shrink:0;color:rgba(255,255,255,.28);}
 .nav-item.activo .nav-num{color:var(--verde-claro);}
 .nav-item.practica .nav-num{color:rgba(8,184,157,.45);}
+  /* ── FIGURA ─────────────────────────────────────────────── */
+.figura{margin:24px 0;text-align:center;}
+.figura img{max-width:100%;border-radius:10px;box-shadow:0 4px 24px rgba(0,88,70,.15);border:1px solid var(--borde);}
+figcaption{font-family:'Space Mono',monospace;font-size:11px;color:var(--texto-suave);margin-top:8px;font-style:italic;}
   /* ── VISOR PDF ──────────────────────────────────────────────── */
 .pdf-wrapper{margin:28px 0;}
 .pdf-label{font-family:'Space Mono',monospace;font-size:8.5px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:var(--verde-claro);margin-bottom:8px;display:flex;align-items:center;gap:8px;}
@@ -413,6 +417,12 @@ strong{color:var(--texto);}
     <div class="caja-nota">
       <div class="cn-label">📌 Ejemplo cotidiano</div>
       <p>Una receta de cocina es un algoritmo: tiene entrada (ingredientes), pasos finitos (instrucciones), y produce una salida (el plato). Si dice <strong>"añadir sal al gusto"</strong>, pierde precisión — y deja de ser un algoritmo formal.</p>
+   <!-- ── FIGURA ────────────────────────────────────────── -->
+<figure class="figura">
+  <img src="https://raw.githubusercontent.com/belenvillao30/libro-programacion/main/01%20algoritmo%20c1.png"
+       alt="Algoritmo - Capítulo 1">
+  <figcaption>Figura 1.1 — Descripción breve de la imagen</figcaption>
+</figure>
     </div>
   </section>
 
